@@ -1,0 +1,1458 @@
+$(function(){
+
+
+
+//首页显示其余隐藏
+	$(".btn-shouye").click(function(){
+			$(".rg-wrap").show();
+			$(".rg-wrap1").hide();
+			$(".rg-wrap2").hide();
+			$(".rg-wrap3").hide();
+			$(".rg-wrap4").hide();
+			$(".rg-wrap5").hide();
+			$(".rg-wrap6").hide();
+			$(".rg-wrap7").hide();
+			$(".rg-wrap8").hide();
+			$(".rg-wrap9").hide();
+			$(".rg-wrap10").hide();
+			$(".rg-wrap11").hide();
+			$(".rg-wrap12").hide();
+			$(".rg-wrap13").hide();
+			$(".rg-wrap14").hide();
+			$(".rg-wrap15").hide();
+			$(".rg-wrap16").hide();
+			$(".rg-wrap17").hide();
+			$(".rg-wrap18").hide();
+			$(".rg-wrap20").hide();
+			$(".treasure-wrap-sub").hide();
+			$(".rg-wrap22").hide();
+	});
+//首页显示其余隐藏
+//理财显示其余隐藏
+	$(".btn-licai").click(function(){
+			$(".rg-wrap1").show();
+			$(".rg-wrap").hide();
+			$(".rg-wrap2").hide();
+			$(".rg-wrap3").hide();
+			$(".rg-wrap4").hide();
+			$(".rg-wrap5").hide();
+			$(".rg-wrap6").hide();
+			$(".rg-wrap7").hide();
+			$(".rg-wrap8").hide();
+			$(".rg-wrap9").hide();
+			$(".rg-wrap10").hide();
+			$(".rg-wrap11").hide();
+			$(".rg-wrap12").hide();
+			$(".rg-wrap13").hide();
+			$(".rg-wrap14").hide();
+			$(".rg-wrap15").hide();
+			$(".rg-wrap16").hide();
+			$(".rg-wrap17").hide();
+			$(".rg-wrap18").hide();
+			$(".rg-wrap20").hide();
+			$(".treasure-wrap-sub").hide();
+			$(".rg-wrap22").hide();
+	});
+//理财显示其余隐藏	
+//借款显示其余隐藏
+	$(".btn-jiekuan").click(function(){
+			$(".rg-wrap2").show();
+			$(".box-zichan1").show();
+			$(".rg-wrap").hide();
+			$(".rg-wrap1").hide();
+			$(".rg-wrap3").hide();
+			$(".rg-wrap4").hide();
+			$(".rg-wrap5").hide();
+			$(".rg-wrap6").hide();
+			$(".rg-wrap7").hide();
+			$(".rg-wrap8").hide();
+			$(".rg-wrap9").hide();
+			$(".rg-wrap10").hide();
+			$(".rg-wrap11").hide();
+			$(".rg-wrap12").hide();
+			$(".rg-wrap13").hide();
+			$(".rg-wrap14").hide();
+			$(".rg-wrap15").hide();
+			$(".rg-wrap16").hide();
+			$(".rg-wrap17").hide();
+			$(".rg-wrap18").hide();
+			$(".rg-wrap20").hide();
+			$(".treasure-wrap-sub").hide();
+			$(".box-shencha").hide();
+			$(".rg-wrap22").hide();
+	});
+//借款显示其余隐藏
+//受让显示其余隐藏
+	$(".btn-shourang").click(function(){
+			$(".rg-wrap3").show();
+			$(".rg-wrap").hide();
+			$(".rg-wrap1").hide();
+			$(".rg-wrap2").hide();
+			$(".rg-wrap4").hide();
+			$(".rg-wrap5").hide();
+			$(".rg-wrap6").hide();
+			$(".rg-wrap7").hide();
+			$(".rg-wrap8").hide();
+			$(".rg-wrap9").hide();
+			$(".rg-wrap10").hide();
+			$(".rg-wrap11").hide();
+			$(".rg-wrap12").hide();
+			$(".rg-wrap13").hide();
+			$(".rg-wrap14").hide();
+			$(".rg-wrap15").hide();
+			$(".rg-wrap16").hide();
+			$(".rg-wrap17").hide();
+			$(".rg-wrap18").hide();
+			$(".rg-wrap20").hide();
+			$(".treasure-wrap-sub").hide();
+			$(".rg-wrap22").hide();
+	});
+//受让显示其余隐藏
+//转让显示其余隐藏
+	$(".btn-zhuanrang").click(function(){
+			$(".rg-wrap4").show();
+			$(".rg-wrap").hide();
+			$(".rg-wrap1").hide();
+			$(".rg-wrap2").hide();
+			$(".rg-wrap3").hide();
+			$(".rg-wrap5").hide();
+			$(".rg-wrap6").hide();
+			$(".rg-wrap7").hide();
+			$(".rg-wrap8").hide();
+			$(".rg-wrap9").hide();
+			$(".rg-wrap10").hide();
+			$(".rg-wrap11").hide();
+			$(".rg-wrap12").hide();
+			$(".rg-wrap13").hide();
+			$(".rg-wrap14").hide();
+			$(".rg-wrap15").hide();
+			$(".rg-wrap16").hide();
+			$(".rg-wrap17").hide();
+			$(".rg-wrap18").hide();
+			$(".rg-wrap20").hide();
+			$(".treasure-wrap-sub").hide();
+			$(".rg-wrap22").hide();
+	});
+//转让显示其余隐藏
+//投标显示其余隐藏
+	$(".btn-toubiao").click(function(){
+			$(".rg-wrap5").show();
+			$(".rg-wrap").hide();
+			$(".rg-wrap1").hide();
+			$(".rg-wrap2").hide();
+			$(".rg-wrap3").hide();
+			$(".rg-wrap4").hide();
+			$(".rg-wrap6").hide();
+			$(".rg-wrap7").hide();
+			$(".rg-wrap8").hide();
+			$(".rg-wrap9").hide();
+			$(".rg-wrap10").hide();
+			$(".rg-wrap11").hide();
+			$(".rg-wrap12").hide();
+			$(".rg-wrap13").hide();
+			$(".rg-wrap14").hide();
+			$(".rg-wrap15").hide();
+			$(".rg-wrap16").hide();
+			$(".rg-wrap17").hide();
+			$(".rg-wrap18").hide();
+			$(".rg-wrap20").hide();
+			$(".treasure-wrap-sub").hide();
+			$(".rg-wrap22").hide();
+	});
+//投标显示其余隐藏
+//记录显示其余隐藏
+	$(".btn-jilu").click(function(){
+			$(".rg-wrap6").show();
+			$(".rg-wrap").hide();
+			$(".rg-wrap1").hide();
+			$(".rg-wrap2").hide();
+			$(".rg-wrap3").hide();
+			$(".rg-wrap4").hide();
+			$(".rg-wrap5").hide();
+			$(".rg-wrap7").hide();
+			$(".rg-wrap8").hide();
+			$(".rg-wrap9").hide();
+			$(".rg-wrap10").hide();
+			$(".rg-wrap11").hide();
+			$(".rg-wrap12").hide();
+			$(".rg-wrap13").hide();
+			$(".rg-wrap14").hide();
+			$(".rg-wrap15").hide();
+			$(".rg-wrap16").hide();
+			$(".rg-wrap17").hide();
+			$(".rg-wrap18").hide();
+			$(".rg-wrap20").hide();
+			$(".treasure-wrap-sub").hide();
+			$(".rg-wrap22").hide();
+	});
+//记录显示其余隐藏
+//充值显示其余隐藏
+	$(".btn-chongzhi").click(function(){
+			$(".rg-wrap7").show();
+			$(".rg-wrap").hide();
+			$(".rg-wrap1").hide();
+			$(".rg-wrap2").hide();
+			$(".rg-wrap3").hide();
+			$(".rg-wrap4").hide();
+			$(".rg-wrap5").hide();
+			$(".rg-wrap6").hide();
+			$(".rg-wrap8").hide();
+			$(".rg-wrap9").hide();
+			$(".rg-wrap10").hide();
+			$(".rg-wrap11").hide();
+			$(".rg-wrap12").hide();
+			$(".rg-wrap13").hide();
+			$(".rg-wrap14").hide();
+			$(".rg-wrap15").hide();
+			$(".rg-wrap16").hide();
+			$(".rg-wrap17").hide();
+			$(".rg-wrap18").hide();
+			$(".rg-wrap20").hide();
+			$(".treasure-wrap-sub").hide();
+			$(".rg-wrap22").hide();
+	});
+//充值显示其余隐藏
+//提现显示其余隐藏
+	$(".btn-tixian").click(function(){
+			$(".rg-wrap8").show();
+			$(".rg-wrap").hide();
+			$(".rg-wrap1").hide();
+			$(".rg-wrap2").hide();
+			$(".rg-wrap3").hide();
+			$(".rg-wrap4").hide();
+			$(".rg-wrap5").hide();
+			$(".rg-wrap6").hide();
+			$(".rg-wrap7").hide();
+			$(".rg-wrap9").hide();
+			$(".rg-wrap10").hide();
+			$(".rg-wrap11").hide();
+			$(".rg-wrap12").hide();
+			$(".rg-wrap13").hide();
+			$(".rg-wrap14").hide();
+			$(".rg-wrap15").hide();
+			$(".rg-wrap16").hide();
+			$(".rg-wrap17").hide();
+			$(".rg-wrap18").hide();
+			$(".rg-wrap20").hide();
+			$(".treasure-wrap-sub").hide();
+			$(".rg-wrap22").hide();
+	});
+//提现显示其余隐藏
+//兑换显示其余隐藏
+	$(".btn-duihuan").click(function(){
+			$(".rg-wrap9").show();
+			$(".rg-wrap").hide();
+			$(".rg-wrap1").hide();
+			$(".rg-wrap2").hide();
+			$(".rg-wrap3").hide();
+			$(".rg-wrap4").hide();
+			$(".rg-wrap5").hide();
+			$(".rg-wrap6").hide();
+			$(".rg-wrap7").hide();
+			$(".rg-wrap8").hide();
+			$(".rg-wrap10").hide();
+			$(".rg-wrap11").hide();
+			$(".rg-wrap12").hide();
+			$(".rg-wrap13").hide();
+			$(".rg-wrap14").hide();
+			$(".rg-wrap15").hide();
+			$(".rg-wrap16").hide();
+			$(".rg-wrap17").hide();
+			$(".rg-wrap18").hide();
+			$(".rg-wrap20").hide();
+			$(".treasure-wrap-sub").hide();
+			$(".rg-wrap22").hide();
+	});
+//兑换显示其余隐藏
+//个人显示其余隐藏
+	$(".btn-geren").click(function(){
+			$(".rg-wrap10").show();
+			$(".rg-wrap").hide();
+			$(".rg-wrap1").hide();
+			$(".rg-wrap2").hide();
+			$(".rg-wrap3").hide();
+			$(".rg-wrap4").hide();
+			$(".rg-wrap5").hide();
+			$(".rg-wrap6").hide();
+			$(".rg-wrap7").hide();
+			$(".rg-wrap8").hide();
+			$(".rg-wrap9").hide();
+			$(".rg-wrap11").hide();
+			$(".rg-wrap12").hide();
+			$(".rg-wrap13").hide();
+			$(".rg-wrap14").hide();
+			$(".rg-wrap15").hide();
+			$(".rg-wrap16").hide();
+			$(".rg-wrap17").hide();
+			$(".rg-wrap18").hide();
+			$(".rg-wrap20").hide();
+			$(".treasure-wrap-sub").hide();
+			$(".rg-wrap22").hide();
+	});
+//个人显示其余隐藏
+//安全显示其余隐藏
+	$(".btn-anquan").click(function(){
+			$(".rg-wrap11").show();
+			$(".rg-wrap").hide();
+			$(".rg-wrap1").hide();
+			$(".rg-wrap2").hide();
+			$(".rg-wrap3").hide();
+			$(".rg-wrap4").hide();
+			$(".rg-wrap5").hide();
+			$(".rg-wrap6").hide();
+			$(".rg-wrap7").hide();
+			$(".rg-wrap8").hide();
+			$(".rg-wrap9").hide();
+			$(".rg-wrap10").hide();
+			$(".rg-wrap12").hide();
+			$(".rg-wrap13").hide();
+			$(".rg-wrap14").hide();
+			$(".rg-wrap15").hide();
+			$(".rg-wrap16").hide();
+			$(".rg-wrap17").hide();
+			$(".rg-wrap18").hide();
+			$(".rg-wrap20").hide();
+			$(".treasure-wrap-sub").hide();
+			$(".rg-wrap22").hide();
+	});
+//安全显示其余隐藏
+//红包显示其余隐藏
+	$(".btn-hongbao").click(function(){
+			$(".rg-wrap12").show();
+			$(".rg-wrap").hide();
+			$(".rg-wrap1").hide();
+			$(".rg-wrap2").hide();
+			$(".rg-wrap3").hide();
+			$(".rg-wrap4").hide();
+			$(".rg-wrap5").hide();
+			$(".rg-wrap6").hide();
+			$(".rg-wrap7").hide();
+			$(".rg-wrap8").hide();
+			$(".rg-wrap9").hide();
+			$(".rg-wrap10").hide();
+			$(".rg-wrap11").hide();
+			$(".rg-wrap13").hide();
+			$(".rg-wrap14").hide();
+			$(".rg-wrap15").hide();
+			$(".rg-wrap16").hide();
+			$(".rg-wrap17").hide();
+			$(".rg-wrap18").hide();
+			$(".rg-wrap20").hide();
+			$(".treasure-wrap-sub").hide();
+			$(".rg-wrap22").hide();
+	});
+//红包显示其余隐藏
+//体验显示其余隐藏
+	$(".btn-tiyan").click(function(){
+			$(".rg-wrap13").show();
+			$(".rg-wrap").hide();
+			$(".rg-wrap1").hide();
+			$(".rg-wrap2").hide();
+			$(".rg-wrap3").hide();
+			$(".rg-wrap4").hide();
+			$(".rg-wrap5").hide();
+			$(".rg-wrap6").hide();
+			$(".rg-wrap7").hide();
+			$(".rg-wrap8").hide();
+			$(".rg-wrap9").hide();
+			$(".rg-wrap10").hide();
+			$(".rg-wrap11").hide();
+			$(".rg-wrap12").hide();
+			$(".rg-wrap14").hide();
+			$(".rg-wrap15").hide();
+			$(".rg-wrap16").hide();
+			$(".rg-wrap17").hide();
+			$(".rg-wrap18").hide();
+			$(".rg-wrap20").hide();
+			$(".treasure-wrap-sub").hide();
+			$(".rg-wrap22").hide();
+	});
+//体验显示其余隐藏
+//体验显示其余隐藏
+	$(".btn-tuiguang").click(function(){
+			$(".rg-wrap14").show();
+			$(".rg-wrap").hide();
+			$(".rg-wrap1").hide();
+			$(".rg-wrap2").hide();
+			$(".rg-wrap3").hide();
+			$(".rg-wrap4").hide();
+			$(".rg-wrap5").hide();
+			$(".rg-wrap6").hide();
+			$(".rg-wrap7").hide();
+			$(".rg-wrap8").hide();
+			$(".rg-wrap9").hide();
+			$(".rg-wrap10").hide();
+			$(".rg-wrap11").hide();
+			$(".rg-wrap12").hide();
+			$(".rg-wrap13").hide();
+			$(".rg-wrap15").hide();
+			$(".rg-wrap16").hide();
+			$(".rg-wrap17").hide();
+			$(".rg-wrap18").hide();
+			$(".rg-wrap20").hide();
+			$(".treasure-wrap-sub").hide();
+			$(".rg-wrap22").hide();
+	});
+//体验显示其余隐藏
+//推广显示其余隐藏
+	$(".btn-tuiguang").click(function(){
+			$(".rg-wrap14").show();
+			$(".rg-wrap").hide();
+			$(".rg-wrap1").hide();
+			$(".rg-wrap2").hide();
+			$(".rg-wrap3").hide();
+			$(".rg-wrap4").hide();
+			$(".rg-wrap5").hide();
+			$(".rg-wrap6").hide();
+			$(".rg-wrap7").hide();
+			$(".rg-wrap8").hide();
+			$(".rg-wrap9").hide();
+			$(".rg-wrap10").hide();
+			$(".rg-wrap11").hide();
+			$(".rg-wrap12").hide();
+			$(".rg-wrap13").hide();
+			$(".rg-wrap15").hide();
+			$(".rg-wrap16").hide();
+			$(".rg-wrap17").hide();
+			$(".rg-wrap18").hide();
+			$(".rg-wrap20").hide();
+			$(".treasure-wrap-sub").hide();
+			$(".rg-wrap22").hide();
+	});
+//推广显示其余隐藏
+//财富显示其余隐藏
+	$(".btn-caifu").click(function(){
+			$(".rg-wrap15").show();
+			$(".rg-wrap").hide();
+			$(".rg-wrap1").hide();
+			$(".rg-wrap2").hide();
+			$(".rg-wrap3").hide();
+			$(".rg-wrap4").hide();
+			$(".rg-wrap5").hide();
+			$(".rg-wrap6").hide();
+			$(".rg-wrap7").hide();
+			$(".rg-wrap8").hide();
+			$(".rg-wrap9").hide();
+			$(".rg-wrap10").hide();
+			$(".rg-wrap11").hide();
+			$(".rg-wrap12").hide();
+			$(".rg-wrap13").hide();
+			$(".rg-wrap14").hide();
+			$(".rg-wrap16").hide();
+			$(".rg-wrap17").hide();
+			$(".rg-wrap18").hide();
+			$(".rg-wrap20").hide();
+			$(".rg-wrap22").hide();
+			$(".treasure-wrap-sub").hide();
+	});
+//财富显示其余隐藏
+//消息显示其余隐藏
+	$(".btn-xiaoxi").click(function(){
+			$(".rg-wrap16").show();
+			$(".rg-wrap").hide();
+			$(".rg-wrap1").hide();
+			$(".rg-wrap2").hide();
+			$(".rg-wrap3").hide();
+			$(".rg-wrap4").hide();
+			$(".rg-wrap5").hide();
+			$(".rg-wrap6").hide();
+			$(".rg-wrap7").hide();
+			$(".rg-wrap8").hide();
+			$(".rg-wrap9").hide();
+			$(".rg-wrap10").hide();
+			$(".rg-wrap11").hide();
+			$(".rg-wrap12").hide();
+			$(".rg-wrap13").hide();
+			$(".rg-wrap14").hide();
+			$(".rg-wrap15").hide();
+			$(".rg-wrap17").hide();
+			$(".rg-wrap18").hide();
+			$(".rg-wrap20").hide();
+			$(".treasure-wrap-sub").hide();
+			$(".rg-wrap22").hide();
+	});
+	$("#bankcar").click(function(){
+		$(".rg-wrap16").hide();
+		$(".rg-wrap").hide();
+		$(".rg-wrap1").hide();
+		$(".rg-wrap2").hide();
+		$(".rg-wrap3").hide();
+		$(".rg-wrap4").hide();
+		$(".rg-wrap5").hide();
+		$(".rg-wrap6").hide();
+		$(".rg-wrap7").hide();
+		$(".rg-wrap8").hide();
+		$(".rg-wrap9").hide();
+		$(".rg-wrap10").hide();
+		$(".rg-wrap11").hide();
+		$(".rg-wrap12").hide();
+		$(".rg-wrap13").hide();
+		$(".rg-wrap14").hide();
+		$(".rg-wrap15").hide();
+		$(".rg-wrap17").hide();
+		$(".rg-wrap18").hide();
+		$(".rg-wrap20").hide();
+		$(".treasure-wrap-sub").hide();
+		$(".rg-wrap22").show();
+	});
+//消息显示其余隐藏
+//消息设置
+    $(".dope1").click(function(){
+    	$(".dope1").addClass("selected1")
+    	$(".dope2").removeClass("selected1")
+    	$(".xiaoxi-box1").show();
+    	$(".xiaoxi-box").hide();
+
+    });
+    $(".selected1").click(function(){
+    	$(".dope2").addClass("selected1")
+    	$(".dope1").removeClass("selected1")
+    	$(".xiaoxi-box").show();
+    	$(".xiaoxi-box1").hide();
+    });
+//消息设置
+//消息设置1
+    $(".dope12").click(function(){
+    	$(".dope12").addClass("selected12")
+    	$(".dope21").removeClass("selected12")
+    	$(".xiaoxi-box123").show();
+    	$(".xiaoxi-box12").hide();
+
+    });
+    $(".selected12").click(function(){
+    	$(".dope21").addClass("selected12")
+    	$(".dope12").removeClass("selected12")
+    	$(".xiaoxi-box12").show();
+    	$(".xiaoxi-box123").hide();
+    });
+//消息设置1
+//充值显示隐藏
+    $("#anniu1").click(function(){
+    	$(".rg-wrap").hide();
+    	$(".treasure-wrap-sub").show();
+    	$("#myloan").hide();
+    	
+    	$("#effet").show();
+    });
+    $("#anniu2").click(function(){
+    	$(".rg-wrap").hide();
+    	$(".treasure-wrap-sub").show();
+    	$(".Myloan").show();
+    	$("#effet").hide();
+    });
+    
+//充值显示隐藏
+
+//转让显示隐藏
+    $(".c9").click(function(){
+    	$(".rg-wrap20").show();
+    	$(".rg-wrap1").hide();
+    	
+    });
+
+
+
+//转让显示隐藏
+//审核科目
+    $(".c912").click(function(){
+    	$(".box-shencha").show();
+    	$(".box-zichan1").hide();
+    });
+
+
+//审核科目
+
+//发展
+$(".btn-licehng").click(function(){
+	$(".evolution-box").show();
+	$(".evolution-box1").hide();
+	$(".evolution-box2").hide();
+	$(".evolution-box3").hide();
+	$(".evolution-box4").hide();
+	$(".evolution-box5").hide();
+	$(".evolution-box6").hide();
+	$(".evolution-box7").hide();
+	$(".evolution-box8").hide();
+	$(".evolution-box9").hide();
+	$(".evolution-box10").hide();
+	$(".evolution-box11").hide();
+	$(".evolution-box12").hide();
+	$(".evolution-box13").hide();
+	$(".evolution-box14").hide();
+	$(".evolution-box15").hide();
+	$(".evolution-box16").hide();
+	$(".evolution-box17").hide();
+	$(".evolution-box18").hide();
+	$(".evolution-box19").hide();
+	$(".evolution-box20").hide();
+	$(".evolution-box21").hide();
+	$(".evolution-box22").hide();
+	$(".evolution-box23").hide();
+	$(".evolution-box24").hide();
+	$(".evolution-box25").hide();
+	$(".evolution-box26").hide();
+	$(".evolution-box27").hide();
+	$(".evolution-box28").hide();
+});
+//石家庄
+$(".btn-shijiazhuang").click(function(){
+	$(".evolution-box").hide();
+	$(".evolution-box1").show();
+	$(".evolution-box2").hide();
+	$(".evolution-box3").hide();
+	$(".evolution-box4").hide();
+	$(".evolution-box5").hide();
+	$(".evolution-box6").hide();
+	$(".evolution-box7").hide();
+	$(".evolution-box8").hide();
+	$(".evolution-box9").hide();
+	$(".evolution-box10").hide();
+	$(".evolution-box11").hide();
+	$(".evolution-box12").hide();
+	$(".evolution-box13").hide();
+	$(".evolution-box14").hide();
+	$(".evolution-box15").hide();
+	$(".evolution-box16").hide();
+	$(".evolution-box17").hide();
+	$(".evolution-box18").hide();
+	$(".evolution-box19").hide();
+	$(".evolution-box20").hide();
+	$(".evolution-box21").hide();
+	$(".evolution-box22").hide();
+	$(".evolution-box23").hide();
+	$(".evolution-box24").hide();
+	$(".evolution-box25").hide();
+	$(".evolution-box26").hide();
+	$(".evolution-box27").hide();
+	$(".evolution-box28").hide();
+});
+//保定
+$(".btn-baoding").click(function(){
+	$(".evolution-box").hide();
+	$(".evolution-box1").hide();
+	$(".evolution-box2").show();
+	$(".evolution-box3").hide();
+	$(".evolution-box4").hide();
+	$(".evolution-box5").hide();
+	$(".evolution-box6").hide();
+	$(".evolution-box7").hide();
+	$(".evolution-box8").hide();
+	$(".evolution-box9").hide();
+	$(".evolution-box10").hide();
+	$(".evolution-box11").hide();
+	$(".evolution-box12").hide();
+	$(".evolution-box13").hide();
+	$(".evolution-box14").hide();
+	$(".evolution-box15").hide();
+	$(".evolution-box16").hide();
+	$(".evolution-box17").hide();
+	$(".evolution-box18").hide();
+	$(".evolution-box19").hide();
+	$(".evolution-box20").hide();
+	$(".evolution-box21").hide();
+	$(".evolution-box22").hide();
+	$(".evolution-box23").hide();
+	$(".evolution-box24").hide();
+	$(".evolution-box25").hide();
+	$(".evolution-box26").hide();
+	$(".evolution-box27").hide();
+	$(".evolution-box28").hide();
+});
+//衡水
+$(".btn-hengshui").click(function(){
+	$(".evolution-box").hide();
+	$(".evolution-box1").hide();
+	$(".evolution-box2").hide();
+	$(".evolution-box3").show();
+	$(".evolution-box4").hide();
+	$(".evolution-box5").hide();
+	$(".evolution-box6").hide();
+	$(".evolution-box7").hide();
+	$(".evolution-box8").hide();
+	$(".evolution-box9").hide();
+	$(".evolution-box10").hide();
+	$(".evolution-box11").hide();
+	$(".evolution-box12").hide();
+	$(".evolution-box13").hide();
+	$(".evolution-box14").hide();
+	$(".evolution-box15").hide();
+	$(".evolution-box16").hide();
+	$(".evolution-box17").hide();
+	$(".evolution-box18").hide();
+	$(".evolution-box19").hide();
+	$(".evolution-box20").hide();
+	$(".evolution-box21").hide();
+	$(".evolution-box22").hide();
+	$(".evolution-box23").hide();
+	$(".evolution-box24").hide();
+	$(".evolution-box25").hide();
+	$(".evolution-box26").hide();
+	$(".evolution-box27").hide();
+	$(".evolution-box28").hide();
+});
+//yixian
+$(".btn-yixian").click(function(){
+	$(".evolution-box").hide();
+	$(".evolution-box1").hide();
+	$(".evolution-box2").hide();
+	$(".evolution-box3").hide();
+	$(".evolution-box4").show();
+	$(".evolution-box5").hide();
+	$(".evolution-box6").hide();
+	$(".evolution-box7").hide();
+	$(".evolution-box8").hide();
+	$(".evolution-box9").hide();
+	$(".evolution-box10").hide();
+	$(".evolution-box11").hide();
+	$(".evolution-box12").hide();
+	$(".evolution-box13").hide();
+	$(".evolution-box14").hide();
+	$(".evolution-box15").hide();
+	$(".evolution-box16").hide();
+	$(".evolution-box17").hide();
+	$(".evolution-box18").hide();
+	$(".evolution-box19").hide();
+	$(".evolution-box20").hide();
+	$(".evolution-box21").hide();
+	$(".evolution-box22").hide();
+	$(".evolution-box23").hide();
+	$(".evolution-box24").hide();
+	$(".evolution-box25").hide();
+	$(".evolution-box26").hide();
+	$(".evolution-box27").hide();
+	$(".evolution-box28").hide();
+});
+//xiongxian
+$(".btn-xiongxian").click(function(){
+	$(".evolution-box").hide();
+	$(".evolution-box1").hide();
+	$(".evolution-box2").hide();
+	$(".evolution-box3").hide();
+	$(".evolution-box4").hide();
+	$(".evolution-box5").show();
+	$(".evolution-box6").hide();
+	$(".evolution-box7").hide();
+	$(".evolution-box8").hide();
+	$(".evolution-box9").hide();
+	$(".evolution-box10").hide();
+	$(".evolution-box11").hide();
+	$(".evolution-box12").hide();
+	$(".evolution-box13").hide();
+	$(".evolution-box14").hide();
+	$(".evolution-box15").hide();
+	$(".evolution-box16").hide();
+	$(".evolution-box17").hide();
+	$(".evolution-box18").hide();
+	$(".evolution-box19").hide();
+	$(".evolution-box20").hide();
+	$(".evolution-box21").hide();
+	$(".evolution-box22").hide();
+	$(".evolution-box23").hide();
+	$(".evolution-box24").hide();
+	$(".evolution-box25").hide();
+	$(".evolution-box26").hide();
+	$(".evolution-box27").hide();
+	$(".evolution-box28").hide();
+});
+//raorang
+$(".btn-raorang").click(function(){
+	$(".evolution-box").hide();
+	$(".evolution-box1").hide();
+	$(".evolution-box2").hide();
+	$(".evolution-box3").hide();
+	$(".evolution-box4").hide();
+	$(".evolution-box5").hide();
+	$(".evolution-box6").show();
+	$(".evolution-box7").hide();
+	$(".evolution-box8").hide();
+	$(".evolution-box9").hide();
+	$(".evolution-box10").hide();
+	$(".evolution-box11").hide();
+	$(".evolution-box12").hide();
+	$(".evolution-box13").hide();
+	$(".evolution-box14").hide();
+	$(".evolution-box15").hide();
+	$(".evolution-box16").hide();
+	$(".evolution-box17").hide();
+	$(".evolution-box18").hide();
+	$(".evolution-box19").hide();
+	$(".evolution-box20").hide();
+	$(".evolution-box21").hide();
+	$(".evolution-box22").hide();
+	$(".evolution-box23").hide();
+	$(".evolution-box24").hide();
+	$(".evolution-box25").hide();
+	$(".evolution-box26").hide();
+	$(".evolution-box27").hide();
+	$(".evolution-box28").hide();
+});
+//mancheng
+$(".btn-mancheng").click(function(){
+	$(".evolution-box").hide();
+	$(".evolution-box1").hide();
+	$(".evolution-box2").hide();
+	$(".evolution-box3").hide();
+	$(".evolution-box4").hide();
+	$(".evolution-box5").hide();
+	$(".evolution-box6").hide();
+	$(".evolution-box7").show();
+	$(".evolution-box8").hide();
+	$(".evolution-box9").hide();
+	$(".evolution-box10").hide();
+	$(".evolution-box11").hide();
+	$(".evolution-box12").hide();
+	$(".evolution-box13").hide();
+	$(".evolution-box14").hide();
+	$(".evolution-box15").hide();
+	$(".evolution-box16").hide();
+	$(".evolution-box17").hide();
+	$(".evolution-box18").hide();
+	$(".evolution-box19").hide();
+	$(".evolution-box20").hide();
+	$(".evolution-box21").hide();
+	$(".evolution-box22").hide();
+	$(".evolution-box23").hide();
+	$(".evolution-box24").hide();
+	$(".evolution-box25").hide();
+	$(".evolution-box26").hide();
+	$(".evolution-box27").hide();
+	$(".evolution-box28").hide();
+});
+//shanxi
+$(".btn-shanxi").click(function(){
+	$(".evolution-box").hide();
+	$(".evolution-box1").hide();
+	$(".evolution-box2").hide();
+	$(".evolution-box3").hide();
+	$(".evolution-box4").hide();
+	$(".evolution-box5").hide();
+	$(".evolution-box6").hide();
+	$(".evolution-box7").hide();
+	$(".evolution-box8").show();
+	$(".evolution-box9").hide();
+	$(".evolution-box10").hide();
+	$(".evolution-box11").hide();
+	$(".evolution-box12").hide();
+	$(".evolution-box13").hide();
+	$(".evolution-box14").hide();
+	$(".evolution-box15").hide();
+	$(".evolution-box16").hide();
+	$(".evolution-box17").hide();
+	$(".evolution-box18").hide();
+	$(".evolution-box19").hide();
+	$(".evolution-box20").hide();
+	$(".evolution-box21").hide();
+	$(".evolution-box22").hide();
+	$(".evolution-box23").hide();
+	$(".evolution-box24").hide();
+	$(".evolution-box25").hide();
+	$(".evolution-box26").hide();
+	$(".evolution-box27").hide();
+	$(".evolution-box28").hide();
+});
+//lsishui
+$(".btn-laishui").click(function(){
+	$(".evolution-box").hide();
+	$(".evolution-box1").hide();
+	$(".evolution-box2").hide();
+	$(".evolution-box3").hide();
+	$(".evolution-box4").hide();
+	$(".evolution-box5").hide();
+	$(".evolution-box6").hide();
+	$(".evolution-box7").hide();
+	$(".evolution-box8").hide();
+	$(".evolution-box9").show();
+	$(".evolution-box10").hide();
+	$(".evolution-box11").hide();
+	$(".evolution-box12").hide();
+	$(".evolution-box13").hide();
+	$(".evolution-box14").hide();
+	$(".evolution-box15").hide();
+	$(".evolution-box16").hide();
+	$(".evolution-box17").hide();
+	$(".evolution-box18").hide();
+	$(".evolution-box19").hide();
+	$(".evolution-box20").hide();
+	$(".evolution-box21").hide();
+	$(".evolution-box22").hide();
+	$(".evolution-box23").hide();
+	$(".evolution-box24").hide();
+	$(".evolution-box25").hide();
+	$(".evolution-box26").hide();
+	$(".evolution-box27").hide();
+	$(".evolution-box28").hide();
+});
+//shijiazhuang1
+$(".btn-shijiazhuang1").click(function(){
+	$(".evolution-box").hide();
+	$(".evolution-box1").hide();
+	$(".evolution-box2").hide();
+	$(".evolution-box3").hide();
+	$(".evolution-box4").hide();
+	$(".evolution-box5").hide();
+	$(".evolution-box6").hide();
+	$(".evolution-box7").hide();
+	$(".evolution-box8").hide();
+	$(".evolution-box9").hide();
+	$(".evolution-box10").show();
+	$(".evolution-box11").hide();
+	$(".evolution-box12").hide();
+	$(".evolution-box13").hide();
+	$(".evolution-box14").hide();
+	$(".evolution-box15").hide();
+	$(".evolution-box16").hide();
+	$(".evolution-box17").hide();
+	$(".evolution-box18").hide();
+	$(".evolution-box19").hide();
+	$(".evolution-box20").hide();
+	$(".evolution-box21").hide();
+	$(".evolution-box22").hide();
+	$(".evolution-box23").hide();
+	$(".evolution-box24").hide();
+	$(".evolution-box25").hide();
+	$(".evolution-box26").hide();
+	$(".evolution-box27").hide();
+	$(".evolution-box28").hide();
+});
+//baoding1
+$(".btn-baoding1").click(function(){
+	$(".evolution-box").hide();
+	$(".evolution-box1").hide();
+	$(".evolution-box2").hide();
+	$(".evolution-box3").hide();
+	$(".evolution-box4").hide();
+	$(".evolution-box5").hide();
+	$(".evolution-box6").hide();
+	$(".evolution-box7").hide();
+	$(".evolution-box8").hide();
+	$(".evolution-box9").hide();
+	$(".evolution-box10").hide();
+	$(".evolution-box11").show();
+	$(".evolution-box12").hide();
+	$(".evolution-box13").hide();
+	$(".evolution-box14").hide();
+	$(".evolution-box15").hide();
+	$(".evolution-box16").hide();
+	$(".evolution-box17").hide();
+	$(".evolution-box18").hide();
+	$(".evolution-box19").hide();
+	$(".evolution-box20").hide();
+	$(".evolution-box21").hide();
+	$(".evolution-box22").hide();
+	$(".evolution-box23").hide();
+	$(".evolution-box24").hide();
+	$(".evolution-box25").hide();
+	$(".evolution-box26").hide();
+	$(".evolution-box27").hide();
+	$(".evolution-box28").hide();
+});
+//hengshui1
+$(".btn-hengshui1").click(function(){
+	$(".evolution-box").hide();
+	$(".evolution-box1").hide();
+	$(".evolution-box2").hide();
+	$(".evolution-box3").hide();
+	$(".evolution-box4").hide();
+	$(".evolution-box5").hide();
+	$(".evolution-box6").hide();
+	$(".evolution-box7").hide();
+	$(".evolution-box8").hide();
+	$(".evolution-box9").hide();
+	$(".evolution-box10").hide();
+	$(".evolution-box11").hide();
+	$(".evolution-box12").show();
+	$(".evolution-box13").hide();
+	$(".evolution-box14").hide();
+	$(".evolution-box15").hide();
+	$(".evolution-box16").hide();
+	$(".evolution-box17").hide();
+	$(".evolution-box18").hide();
+	$(".evolution-box19").hide();
+	$(".evolution-box20").hide();
+	$(".evolution-box21").hide();
+	$(".evolution-box22").hide();
+	$(".evolution-box23").hide();
+	$(".evolution-box24").hide();
+	$(".evolution-box25").hide();
+	$(".evolution-box26").hide();
+	$(".evolution-box27").hide();
+	$(".evolution-box28").hide();
+});
+//yixiang1
+$(".btn-yixian1").click(function(){
+	$(".evolution-box").hide();
+	$(".evolution-box1").hide();
+	$(".evolution-box2").hide();
+	$(".evolution-box3").hide();
+	$(".evolution-box4").hide();
+	$(".evolution-box5").hide();
+	$(".evolution-box6").hide();
+	$(".evolution-box7").hide();
+	$(".evolution-box8").hide();
+	$(".evolution-box9").hide();
+	$(".evolution-box10").hide();
+	$(".evolution-box11").hide();
+	$(".evolution-box12").hide();
+	$(".evolution-box13").show();
+	$(".evolution-box14").hide();
+	$(".evolution-box15").hide();
+	$(".evolution-box16").hide();
+	$(".evolution-box17").hide();
+	$(".evolution-box18").hide();
+	$(".evolution-box19").hide();
+	$(".evolution-box20").hide();
+	$(".evolution-box21").hide();
+	$(".evolution-box22").hide();
+	$(".evolution-box23").hide();
+	$(".evolution-box24").hide();
+	$(".evolution-box25").hide();
+	$(".evolution-box26").hide();
+	$(".evolution-box27").hide();
+	$(".evolution-box28").hide();
+});
+//xiongxian1
+$(".btn-xiongxian1").click(function(){
+	$(".evolution-box").hide();
+	$(".evolution-box1").hide();
+	$(".evolution-box2").hide();
+	$(".evolution-box3").hide();
+	$(".evolution-box4").hide();
+	$(".evolution-box5").hide();
+	$(".evolution-box6").hide();
+	$(".evolution-box7").hide();
+	$(".evolution-box8").hide();
+	$(".evolution-box9").hide();
+	$(".evolution-box10").hide();
+	$(".evolution-box11").hide();
+	$(".evolution-box12").hide();
+	$(".evolution-box13").hide();
+	$(".evolution-box14").show();
+	$(".evolution-box15").hide();
+	$(".evolution-box16").hide();
+	$(".evolution-box17").hide();
+	$(".evolution-box18").hide();
+	$(".evolution-box19").hide();
+	$(".evolution-box20").hide();
+	$(".evolution-box21").hide();
+	$(".evolution-box22").hide();
+	$(".evolution-box23").hide();
+	$(".evolution-box24").hide();
+	$(".evolution-box25").hide();
+	$(".evolution-box26").hide();
+	$(".evolution-box27").hide();
+	$(".evolution-box28").hide();
+});
+//raoyang1
+$(".btn-raorang1").click(function(){
+	$(".evolution-box").hide();
+	$(".evolution-box1").hide();
+	$(".evolution-box2").hide();
+	$(".evolution-box3").hide();
+	$(".evolution-box4").hide();
+	$(".evolution-box5").hide();
+	$(".evolution-box6").hide();
+	$(".evolution-box7").hide();
+	$(".evolution-box8").hide();
+	$(".evolution-box9").hide();
+	$(".evolution-box10").hide();
+	$(".evolution-box11").hide();
+	$(".evolution-box12").hide();
+	$(".evolution-box13").hide();
+	$(".evolution-box14").hide();
+	$(".evolution-box15").show();
+	$(".evolution-box16").hide();
+	$(".evolution-box17").hide();
+	$(".evolution-box18").hide();
+	$(".evolution-box19").hide();
+	$(".evolution-box20").hide();
+	$(".evolution-box21").hide();
+	$(".evolution-box22").hide();
+	$(".evolution-box23").hide();
+	$(".evolution-box24").hide();
+	$(".evolution-box25").hide();
+	$(".evolution-box26").hide();
+	$(".evolution-box27").hide();
+	$(".evolution-box28").hide();
+});
+//mancheng1
+$(".btn-mancheng1").click(function(){
+	$(".evolution-box").hide();
+	$(".evolution-box1").hide();
+	$(".evolution-box2").hide();
+	$(".evolution-box3").hide();
+	$(".evolution-box4").hide();
+	$(".evolution-box5").hide();
+	$(".evolution-box6").hide();
+	$(".evolution-box7").hide();
+	$(".evolution-box8").hide();
+	$(".evolution-box9").hide();
+	$(".evolution-box10").hide();
+	$(".evolution-box11").hide();
+	$(".evolution-box12").hide();
+	$(".evolution-box13").hide();
+	$(".evolution-box14").hide();
+	$(".evolution-box15").hide();
+	$(".evolution-box16").show();
+	$(".evolution-box17").hide();
+	$(".evolution-box18").hide();
+	$(".evolution-box19").hide();
+	$(".evolution-box20").hide();
+	$(".evolution-box21").hide();
+	$(".evolution-box22").hide();
+	$(".evolution-box23").hide();
+	$(".evolution-box24").hide();
+	$(".evolution-box25").hide();
+	$(".evolution-box26").hide();
+	$(".evolution-box27").hide();
+	$(".evolution-box28").hide();
+});
+//shanxi1
+$(".btn-shanxi1").click(function(){
+	$(".evolution-box").hide();
+	$(".evolution-box1").hide();
+	$(".evolution-box2").hide();
+	$(".evolution-box3").hide();
+	$(".evolution-box4").hide();
+	$(".evolution-box5").hide();
+	$(".evolution-box6").hide();
+	$(".evolution-box7").hide();
+	$(".evolution-box8").hide();
+	$(".evolution-box9").hide();
+	$(".evolution-box10").hide();
+	$(".evolution-box11").hide();
+	$(".evolution-box12").hide();
+	$(".evolution-box13").hide();
+	$(".evolution-box14").hide();
+	$(".evolution-box15").hide();
+	$(".evolution-box16").hide();
+	$(".evolution-box17").show();
+	$(".evolution-box18").hide();
+	$(".evolution-box19").hide();
+	$(".evolution-box20").hide();
+	$(".evolution-box21").hide();
+	$(".evolution-box22").hide();
+	$(".evolution-box23").hide();
+	$(".evolution-box24").hide();
+	$(".evolution-box25").hide();
+	$(".evolution-box26").hide();
+	$(".evolution-box27").hide();
+	$(".evolution-box28").hide();
+});
+//laishui1
+
+$(".btn-laishui1").click(function(){
+	$(".evolution-box").hide();
+	$(".evolution-box1").hide();
+	$(".evolution-box2").hide();
+	$(".evolution-box3").hide();
+	$(".evolution-box4").hide();
+	$(".evolution-box5").hide();
+	$(".evolution-box6").hide();
+	$(".evolution-box7").hide();
+	$(".evolution-box8").hide();
+	$(".evolution-box9").hide();
+	$(".evolution-box10").hide();
+	$(".evolution-box11").hide();
+	$(".evolution-box12").hide();
+	$(".evolution-box13").hide();
+	$(".evolution-box14").hide();
+	$(".evolution-box15").hide();
+	$(".evolution-box16").hide();
+	$(".evolution-box17").hide();
+	$(".evolution-box18").show();
+	$(".evolution-box19").hide();
+	$(".evolution-box20").hide();
+	$(".evolution-box21").hide();
+	$(".evolution-box22").hide();
+	$(".evolution-box23").hide();
+	$(".evolution-box24").hide();
+	$(".evolution-box25").hide();
+	$(".evolution-box26").hide();
+	$(".evolution-box27").hide();
+	$(".evolution-box28").hide();
+});
+//guanfang
+$(".btn-guanfang").click(function(){
+	$(".evolution-box").hide();
+	$(".evolution-box1").hide();
+	$(".evolution-box2").hide();
+	$(".evolution-box3").hide();
+	$(".evolution-box4").hide();
+	$(".evolution-box5").hide();
+	$(".evolution-box6").hide();
+	$(".evolution-box7").hide();
+	$(".evolution-box8").hide();
+	$(".evolution-box9").hide();
+	$(".evolution-box10").hide();
+	$(".evolution-box11").hide();
+	$(".evolution-box12").hide();
+	$(".evolution-box13").hide();
+	$(".evolution-box14").hide();
+	$(".evolution-box15").hide();
+	$(".evolution-box16").hide();
+	$(".evolution-box17").hide();
+	$(".evolution-box18").hide();
+	$(".evolution-box19").show();
+	$(".evolution-box20").hide();
+	$(".evolution-box21").hide();
+	$(".evolution-box22").hide();
+	$(".evolution-box23").hide();
+	$(".evolution-box24").hide();
+	$(".evolution-box25").hide();
+	$(".evolution-box26").hide();
+	$(".evolution-box27").hide();
+	$(".evolution-box28").hide();
+});
+//meiti
+$(".btn-meiti").click(function(){
+	$(".evolution-box").hide();
+	$(".evolution-box1").hide();
+	$(".evolution-box2").hide();
+	$(".evolution-box3").hide();
+	$(".evolution-box4").hide();
+	$(".evolution-box5").hide();
+	$(".evolution-box6").hide();
+	$(".evolution-box7").hide();
+	$(".evolution-box8").hide();
+	$(".evolution-box9").hide();
+	$(".evolution-box10").hide();
+	$(".evolution-box11").hide();
+	$(".evolution-box12").hide();
+	$(".evolution-box13").hide();
+	$(".evolution-box14").hide();
+	$(".evolution-box15").hide();
+	$(".evolution-box16").hide();
+	$(".evolution-box17").hide();
+	$(".evolution-box18").hide();
+	$(".evolution-box19").hide();
+	$(".evolution-box20").hide();
+	$(".evolution-box21").show();
+	$(".evolution-box22").hide();
+	$(".evolution-box23").hide();
+	$(".evolution-box24").hide();
+	$(".evolution-box25").hide();
+	$(".evolution-box26").hide();
+	$(".evolution-box27").hide();
+	$(".evolution-box28").hide();
+});
+//gushi
+$(".btn-gushi").click(function(){
+	$(".evolution-box").hide();
+	$(".evolution-box1").hide();
+	$(".evolution-box2").hide();
+	$(".evolution-box3").hide();
+	$(".evolution-box4").hide();
+	$(".evolution-box5").hide();
+	$(".evolution-box6").hide();
+	$(".evolution-box7").hide();
+	$(".evolution-box8").hide();
+	$(".evolution-box9").hide();
+	$(".evolution-box10").hide();
+	$(".evolution-box11").hide();
+	$(".evolution-box12").hide();
+	$(".evolution-box13").hide();
+	$(".evolution-box14").hide();
+	$(".evolution-box15").hide();
+	$(".evolution-box16").hide();
+	$(".evolution-box17").hide();
+	$(".evolution-box18").hide();
+	$(".evolution-box19").hide();
+	$(".evolution-box20").show();
+	$(".evolution-box21").hide();
+	$(".evolution-box22").hide();
+	$(".evolution-box23").hide();
+	$(".evolution-box24").hide();
+	$(".evolution-box25").hide();
+	$(".evolution-box26").hide();
+	$(".evolution-box27").hide();
+	$(".evolution-box28").hide();
+});
+//baozhang
+
+
+//zizhi
+$(".btn-zizhi").click(function(){
+	$(".evolution-box").hide();
+	$(".evolution-box1").hide();
+	$(".evolution-box2").hide();
+	$(".evolution-box3").hide();
+	$(".evolution-box4").hide();
+	$(".evolution-box5").hide();
+	$(".evolution-box6").hide();
+	$(".evolution-box7").hide();
+	$(".evolution-box8").hide();
+	$(".evolution-box9").hide();
+	$(".evolution-box10").hide();
+	$(".evolution-box11").hide();
+	$(".evolution-box12").hide();
+	$(".evolution-box13").hide();
+	$(".evolution-box14").hide();
+	$(".evolution-box15").hide();
+	$(".evolution-box16").hide();
+	$(".evolution-box17").hide();
+	$(".evolution-box18").hide();
+	$(".evolution-box19").hide();
+	$(".evolution-box20").hide();
+	$(".evolution-box21").hide();
+	$(".evolution-box22").hide();
+	$(".evolution-box23").show();
+	$(".evolution-box24").hide();
+	$(".evolution-box25").hide();
+	$(".evolution-box26").hide();
+	$(".evolution-box27").hide();
+	$(".evolution-box28").hide();
+});
+
+//联系
+$(".btn-lianxi").click(function(){
+	$(".evolution-box").hide();
+	$(".evolution-box1").hide();
+	$(".evolution-box2").hide();
+	$(".evolution-box3").hide();
+	$(".evolution-box4").hide();
+	$(".evolution-box5").hide();
+	$(".evolution-box6").hide();
+	$(".evolution-box7").hide();
+	$(".evolution-box8").hide();
+	$(".evolution-box9").hide();
+	$(".evolution-box10").hide();
+	$(".evolution-box11").hide();
+	$(".evolution-box12").hide();
+	$(".evolution-box13").hide();
+	$(".evolution-box14").hide();
+	$(".evolution-box15").hide();
+	$(".evolution-box16").hide();
+	$(".evolution-box17").hide();
+	$(".evolution-box18").hide();
+	$(".evolution-box19").hide();
+	$(".evolution-box20").hide();
+	$(".evolution-box21").hide();
+	$(".evolution-box22").hide();
+	$(".evolution-box23").hide();
+	$(".evolution-box24").hide();
+	$(".evolution-box25").show();
+	$(".evolution-box26").hide();
+	$(".evolution-box27").hide();
+	$(".evolution-box28").hide();
+});
+
+//帮助
+$(".btn-bangzhu").click(function(){
+	$(".evolution-box").hide();
+	$(".evolution-box1").hide();
+	$(".evolution-box2").hide();
+	$(".evolution-box3").hide();
+	$(".evolution-box4").hide();
+	$(".evolution-box5").hide();
+	$(".evolution-box6").hide();
+	$(".evolution-box7").hide();
+	$(".evolution-box8").hide();
+	$(".evolution-box9").hide();
+	$(".evolution-box10").hide();
+	$(".evolution-box11").hide();
+	$(".evolution-box12").hide();
+	$(".evolution-box13").hide();
+	$(".evolution-box14").hide();
+	$(".evolution-box15").hide();
+	$(".evolution-box16").hide();
+	$(".evolution-box17").hide();
+	$(".evolution-box18").hide();
+	$(".evolution-box19").hide();
+	$(".evolution-box20").hide();
+	$(".evolution-box21").hide();
+	$(".evolution-box22").hide();
+	$(".evolution-box23").hide();
+	$(".evolution-box24").hide();
+	$(".evolution-box25").hide();
+	$(".evolution-box26").show();
+	$(".evolution-box27").hide();
+	$(".evolution-box28").hide();
+});
+//借款专题
+$(".btnbtn-baozhang-jiekuanzhuanti").click(function(){
+	$(".evolution-box").hide();
+	$(".evolution-box1").hide();
+	$(".evolution-box2").hide();
+	$(".evolution-box3").hide();
+	$(".evolution-box4").hide();
+	$(".evolution-box5").hide();
+	$(".evolution-box6").hide();
+	$(".evolution-box7").hide();
+	$(".evolution-box8").hide();
+	$(".evolution-box9").hide();
+	$(".evolution-box10").hide();
+	$(".evolution-box11").hide();
+	$(".evolution-box12").hide();
+	$(".evolution-box13").hide();
+	$(".evolution-box14").hide();
+	$(".evolution-box15").hide();
+	$(".evolution-box16").hide();
+	$(".evolution-box17").hide();
+	$(".evolution-box18").hide();
+	$(".evolution-box19").hide();
+	$(".evolution-box20").hide();
+	$(".evolution-box21").hide();
+	$(".evolution-box22").hide();
+	$(".evolution-box23").hide();
+	$(".evolution-box24").hide();
+	$(".evolution-box25").hide();
+	$(".evolution-box26").hide();
+	$(".evolution-box27").show();
+	$(".evolution-box28").hide();
+});
+//理财专题
+$(".btn-licaizhuanti").click(function(){
+	$(".evolution-box").hide();
+	$(".evolution-box1").hide();
+	$(".evolution-box2").hide();
+	$(".evolution-box3").hide();
+	$(".evolution-box4").hide();
+	$(".evolution-box5").hide();
+	$(".evolution-box6").hide();
+	$(".evolution-box7").hide();
+	$(".evolution-box8").hide();
+	$(".evolution-box9").hide();
+	$(".evolution-box10").hide();
+	$(".evolution-box11").hide();
+	$(".evolution-box12").hide();
+	$(".evolution-box13").hide();
+	$(".evolution-box14").hide();
+	$(".evolution-box15").hide();
+	$(".evolution-box16").hide();
+	$(".evolution-box17").hide();
+	$(".evolution-box18").hide();
+	$(".evolution-box19").hide();
+	$(".evolution-box20").hide();
+	$(".evolution-box21").hide();
+	$(".evolution-box22").hide();
+	$(".evolution-box23").hide();
+	$(".evolution-box24").hide();
+	$(".evolution-box25").hide();
+	$(".evolution-box26").hide();
+	$(".evolution-box27").hide();
+	$(".evolution-box28").show();
+});
+//理财专题
+/*选择充值方式*/
+$("#rad-btn").click(function(){
+	$("#chongBox").css("display","none")
+});
+
+$("#rad-btn1").click(function(){
+	$("#chongBox").css("display","block")
+});
+
+/*选择充值方式*/
+
+/*限额弹框*/
+$(".xiane").click(function(){
+	$("#quotaCadre").show();
+});
+
+
+
+
+
+
+
+});

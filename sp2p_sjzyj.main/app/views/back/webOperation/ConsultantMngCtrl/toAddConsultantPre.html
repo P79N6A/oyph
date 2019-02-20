@@ -1,0 +1,386 @@
+#{extends 'common/back/webOperationMain.html' /}
+	#{set title:'运维 | 理财顾问 | 添加理财顾问' /}
+	#{set smallclass:3 /}
+	#{set crumbs:'运维>理财顾问>添加理财顾问' /}
+	
+	
+<div class="back-main">
+	<span class="back-imginfor-note" style="display: none;"></span>
+	<!-- 头部筛选条件 -->
+	<div class="back-usertop">
+		<b class="left font14">添加理财顾问</b>
+		<!-- 右侧功能按钮 -->
+		<div class="right back-rightbtns">
+			<a href="javascript:backAndRefresh('@{back.webOperation.ConsultantMngCtrl.showConsultantsPre}');"><i class="iconfont">&#xe60b;</i>返回</a>
+		</div>
+	</div>
+	<!-- 左侧菜单 -->
+	<form action="@{back.webOperation.ConsultantMngCtrl.addConsultant()}" method="POST" id="add_cons">
+		#{authenticityToken /}
+		<input type="hidden" name="uuidRepeat" value="${flash?.submitUuid}">
+		<div class="back-cont">
+			<div class="back-infor">
+				<h2 class="back-infor-head">理财顾问</h2>
+				<ul class="back-infor-set">
+					<li>
+						<span class="lileft">姓名</span>
+						<div class="liright">
+							<input type="text" autofocus="autofocus" minlength="1" maxlength="10" id="name" name="consultant.name" class="width01 iffocus required" value="${flash?.name}" />
+							<span class="back-text-limit">1~10个字符</span>
+						</div>
+					</li>
+					<li>
+						<span class="lileft">头像</span>
+						<div class="liright">
+							<span class="back-imgarea imgrequired">
+								<img src="${flash?.image_url} ? ${flash?.image_url} : '/public/back/images/noimg.jpg'" onerror="this.src='/public/back/images/noimg.jpg'" class="backupimg" height="100" width="100" id="image" name="image" alt="" title=""/>
+								<input type="hidden" id="imageUrl" name="consultant.image_url" value="${flash?.image_url}">
+							</span>
+							<span class="back-upimg">
+								<label class="back-upbtn">
+									<input type="file" class="upload_file" value="" name="imgFile" accept=".jpg,.jpeg,.png,.gif" id="imgFile" onchange="uploadImg()"/>
+									<i class="iconfont">&#xe608;</i>本地上传
+								</label>
+								
+								<label class="back-lib-upbtn back-cropbtn" onclick="cropImg(180,180,1);" id="cropImgLabel" style="display: none;">
+									<b class="iconfont">&#xe642;</b>裁剪
+								</label>
+								
+									
+								<!-- 图片要求 -->
+								<p class="back-imginfor-note">180*180&nbsp;&nbsp;jgp/png&nbsp;&nbsp;大小不超过2M</p>
+								<div class="back-upload-imginfor">
+										<span id="resolutionshow">${flash?.image_resolution}</span>&nbsp;<span id="formatshow">${flash?.image_format}</span>&nbsp;<span id="sizeshow">${flash?.image_size}</span>
+								</div>
+									
+								<!-- 图片参数，用于保存 -->
+								<input type="hidden" id="imageResolution" name="consultant.image_resolution" value="${flash?.image_resolution}">
+								<input type="hidden" id="imageFormat" name="consultant.image_format" value="${flash?.image_format}">
+								<input type="hidden" id="imageSize" name="consultant.image_size" value="${flash?.image_size}">	
+							</span>
+						</div>
+					</li>
+					<li>
+						<span class="lileft">二维码</span>
+						<div class="liright">
+							<span class="back-imgarea imgrequired">
+									<img src="${flash?.code_url} ? ${flash?.code_url} : '/public/back/images/noimg.jpg'" onerror="this.src='/public/back/images/noimg.jpg'" class="backupimg" height="100" width="100" id="code" name="code" alt="" title="" />
+									<input type="hidden" id="codeUrl" name="consultant.code_url" value="${flash?.code_url}">
+							</span>
+							<span class="back-upimg">
+								<label class="back-upbtn">
+									<input type="file" class="upload_file" value="" name="imgFile" accept=".jpg,.jpeg,.png,.gif" id="codeFile" onchange="uploadCode()"/>
+									<i class="iconfont">&#xe608;</i>本地上传
+								</label>
+								
+								<label class="back-lib-upbtn back-cropbtn" onclick="cropImg(114,114,2);" id="cropCodeLabel" style="display: none;">
+									<b class="iconfont">&#xe642;</b>裁剪
+								</label>
+								
+								<!-- 图片要求 -->
+								<p class="back-imginfor-note">114*114&nbsp;&nbsp;jpg/png&nbsp;&nbsp;大小不超过2M</p>
+								<div class="back-upload-imginfor">
+									<span id="resolutionCode">${flash?.code_resolution}</span>&nbsp;<span id="formatCode">${flash?.code_format}</span>&nbsp;<span id="sizeCode">${flash?.code_size}</span>
+								</div>
+
+								<!-- 图片参数，用于保存 -->
+								<input type="hidden" id="codeResolution" name="consultant.code_resolution" value="${flash?.code_resolution}">
+								<input type="hidden" id="codeFormat" name="consultant.code_format" value="${flash?.code_format}">
+								<input type="hidden" id="codeSize" name="consultant.code_size" value="${flash?.code_size}">					
+							</span>
+						</div>
+					</li>
+					<li>
+						<span class="lileft">排序时间</span>
+						<div class="liright">
+							<input type="text" class="easyui-datetimebox" id="orderTime" name="orderTime" value="${flash?.orderTime}" />
+						</div>
+					</li>
+				</ul>
+			</div>
+			<p class="back-audit-btns">
+				#{rightMng rightId:204002}
+					<input type="submit" id="pageSave" value="保存" class="bgbtn">
+				#{/rightMng}
+				<input type="button" value="取消" class="bdbtn" onclick="backAndRefresh('@{back.webOperation.ConsultantMngCtrl.showConsultantsPre}');">
+			</p>
+		</div>
+	</form>
+</div>
+
+
+<!-- 图片裁切弹窗 begin -->
+<div class="dialog crop-dialog">
+	<div class="dialog-bg"></div>
+	<div class="dialog-cont">
+		<div class="dialog-head">
+			<span class="left">图片裁剪</span>
+			<a href="javascript:void(0);" class="dialog-close hover-green" id="dialogClose">×</a>
+		</div>
+		<div class="crop-box">
+			<div class="clearfix">
+				<div class="crop-img">
+					<img src="" id="cropimg" />
+				</div>
+				<div class="crop-right">
+					<div class="crop-preview">
+						<div class="preview-container">
+							<img src="" />
+						</div>
+					</div>
+					<ul class="crop-handle">
+						<li><label class=""><input type="radio" id="maxSize" name="cropsize" />最大尺寸</label></li>
+						<li><label class=""><input type="radio" id="standardSize" name="cropsize" />标准尺寸</label></li>
+					</ul>
+				</div>
+			</div>
+			<p class="back-audit-btns">
+				<input type="button" value="保存" class="bgbtn" onclick="saveCropImg(cropImgSuccess)">
+				<input type="button" value="取消" class="bdbtn dialog-console">
+			</p>
+			<input type="hidden" id="x"/>
+			<input type="hidden" id="y"/>
+			<input type="hidden" id="w"/>
+			<input type="hidden" id="h"/>
+			<input type="hidden" id="imageType" /><!-- 图片格式 -->
+			<input type="hidden" id="cutType" /><!-- 图片类型 -->
+		</div>
+	</div>
+</div>
+<!-- 图片裁切弹窗 end -->
+
+
+
+<!-- 页面js -->
+<script type="text/javascript">
+require(["back"],function(back){
+	require(["datatime","ajaxfileupload"]);
+	
+	//添加广告图片
+	$("#add_cons").validate({
+		errorPlacement: function(error, element) {
+			error.addClass('back-notice').insertAfter(element);
+		},
+		rules:{
+			"consultant.name":{
+				required:true,
+				rangelength:[1,10]
+			},
+			"consultant.image_url":{
+				required:true
+			},
+			"consultant.image_resolution":{
+				required:true
+			},
+			"consultant.image_size":{
+				required:true
+			},
+			"consultant.image_format":{
+				required:true
+			},
+			"consultant.codeurl":{
+				required:true
+			},
+			"consultant.code_resolution":{
+				required:true
+			},
+			"consultant.code_size":{
+				required:true
+			},
+			"consultant.code_format":{
+				required:true
+			},
+			"consultant.order_time":{
+				required:true
+			}
+		},
+		messages:{
+			"consultant.name":{
+				required:"姓名1-10个字符"
+			},
+			"consultant.image_url":{
+				required:"上传头像不能为空"
+			},
+			"consultant.image_resolution":{
+				required:"上传头像不能为空"
+			},
+			"consultant.image_size":{
+				required:"上传头像不能为空"
+			},
+			"consultant.image_format":{
+				required:"上传头像不能为空"
+			},
+			"consultant.code_url":{
+				required:"上传二维码图片不能为空"
+			},
+			"consultant.code_resolution":{
+				required:"上传二维码图片不能为空"
+			},
+			"consultant.code_size":{
+				required:"上传二维码图片不能为空"
+			},
+			"consultant.code_format":{
+				required:"上传二维码图片不能为空"
+			},
+			"orderTime":{
+				required:"排序时间不能为空"
+			}
+		}
+	});
+
+});
+	
+function uploadImg(){
+	var fileId = "imgFile";
+	var file = $("#" + fileId).val();
+	var pos = file.lastIndexOf("\\");
+	var fileName = file.substring(pos + 1);
+	
+	$.ajaxFileUpload({
+		url : '@{back.webOperation.ConsultantMngCtrl.uploadConsultantImage()}',
+		secureuri : false,
+		fileElementId : fileId,
+		data:{
+			"fileName":fileName
+		},
+		dataType : 'json',
+		success : function(result) {
+			if(result.code == 1){
+				var data = result.obj;
+				$("#image").attr("src", data.staticFileName);
+				$("#imageSize").val(data.size+"kb");
+				$("#imageFormat").val(data.fileSuffix);
+				$("#imageResolution").val(data.imageResolution);
+				$("#resolutionshow").html(data.imageResolution);
+				$("#formatshow").html(data.fileSuffix);
+				$("#sizeshow").html(data.size+"kb");
+				$("#imageUrl").val(data.staticFileName);
+				$("#cropImgLabel").show();
+			} else {
+				alert(result.msg);
+			}
+		}
+	})
+}
+
+function uploadCode(){
+	var fileId = "codeFile";
+	var file = $("#" + fileId).val();
+	var pos = file.lastIndexOf("\\");
+	var fileName = file.substring(pos + 1);
+	
+	$.ajaxFileUpload({
+		url : '@{back.webOperation.ConsultantMngCtrl.uploadConsultantImage()}',
+		secureuri : false,
+		fileElementId : fileId,
+		data:{
+			"fileName":fileName
+		},
+		dataType : 'json',
+		success : function(result) {
+			if(result.code == 1){
+				var data = result.obj;
+				$("#code").attr("src", data.staticFileName);
+				$("#codeSize").val(data.size+"kb");
+				$("#codeFormat").val(data.fileSuffix);
+				$("#codeResolution").val(data.imageResolution);
+				$("#resolutionCode").html(data.imageResolution);
+				$("#formatCode").html(data.fileSuffix);
+				$("#sizeCode").html(data.size+"kb");
+				$("#codeUrl").val(data.staticFileName);
+				$("#cropCodeLabel").show();
+			} else {
+				alert(result.msg);
+			}
+		}
+	})
+}
+
+
+
+//图片裁剪
+function cropImg(width, height, cutType){
+	$("#cutType").val(cutType);
+	var size = new Array(width, height);
+	var src,imageType;
+	if(cutType == 1) {
+		src = $("#imageUrl").val();
+		imageType = $("#imageFormat").val();//头像图片后缀
+	} else if(cutType == 2) {
+		src = $("#codeUrl").val();
+		imageType = $("#codeFormat").val();//二维码图片后缀
+	}
+	var src = src +'?t=' + new  Date().getTime();
+	$('.crop-dialog').dialog();
+	var image = new Image();
+	image.src = src;
+	image.onload = function(){
+		require(["imgcrop"],function(crop){
+			$('.crop-img,.preview-container').find('img').attr('src',src);
+			$('#imageType').val(imageType);
+			$("input[name='cropsize']").val([]);
+			crop(size);
+		});
+	}
+}
+
+
+function saveCropImg(callback){
+	$.ajax({
+		url : '@{common.BackBaseController.imageCrop()}',
+		type: 'POST',
+		data : {
+			'imgSrc' : $("#cropimg").attr('src'),
+			'x' : $("#x").val(),
+			'y' : $("#y").val(),
+			'w' : $("#w").val(),
+			'h' : $("#h").val(),
+			'imageType' : $("#imageType").val(),
+			'createNewImg' : true
+		},
+		success : function(data){
+			var flag = interceptorCheck(data);
+			if(!flag){
+				return;
+			}
+			
+			if(data.code < 1){
+				alert(data.msg);
+				return;
+			}
+			
+			if (callback) {
+				callback(data.obj);
+			}
+			$("#dialogClose").trigger('click');
+			weakDialog('裁剪成功!');
+		}
+	});
+}
+
+
+//图片裁剪成功，回调函数 
+var cropImgSuccess = function(data) {
+	var cutType = $("#cutType").val();
+	
+	if(cutType == 1) {//头像裁剪
+		$("#image").attr("src", data.staticFileName);
+		$("#imageUrl").val(data.staticFileName);
+		$("#imageSize").val(data.size+"kb");
+		$("#imageResolution").val(data.imageResolution);
+		$("#resolutionshow").html(data.imageResolution);
+		$("#sizeshow").html(data.size+"kb");
+	} 
+	
+	if(cutType == 2) {//二维码裁剪
+		$("#code").attr("src", data.staticFileName);
+		$("#codeUrl").val(data.staticFileName);
+		$("#codeSize").val(data.size+"kb");
+		$("#codeResolution").val(data.imageResolution);
+		$("#resolutionCode").html(data.imageResolution);
+		$("#sizeCode").html(data.size+"kb");
+									
+	}
+}
+</script>	
+	

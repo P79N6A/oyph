@@ -1,0 +1,54 @@
+#{extends 'common/back/activityMain.html'/}
+	#{set title:'活动 | 大转盘活动|活动设置'/}
+	#{set smallclass:2 /}
+	#{set crumbs:'活动>大转盘活动>活动设置'/}
+<div class="back-main">
+	<!-- 头部筛选条件 -->
+	<div class="back-usertop">
+		<b class="left font14">添加活动</b>
+		<!-- 右侧功能按钮 -->
+		<div class="right back-rightbtns">
+			<a href='@{back.activity.shake.BigWheelActivityCtrl.activitySettingPre()}'><i class="iconfont">&#xe60b;</i>返回</a>
+		</div>
+	</div>
+		<!-- 左侧菜单 -->
+	<div class="back-cont">
+		<form action="@{back.activity.shake.BigWheelActivityCtrl.editActivitySetting()}" method="POST" id="formShakeActivity">
+		#{authenticityToken /}
+		<div class="back-infor">
+			<h2 class="back-infor-head">活动</h2>
+			<ul class="back-infor-set">		
+				<li>
+					<span class="lileft"><i class="mustpoint">*</i>活动名称</span>
+					<div class="liright">
+						<input type="hidden" value="${bigWheel?.id}" name="bigWheel.id">
+						<input type="text" class="width01 iffocus required" name="bigWheel.name" id="activityName" value="${bigWheel?.name}"/>
+						<span class="back-text-limit">例如：  大转盘活动</span>
+					</div>
+				</li>
+				<li>
+					<span class="lileft"><i class="mustpoint">*</i>活动时间</span>
+					<div class="liright">
+						<input type="text" class="width01 iffocus required" name="bigWheel.start_time" id="ctime" value="${bigWheel?.start_time.format(common.constants.Constants.DATE_PLUGIN)}"/>
+						<span class="back-text-limit">例如： 2018-01-01  </span>
+					</div>
+				</li>
+				<li>
+					<span class="lileft"><i class="mustpoint">*</i>状态</span>
+					<div class="liright">
+						<select name="bigWheel.status">
+							<option value="2" #{if bigWheel?.status == 2}selected#{/if}>未开始</option>
+							<option value="3" #{if bigWheel?.status == 3}selected#{/if}>进行中</option>
+							<option value="4" #{if bigWheel?.status == 4}selected#{/if}>已结束</option>
+						</select>
+					</div>
+				</li>
+			</ul>
+		</div>
+		<p class="back-audit-btns">
+			<input type="submit" id="pageSave" value="发布" class="bgbtn">
+			<input type="button" value="取消" class="bdbtn" onclick="window.location.href='@{back.activity.shake.BigWheelActivityCtrl.activitySettingPre()}'">
+		</p>
+		</form>
+	</div>
+</div>

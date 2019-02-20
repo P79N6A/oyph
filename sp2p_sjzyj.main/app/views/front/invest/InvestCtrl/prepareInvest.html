@@ -1,0 +1,262 @@
+<style>
+	.black-bg{
+		position: fixed;
+		left: 0;
+		top:0;
+		background: rgba(0,0,0,.5);
+		z-index: 99999;
+		width: 100%;
+		height: 100%;
+		display: none;
+	}
+	#turntable{
+		width: 594px;
+	    height: 693px;
+	    position: relative;
+	    top: 50%;
+	    left: 50%;
+	    margin-top: -346px;
+	    margin-left: -292px;
+	    color: black;
+	    background: #fff;
+   		border-radius: 20px;
+   		text-align: center;
+	}
+	#turntable .sbg{
+		width: 100%;
+	}
+	#turntable p{
+		padding: 0 40px;
+    	text-indent: 34px;
+    	line-height: 25px;
+    	text-align: left;
+	}
+	#turntable .close{
+		width: 200px;
+		height: 43px;
+		background: #2693e7;
+		border-radius:20px;
+		color: #fff;
+		margin-top: 20px;
+	}  
+</style>
+<div class="black-bg">
+	<div id="turntable">
+		<img src="/public/front/images/sbg.png" class="sbg">
+		<p>您在使用讴业普惠贷平台提供的服务时，通过我平台进行借贷交易，可能会存在如下风险：</p>
+		<p>1.交易对手违约，不能按约定期限归还您的出借款项； </p>
+		<p>2.因为网络服务运营商、网站设备供应商、平台第三方合作机构等外部因素的故意或过失，影响您在平台的正常体验和使用； </p>
+		<p>3.因法律法规变化或其他因素，您的理财收益可能无法得到预期保障；</p>
+		<p>4.因网络故障、系统升级维护、计算机病毒或他方恶意攻击平台等因素，或其他不可抗力因素，而引起的交易中断和/或交易错误的风险等； </p>
+		<p>5.您在讴业普惠平台账户的用户名、登录验证信息被窃取或泄露而导致您个人财产损失的风险；</p>
+		<p>6.您的个人信息和资料被不法分子窃取、泄露的风险以及由此带来的您个人隐私、生活受到干扰、侵犯的风险；</p>
+		<p>7.其他风险。 </p>
+		<p>8.您须保证并承诺：您在讴业普惠平台所用于出借的资金来源合法，属于您的自有合法款项；禁止通过金融机构进行转贷并出借给借款人；禁止将任何犯罪或者其他任何非法活动所得或其产生的收益用于我平台的投资；禁止您使用有资金所有权异议的款项；由此给借款人或讴业普惠平台造成损失的，您应当承担各方因此造成的各项法律责任和经济损失；</p>
+		<input type="button" value="确定" class="close">
+	</div>
+</div>
+<form action="@{front.invest.InvestCtrl.investCheckPass()}" method="POST" id="invest_bid" target='_blank'>
+<input type="hidden" name="bidSign" value="${bid?.sign}"/>
+<input type="hidden" name="uuidRepeat" value="${flash?.submitUuid}">
+<input type="hidden" name="bidType" value="${bid?.bid_type}">
+<ul class="c3 detail-buylist">
+
+	#{if models.core.entity.t_bid.Status.PREAUDITING.equals(bid?.status)}
+	<li class="detail-buyover">
+		<span>${bid?.status?.value}</span>
+	</li>
+	#{/if}
+	#{elseif models.core.entity.t_bid.Status.AUDITING.equals(bid?.status)||models.core.entity.t_bid.Status.WAIT_RELEASING.equals(bid?.status)||models.core.entity.t_bid.Status.REPAYING.equals(bid?.status)}
+	<li class="detail-buyover">
+		<span>已售罄</span>
+	</li>
+	#{/elseif}
+	#{elseif models.core.entity.t_bid.Status.FUNDRAISING.equals(bid?.status)}
+	<li class="w-detail-lastmoney">
+		<span style="color: #999;" class="left lileft">可用余额</span>
+		#{if currUser}
+		<a href="@{front.account.MyAccountCtrl.rechargePre()}" title="" target="" class="major right">充值</a>
+		<span style="color: #999;" class="lastmoney right">
+			#{formatIntMoney money:balance}#{/formatIntMoney}元
+		</span>
+		#{/if}
+		#{else}
+		<a href="@{front.LoginAndRegisteCtrl.loginPre()}" title="" target="" class="major right">登录查看余额</a>
+		#{/else}
+	</li>
+	
+	<li class="w-detail-buytext">
+	<!-- 	<p>购买</p> -->
+		<label class="detail-unit">
+			<input type="text" class="text text-line " value="" id="invest_amount" placeholder="请输入出借金额" name='investAmt' autocomplete="off" oninput="$(this).ndigitInteger(6);calculateIncome()" onpropertychange="$(this).ndigitInteger(6)" onblur="setBribeAccount()" maxlength="7"/>
+			<!-- <select id="bribeId" name="bribeId" >
+				<option value='0'>不使用</option>
+				#{list redPacketList}
+					<option value="${_?.id}">${_?.amount.format(common.constants.Constants.FINANCE_FORMATE_NORMAL)}</option>
+				#{/list}
+			</select> -->
+			<i>#{if models.core.entity.t_product.BuyType.PURCHASE_BY_AMOUNT.code==bid?.buy_type.code}元#{/if}#{else}份#{/else}</i>
+		</label>
+	</li>
+	#{if flag==1}
+	<li class="w-detail-buytext">
+	<p>邀请码</p>
+	<label class="detail-unit">
+		<input type="text" class="text text-line" value="" name='inviteCode' autocomplete="off" oninput="" maxlength="8"/>
+	</label>
+	</li>
+	#{/if}
+		<li>
+		  <div class="button-holder">
+			<input type="radio" id="radio-1-1" name="radio-1-set" class="regular-radio" checked /><label for="radio-1-1"></label>
+		     <span>不使用</span>
+			<input type="radio" id="radio-1-2" name="radio-1-set" class="regular-radio" /><label for="radio-1-2"></label>
+			 <span>红包</span>
+			<input type="radio" id="radio-1-3" name="radio-1-set" class="regular-radio" /><label for="radio-1-3"></label>
+			 <span>加息券</span>
+		  </div>
+		</li>
+			<!-- 加息券下拉菜单 -->
+					<div id="couponId" >
+					    <p >请使用加息券</p>
+					    <input type="hidden" value="0" name="couponId" class="couponId">
+						<img class="fff" src="/public/front/images/jiantou.png" />
+						<div class="drop-down">
+							<ul class="drop-down-main">
+									<li><span>----------------请选择---------------</span></li>
+								#{list couponList}
+									<li><b>${_?.apr}%</b><span>（出借大于${(int)_?.amount}元可用）</span><input type="hidden" value="${_?.id}"></li>
+								#{/list}
+							</ul>
+						</div>
+					</div>
+		    <!-- 红包下拉菜单 -->
+					<div id="bribeId">
+					    <p>请使用红包</p>
+					    <input type="hidden" value="0" name="bribeId" class="bribeId">
+						<img class="fff" src="/public/front/images/jiantou.png" />
+						<div class="drop-down">
+							<ul class="drop-down-main">
+									<li><span>----------------请选择---------------</span></li>
+								#{list redPacketList}
+									<li><b>${_?.amount.format(common.constants.Constants.FINANCE_FORMATE_TAD)}</b><span>（出借超过：${_?.use_rule}元可用）</span><input type="hidden" value="${_?.id}"></li>
+								#{/list}
+							</ul>
+						</div>
+					</div>
+		<p class="major" id="invest_expece_income">预期收益0.00元</p>
+		
+	<li style="text-align: center;">
+		#{if currUser}
+		<input type="button" value="立即购买" class="btn purchase" id="buyNowButton"/>
+		#{/if}
+		#{else}
+		<input type="button" value="立即购买" class="btn purchase" onclick="javascript:window.location.href='@{front.LoginAndRegisteCtrl.loginPre()}'"/>
+		#{/else}
+	</li>
+	<li class="clearfix">
+		<p class="Prompt"><i class="icon note-icon"></i>温馨提示：把控风险，谨慎操作</p>
+	</li>
+	#{/elseif}
+	#{else}
+	<li class="detail-buyover">
+		<span>已结束</span>
+	</li>
+	#{/else}
+</ul>
+</form>
+<script type="text/javascript">
+$('#buyNowButton').click(function(){
+	var invest = $("#invest_amount").val();
+	if(invest==''){
+		weakDialog('请输入出借金额');
+	}else{
+		/*自己弹窗代码*/
+	    $('.black-bg').show();
+	    $('.close').click(function(){
+			$('.black-bg').hide();
+			$('#invest_bid').submit();
+		})
+	}
+})
+function calculateIncome(){
+	var invest = parseInt($("#invest_amount").val());
+	//按份数购买时，投资金额=每份金额*份数
+	#{if models.core.entity.t_product.BuyType.PURCHASE_BY_COPY.code==bid?.buy_type.code}
+	var investAmount = parseInt($("#invest_amount").val())*${bid?.min_invest_amount};
+	#{/if}
+	#{else}
+	var investAmount = parseInt($("#invest_amount").val());
+	#{/else}
+	if(investAmount==''){
+		$("#invest_expece_income").html("预期收益0.00元");
+		return;
+	}
+	var apr = ${bid?.apr};
+	var period = ${bid?.period};
+	var income = '0.00';
+	if(${bid?.period_unit?.code} == ${models.core.entity.t_product.PeriodUnit.MONTH.code}){//月标
+		//月标，等额本息的计算
+		if(${models.core.entity.t_product.RepaymentType.AND_OTHER_INFORMATION.code}==${bid?.repayment_type?.code}){
+			var monthApr = apr+{}/12/100;
+			var monthSum = investAmount*monthApr*Math.pow((1 + monthApr), period)/(Math.pow((1 + monthApr), period) - 1)
+			income = (monthSum * period - investAmount).toFixed(2);
+		}else{
+			income = ((investAmount*(apr/100)/12)*period).toFixed(2);
+		}
+	}else{
+		income = ((investAmount*(apr/100)/360)*period).toFixed(2);
+	}
+	if(isNaN(income)){
+		income = '0.00';
+	}
+	$("#invest_expece_income").html("预期收益"+income+"元");
+}
+
+</script>
+<script type="text/javascript">
+   /*加息券下拉 */
+	$("#couponId").click(function(){
+		$("#couponId .drop-down").show()
+		$(this).css("border-color","#ff9f22")
+		return false;
+	});
+	$("#couponId li").click(function(){
+		$("#couponId p").text($(this).children(':first').text())
+		$("#couponId .couponId").val($(this).children(':last').val())
+		$("#couponId .drop-down").hide()
+		$('#couponId').css("border-color","#e5e5e5")
+		return false;
+	});
+	document.onclick =function(e){
+	    $('.drop-down').hide()
+	}
+	/* 红包下拉 */
+	 $("#bribeId").click(function(){
+		$("#bribeId .drop-down").show()
+		$(this).css("border-color","#ff9f22")
+		return false;
+	});
+	$("#bribeId li").click(function(){
+		$("#bribeId p").text($(this).children(':first').text())
+		$("#bribeId .bribeId").val($(this).children(':last').val())
+		$("#bribeId .drop-down").hide()
+		$('#couponId').css("border-color","#e5e5e5")
+		return false;
+	});
+	/* 不使用 */
+	$("#radio-1-1").click(function(){
+		$("#couponId").css("display","none");
+		$("#bribeId").css("display","none");
+	});
+	/* 加息券 */
+	$("#radio-1-3").click(function(){
+		$("#couponId").css("display","block");
+		$("#bribeId").css("display","none");
+	});
+	/* 红包 */
+	$("#radio-1-2").click(function(){
+		$("#bribeId").css("display","block");
+		$("#couponId").css("display","none");
+	});
+</script>

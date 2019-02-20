@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>${settings?.get(common.constants.SettingKey.PLATFORM_NAME)}</title>
+		<meta name="keywords" content="${settings?.get(common.constants.SettingKey.PLATFORM_NAME)}" />
+		<meta name="description" content="${settings?.get(common.constants.SettingKey.PLATFORM_NAME)}" />
+		<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+		<link rel="shortcut icon" type="image/png" href="${settings?.get(common.constants.SettingKey.PLATFORM_ICON_FILENAME)}" />
+		<link rel="stylesheet" type="text/css" href="@{'/public/back/stylesheets/iconfont.css'}" />
+		<link rel="stylesheet" type="text/css" href="@{'/public/back/stylesheets/back.css'}" />
+		<script type="text/javascript" src="/public/front/javascripts/Syunew3.js" ></script>
+	</head>
+	<body onload="load()">
+		<div class="back-loginbg">
+			<div class="back-loginbox">
+				<h1><img src="${settings?.get(common.constants.SettingKey.PLATFORM_LOGO_FILENAME)}" onerror="this.src='/public/common/default.jpg'" height="77"  /></h1>
+				<div class="back-loginboxbg">
+					<form id="loginForm" name="frmlogin" method="POST" action="@{back.BackLoginCtrl.login()}">
+						<input type="hidden"  name="supervisorSign" id="supervisorSign"/>
+						<ul class="back-login">
+							<li>
+								<!-- 错误提示 -->
+								<p class="back-login-note"><i class="iconfont">&#xe62c;</i><span class="note-text"><label id="notice_error" class="back-error" for="userPassword"></label></span></p>
+								
+							</li>
+							#{if isCheck == 1 }
+								<li class="clearfix">
+									<input type="hidden" id="userName" maxlength=10 name="supervisor_name" class="logintext iffocus" value="${backAcount}" />
+								</li>
+							#{/if}
+							#{else}
+								<li class="clearfix">
+									<label class="lileft"><i class="mustpoint">*</i>管理员</label>
+									<div class="liright">
+										<input type="text" id="userName" maxlength=10 name="supervisor_name" class="logintext iffocus" value="${backAcount}" />
+									</div>
+								</li>
+							#{/else}
+							
+							<li class="clearfix">
+								<label class="lileft"><i class="mustpoint">*</i>密码</label>
+								<div class="liright">
+									<input type="password" id="userPassword" maxlength=15 name="password"  class="logintext iffocus" onpaste="return false" autocomplete="off" />
+								</div>
+							</li>
+							<li class="clearfix">
+								<label class="lileft"><i class="mustpoint">*</i>验证码</label>
+								<div class="liright">
+									<input type="text" id="imgCode" name="captcha" maxlength=2 class="logintext iffocus codetext" />
+									<input id="randomID" name="randomID" value="${randomID}" type="hidden"/>
+									<img src="@{common.CaptchaController.createCaptcha(randomID)}"  id="captchaImage" name="codeImg" height="35" width="147" class="codeimg"  onclick="refreshCaptcha();" />
+								</div>
+							</li>
+							#{if isCheck == 1 }
+								<li class="clearfix">
+								<label class="lileft">&nbsp;</label>
+								<div class="liright">
+									<input type="button" id="loginBtn" name="frmlogin" value="登  录" class="back-loginbtn bgbtn" onclick="login_onclick()" />
+								</div>
+							</li>
+							#{/if}
+							#{else}
+								<li class="clearfix">
+								<label class="lileft">&nbsp;</label>
+								<div class="liright">
+									<input type="submit" id="loginBtn" name="frmlogin" value="登  录" class="back-loginbtn bgbtn" />
+								</div>
+							</li>
+							#{/else}
+						</ul>
+						<input name="ckeyId" type="hidden" id="KeyID" size="20" />
+						<input type="hidden" name="ranNum" value="${ranNum}" />
+						<input name="return_EncData" type="hidden" id="return_EncData" value=""   />
+					</form>
+				</div>
+			</div>
+		</div>
+		<object
+		  	id="eims"
+		  	classid="clsid:2D37D5F7-B18B-4E8E-8B3C-F26171922C16"
+		  	codebase="/public/ActiveLoginProj1.ocx#version=1,0,0,0"
+		  	width=0
+		 	 height=0
+		  	align=center
+		 	 hspace=0
+		  	vspace=0 >
+		</object>
+		
+		<!-- js -->
+	<script type="text/javascript" data-main="/public/back/javascripts/back.js" src="@{'/public/back/javascripts/require.js'}">
+	
+	
+	</script>
+	<script type="text/javascript">
+	var	doc = document,
+	flag_username = false,
+	flag_userpass = false,
+	flag_code = false;	
+	require(['back'],function(){
+		    if('true' == '${common.constants.ConfConst.IS_CHECK_UKEY}' && document.all.eims.object == null){
+		    	$("#notice_error").html("请下载安装安全云盾控件<a href='/public/Setup.exe'> [下载控件]</a>");
+		    	$(".back-login-note").show();
+		    	$("#loginBtn").attr("disabled", true);  
+		    }else{ 
+		    	$("#userName").focus();
+		    	
+				#{if flash.error}
+			   		$("#notice_error").html("${flash?.error}");
+					$(".back-login-note").show();
+					refreshCaptcha();
+				#{/if}
+				$("#userName").on('input propertychange',function(){
+					$(this).integerAndLetters();
+					checkUserName();
+				}).on('blur',function(){
+					checkUserName();
+				});
+				$("#userPassword").on('input propertychange',function(){
+					$(this).integerAndLetters();
+						checkPassword();
+				}).on('blur',function(){
+					checkPassword();
+				});
+				$("#imgCode").on('input propertychange',function(){
+						checkCode();
+				}).on('blur',function(){
+					checkCode();
+				});
+				
+				$("#loginForm").submit(function(){
+					if ('true' == '${common.constants.ConfConst.IS_CHECK_UKEY}') {
+						return ukeyInit();
+					}
+
+					if(!flag_username){
+						checkUserName();
+						return false;
+					}
+					if(!flag_userpass){
+						checkPassword();
+						return false;
+					}
+				});
+		    }  
+		})
+		
+		// 云盾签名初始化 
+		function ukeyInit() {
+			var name = $("#userName").val();
+			var password = $("#userPassword").val();
+			var protocol = window.location.protocol;// 获取 协议部分
+			var host = window.location.host;//获取域名
+			var url = protocol + "//" + host;
+			
+			var supervisorSign =  document.getElementById("eims").into(name,password,url);
+		    if(supervisorSign == ""){
+		     	return false;
+			}
+		    
+		    $("#supervisorSign").val(supervisorSign);
+		    
+		    return true;
+		}
+
+		//刷新验证码
+		function refreshCaptcha(){
+			$.ajax({
+				url : " @{common.CaptchaController.flushCaptcha()}",
+				type : "POST",
+				dataType:"json",
+				success : function(data) {
+					var arr=eval(data);
+					var randomid = arr.randomID;
+					$("#captchaImage").attr("src","@{common.CaptchaController.createCaptcha()}?uuid="+randomid+"&ran="+Math.random());	
+					$("#randomID").val(randomid);
+				}
+			});
+		}
+	
+
+	function checkUserName(){
+		var username = $("#userName");
+		if(!username.val().isBetween(3,15)){
+			flag_username = false;
+			username.addClass("back-error");
+		} else {
+			$("#notice_error").html("");
+			$(".back-login-note").hide();
+			flag_username = true;
+			username.removeClass("back-error");
+		}
+	}
+	function checkPassword(){
+		var userPassword = $("#userPassword");
+		if(!userPassword.val().isBetween(6,15)){
+			flag_userpass = false;
+			userPassword.addClass("back-error");
+		} else {
+			$("#notice_error").html("");
+			$(".back-login-note").hide();
+			flag_userpass = true;
+			userPassword.removeClass("back-error");
+		}
+	}
+	function checkCode(){
+		var randomID2 = $("#imgCode");
+		if(!randomID2.val().isBetween(1,2)){
+			flag_code = false;
+			randomID2.addClass("back-error");
+		} else {
+			if(!randomID2.val().isNumBetween(0,18)){
+				flag_code = false;
+				randomID2.addClass("back-error");
+			} else {
+				$.ajax({
+					url : "/common/captcha/checkcaptcha2.html",
+					type : "POST",
+					dataType:"json",
+					async:false,
+					data:{
+						"code":$("form input[name='captcha']").val(),
+						"randomID":$("form input[name='randomID']").val()
+					},
+					success : function(result) {
+						var arr=eval(result);
+						if(arr){
+							flag_code = true;
+							randomID2.removeClass("back-error");
+						}else{
+							flag_code = false;
+							randomID2.addClass("back-error");
+						}
+					},
+					error : function() {
+						alert("对不起，系统出现错误!");
+					}
+				});
+			}
+		}
+	}
+	
+	//加密狗
+	var bConnect=0;
+	 
+	function load()
+	{
+		//如果是IE10及以下浏览器，则跳过不处理
+	    if(navigator.userAgent.indexOf("MSIE")>0 && !navigator.userAgent.indexOf("opera") > -1) return;
+	    try
+	    {
+	        var s_pnp=new SoftKey3W();
+	         s_pnp.Socket_UK.onopen = function() 
+	        {
+	               bConnect=1;//代表已经连接，用于判断是否安装了客户端服务
+	        } 
+	        
+	        //在使用事件插拨时，注意，一定不要关掉Sockey，否则无法监测事件插拨
+	        s_pnp.Socket_UK.onmessage =function got_packet(Msg) 
+	        {
+	            var PnpData = JSON.parse(Msg.data);
+	            if(PnpData.type=="PnpEvent")//如果是插拨事件处理消息
+	            {
+	                if(PnpData.IsIn) 
+	                {
+	                        alert("UKEY已被插入");
+	                }
+	                else
+	                {
+	                        alert("UKEY已被拨出");
+	                }
+	            }
+	        } 
+	        
+	        s_pnp.Socket_UK.onclose = function()
+	        {
+	            
+	        }
+	   }
+	   catch(e)  
+	   {  
+	        alert(e.name + ": " + e.message);
+	        return false;
+	    }  
+	}
+
+	var digitArray = new Array('0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f');
+
+	function toHex( n ) {
+
+	        var result = ''
+	        var start = true;
+
+	        for ( var i=32; i>0; ) {
+	                i -= 4;
+	                var digit = ( n >> i ) & 0xf;
+
+	                if (!start || digit != 0) {
+	                        start = false;
+	                        result += digitArray[digit];
+	                }
+	        }
+
+	        return ( result == '' ? '0' : result );
+	}
+	
+	function login_onclick() 
+	{
+		//如果是IE10及以下浏览器，则使用AVCTIVEX控件的方式
+		if(navigator.userAgent.indexOf("MSIE")>0 && !navigator.userAgent.indexOf("opera") > -1) return Handle_IE10();
+		
+	   //判断是否安装了服务程序，如果没有安装提示用户安装
+	    if(bConnect==0)
+	    {
+	        window.alert ( "未能连接服务程序，请确定服务程序是否安装。");return false;
+	    }
+	    
+	   	var DevicePath,ret,n,mylen,ID_1,ID_2,addr;
+		try
+		{
+				
+			 //由于是使用事件消息的方式与服务程序进行通讯，
+			    //好处是不用安装插件，不分系统及版本，控件也不会被拦截，同时安装服务程序后，可以立即使用，不用重启浏览器
+			    //不好的地方，就是但写代码会复杂一些
+				var s_simnew1=new SoftKey3W(); //创建UK类
+				
+			    s_simnew1.Socket_UK.onopen = function() {
+			   	   s_simnew1.ResetOrder();//这里调用ResetOrder将计数清零，这样，消息处理处就会收到0序号的消息，通过计数及序号的方式，从而生产流程
+			    } 
+
+	           
+			 //写代码时一定要注意，每调用我们的一个UKEY函数，就会生产一个计数，即增加一个序号，较好的逻辑是一个序号的消息处理中，只调用我们一个UKEY的函数
+		    s_simnew1.Socket_UK.onmessage =function got_packet(Msg) 
+		    {
+		        var UK_Data = JSON.parse(Msg.data);
+		        // alert(Msg.data);
+		        if(UK_Data.type!="Process")return ;//如果不是流程处理消息，则跳过
+		        switch(UK_Data.order) 
+		        {
+		            case 0:
+		                {
+		                    s_simnew1.FindPort(0);//发送命令取UK的路径
+		                }
+		                break;//!!!!!重要提示，如果在调试中，发现代码不对，一定要注意，是不是少了break,这个少了是很常见的错误
+		            case 1:
+		                {
+		                    if( UK_Data.LastError!=0){window.alert ( "未发现加密锁，请插入加密锁");s_simnew1.Socket_UK.close();return false;} 
+		                    DevicePath=UK_Data.return_value;//获得返回的UK的路径
+		                    s_simnew1.GetID_1(DevicePath); //发送命令取ID_1
+		                }
+		                break;
+		            case 2:
+		                {
+		                    if( UK_Data.LastError!=0){ window.alert("返回ID号错误，错误码为："+UK_Data.LastError.toString());s_simnew1.Socket_UK.close();return false;} 
+		                    ID_1=UK_Data.return_value;//获得返回的UK的ID_1
+		                    s_simnew1.GetID_2(DevicePath); //发送命令取ID_2
+		                }
+		                break;
+		             case 3:
+		                {
+		                    if( UK_Data.LastError!=0){ window.alert("取得ID错误，错误码为："+UK_Data.LastError.toString());s_simnew1.Socket_UK.close();return false;} 
+		                     ID_2=UK_Data.return_value;//获得返回的UK的ID_2
+		                     
+		                     frmlogin.ckeyId.value=toHex(ID_1)+toHex(ID_2);
+		                     
+		                     s_simnew1.ContinueOrder();//为了方便阅读，这里调用了一句继续下一行的计算的命令，因为在这个消息中没有调用我们的函数，所以要调用这个
+		                }
+		                break;
+		             case 4:
+		                {
+		                    //获取设置在锁中的用户名
+				            //先从地址0读取字符串的长度,使用默认的读密码"FFFFFFFF","FFFFFFFF"
+				            addr=0;
+				            s_simnew1.YReadEx(addr,1,"FFFFFFFF","FFFFFFFF",DevicePath);//发送命令取UK地址0的数据
+		                }
+		                break;
+		            case 5:
+		                {
+		                    if( UK_Data.LastError!=0){ window.alert("读数据时错误，错误码为："+UK_Data.LastError.toString());s_simnew1.Socket_UK.close();return false;} 
+		                    s_simnew1.GetBuf(0);//发送命令从数据缓冲区中数据
+		                }
+		                break;
+		            case 6:
+		                {
+		                    if( UK_Data.LastError!=0){ window.alert("调用GetBuf时错误，错误码为："+UK_Data.LastError.toString());s_simnew1.Socket_UK.close();return false;} 
+		                    mylen=UK_Data.return_value;//获得返回的数据缓冲区中数据
+		                    
+		                    //再从地址1读取相应的长度的字符串，,使用默认的读密码"FFFFFFFF","FFFFFFFF"
+		                    addr=1;
+		                    s_simnew1.YReadString(addr,mylen, "FFFFFFFF", "FFFFFFFF", DevicePath);//发送命令从UK地址1中取字符串
+		                }
+		                break;
+		            case 7:
+		                {
+		                    if( UK_Data.LastError!=0){ window.alert("读取字符串时错误，错误码为："+UK_Data.LastError.toString());s_simnew1.Socket_UK.close();return false;} 
+		                    frmlogin.supervisor_name.value=UK_Data.return_value;//获得返回的UK地址1的字符串
+		                    
+		                    //获到设置在锁中的用户密码,
+				            //先从地址20读取字符串的长度,使用默认的读密码"FFFFFFFF","FFFFFFFF"
+				            addr=20;
+				            s_simnew1.YReadEx(addr,1,"FFFFFFFF","FFFFFFFF",DevicePath);//发送命令取UK地址20的数据
+		                }
+		                break;
+		            case 8:
+		                {
+		                    if( UK_Data.LastError!=0){ window.alert("读数据时错误，错误码为："+UK_Data.LastError.toString());s_simnew1.Socket_UK.close();return false;} 
+		                    s_simnew1.GetBuf(0);//发送命令从数据缓冲区中数据
+		                }
+		                break;
+		            case 9:
+		                {
+		                    if( UK_Data.LastError!=0){ window.alert("调用GetBuf时错误，错误码为："+UK_Data.LastError.toString());s_simnew1.Socket_UK.close();return false;} 
+		                    mylen=UK_Data.return_value;//获得返回的数据缓冲区中数据
+		                    
+		                    //再从地址21读取相应的长度的字符串，,使用默认的读密码"FFFFFFFF","FFFFFFFF"
+		                    addr=21;
+		                    s_simnew1.YReadString(addr,mylen,"FFFFFFFF", "FFFFFFFF", DevicePath);//发送命令从UK地址21中取字符串
+		                }
+		                break;
+		             case 10:
+		                {
+		                    if( UK_Data.LastError!=0){ window.alert("读取字符串时错误，错误码为："+UK_Data.LastError.toString());s_simnew1.Socket_UK.close();return false;} 
+		                    //frmlogin.password.value=UK_Data.return_value;//获得返回的UK中地址21的字符串
+		                    
+		                    //这里返回对随机数的HASH结果
+		                    s_simnew1.EncString(frmlogin.ranNum.value,DevicePath);//发送命令让UK进行加密操作
+		                    
+		                }
+		                break;
+		             case 11:
+		                {
+		                    if( UK_Data.LastError!=0){ window.alert("进行加密运行算时错误，错误码为："+UK_Data.LastError.toString());s_simnew1.Socket_UK.close();return false;} 
+		                    frmlogin.return_EncData.value=UK_Data.return_value;//获得返回的加密后的字符串
+		                     
+		                     //!!!!!注意，这里一定要主动提交，
+	                        frmlogin.submit (); 
+	 
+		                     //所有工作处理完成后，关掉Socket
+		                     s_simnew1.Socket_UK.close();
+		                }
+		                break;
+	            }
+		    } 
+		    s_simnew1.Socket_UK.onclose = function(){
+
+		    }
+			return true;
+		}
+		catch (e) 
+		{
+			alert(e.name + ": " + e.message);
+		}
+
+	}
+
+	function Handle_IE10() 
+	{
+		var DevicePath,ret,n,mylen;
+		try
+		{
+		
+			//建立操作我们的锁的控件对象，用于操作我们的锁
+	        var s_simnew1;
+		    //创建控件
+
+			s_simnew1=new ActiveXObject("Syunew3A.s_simnew3");
+
+	        
+	        //查找是否存在锁,这里使用了FindPort函数
+			DevicePath = s_simnew1.FindPort(0);
+			if( s_simnew1.LastError!= 0 )
+			{
+				window.alert ( "未发现加密锁，请插入加密锁。");
+				
+				return false;
+			}
+			
+			 //'读取锁的ID
+	        frmlogin.KeyID.value=toHex(s_simnew1.GetID_1(DevicePath))+toHex(s_simnew1.GetID_2(DevicePath));
+	        if( s_simnew1.LastError!= 0 )
+			{
+	            window.alert( "返回ID号错误，错误码为："+s_simnew1.LastError.toString());
+		        return false;
+			}
+			
+			//获取设置在锁中的用户名
+			//先从地址0读取字符串的长度,使用默认的读密码"FFFFFFFF","FFFFFFFF"
+			ret=s_simnew1.YReadEx(0,1,"FFFFFFFF","FFFFFFFF",DevicePath);
+			mylen =s_simnew1.GetBuf(0);
+			//再从地址1读取相应的长度的字符串，,使用默认的读密码"FFFFFFFF","FFFFFFFF"
+			frmlogin.supervisor_name.value=s_simnew1.YReadString(1,mylen, "FFFFFFFF", "FFFFFFFF", DevicePath);
+			if( s_simnew1.LastError!= 0 )
+			{
+				window.alert(  "读取用户名时错误，错误码为："+s_simnew1.LastError.toString());
+				return false;
+			}
+
+			//获到设置在锁中的用户密码,
+			//先从地址20读取字符串的长度,使用默认的读密码"FFFFFFFF","FFFFFFFF"
+			/* ret=s_simnew1.YReadEx(20,1,"HLXVIGCQ","WYYLNDYQ",DevicePath);
+			mylen =s_simnew1.GetBuf(0); */
+			//再从地址21读取相应的长度的字符串，,使用默认的读密码"FFFFFFFF","FFFFFFFF"
+			/* frmlogin.password.value=s_simnew1.YReadString(21,mylen,"HLXVIGCQ", "WYYLNDYQ", DevicePath);
+			if( s_simnew1.LastError!= 0 )
+			{
+				window.alert( "读取用户密码时错误，错误码为："+s_simnew1.LastError.toString());
+				return false;
+			} */
+
+			//这里返回对随机数的HASH结果
+			frmlogin.return_EncData.value=s_simnew1.EncString(frmlogin.ranNum.value,DevicePath);
+			if( s_simnew1.LastError!= 0 )
+			{
+					window.alert( "进行加密运行算时错误，错误码为："+s_simnew1.LastError.toString());
+					return false;
+			}
+			frmlogin.submit();	
+			
+			return ;
+
+		}
+		catch (e) 
+		{
+			alert(e.name + ": " + e.message+"。可能是没有安装相应的控件或插件");
+		}
+	}
+	
+	
+	
+	
+	
+	</script>
+</body>
+</html>

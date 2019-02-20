@@ -1,0 +1,40 @@
+#{extends 'common/back/weChatMain.html' /}
+	#{set title:'微信 | 客服管理 |邀请绑定客服账号' /}
+	#{set smallclass:6 /}
+	#{set crumbs:'微信>客服管理>邀请绑定客服账号'/}
+<div class="back-main">	
+	<div class="back-usertop">
+		<b class="left font14">邀请绑定客服</b>
+		<!-- 右侧功能按钮 -->
+		<div class="right back-rightbtns">
+			<a href="@{back.weChat.CustomerMessageCtrl.showCustomerListPre()}"><i class="iconfont">&#xe60b;</i>返回</a>
+		</div>
+	</div>
+	<form action="@{back.wechat.CustomerMessageCtrl.inviteCustomer()}" method="POST" id="" class="WeChatContent">
+			<ul class="back-ul">
+				<li>
+					<span class="lileft">客服账号</span>
+					<div class="liright">
+						<input type = "hidden" name = "customerId" value = "${customerId}">
+						<input type="text" name="kf_account" class="required " value="${kf_account}" readonly="readonly" >
+						<p class="ccc">格式为：账号前缀@公众号微信号(公众号微信号:OUYE0312)</p>
+						<p class="ccc">账号前缀最多10个字符   必须是英文、数字字符、或者下划线 </p>
+						<p class="ccc">后缀为公众号 微信号，长度不超过30个字符</p>
+					</div>
+				</li>
+				<li>
+					<span class="lileft">客服微信号</span>
+					<div class="liright">
+						<input type="text" name="invite_wx" class="required" value="">
+					</div>
+				</li>
+				<li>
+					<span class="lileft"></span>
+					<div class="liright">
+						<input type="submit" class="WeChatbut" value="提交">
+						<input type="reset" value="取消" class="WeChatbut addWeChatbut">
+					</div>
+				</li>
+			</ul>
+	</form>
+</div>

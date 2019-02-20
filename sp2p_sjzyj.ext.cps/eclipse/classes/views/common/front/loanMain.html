@@ -1,0 +1,17 @@
+#{extends 'common/frontMain.html' /}
+#{set AItem:2 /}
+
+<!-- 二级导航 -->
+<div class="second-navbox">
+	<ul class="container clearfix second-nav">
+		#{list productList}
+		<li><a href="@{front.LoanCtrl.toLoanPre(_?.id)}" id="${_?.get('id')}" title="" target="_self">${_?.get("name")}</a></li>
+		#{/list}
+	</ul>
+</div>
+<!-- 二级导航end -->
+
+
+<!-- main Content start -->
+#{doLayout /}
+<!-- main Content start -->

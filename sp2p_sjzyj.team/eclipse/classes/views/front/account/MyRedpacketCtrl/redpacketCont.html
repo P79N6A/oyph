@@ -1,0 +1,36 @@
+*{
+	被包含页面:(*Cont.html页面都是被包含页面)
+	主页面在:/com.shovesoft.sp2p.main/app/views/front/account/MyRewardCtrl/awardPre.html
+}*
+
+<!-- 红包模块的展示位置 -->
+<div class="tab-cont none clearfix account-manange" id="extTabRedpacket">
+</div>
+
+<script type="text/javascript">
+	require(['front'],function(front){
+		$(".tab-menu").children("a[id='extRedpacket']").click(function(){
+			var tab = $("#extTabRedpacket");
+			var flag = tab.children("div").length == 0;
+			if(flag  || $(".account-main").is(":hidden")){
+				showMyRedpackets();
+			}
+		});
+		
+	});
+	
+	function showMyRedpackets(){
+		$.ajax({
+			url : "@{front.account.MyRedpacketCtrl.showMyRedpacketsPre()}",
+			type : "GET",
+			success : function(data) {
+				var flag = interceptorCheck(data);
+				if(!flag){
+					return;
+				}
+				$("#extTabRedpacket").html(data);
+			}
+	    });
+	}
+
+</script>

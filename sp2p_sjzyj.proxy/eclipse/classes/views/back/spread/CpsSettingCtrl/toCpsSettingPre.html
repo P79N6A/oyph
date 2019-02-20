@@ -1,0 +1,113 @@
+#{extends 'back/spread/cpsMain.html' /}
+	#{set title:'推广 | CPS | CPS规则' /}
+	#{set smallclass:1 /}
+	#{set crumbs:'推广>CPS>CPS规则'/}
+
+<div class="back-main">
+	<div class="back-cont">
+		<div class="back-infor">
+			<form action="@{back.spread.CpsSettingCtrl.editCpsSetting()}" method="POST" id="form_cpsSetting">
+				#{authenticityToken /}
+				<h2 class="back-infor-head"><span class="left">CPS规则</span>
+				#{rightMng rightId:704002}
+					<a href="javascript:void(0);" class="right iconfont finance-edit" data-title="编辑" >&#xe602;</a>
+				#{/rightMng}
+				</h2>
+				<div class="back-infor-lcset">
+					<span class="lileft">注册一次性返佣：</span>
+					<div class="liright">
+						<label class="back-unitinput">
+							<input type="text" name="rebate_reg" disabled="disabled" data-title="0~100正整数" oninput="$(this).ndigitInteger(3)" onpropertychange="$(this).ndigitInteger(3)" value="${rebate_reg}" class="width05 iffocus"/><i class="unit">元</i>
+						</label>
+					</div>
+					
+					<span class="lileft">理财持续返佣比：</span>
+					<div class="liright">
+						<label class="back-unitinput">
+							<input type="text"  name="rebate_invest" disabled="disabled" data-title="0~10的实数,可保留一位小数"  oninput="$(this).discountRange()" onpropertychange="$(this).discountRange()" value="${rebate_invest}" class="width05 iffocus"/><i class="unit">‰</i>
+						</label>
+					</div>
+					
+					<span class="lileft">理财服务费折扣：</span>
+					<div class="liright">
+						<label class="back-unitinput">
+							<input type="text"  name="discount_invest" disabled="disabled" data-title="0~10的实数，可保留一位小数" oninput="$(this).discountRange()" onpropertychange="$(this).discountRange()" value="${discount_invest}" class="width05 iffocus"/><i class="unit">折</i>
+						</label>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+
+
+<!-- 页面js -->
+<script type="text/javascript">
+	require(["back"],function(back){
+		require(["validation/validateExt"]);
+
+		$(".back-infor").each(function() {
+			var that = this, 
+				editBtn = $(this).find(".finance-edit"), 
+				editText = $(this).find("select,input:not(.easyui-datetimebox),textarea");
+			editText.prop("disabled", true);
+			editBtn.click(function() {
+				disable = editText.prop("disabled");
+				if (disable) {
+					editBtn.html("&#xe630;").data("title", "保存");
+					
+					$(".titlebox").text(editBtn.data('title'));
+					editText.prop("disabled",!disable);
+					editText.eq(0).focus();
+				} else {
+					var emailForm = $(that) .children( "form[id='form_cpsSetting']");
+					if (emailForm.eq(0).length != 0) {
+						emailForm.submit();
+					}
+				}
+			});
+		});
+		
+		
+		$("form[id='form_cpsSetting']").validate({
+			errorPlacement: function(error, element) {
+				error.addClass('back-notice').insertAfter(element.parent());
+			},
+			rules:{
+				"rebate_reg":{
+					required:true,
+					digits:true,
+					range:[0,100]
+				},
+				"rebate_invest":{
+					required:true,
+					isFloat:true,
+					range:[0,10]
+				},
+				"discount_invest":{
+					required:true,
+					isFloat:true,
+					range:[0,10]
+				}
+			},
+			messages:{
+				"rebate_reg":{
+					required:"请输入注册一次性返佣金额",
+					digits:'一次性返佣金额为0~100的正整数',
+					range:'一次性返佣金额为0~100的正整数'
+				},
+				"rebate_invest":{
+					required:"请输入持续理财返佣千分比",
+					isFloat:"0~10的实数，可带一位小数",
+					range:"0~10的实数，可带一位小数"
+				},
+				"discount_invest":{
+					required:"请输入理财手续费折扣",
+					isFloat:"0~10的实数，可带一位小数",
+					range:"0~10的实数，可带一位小数"
+				}
+			}
+		});
+	});
+</script>	

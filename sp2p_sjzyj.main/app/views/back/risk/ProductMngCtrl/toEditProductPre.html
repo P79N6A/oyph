@@ -1,0 +1,889 @@
+#{extends 'common/back/riskMain.html' /}
+	#{set title:'风控 | 借款产品 | 编辑借款产品' /}
+	#{set smallclass:2 /}
+	#{set crumbs:'风控>借款产品>编辑借款产品'/}
+
+
+<div class="back-main">
+	<!-- 头部筛选条件 -->
+	<div class="back-usertop">
+		<b class="left font14">编辑借款产品</b>
+		<!-- 右侧功能按钮 -->
+		<div class="right back-rightbtns">
+			<a href="javascript:backAndRefresh('@{back.risk.ProductMngCtrl.showProductPre}');"><i class="iconfont">&#xe60b;</i>返回</a>
+		</div>
+	</div>
+	<form action="@{back.risk.ProductMngCtrl.editProduct()}" method="POST" id="pageSave">
+	#{authenticityToken /}
+	<div class="back-cont">
+		<div class="back-infor">
+			<h2 class="back-infor-head">
+				<span class="left">产品简介</span>
+				<input type="hidden" id="productId" name="productId" value="${product?.id}"/>
+			</h2>
+			<ul class="back-infor-set">
+				<li>
+					<span class="lileft">类型</span>
+					<div class="liright">
+						${product?.getType().value}
+					</div>
+				</li>
+				<li>
+					<span class="lileft">产品</span>
+					<div class="liright">
+						${product?.name}
+					</div>
+				</li>
+				<!-- lvweihuan -->
+				<li>
+					<span class="lileft">标识图片</span>
+					<div class="liright">
+						<span class="back-imgarea">
+							<!-- 没有上传图片 -->
+							#{if product?.img_logo_url == null ||product?.img_logo_url == ""}
+								<span class="back-noimg" title="您还没有上传图片"></span>
+							#{/if}
+							#{else}
+								<!-- 上传图片后隐藏back-noimg显示img-->
+								<img src="${product?.img_logo_url}" onerror="this.src='/public/common/default.jpg'"  class="backupimg" height="100" width="200" id='imgLogo' name="imgLogo" alt="" title="" />
+							#{/else}
+						</span>
+						<input type="hidden" id="imgLogourl" name="product.img_logo_url" value="${product?.img_logo_url}">
+						<span class="back-upimg">
+							<label class="back-upbtn">
+								<input type="file" class="upload_file" accept=".jpg,.jpeg,.png,.gif" value="" name="imgFile" id="imgLogoFile" onchange="uploadLogoImg()"/>
+								<i class="iconfont">&#xe608;</i>本地上传
+							</label>
+							
+							<label class="back-lib-upbtn back-cropbtn" onclick="cropImg(120,70,1);" id="cropImgLogoLabel" style="display: none;">
+								<b class="iconfont">&#xe642;</b>裁剪
+							</label>
+								
+								
+							<label class="back-lib-upbtn">
+								<!-- <b class="iconfont">&#xe634;</b>从素材库中选择 -->
+							</label>
+							<p class="back-imginfor-note">120*70&nbsp;jpg/png&nbsp;大小不超过2M</p>
+							<div class="back-upload-imginfor">
+								#{if product?.img_logo_resolution != ""} 
+									<span id="resolutionLogoshow">${product?.img_logo_resolution}&nbsp;</span><span id="formatLogoshow">${product?.img_logo_format}&nbsp;</span><span id="sizeLogoshow">${product?.img_logo_size}</span>
+								#{/if}
+								#{else}
+									<span id="resolutionLogoshow">&nbsp;</span><span id="formatLogoshow">&nbsp;</span><span id="sizeLogoshow">&nbsp;</span>
+								#{/else}
+							</div>
+							<!-- 图片参数，用于保存 -->
+							<input type="hidden" id="imageLogoResolution" name="product.img_logo_resolution" value="${product?.img_logo_resolution}">
+							<input type="hidden" id="imageLogoSize" name="product.img_logo_size" value="${product?.img_logo_size}">
+							<input type="hidden" id="imageLogoFormat" name="product.img_logo_format" value="${product?.img_logo_format}">
+						</span>
+					</div>
+				</li>
+				<!-- lvweihuan -->
+				<li>
+					<span class="lileft">产品图片</span>
+					<div class="liright">
+						<span class="back-imgarea product_img">
+							<!-- 没有上传图片 -->
+							#{if product?.image_url == null ||product?.image_url == ""}
+								<span class="back-noimg" title="您还没有上传图片"></span>
+							#{/if}
+							#{else}
+								<!-- 上传图片后隐藏back-noimg显示img-->
+								<img src="${product?.image_url}" onerror="this.src='/public/common/default.jpg'" class="backupimg" height="100" width="200" id='image' name="image" alt="" title="" />
+							#{/else}
+						</span>
+						<input type="hidden" id="imgurl" name="product.image_url" value="${product?.image_url}">
+						<span class="back-upimg">
+							<label class="back-upbtn">
+								<input type="file" class="upload_file" value="" accept=".jpg,.jpeg,.png,.gif" name="imgFile" id="imgFile" onchange="upload()"/>
+								<i class="iconfont">&#xe608;</i>本地上传
+							</label>
+							
+							#{if product?.image_url != null}
+								<label class="back-lib-upbtn back-cropbtn"  onclick="cropImg(1920,400,1);" id="cropImgLabel">
+									<b class="iconfont">&#xe642;</b>裁剪
+								</label>
+							#{/if}
+								
+							<label class="back-lib-upbtn">
+								<!-- <b class="iconfont">&#xe634;</b>从素材库中选择 -->
+							</label>
+							<p class="back-imginfor-note">1920*400&nbsp;jpg/png&nbsp;大小不超过2M</p>
+							<div class="back-upload-imginfor">
+								#{if product?.image_resolution != ""} 
+									<span id="resolutionshow">${product?.image_resolution}&nbsp;</span><span id="formatshow">${product?.image_format}&nbsp;</span><span id="sizeshow">${product?.image_size}</span>
+								#{/if}
+								#{else}
+									<span id="resolutionshow">&nbsp;</span><span id="formatshow">&nbsp;</span><span id="sizeshow">&nbsp;</span>
+								#{/else}
+							</div>
+							<!-- 图片参数，用于保存 -->
+							<input type="hidden" id="imageResolution" name="product.image_resolution" value="${product?.image_resolution}">
+							<input type="hidden" id="imageSize" name="product.image_size" value="${product?.image_size}">
+							<input type="hidden" id="imageFormat" name="product.image_format" value="${product?.image_format}">
+						</span>
+					</div>
+				</li>
+				<li>
+					<span class="lileft">APP端</span>
+					<div class="liright">
+						<span class="back-imgarea">
+							<!-- 没有上传图片 -->
+							#{if product?.image_app_url == null ||product?.image_app_url == ""}
+								<span class="back-noimg" title="您还没有上传图片"></span>
+							#{/if}
+							#{else}
+								<!-- 上传图片后隐藏back-noimg显示img-->
+								<img src="${product?.image_app_url}" onerror="this.src='/public/common/default.jpg'" class="backupimg" height="100" width="200" id='imageApp' name="imageApp" alt="" title="" />
+							#{/else}
+						</span>
+						<input type="hidden" id="imgAppurl" name="product.image_app_url" value="${product?.image_app_url}">
+						<span class="back-upimg">
+							<label class="back-upbtn">
+								<input type="file" name="imgFile" id="imgAppFile" accept=".jpg,.jpeg,.png,.gif" onchange="uploadAppImg()" />
+								<i class="iconfont">&#xe608;</i>本地上传
+							</label>
+							
+							<label class="back-lib-upbtn back-cropbtn"  onclick="cropImg(640,230,2);" id="cropAppLabel" #{if product?.image_app_url == null ||product?.image_app_url == ""} style="display: none;" #{/if}>
+								<b class="iconfont">&#xe642;</b>裁剪
+							</label>
+								
+								
+							<label class="back-lib-upbtn">
+								<!-- <b class="iconfont">&#xe634;</b>从素材库中选择 -->
+							</label>
+							<p class="back-imginfor-note">640*230&nbsp;jpg/png&nbsp;大小不超过2M</p>
+							<div class="back-upload-imginfor">
+								#{if product?.image_app_resolution != ""} 
+									<span id="resolutionAppshow">${product?.image_app_resolution}&nbsp;</span><span id="formatAppshow">${product?.image_app_format}&nbsp;</span><span id="sizeAppshow">${product?.image_app_size}</span>
+								#{/if}
+								#{else}
+									<span id="resolutionAppshow">&nbsp;</span><span id="formatAppshow">&nbsp;</span><span id="sizeAppshow">&nbsp;</span>
+								#{/else}
+							</div>
+							<!-- 图片参数，用于保存 -->
+							<input type="hidden" id="imageAppResolution" name="product.image_app_resolution" value="${product?.image_app_resolution}">
+							<input type="hidden" id="imageAppSize" name="product.image_app_size" value="${product?.image_app_size}">
+							<input type="hidden" id="imageAppFormat" name="product.image_app_format" value="${product?.image_app_format}">
+						</span>
+					</div>
+				</li>
+				<li>
+					<span class="lileft">排序时间</span>
+					<div class="liright">
+						<input type="text" class="easyui-datetimebox width01" value='${product.order_time?.format('yyyy/MM/dd HH:mm:ss')}' name="order_time"/>
+					</div>
+				</li>
+			</ul>
+		</div>
+		<div class="back-infor">
+			<h2 class="back-infor-head">
+				<span class="left">产品规则</span>
+			</h2>
+			<ul class="back-infor-set">
+				<li>
+					<span class="lileft">额度范围</span>
+					<div class="liright">
+						<label class="back-unitinput">
+							<input type="text" class="width02 iffocus" value="#{formatIntMoney money:product?.min_amount/}" maxlength="9" name="product.min_amount" id="minAmount" oninput="$(this).ndigitInteger(9)" onpropertychange="$(this).ndigitInteger(9)"/>
+							<i class="unit">元</i>
+						</label>
+						&nbsp;&nbsp;--&nbsp;&nbsp;
+						<label class="back-unitinput">
+							<input type="text" class="width02 iffocus" value="#{formatIntMoney money:product?.max_amount/}" maxlength="9" name="product.max_amount" id="maxAmount" oninput="$(this).ndigitInteger(9)" onpropertychange="$(this).ndigitInteger(9)"/>
+							<i class="unit">元</i>
+						</label>
+						<span class="back-text-limit">额度范围最低额度大于等于1000，最高额度小于等于1亿,最高额须大于或等于最低额度，只允许输入1000正整数倍的数字</span>
+					</div>
+					
+				</li>
+				<li>
+					<span class="lileft">年利率范围</span>
+					<div class="liright">
+						<label class="back-unitinput">
+							<input type="text" class="width02 iffocus" value="${product?.min_apr}" name="product.min_apr" id="minApr" oninput="$(this).proportionRange()" onpropertychange="$(this).proportionRange()"/>
+							<i class="unit">%</i>
+						</label>
+						&nbsp;&nbsp;--&nbsp;&nbsp;
+						<label class="back-unitinput">
+							<input type="text" class="width02 iffocus" value="${product?.max_apr}" name="product.max_apr" id="maxApr" oninput="$(this).proportionRange()" onpropertychange="$(this).proportionRange()"/>
+							<i class="unit">%</i>
+						</label>
+						<span class="back-text-limit">年利率范围最低利率需大于等于0.1，最高利率小于等于100.0%，最高利益大于等于最低利率，只允许输入为一位小数的数字</span>
+					</div>
+				</li>
+				<li>
+					<span class="lileft">期限范围</span>
+					<div class="liright">
+						<select name="period_unit" id="periodUnit">
+							#{list productPeriodUnit}
+							<option value='${_?.code}' id='periodUnit${_?.code}' #{if product?.period_unit.code == _?.code}selected="selected"#{/if}>${_?.value}</option>
+							#{/list}
+						</select>
+						<input type="text" class="iffocus width02" name="product.min_period" id="minPeriod" value='${product?.min_period}' oninput="$(this).ndigitInteger(2)" onpropertychange="$(this).ndigitInteger(2)"/>
+						&nbsp;&nbsp;--&nbsp;&nbsp;
+						<input type="text" class="iffocus width02" name="product.max_period" id="maxPeriod" value='${product?.max_period}' oninput="$(this).ndigitInteger(2)" onpropertychange="$(this).ndigitInteger(2)"/>
+						<span class="back-text-limit">1~36月/1~30天</span>
+					</div>
+				</li>
+				<li>
+					<span class="lileft">还款方式</span>
+					<div class="liright">
+						#{list productRepaymentType}
+						<label class="back-deallooker">
+								<input type="checkbox" name="repayment_type" value="${_?.code}" id="repaymentType_${_?.code}"/>${_?.value}
+						</label>
+						#{/list}
+					</div>
+				</li>
+				<li>
+					<span class="lileft">购买方式</span>
+					<div class="liright">
+						<select onchange="changeBuytype()" id="buy_type" name="buy_type">
+							#{list productBuyType}
+							<option value="${_?.code}" id="buyType${_?.code}" #{if product?.buy_type.code == _?.code}selected="selected"#{/if}>${_?.value}</option>
+							#{/list}
+						</select>
+						<label class="back-buytype">
+							<span>起投金额</span>
+							<label class="back-unitinput">
+								<input type="text" class="width02 iffocus" value="#{formatIntMoney money:product?.min_invest_amount/}" name="product.min_invest_amount" oninput="$(this).ndigitInteger(4)" onpropertychange="$(this).ndigitInteger(4)"/>
+								<i class="unit">元</i>
+							</label>
+						</label>
+						<label class="back-buytype" style="display: none;" id="notice_buy_type">
+							<span>拆分份数</span>
+							<label class="back-unitinput">
+								<input type="text" class="width02 iffocus" value="${product?.invest_copies}" name="product.invest_copies" oninput="$(this).ndigitInteger(3)" onpropertychange="$(this).ndigitInteger(3)"/>
+								<i class="unit">份</i>
+							</label>
+						</label>
+						<span class="back-text-limit">1~1000元起投/10、20、50、100份出售</span>
+					</div>
+				</li>
+				<li>
+					<span class="lileft">保证金占比</span>
+					<div class="liright">
+						<label class="back-unitinput">
+							<input type="text" class="width02 iffocus" value="#{formatIntMoney money:product?.bail_scale/}" name="product.bail_scale" oninput="$(this).ndigitInteger(3)" onpropertychange="$(this).ndigitInteger(3)"/>
+							<i class="unit">%</i>
+						</label>
+						<span class="back-text-limit">0~100正整数，在提交借款申请时冻结，财务放款时解冻</span>
+					</div>
+				</li>
+			</ul>
+		</div>
+		<div class="back-infor">
+			<h2 class="back-infor-head">
+				<span class="left">收费方式</span>
+			</h2>
+			<ul class="back-infor-set">
+				<li>
+					<span class="lileft">借款服务费</span>
+					<div class="liright" id="loanmng_fee_month">
+						借款金额&nbsp;*&nbsp;
+						<label class="back-unitinput">
+							<input type="text" class="width07 iffocus" value="" name="loan_amount_rate" id="loan_amount_rate" oninput="$(this).percentage()" onpropertychange="$(this).percentage()"/>
+							<i class="unit">%</i>
+						</label>
+						+&nbsp;借款金额&nbsp;*
+						（期数-&nbsp;
+						<input type="text" class="width02 iffocus" value="" name="sub_period" id="sub_period" oninput="$(this).ndigitInteger(2)" onpropertychange="$(this).ndigitInteger(2)"/>
+						）*&nbsp;
+						<label class="back-unitinput">
+							<input type="text" class="width07 iffocus" value="" name="sub_loan_amount_rate" id="sub_loan_amount_rate" oninput="$(this).percentage()" onpropertychange="$(this).percentage()"/>
+							<i class="unit">%</i>
+						</label>
+						<span class="back-text-limit">借款服务费支持按比例收取和按月收取两种模式，在放款的时候一次性收取，最高不超过项目总额的50%</span>
+					</div>
+					<div class="liright none" id="loanmng_fee_day">
+						借款金额&nbsp;*&nbsp;
+						<label class="back-unitinput">
+							<input type="text" class="width07 iffocus" value="" name="loan_amount_rate2" id="loan_amount_rate2" oninput="$(this).percentage()" onpropertychange="$(this).percentage()"/>
+							<i class="unit">%</i>
+						</label>
+						&nbsp;/&nbsp;${common.constants.Constants.DAY_INTEREST}&nbsp;*&nbsp;
+						借款天数
+						<span class="back-text-limit">借款服务费支持按比例收取和按月收取两种模式，在放款的时候一次性收取，最高不超过项目总额的50%</span>
+					</div>
+				</li>
+				<li>
+					<span class="lileft">理财服务费</span>
+					<div class="liright">
+						投资收益&nbsp;*&nbsp;
+						<label class="back-unitinput">
+							<input type="text" class="width07 iffocus" value="" name="invest_amount_rate" id="invest_amount_rate" oninput="$(this).percentage()" onpropertychange="$(this).percentage()"/>
+							<i class="unit">%</i>
+						</label>
+						<span class="back-text-limit">理财服务费在还款的时候分期收取，每次收取利息的一定比例</span>
+					</div>
+				</li>
+				<li>
+					<span class="lileft">逾期罚息费</span>
+					<div class="liright">
+						本期账单金额&nbsp;*&nbsp;
+						<label class="back-unitinput">
+							<input type="text" class="width07 iffocus" value="" name="overdue_amount_rate" id="overdue_amount_rate" oninput="$(this).percentage()" onpropertychange="$(this).percentage()"/>
+							<i class="unit">%</i>
+						</label>*&nbsp;逾期天数
+						<span class="back-text-limit">逾期罚息按借款金额比例和逾期天数计算，每天定时清算，在还款时候同时收取</span>
+					</div>
+				</li>
+			</ul>
+		</div>
+		<div class="back-infor">
+			<h2 class="back-infor-head">
+				<span class="left">审核科目</span>
+			</h2>
+			<ul class="back-audit-subject">
+				#{list productAuditSubject}
+					<li class="iconfont" data-title='${_?.description}'><span class="subject-name" id="${_?.id}">${_?.id}&nbsp;${_?.name}<i>×</i></span></li>
+				#{/list}
+			</ul>
+		</div>
+		<p class="back-audit-btns">
+            <input type="hidden" id="service_fee_rule" name="service_fee_rule" value=""/>
+            <input type="hidden" id="audit_subjects" name="audit_subjects" value=""/>
+			<input type="submit" id="pageSave" value="保存" class="bgbtn">
+			<input type="button" value="取消" class="bdbtn" onclick="backAndRefresh('@{back.risk.ProductMngCtrl.showProductPre}');">
+		</p>
+	</div>
+	</form>
+</div>
+
+<!-- 图片裁切弹窗 begin -->
+<div class="dialog crop-dialog">
+	<div class="dialog-bg"></div>
+	<div class="dialog-cont">
+		<div class="dialog-head">
+			<span class="left">图片裁剪</span>
+			<a href="javascript:void(0);" class="dialog-close hover-green" id="dialogClose">×</a>
+		</div>
+		<div class="crop-box">
+			<div class="clearfix">
+				<div class="crop-img">
+					<img src="" id="cropimg" />
+				</div>
+				<div class="crop-right">
+					<div class="crop-preview">
+						<div class="preview-container">
+							<img src="" />
+						</div>
+					</div>
+					<ul class="crop-handle">
+						<li><label class=""><input type="radio" id="maxSize" name="cropsize" />最大尺寸</label></li>
+						<li><label class=""><input type="radio" id="standardSize" name="cropsize" />标准尺寸</label></li>
+					</ul>
+				</div>
+			</div>
+			<p class="back-audit-btns">
+				<input type="button" value="保存" class="bgbtn" onclick="saveCropImg(cropImgSuccess)">
+				<input type="button" value="取消" class="bdbtn dialog-console">
+			</p>
+			<input type="hidden" id="x"/>
+			<input type="hidden" id="y"/>
+			<input type="hidden" id="w"/>
+			<input type="hidden" id="h"/>
+			<input type="hidden" id="imageType" /><!-- 图片格式 -->
+			<input type="hidden" id="cutType" /><!-- 图片类型 -->
+		</div>
+	</div>
+</div>
+<!-- 图片裁切弹窗 end -->
+
+
+<!-- 素材库弹窗 -->
+#{imgLib /}
+
+
+
+<!-- 页面js -->
+<script type="text/javascript">
+	require(["back"],function(back){
+		$(".subject-name").click(function(){
+			$(this).toggleClass("selected");
+		});
+		//日期时间组件
+		require(["datatime"]);
+		//效验组件
+		require(["validation/validateExt"]);
+		//上传组件
+		require(["ajaxfileupload"]);
+		
+		var repaymentType = '${product?.repayment_type}',
+		repaymentArray = repaymentType.split(','),
+		$repaymentCheckbox = $(".back-deallooker").children("input");
+		$repaymentCheckbox.each(function(){
+			if(repaymentArray.indexOf($(this).val()) != -1){
+				$(this).prop('checked', true);
+			}else{
+				$(this).removeAttr('checked');
+			}
+		});
+		
+		var service_fee_rule = "${product?.service_fee_rule}";
+		var replacequot = service_fee_rule.replace(/(&quot;)/g, '');//去掉双引号
+		var ruleJson = eval("("+replacequot+")");
+		$("#loan_amount_rate").val(ruleJson.loan_amount_rate);
+		$("#loan_amount_rate2").val(ruleJson.loan_amount_rate);
+		$("#sub_period").val(ruleJson.sub_period);
+		$("#sub_loan_amount_rate").val(ruleJson.sub_loan_amount_rate);
+		$("#invest_amount_rate").val(ruleJson.invest_amount_rate);
+		$("#overdue_amount_rate").val(ruleJson.overdue_amount_rate);
+		
+		var auditSubject = '${product?.audit_subjects}',
+		subjectArray = auditSubject.split(',');
+		$(".subject-name").each(function(){
+			if(subjectArray.indexOf($(this).attr('id')) != -1){
+				$(this).addClass('selected');
+			}else{
+				$(this).removeClass('selected');
+			}
+		});
+		
+		//审核科目最多可以选10个
+		$(".back-audit-subject").children("li").click(function(){
+			var i = 0;
+			$(".back-audit-subject").children("li").each(function(){
+				if($(this).children("span").hasClass('selected')){
+					i++;
+				}
+			});
+			if(i>10){
+				$(this).children("span").removeClass('selected');
+				weakDialog("审核科目最多10项");
+			}
+		});
+		var lump_sum_repayment = ${models.core.entity.t_product.RepaymentType.LUMP_SUM_REPAYMENT.code};//一次性还款的code
+		$('#periodUnit').bind('change',function(){
+			switch($(this).val()){
+				case '2': $('#loanmng_fee_month').show();
+						$('#loanmng_fee_day').hide();
+						$(".back-deallooker").children().each(function(){
+							if($(this).val()!=lump_sum_repayment){
+								$(this).attr('disabled', false);
+							}
+						});
+						break;
+				case '1': $('#loanmng_fee_day').show();
+						$('#loanmng_fee_month').hide();
+						//天标只能一次性还款
+						$(".back-deallooker").children().each(function(){
+							if($(this).val()!=lump_sum_repayment){
+								$(this).attr('disabled', true);
+								$(this).removeAttr('checked');
+							}else{//天标默认把一次性还款勾上
+								$(this).prop('checked', true);
+							}
+						});
+						break;
+			}
+		}).trigger("change");
+		
+		changeBuytype();
+		
+		$("#pageSave").validate({
+			errorPlacement: function(error, element) {
+				if(element.parent().hasClass("back-unitinput") && element.parent().parent().hasClass("back-buytype")){
+					error.addClass('back-notice').insertAfter($("#notice_buy_type"));
+				}else if(element.parent().hasClass("back-unitinput") || element.parent().hasClass("back-deallooker")){
+					error.addClass('back-notice').insertAfter(element.parent());
+				} else {
+					error.addClass('back-notice').insertAfter(element);
+				}
+			},
+			rules: {
+				"product.name": {
+					required: true,
+					rangelength: [2,5]
+				},
+				"order_time":{
+					required: true
+				},
+				"product.min_amount": {
+					required: true,
+					digits: true,
+					isThousandMultiple: true,
+					range: [1000, 100000000]
+				},
+				"product.max_amount" : {
+					required: true,
+					digits: true,
+					isThousandMultiple: true,
+					range: [1000, 100000000],
+					isBigger: "#minAmount"
+				},
+				"product.min_apr" : {
+					required: true,
+					number:true,
+					isFloat:true,
+					range: [0.1, 100]
+				},
+				"product.max_apr" : {
+					required: true,
+					number:true,
+					isFloat:true,
+					range: [0.1, 100],
+					isBigger: "#minApr"
+				},
+				"product.min_period": {
+					required: true,
+					digits: true,
+					changeRange: "#periodUnit"
+				},
+				"product.max_period": {
+					required: true,
+					digits: true,
+					changeRange: "#periodUnit",
+					isBigger: "#minPeriod"
+				},
+				"repayment_type":{
+					required: true
+				},
+				"product.min_invest_amount":{
+					buyType1:"#buy_type"
+				},
+				"product.invest_copies":{
+					buyType2:"#buy_type"
+				},
+				"product.bail_scale": {
+					required: true,
+					digits: true,
+					range: [0, 100]
+				},
+				"loan_amount_rate":{
+					required: true,
+					number: true,
+					range: [0, 100]
+				},
+				"loan_amount_rate2":{
+					required: true,
+					number: true,
+					range: [0, 100]
+				},
+				"sub_period":{
+					required: true,
+					digits: true,
+				},
+				"sub_loan_amount_rate":{
+					required: true,
+					number: true,
+					range: [0, 100]
+				},
+				"invest_amount_rate":{
+					required: true,
+					number: true,
+					range: [0, 100]
+				},
+				"overdue_amount_rate":{
+					required: true,
+					number: true,
+					range: [0, 100]
+				}
+			},
+			messages: {
+				"product.name": {
+					required: "请输入借款产品名称",
+					rangelength: "产品名称长度在2~5之间"
+				},
+				"product.min_amount": {
+					required: "请输入最小额度",
+					digits: "只能为正整数",
+					range: "范围是1000~1亿",
+					isThousandMultiple: "只能为1000的正整数倍"
+				},
+				"product.max_amount": {
+					required: "请输入最大额度",
+					digits: "只能为正整数",
+					range: "范围是1000~1亿",
+					isBigger: "必须大于最小额度",
+					isThousandMultiple: "只能为1000的正整数倍"
+				},
+				"product.min_apr" : {
+					required: "请输入最小年利率",
+					range: "范围0.1~100"
+				},
+				"product.max_apr" : {
+					required: "请输入最大年利率",
+					isBigger: "必须大于最小年利率",
+					range: "范围0.1~100"
+				},
+				"product.min_period" : {
+					required: "请输入最小期限",
+					digits: "必须为正整数"
+				},
+				"product.max_period" : {
+					required: "请输入最大期限",
+					digits: "必须为正整数",
+					isBigger: "期限最大值要大于最小值"
+				},
+				"product.bail_scale": {
+					required: "请输入保证金占比",
+					digits: "请输入正整数",
+					range: "范围0~100"
+				},
+				"loan_amount_rate":{
+					required: "请输入百分比",
+					range: "范围0.00~100.00"
+				},
+				"loan_amount_rate2":{
+					required: "请输入百分比",
+					range: "范围0.00~100.00"
+				},
+				"sub_period":{
+					required: "请输入减去的期数",
+					digits: "必须正整数"
+				},
+				"sub_loan_amount_rate":{
+					required: "请输入百分比",
+					digits: "必须正整数",
+					range: "范围0.00~100.00"
+				},
+				"invest_amount_rate":{
+					required: "请输入百分比",
+					digits: "必须正整数",
+					range: "范围0.00~100.00"
+				},
+				"overdue_amount_rate":{
+					required: "请输入百分比",
+					digits: "必须正整数",
+					range: "范围0.00~100.00"
+				}
+			},
+			submitHandler:function(form){
+				if($("#periodUnit").val()=='2'){//月标
+					var loan_amount_rate = "loan_amount_rate";
+				}else{//天标
+					var loan_amount_rate = "loan_amount_rate2";
+					$("#sub_period").val('0');
+					$("#sub_loan_amount_rate").val('0');
+				}
+				var service_fee_rule = '{"loan_amount_rate":'+$('#'+loan_amount_rate).val()
+					+',"sub_period":'+$("#sub_period").val()
+					+',"sub_loan_amount_rate":'+$("#sub_loan_amount_rate").val()
+					+',"invest_amount_rate":'+$("#invest_amount_rate").val()
+					+',"overdue_amount_rate":'+$("#overdue_amount_rate").val()+'}';
+				$("#service_fee_rule").val(service_fee_rule);
+				
+				var audit_subjects = new Array();
+				$(".subject-name").each(function(){
+					if($(this).hasClass("selected")){
+						audit_subjects.push($(this).attr('id'));
+					}
+				});
+				if($("#imgurl").val()=='' || $("#imgurl").val()==undefined || $("#imgurl").val()==null){
+					alert("请上传产品图片!");
+					return false;
+				}
+				if(audit_subjects.length==0){
+					alert("请选择审核科目!");
+					return false;
+				}
+				$("#audit_subjects").val(audit_subjects.join()); 
+	            form.submit();
+			}
+		});
+	});
+
+	function upload(){
+		var fileId = "imgFile";
+		var file = $("#" + fileId).val();
+		var pos = file.lastIndexOf("\\");
+		var fileName = file.substring(pos + 1);
+		
+		$.ajaxFileUpload({
+			url : '@{back.risk.ProductMngCtrl.uploadProductImage()}',
+			secureuri : false,
+			fileElementId : fileId,
+			data:{
+				"fileName":fileName
+			},
+			dataType : 'json',
+			success : function(result) {
+				if(result.code == 1){
+					var data = result.obj;
+					var html = "<img src='"+data.staticFileName+"' onclick='javascript:$(this).preview()'  onerror="+'"this.src='+"'/public/common/default.jpg'"+'"'+ " class='backupimg' height='100' width='200' id='image' name='image' alt='' title='' />";
+					$(".product_img:first").html(html);
+					$("#image").attr("src", data.staticFileName);
+					$("#imageSize").val(data.size+"kb");
+					$("#imageFormat").val(data.fileSuffix);
+					$("#imageResolution").val(data.imageResolution);
+					$("#resolutionshow").html(data.imageResolution+"&nbsp;");
+					$("#formatshow").html(data.fileSuffix+"&nbsp;");
+					$("#sizeshow").html(data.size+"kb");
+					$("#imgurl").val(data.staticFileName);
+				} else {
+					alert(result.msg);
+				}
+			}
+		})
+	}
+	//lvweihuan
+	function uploadLogoImg(){
+		var fileId = "imgLogoFile";
+		var file = $("#" + fileId).val();
+		var pos = file.lastIndexOf("\\");
+		var fileName = file.substring(pos + 1);
+		
+		$.ajaxFileUpload({
+			url : '@{back.risk.ProductMngCtrl.uploadProductImage()}',
+			secureuri : false,
+			fileElementId : fileId,
+			data:{
+				"fileName":fileName
+			},
+			dataType : 'json',
+			success : function(result) {
+				if(result.code == 1){
+					var data = result.obj;
+					var html = "<img src='"+data.staticFileName+"' onclick='javascript:$(this).preview()'  onerror="+'"this.src='+"'/public/common/default.jpg'"+'"'+ " class='backupimg' height='100' width='200' id='imageLogo' name='imageLogo' alt='' title='' />";
+					$(".back-imgarea:first").html(html);
+					$("#imgLogo").attr("src", data.staticFileName);
+					$("#imageLogoSize").val(data.size+"kb");
+					$("#imageLogoFormat").val(data.fileSuffix);
+					$("#imageLogoResolution").val(data.imageResolution);
+					$("#resolutionLogoshow").html(data.imageResolution+"&nbsp;");
+					$("#formatLogoshow").html(data.fileSuffix+"&nbsp;");
+					$("#sizeLogoshow").html(data.size+"kb");
+					$("#imgLogourl").val(data.staticFileName);
+					$("#cropImgLogoLabel").show();
+				} else {
+					alert(result.msg);
+				}
+			}
+		})
+	}
+	//lvweihuan
+	function uploadAppImg(){
+		var fileId = "imgAppFile";
+		var file = $("#" + fileId).val();
+		var pos = file.lastIndexOf("\\");
+		var fileName = file.substring(pos + 1);
+		
+		$.ajaxFileUpload({
+			url : '@{back.risk.ProductMngCtrl.uploadProductImage()}',
+			secureuri : false,
+			fileElementId : fileId,
+			data:{
+				"fileName":fileName
+			},
+			dataType : 'json',
+			success : function(result) {
+				if(result.code == 1){
+					var data = result.obj;
+					var html = "<img src='"+data.staticFileName+"' onclick='javascript:$(this).preview()'  onerror="+'"this.src='+"'/public/common/default.jpg'"+'"'+ " class='backupimg' height='100' width='200' id='imageApp' name='imageApp' alt='' title='' />";
+					$(".back-imgarea:last").html(html);
+					$("#imageApp").attr("src", data.staticFileName);
+					$("#imageAppSize").val(data.size+"kb");
+					$("#imageAppFormat").val(data.fileSuffix);
+					$("#imageAppResolution").val(data.imageResolution);
+					$("#resolutionAppshow").html(data.imageResolution+"&nbsp;");
+					$("#formatAppshow").html(data.fileSuffix+"&nbsp;");
+					$("#sizeAppshow").html(data.size+"kb");
+					$("#imgAppurl").val(data.staticFileName);
+					if($("#cropAppLabel").css("display") == "none") {
+						$("#cropAppLabel").show();
+					}
+				} else {
+					alert(result.msg);
+				}
+			}
+		})
+	}
+	
+	function changeBuytype(){
+		$('.back-buytype').hide();
+		var lastval = $("#buy_type").val();
+		if(lastval == 1){
+			$('.back-buytype').eq(1).find("input").val('').focus().blur();
+		} else {
+			$('.back-buytype').eq(0).find("input").val('').focus().blur();
+		}
+		$("#notice_buy_type").next("label").remove()
+		$('.back-buytype').eq(lastval-1).show();
+		
+	}
+	
+	
+	//图片裁剪
+	function cropImg(width, height, cutType){
+		$("#cutType").val(cutType);
+		var size = new Array(width, height);
+		var src,imageType;
+		if(cutType == 1) {
+			src = $("#imgurl").val();
+			imageType = $("#imageFormat").val();//头像图片后缀
+		} else if(cutType == 2) {
+			src = $("#imgAppurl").val();
+			imageType = $("#imageAppFormat").val();//二维码图片后缀
+		}
+		var src = src +'?t=' + new  Date().getTime();
+		$('.crop-dialog').dialog();
+		var image = new Image();
+		image.src = src;
+		image.onload = function(){
+			require(["imgcrop"],function(crop){
+				$('.crop-img,.preview-container').find('img').attr('src',src);
+				$('#imageType').val(imageType);
+				$("input[name='cropsize']").val([]);
+				crop(size);
+			});
+		}
+	}
+
+
+	function saveCropImg(callback){
+		$.ajax({
+			url : '@{common.BackBaseController.imageCrop()}',
+			type: 'POST',
+			data : {
+				'imgSrc' : $("#cropimg").attr('src'),
+				'x' : $("#x").val(),
+				'y' : $("#y").val(),
+				'w' : $("#w").val(),
+				'h' : $("#h").val(),
+				'imageType' : $("#imageType").val(),
+				'createNewImg' : true
+			},
+			success : function(data){
+				var flag = interceptorCheck(data);
+				if(!flag){
+					return;
+				}
+				
+				if(data.code < 1){
+					alert(data.msg);
+					return;
+				}
+				
+				if (callback) {
+					callback(data.obj);
+				}
+				$("#dialogClose").trigger('click');
+				weakDialog('裁剪成功!');
+			}
+		});
+	}
+
+
+	//图片裁剪成功，回调函数 
+	var cropImgSuccess = function(data) {
+		var cutType = $("#cutType").val();
+		if(cutType == 1) {//头像裁剪
+			$("#image").attr("src", data.staticFileName);
+			$("#imgurl").val(data.staticFileName);
+			$("#imageSize").val(data.size+"kb");
+			$("#imageResolution").val(data.imageResolution);
+			$("#resolutionshow").html(data.imageResolution);
+			$("#sizeshow").html(data.size+"kb");
+		} else if(cutType == 2) {//二维码裁剪
+			$("#imageApp").attr("src", data.staticFileName);
+			$("#imgAppurl").val(data.staticFileName);
+			$("#imageAppSize").val(data.size+"kb");
+			$("#imageAppResolution").val(data.imageResolution);
+			$("#resolutionAppshow").html(data.imageResolution);
+			$("#sizeAppshow").html(data.size+"kb");
+		}
+	}
+</script>

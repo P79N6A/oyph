@@ -1,0 +1,47 @@
+#{extends 'common/back/activityMain.html' /}
+	#{set title:'活动 | 摇一摇活动 | 添加活动' /}
+	#{set smallclass:0 /}
+	#{set crumbs:'活动>摇一摇活动>添加活动'/}
+	
+<div class="back-main">
+	<!-- 头部筛选条件 -->
+	<div class="back-usertop">
+		<b class="left font14">添加活动</b>
+		<!-- 右侧功能按钮 -->
+		<div class="right back-rightbtns">
+			<a href="javascript:backAndRefresh('@{back.activity.shake.ShakeActivityCtrl.shakeActivityListPre(0)}');"><i class="iconfont">&#xe60b;</i>返回</a>
+		</div>
+	</div>
+	
+		<!-- 左侧菜单 -->
+	<div class="back-cont">
+		<form action="@{back.activity.shake.ShakeActivityCtrl.saveShakeActivity()}" method="POST" id="formShakeActivity">
+		#{authenticityToken /}
+		<div class="back-infor">
+			<h2 class="back-infor-head">活动</h2>
+			<ul class="back-infor-set">		
+				<li>
+					<span class="lileft"><i class="mustpoint">*</i>活动名称</span>
+					<div class="liright">
+						<input type="text" class="width01 iffocus required" name="name" id="activityName"/>
+						<span class="back-text-limit">例如： 2018-01-01  摇一摇活动  第一轮</span>
+					</div>
+				</li>
+				<li>
+					<span class="lileft"><i class="mustpoint">*</i>持续时间</span>
+					<div class="liright">
+						<input type="text" class="width01 iffocus required" name="ctime" id="ctime"/>
+					</div>
+				</li>
+			</ul>
+		</div>
+		<p class="back-audit-btns">
+			<input type="submit" id="pageSave" value="发布" class="bgbtn">
+			<input type="button" value="取消" class="bdbtn" onclick="backAndRefresh('@{back.activity.shake.ShakeActivityCtrl.shakeActivityListPre(0)}');">
+		</p>
+		</form>
+	</div>
+	
+	
+	
+</div>

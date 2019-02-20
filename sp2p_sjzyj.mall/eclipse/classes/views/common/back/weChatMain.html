@@ -1,0 +1,18 @@
+*{
+	后台-微信的Main页面
+}*
+#{extends 'common/supervisorMain.html' /}
+#{set AItem:14 /}
+<link rel="stylesheet" type="text/css" href="/public/back/stylesheets/weChat.css" />
+<!-- 二级导航 -->
+<ul class="back-secnav">
+	<li><a href="@{back.weChat.TextMessageCtrl.showTextListPre()}">文本回复</a></li>
+	<li><a href="@{back.weChat.ImageMessageCtrl.showImageListPre()}">图片回复</a></li>
+	<li><a href="@{back.weChat.ImageTextMessageCtrl.showImageTextListPre()}">图文回复</a></li>
+	<li><a href="@{back.weChat.MoreGraphicMessageCtrl.showMoreGraphicListPre()}">多图文回复</a></li>
+	<li><a href="@{back.weChat.GroupSentMessageCtrl.showGroupSentListPre()}">群发消息</a></li>
+	<li><a href="@{back.weChat.MenusMessageCtrl.showMenusPre()}">自定义菜单</a></li>
+	<li><a href="@{back.weChat.CustomerMessageCtrl.showCustomerListPre()}">客服管理</a></li>
+</ul>
+
+#{doLayout /}

@@ -1,0 +1,205 @@
+#{extends 'common/back/riskMain.html' /}
+	#{set title:'风控 | 转让项目' /}
+	#{set smallclass:1 /}
+	#{set crumbs:'风控>转让项目'/}
+	
+	
+<div class="back-main">
+	<!-- 头部筛选条件 -->
+	<div class="back-usertop">
+		<div class="left back-usermenu">
+			<a href="@{back.risk.DebtMngCtrl.showDebtsPre(0)}" #{if showType==0} class="selected"#{/if}>所有</a>
+			<a href="@{back.risk.DebtMngCtrl.showDebtsPre(1)}" #{if showType==1} class="selected"#{/if}>待审核</a>
+			<a href="@{back.risk.DebtMngCtrl.showDebtsPre(2)}" #{if showType==2} class="selected"#{/if}>转让中</a>
+			<a href="@{back.risk.DebtMngCtrl.showDebtsPre(3)}" #{if showType==3} class="selected"#{/if}>已成功</a>
+			<a href="@{back.risk.DebtMngCtrl.showDebtsPre(4)}" #{if showType==4} class="selected"#{/if}>失败</a>
+		</div>
+		<!-- 搜索按钮，控制搜索条件的显示隐藏 -->
+		<div class="back-search left  #{if numNo || projectName || transferName}selected#{/if}">
+			<i class="iconfont searchicon">&#xe60a;</i>搜索<i class="iconfont arrowicon">&#xe603;</i>
+		</div>
+		<!-- 右侧功能按钮 -->
+		<div class="right back-rightbtns">
+			<a href="javascript:exportList(1);"><i class="iconfont">&#xe612;</i>导出</a>
+		</div>
+	</div>
+	<!-- 搜索条件，默认隐藏 -->
+	<div class="back-search-option" #{if numNo || projectName || transferName} style="display: block;"#{/if}>
+		<form action="@{back.risk.DebtMngCtrl.showDebtsPre()}" method="GET" id="showDebtsList">
+			<input type="hidden" id="showType" name="showType" value="${showType}" /><!-- 筛选类型  -->
+			<input type="hidden" id="currPage" name="currPage"/><!-- 当前页 -->
+	  		<input type="hidden" id="pageSize" name="pageSize" value="${page?.pageSize}"/> <!-- 每页条数 -->
+	  		<input type="hidden" id="orderType" name="orderType" value="${orderType}" /><!-- 排序的类型 -->
+			<input type="hidden" id="orderValue" name="orderValue" value="${orderValue}" /><!-- 排序的值(0:降序，1:升序) -->
+	  		<input type="hidden" id="exports" name="exports"/><!-- 是否导出  -->
+	  		
+	  		<input type="text" class="iffocus" placeholder="编号" name="numNo" value="${numNo}" oninput="$(this).ndigitInteger(11)" onpropertychange="$(this).ndigitInteger(11)"  data-title="输入字母后的数字编号"/>
+	  		<input type="text" class="iffocus" placeholder="项目" name="projectName" value="${projectName}" maxlength="20"/>
+	  		<input type="text" class="iffocus"  placeholder="转让人" name="transferName" value="${transferName}" maxlength="13"/>
+			<input type="submit" class="bgbtn" value="搜索" />
+		</form>
+	</div>
+	<div class="back-cont">
+		<div class="back-box">
+			<table width="100%" class="back-table table-fixed">
+				<tr height="40">
+					<th width="70" class="align-left">
+						<span class="back-order">
+							编号
+							#{backPageColumTag orderType:orderType,currOrderType:0,orderValue:orderValue,orderBy:'orderBy' /}
+						</span>
+					</th>
+					<th>项目</th>
+					<th>
+						<span class="back-order">
+							债权总额
+							#{backPageColumTag orderType:orderType,currOrderType:2,orderValue:orderValue,orderBy:'orderBy' /}
+						</span>
+					</th>
+					<th>
+						<span class="back-order">
+							转让期数
+							#{backPageColumTag orderType:orderType,currOrderType:3,orderValue:orderValue,orderBy:'orderBy' /}
+						</span>
+					</th>
+					<th>
+						<span class="back-order">
+							转让价格
+							#{backPageColumTag orderType:orderType,currOrderType:4,orderValue:orderValue,orderBy:'orderBy' /}
+						</span>
+					</th>
+					<th>转让人</th>
+					<th>受让人</th>
+					<th>成交时间</th>
+					<th width="80">状态</th>
+					<th width="140">操作</th>
+				</tr>
+		#{if page?.page}
+			#{list items:page.page,as:"debt"}
+				<tr height="40">
+					<td class="align-left">
+						<label><input type="checkbox" class="back-tdcheck" />${debt?.debt_transfer_no}</label>
+					</td>
+					<td data-title="${debt?.title}">${debt?.title}</td>
+					<td>${debt?.debt_amount?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}</td>
+					<td>${debt?.transfer_period?.format('0')}</td>
+					<td>${debt?.transfer_price?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}</td>
+					<td>${debt?.transfer_name}</td>
+					<td>${debt?.transaction_name?:"----"}</td>
+					<td>${debt?.transaction_time?.format(common.constants.Constants.DATE_TIME_FORMATE)?:"----"}</td>
+					<td>${debt?.status?.value}</td>
+					<td class="back-handle">
+						#{rightMng rightId:402002}
+							#{if debt?.status?.code == models.core.entity.t_debt_transfer.Status.PREAUDITING.code}
+							   <a href="javascript:pass('${debt?.debt_transfer_no}','${debt?.sign}');" data-title="通过" class="iconfont">&#xe61d;</a>
+							   <form action="@{back.risk.DebtMngCtrl.auditPass()}" method="POST" id="form_pass_${debt?.sign}">
+							   		<input type="hidden" value="${debt?.sign}" name="sign">
+							   </form>
+							   <a href="javascript:nopass('${debt?.debt_transfer_no}','${debt?.sign}');" data-title="不通过" class="iconfont">&#xe60e;</a>
+								<form action="@{back.risk.DebtMngCtrl.auditNoPass()}" method="POST" id="form_nopass_${debt?.sign}">
+							   		<input type="hidden" value="${debt?.sign}" name="sign">
+							   </form>
+							  
+							#{/if}
+							#{else}
+								<a data-title="通过" class="iconfont unable">&#xe61d;</a>
+							    <a data-title="不通过" class="iconfont unable">&#xe60e;</a>
+							#{/else}
+							#{if debt?.contract_id == null && debt?.status?.code == models.core.entity.t_debt_transfer.Status.SUCC.code}
+								<a href="javascript:ssqDebtContract('${debt?.debt_transfer_no}')" data-title="生成合同" class="iconfont">&#xe61c;</a>
+								<form action="@{back.risk.DebtMngCtrl.ssqDebtContract()}" method="POST" id="ssq_${debt?.debt_transfer_no}">
+									<input type="hidden" name="debtSign" value="${debt?.sign}"/>
+								</form>
+								#{/if}
+							#{else}
+								<a data-title="生成合同" class="iconfont unable">&#xe61c;</a>
+							#{/else}
+						#{/rightMng}
+						
+					</td>
+				</tr>
+			#{/list}
+				<!-- 表格数据统计 -->
+				<tr height="40">
+					<td colspan="10" class="back-lasttd">
+						<span class="back-choose left">
+							<input type="button" id="chooseAll" value="全选" />
+							<input type="button" id="chooseReverse" value="反选" />
+						</span>
+						<p class="back-table-totle left">
+							合计&nbsp;债权总额&nbsp;<span>${debtTotal?.format(common.constants.Constants.FINANCE_FORMATE_NORMAL)}元</span>
+						</p>
+						
+						<!-- 分页组件--pageTag -->
+						#{backPageTag page:page,showPage:"showDebts"/}
+					</td>
+				</tr>
+		#{/if}
+		#{else}	
+				<!-- 暂无记录 -->
+				<tr height="58">
+					<td colspan="10" class="back-nodata"><i class="iconfont">&#xe613;</i>暂无记录</td>
+				</tr>
+		#{/else}
+			</table>
+		</div>
+	</div>
+</div>
+
+<!-- 页面js -->
+<script type="text/javascript">
+	require(["back"],function(back){
+		//列表隔行换色
+		back.listeven($(".back-table tbody"));
+		// 搜索 表格排序、选中
+		require(["search","order","linechecked"]);
+	});
+	
+	//分页查询 
+	function showDebts(currPage, pageSize) {
+		$("#currPage").val(currPage);
+		$("#pageSize").val(pageSize);
+		
+		$("#showDebtsList").submit();
+	}
+	
+	//导出
+	function exportList(expor){
+		$("#exports").val(expor);
+		
+		$("#showDebtsList").submit();
+		$("#exports").val(0);
+	}
+	
+	//排序
+	function orderBy(orderType,orderValue){
+		$("#orderType").val(orderType);
+		$("#orderValue").val(orderValue);
+		
+		$("#currPage").val(1);
+		
+		$("#showDebtsList").submit();
+	}
+	
+	//审核通过 
+	function pass(debtNo,sign){
+		confirm("是否执行 "+debtNo+" 通过审核操作?", function() {
+			$("#form_pass_"+sign).submit();
+		});
+
+	}
+
+	//审核不通过 
+	function nopass(debtNo,sign) {
+		confirm("是否执行 "+debtNo+" 不通过审核操作?",function(){
+			$("#form_nopass_"+sign).submit();
+		})
+	}
+	//生成上上签合同
+	function ssqDebtContract(debtNo) {
+		confirm("编号"+debtNo+",生成合同", function(){
+		
+			$("#ssq_"+debtNo).submit();
+		});
+	} 
+</script>

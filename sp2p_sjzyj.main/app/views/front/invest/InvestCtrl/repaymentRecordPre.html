@@ -1,0 +1,50 @@
+#{if currUser}
+	#{if pageBeana?.page == null}
+	<div class="norecord-box c9">
+	暂无记录
+	</div>
+	#{/if}
+	#{else}
+	<table width="100%" class="detail-record">
+		<input type="hidden" id="repaymentCurrpage" value="${pageBeana?.currPage}"/>
+		<input type="hidden" id="repaymentPagesize" value="${pageBeana?.pageSize}"/>
+		<input type="hidden" id="repaymentTotalSize" value="${pageBeana?.totalCount}"/>
+		<tr height="40" class="treven">
+			<td width="20%">期数</td>
+			<td width="30%" align="center">应还本息</td>
+			<td width="30%" align="center">到期时间</td>
+			<td width="20%" align="right">状态 </td>
+		</tr>
+		#{list items:pageBeana?.page,as:'pagea'}
+		<tr height="40">
+			<td>${pagea?.period}/${pagea?.totalPeriod}</td>
+			<td align="center">${pagea?.principalInterest?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}</td>
+			<td align="center">${pagea?.repayment_time?.format(common.constants.Constants.DATE_FORMATE)}</td>
+			<td align="right">${models.core.entity.t_bill.Status.getEnum(pagea?.status).value}</td>
+		</tr>
+		#{/list}
+	</table>
+	<p class="loadmore">
+		<a href="javascript:void(0);" onclick="loadMoreRepayment()">点击加载更多</a>
+	</p>
+	#{/else}
+#{/if}
+#{else}
+	<div class="tab-cont">
+		<p class="detail-unlogin">请<a href="@{front.LoginAndRegisteCtrl.loginPre()}" class="major">登录</a>或<a href="@{front.LoginAndRegisteCtrl.registerPre()}" class="major">注册</a>后查看</p>
+	</div>
+#{/else}
+<script type="text/javascript">
+function loadMoreRepayment(){
+	var nowSize = $("#repaymentPagesize").val();
+	var totalSize = $("#repaymentTotalSize").val();
+	$("#repaymentPagesize").val(parseInt(nowSize)+5);
+	repaymentRecordPre(function(data){
+		$("#Collection").html(data);
+		if(parseInt(nowSize)+5 >= parseInt(totalSize)){
+			$(".loadmore").html("<span>没有更多了</span>");
+			return;
+		}
+	});
+}
+</script>

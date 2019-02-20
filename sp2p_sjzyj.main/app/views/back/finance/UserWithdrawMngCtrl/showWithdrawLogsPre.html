@@ -1,0 +1,113 @@
+#{extends 'common/back/financeMain.html' /}
+	#{set title:'财务 | 会员提现' /}
+	#{set smallclass:3 /}
+	#{set crumbs:'财务>会员提现'/}
+	
+	
+<div class="back-main">
+	<!-- 头部筛选条件 -->
+	<div class="back-usertop">
+		<div class="left back-usermenu">
+			<a href="@{back.finance.UserWithdrawMngCtrl.showWithdrawLogsPre()}" class="selected">所有</a>
+		</div>
+		
+		<!-- 搜索按钮，控制搜索条件的显示隐藏 -->
+		<div class="back-search left #{if name} selected#{/if}">
+			<i class="iconfont searchicon">&#xe60a;</i>搜索<i class="iconfont arrowicon">&#xe603;</i>
+		</div>
+		
+		<!-- 右侧功能按钮 -->
+		<div class="right back-rightbtns">
+			<a href="javascript:exportList(1)"><i class="iconfont">&#xe612;</i>导出</a>
+		</div>
+	</div>
+	<!-- 搜索条件，默认隐藏 -->
+	<div class="back-search-option" #{if name}style="display: block;"#{/if}>
+		<form action="@{back.finance.UserWithdrawMngCtrl.showWithdrawLogsPre()}" method="GET" id="showWithdrawLogsPre">
+			
+			<input type="hidden" id="currPage" name="currPage"/>
+	  		<input type="hidden" id="pageSize" name="pageSize" value="${page?.pageSize}"/>
+	  		<input type="hidden" id="exports" name="exports"/>
+	  		
+	  		<input type="text" class="iffocus" name="name" value="${name}" placeholder="会员" maxlength="13"/>		
+			<input type="submit" class="bgbtn" value="搜索" />
+		</form>
+	</div>
+	<div class="back-cont">
+		<div class="back-box">
+			<table width="100%" class="back-table table-fixed">
+				<tr height="40">
+					<th width="70" class="align-left">编号</th>
+					<th>流水号</th>
+					<th>会员</th>
+					<th>提现金额</th>
+					<th>时间</th>
+				</tr>
+		#{if page?.page}
+			#{list items:page.page,as:"dealUser"}
+				<tr height="40">
+					<td class="align-left">
+						<label><input type="checkbox" class="back-tdcheck" />${dealUser?.id}</label>
+					</td>
+					<td>${dealUser?.order_no}</td>
+					<td>${dealUser?.name}</td>
+					<td>${dealUser?.amount?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}</td>
+					<td>${dealUser?.time?.format(common.constants.Constants.DATE_TIME_FORMATE)}</td>
+				</tr>
+			#{/list}
+				<!-- 表格数据统计 -->
+				<tr height="40">
+					<td colspan="5" class="back-lasttd">
+						<span class="back-choose left">
+							<input type="button" id="chooseAll" value="全选" />
+							<input type="button" id="chooseReverse" value="反选" />
+						</span>
+						<p class="back-table-totle left">
+							合计&nbsp;提现金额&nbsp;<span>${totalAmt?.format(common.constants.Constants.FINANCE_FORMATE_NORMAL)}元</span>
+						</p>
+						
+						<!-- 分页组件--pageTag -->
+						#{backPageTag page:page,showPage:"showWithdrawLogs"/}
+						
+					</td>
+				</tr>
+		#{/if}
+		#{else}
+				<!-- 暂无记录 -->
+				<tr height="58">
+					<td colspan="5" class="back-nodata"><i class="iconfont">&#xe613;</i>暂无记录</td>
+				</tr>
+		#{/else}		
+			</table>
+		</div>
+	</div>
+</div>
+
+
+
+<!-- 页面js -->
+<script type="text/javascript">
+require(["back"],function(back){
+	// 搜索 排序 选中
+	require(["search","linechecked"],function(){
+	});
+		
+});
+	
+function showWithdrawLogs (currPage, pageSize) {
+	$("#currPage").val(currPage);
+	$("#pageSize").val(pageSize);
+	
+	$("#showWithdrawLogsPre").submit();
+}
+
+function exportList(expor){
+	$("#exports").val(expor);
+	
+	$("#showWithdrawLogsPre").submit();
+	$("#exports").val(0);
+}
+	
+	
+</script>	
+	

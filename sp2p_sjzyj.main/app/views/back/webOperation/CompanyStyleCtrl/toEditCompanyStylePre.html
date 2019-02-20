@@ -1,0 +1,247 @@
+#{extends 'common/back/webOperationMain.html' /}
+	#{set title:'运维 | 公司风采 | 编辑' /}
+	#{set smallclass:9 /}
+	#{set crumbs:'运维>公司风采>编辑' /}
+	
+<div class="back-main">
+	<div class="back-usertop">
+		<b class="left font14">编辑分公司介绍</b>
+		<!-- 右侧功能按钮 -->
+		<div class="right back-rightbtns">
+			<a href="javascript:backAndRefresh('@{back.webOperation.CompanyStyleCtrl.showCompanyPre}');"><i class="iconfont">&#xe60b;</i>返回</a>
+		</div>
+	</div>
+	<!-- 左侧菜单 -->
+	<form action="@{back.webOperation.CompanyStyleCtrl.editCompanyStyle()}" method="POST" id="addAds">
+		#{authenticityToken /}
+		<input type="hidden" name="uuidRepeat" value="${flash?.submitUuid}">
+		<input type="hidden" name="ids" value="${companyStyle?.id}">
+		<div class="back-cont">
+			<div class="back-infor">
+				<h2 class="back-infor-head">分公司介绍</h2>
+				<ul class="back-infor-set">
+					<li>
+						<span class="lileft">城市名称</span>
+						<div class="liright">
+							<input type="text" minlength="1" maxlength="10" id="name" name="cityName" class="width05 required iffocus" value="${companyStyle?.city_name}" />
+							<span class="back-text-limit">1~10个字符</span>
+						</div>
+					</li>
+					<li>
+						<span class="lileft">企业风貌</span>
+						<div class="liright">
+							<span class="back-imgarea imgrequired">
+								<img src="${companyStyle?.enter_pic}" onerror="this.src='/public/back/images/noimg.jpg'" class="backupimg" height="100" width="200" id='image' name="image" alt="" title="" />
+								<input type="hidden" id="imageUrl" name="image_url" value="${companyStyle?.enter_pic}">
+							</span>
+							<span class="back-upimg">
+								<label class="back-upbtn">
+									<input type="file" class="upload_file" value="" accept=".jpg,.jpeg,.png,.gif" name="imgFile" id="imgFile" onchange="upload()"/>
+									<i class="iconfont">&#xe608;</i>本地上传
+								</label>
+							</span>
+						</div>
+					</li>
+					<li>
+						<span class="lileft">员工风采</span>
+						<div class="liright">
+							<span class="back-imgarea imgrequired">
+								<img src="${companyStyle?.employee_pic} ? ${companyStyle?.employee_pic} : '/public/back/images/noimg.jpg'" onerror="this.src='/public/back/images/noimg.jpg'" class="backupimg" height="100" width="200" id='images' name="images" alt="" title="" />
+								<input type="hidden" id="imageUrls" name="image_urls" value="${companyStyle?.employee_pic}">
+							</span>
+							<span class="back-upimg">
+								<label class="back-upbtn">
+									<input type="file" class="upload_file" value="" accept=".jpg,.jpeg,.png,.gif" name="imgFile" id="imgFiles" onchange="uploads()"/>
+									<i class="iconfont">&#xe608;</i>本地上传
+								</label>
+							</span>
+						</div>
+					</li>
+					<li>
+						<span class="lileft">排序时间</span>
+						<div class="liright">
+							<input type="text" class="easyui-datetimebox" id="orderTime" name="order_time" value="${companyStyle?.create_time?.format(common.constants.Constants.DATE_PLUGIN)}" />
+						</div>
+					</li>
+				</ul>
+			</div>
+			<p class="back-audit-btns">
+				<input type="submit" id="pageSave" value="保存" class="bgbtn">
+				<input type="reset" value="取消" class="bdbtn">
+			</p>
+		</div>
+	</form>
+</div>	
+
+<!-- 素材库弹窗 -->
+<!-- 素材库弹窗 -->
+#{imgLib /}
+	
+	
+<script type="text/javascript">
+var img_width = 265;
+var img_height = 530;
+require(["back"],function(back){
+	require(["ajaxfileupload","datatime","cutImg"]);
+	
+	//是否显示默认图
+	
+	
+	var picFlag=true;
+	$("#location").change(function(){
+		var val = $("#location").val();
+			imgLimit = $('.back-imginfor-note');
+		switch(val){
+			case "1": {
+				img_width = 1920;
+				img_height = 800;
+				imgLimit.text('1920*800，jpg/png，大小不超过2M'); 
+				break;
+			}
+			case "2":  {
+				img_width = 1920;
+				img_height = 400;
+				imgLimit.text('1920*400，jpg/png，大小不超过2M');
+				break;
+			}
+			case "3":  {
+				img_width = 1198;
+				img_height = 133;
+				imgLimit.text('1198*133，jpg/png，大小不超过2M');
+				break;
+			}
+			case "4":  {
+				img_width = 360;
+				img_height = 280;
+				imgLimit.text('360*280，jpg/png，大小不超过2M');
+				break;
+			}
+			case "5":  {
+				img_width = 265;
+				img_height = 530;
+				imgLimit.text('265*530，jpg/png，大小不超过2M');
+				break;
+			}
+			case "6":  {
+				img_width = 640;
+				img_height = 230;
+				imgLimit.text('640*230，jpg/png，大小不超过2M');
+				break;
+			}
+			default: {
+				img_width = 265;
+				img_height = 530;
+				imgLimit.text('265*530，jpg/png，大小不超过2M');
+				break;
+			}	
+		}
+	});
+	
+	//添加广告图片
+	$("#addAds").validate({
+		errorPlacement: function(error, element) {
+			error.addClass('back-notice').insertAfter(element);
+		},
+		rules:{
+			"cityName":{
+				required:true,
+				rangelength:[1,20]
+			},
+			"ads.image_url":{
+				required:true
+			},
+			"ads.image_resolution":{
+				required:true
+			},
+			"ads.image_size":{
+				required:true
+			},
+			"ads.image_format":{
+				required:true
+			},
+			"order_time":{
+				required:true
+			}
+			
+		},
+		messages:{
+			"cityName":{
+				required:"名称1-20个字符"
+			},
+			"ads.image_url":{
+				required:"上传图片不能为空"
+			},
+			"ads.image_resolution":{
+				required:"上传图片不能为空"
+			},
+			"ads.image_size":{
+				required:"上传图片不能为空"
+			},
+			"ads.image_format":{
+				required:"上传图片不能为空"
+			},			
+			"order_time":{
+				required:"排序时间不能为空"
+			}
+		}
+	});
+	
+});	
+	
+//企业风貌图片上传 
+function upload(){
+	var fileId = "imgFile";
+	var file = $("#" + fileId).val();
+	var pos = file.lastIndexOf("\\");
+	var fileName = file.substring(pos + 1);
+	
+	$.ajaxFileUpload({
+		url : '@{back.webOperation.AdvertisementMngCtrl.uploadAdsImage()}',
+		secureuri : false,
+		fileElementId : fileId,
+		data:{
+			"fileName":fileName
+		},
+		dataType : 'json',
+		success : function(result) {
+			if(result.code == 1){
+				var data = result.obj;
+				$("#image").attr("src", data.staticFileName);
+				$("#imageUrl").val(data.staticFileName);
+				$("#image").css({ "display": "block"});
+			} else {
+				alert(result.msg);
+			}
+		}
+	})
+}
+
+//员工风采图片上传
+function uploads(){
+	var fileId = "imgFiles";
+	var file = $("#" + fileId).val();
+	var pos = file.lastIndexOf("\\");
+	var fileName = file.substring(pos + 1);
+	
+	$.ajaxFileUpload({
+		url : '@{back.webOperation.AdvertisementMngCtrl.uploadAdsImage()}',
+		secureuri : false,
+		fileElementId : fileId,
+		data:{
+			"fileName":fileName
+		},
+		dataType : 'json',
+		success : function(result) {
+			if(result.code == 1){
+				var data = result.obj;
+				$("#images").attr("src", data.staticFileName);
+				$("#imageUrls").val(data.staticFileName);
+				$("#images").css({ "display": "block"});
+			} else {
+				alert(result.msg);
+			}
+		}
+	})
+} 
+
+</script>	

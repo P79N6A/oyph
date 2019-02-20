@@ -1,0 +1,28 @@
+# This file defines all module routes (Higher priority routes first)
+#
+# import these routes in the main app as :
+# *     /                       module:sp2p_sjzyj.app
+#
+# ~~~~
+
+# app服务接口
+*    /app/services                     						        		    app.AppController.index
+
+*    /app/download                     						        		    app.AppController.download
+*    /app/download/iosTip                     						        	app.AppController.iosTip
+*    /app/downloads                     						        		app.AppController.downloads
+
+*	 /online/customerinfo														app.OnlineController.customerInfo
+
+*    /query/LoanMngCtrl/toInsertInfo											back.risk.LoanMngCtrl.toInsertInfo
+
+# 贷后追踪-数据接口-控制器(风控项目)
+*	 /loanTrack										   	    app.AntifraudController.loanTrack
+# 贷后追踪-数据接口-控制器(风控项目按电话搜索)
+*	 /loanMobile										    app.AntifraudController.loanMobile
+# 贷后追踪-数据接口-控制器(风控项目按逾期状态搜索)
+*	 /loanOverdue										    app.AntifraudController.loanOverdue
+
+GET	/publishMessage/{action}.html						app.PublishMessageCtrl.{action}Pre
+POST	/publishMessage/{action}						app.PublishMessageCtrl.{action}
+

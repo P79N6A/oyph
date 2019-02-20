@@ -1,0 +1,147 @@
+#{extends 'common/back/settingMain.html' /}
+	#{set title:'设置 | 权限管理 | 添加管理员' /}
+	#{set smallclass:3 /}
+	#{set crumbs:'设置>权限管理>添加管理员'/}
+
+<div class="back-main">
+	<div class="back-usertop">
+		<b class="left font14">添加管理员</b>
+		<!-- 右侧功能按钮 -->
+		<div class="right back-rightbtns">
+			<a href="javascript:backAndRefresh('@{back.setting.RightMngCtrl.showAllSupervisorsPre}');"><i class="iconfont">&#xe60b;</i>返回</a>
+		</div>
+	</div>
+	<div class="back-cont">
+		<form action="@{back.setting.RightMngCtrl.addSupervisor()}" method="POST" id="form_addSupervisor">
+			#{authenticityToken /}
+			<div class="back-infor">
+				<h2 class="back-infor-head">
+					<span class="left">管理员详情</span>
+				</h2>
+				<input type="hidden" name="uuidRepeat" value="${flash?.submitUuid}">
+				<ul class="back-infor-set">
+					<li>
+						<span class="lileft">管理员</span>
+						<div class="liright">
+							<input type="text" class="width01 iffocus" autofocus="autofocus" oninput="$(this).integerAndLetters()" onpropertychange="$(this).integerAndLetters()" value="${flash?.name}"  name="supervisor.name" maxlength="10"/>
+						</div>
+					</li>
+					<li>
+						<span class="lileft">真实姓名</span>
+						<div class="liright"><!-- back-error -->
+							<input type="text" class="width01 iffocus " value="${flash?.reality_name}"  maxlength="15" id="supervisor.reality_name" name="supervisor.reality_name" />
+						</div>
+					</li>
+					<li>
+						<span class="lileft">手机号码</span>
+						<div class="liright">
+							<input type="text" class="width01 iffocus " value="${flash?.mobile}" oninput="$(this).ndigitInteger(11)" onpropertychange="$(this).ndigitInteger(11)" id="supervisor.mobile" name="supervisor.mobile" />
+						
+						</div>
+					</li>
+					<li>
+						<span class="lileft">密码</span>
+						<div class="liright">
+							<input type="password" class="width01 iffocus " minlength='6' maxlength="15" oninput="$(this).integerAndLetters()" onpropertychange="$(this).integerAndLetters()" id="password" onpaste="return false"  name="supervisor.password" />
+							<span class="back-text-limit">6~15位数字字母组合区分大小写</span>
+						</div>
+					</li>
+						<li>
+						<span class="lileft">业务分配:</span>
+						<div class="liright">
+								<select class="left back-select" id="type" name="type" >
+								<option value="3">普通管理员</option>
+								<option value="0">客户经理</option>
+								<option value="1">业务主任</option>
+								<option value="2">业务部经理</option>
+								<option value="4">外部客户经理</option>
+							</select>
+						</div>
+					</li>
+				
+				</ul>
+			</div>
+			
+			<p class="back-audit-btns">
+				<input type="submit" id="pageSave" value="保存" class="bgbtn">
+				<input type="button" onclick="backAndRefresh('@{back.setting.RightMngCtrl.showAllSupervisorsPre}');" value="取消" class="bdbtn dialog-console">
+			</p>
+		</form>
+	</div>
+</div>
+
+
+<!-- 页面js -->
+<script type="text/javascript">
+	require(["back"],function(back){
+		require(["validation/validateExt"]);
+		$("#form_addSupervisor").validate({
+			errorPlacement: function(error, element) {
+				error.addClass('back-notice').insertAfter(element);
+			},
+			rules:{
+				"supervisor.name":{
+					required:true,
+					rangelength:[3,10],
+					remote:{//后端返回的只能是true或者false
+						 url: "@{back.BackAjaxValideCtrl.checkSupervisorNameExits()}",
+						 type: "post",
+						 dataType: "json",
+						 data: {
+							 supervisorName: function() {
+								return $("input[name='supervisor.name']").val();
+							}
+						}
+					}
+				},
+				"supervisor.reality_name":{
+					required:true,
+					rangelength:[2,15]
+				},
+				"type":{
+					required:true
+				},
+				"supervisor.mobile":{
+					required:true,
+					number:true,
+					isMobile:true,
+					remote:{//后端返回的只能是true或者false
+						 url: "@{back.BackAjaxValideCtrl.checkSupervisorMobileExits()}",
+						 type: "post",
+						 dataType: "json",
+						 data: {
+							 mobile: function() {
+								return $("input[id='supervisor.mobile']").val();
+							}
+						}
+					}
+				},
+				"supervisor.password":{
+					required:true,
+					isPassWord:true,
+					rangelength:[6,15]
+				}
+			},
+			messages:{
+				"supervisor.name":{
+					required:"请输入管理员用户名",
+					rangelength:'长度不超过10位且不含特殊字符',
+					remote:"该用户名已经存在，请重新输入"
+				},
+				"supervisor.reality_name":{
+					required:"请输入管理员真实姓名"
+				},
+				"supervisor.mobile":{
+					required:"请输入管理员手机号码",
+					remote:"该手机号码已经被使用，请重新输入"
+				},
+				"supervisor.password":{
+					required:'请输入密码'
+				},
+				"type":{
+					required:'请选择业务类型'
+				}
+			}
+		});
+	});
+</script>

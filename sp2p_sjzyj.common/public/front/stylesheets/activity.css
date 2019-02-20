@@ -1,0 +1,70 @@
+.activity-nav{
+		width:100%;
+		height: 66px;
+		background: #dbdbdb;
+	}
+	.activity-tab{
+		width:1200px;
+		height:66px;
+		margin: 0 auto;
+	}
+	.activity-but{
+		width:150px;
+		height:52px;
+		float: left;
+		color:black;
+		font-size:20px;
+		cursor:pointer;
+		text-align: center;
+		line-height: 52px;
+		margin-top: 14px;
+	}
+	.selected-but{
+		color:#f9962b;
+		background: #f3f3f3;
+	}
+	.activity-main1,.activity-main2,.activity-main3{
+		width:1200px;
+		min-height: 500px;
+		margin: 0 auto;
+		padding-top:50px;
+		color:black; 
+	}
+	.activity-list{
+		width: 276px;
+		height: 363px;
+		background: #fff;
+		float: left;
+		margin-right: 124px;
+		margin-bottom: 40px;
+	}
+	.activity-list img{
+		width: 276px;
+		height: 207px;
+	}
+	.activity-title{
+		width: 100%;
+		margin-bottom: 15px;
+	}
+	.activity-time, .activity-title{
+		text-align: left;
+	}
+	.activity-main-footer{
+		width:100%;
+		height: 155px;
+		box-sizing:border-box;
+		-moz-box-sizing:border-box; /* Firefox */
+		-webkit-box-sizing:border-box; /* Safari */
+		padding: 20px;
+		font-size:15px;
+		text-align: center;
+	}
+	.activity-main-footer .time{
+		color:#f9962b
+	}
+	.activity-main-footer .details{
+		width: 185px;
+		height: 40px;
+		background: #facd89;
+		margin: 20px; auto;
+	}

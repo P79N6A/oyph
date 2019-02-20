@@ -1,0 +1,7 @@
+#{list pageBean?.page}
+<tr height="40">
+	<td>${_?.name?.substring(0,5)}****${_?.name?.substring(9)}</td>
+	<td align="center">#{formatIntMoney money:_?.amount}#{/formatIntMoney}元</td>
+	<td align="right">${_?.time}</td>
+</tr>
+#{/list}

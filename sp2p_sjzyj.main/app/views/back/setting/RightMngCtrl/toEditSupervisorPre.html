@@ -1,0 +1,180 @@
+#{extends 'common/back/settingMain.html' /}
+	#{set title:'设置  | 权限管理 | 编辑管理员' /}
+	#{set smallclass:3 /}
+	#{set crumbs:'设置>权限管理>编辑管理员'/}
+
+
+<div class="back-main">
+	<div class="back-usertop">
+		<b class="left font14">${supervisor?.id} ${supervisor?.name}>编辑</b>
+		<!-- 右侧功能按钮 -->
+		<div class="right back-rightbtns">
+			<a href="javascript:backAndRefresh('@{back.setting.RightMngCtrl.showAllSupervisorsPre}');"><i class="iconfont">&#xe60b;</i>返回</a>
+		</div>
+	</div>
+	<div class="back-cont">
+		<div class="back-infor" id="mobile">
+			<form action="@{back.setting.RightMngCtrl.editSupervisorMobile()}" method="POST">
+				<input type="hidden" name="sign" value="${sign}">
+				<h2 class="back-infor-head">
+					<span class="left">管理员</span>
+					#{rightMng rightId:804003}
+					<a href="javascript:void(0);" class="right iconfont finance-edit" data-title="编辑" >&#xe602;</a>
+					#{/rightMng}
+				</h2>
+				<ul class="back-infor-set">
+					<li>
+						<span class="lileft">管理员账号</span>
+						<div class="liright">
+							${supervisor?.name}
+						</div>
+					</li>
+					<li>
+						<span class="lileft">姓名</span>
+						<div class="liright">
+							${supervisor?.reality_name}
+						</div>
+					</li>
+					<li>
+						<span class="lileft">手机号码</span>
+						<div class="liright">
+							<input type="text" class="width01 iffocus required" value="${supervisor?.mobile}" oninput="$(this).ndigitInteger(11)" onpropertychange="$(this).ndigitInteger(11)" name="mobile"  />
+							<input type="hidden" name="hidemobile" value="${supervisor?.mobile}" />
+							<span class="back-text-limit"></span>
+						</div>
+					</li>
+				</ul>
+			</form>
+		</div>
+		<div class="back-infor" id="password">
+			<form action="@{back.setting.RightMngCtrl.editSupervisorPassword()}" method="POST">
+				<input type="hidden" name="sign" value="${sign}">
+				<h2 class="back-infor-head">
+					<span class="left">登录密码</span>
+					#{rightMng rightId:804003}
+					<a href="javascript:void(0);" class="right iconfont finance-edit" data-title="编辑" >&#xe602;</a>
+					#{/rightMng}
+				</h2>
+				<ul class="back-infor-set">
+					
+					<li>
+						<span class="lileft">密码</span>
+						<div class="liright">
+							<input type="password" class="width01 iffocus required" oninput="$(this).integerAndLetters()" onpropertychange="$(this).integerAndLetters()" id="newPassword" name="newPassword" minlength='6' maxlength="15" value="" />
+							<span class="back-text-limit">6~15位字符，含空格</span>
+						</div>
+					</li>
+					<li>
+						<span class="lileft">确认密码</span>
+						<div class="liright">
+							<input type="password" class="width01 iffocus required" oninput="$(this).integerAndLetters()" onpropertychange="$(this).integerAndLetters()" name="rePassword" value="" maxlength="15"/>
+							<span class="back-text-limit"></span>
+						</div>
+					</li>
+				</ul>
+			</form>
+		</div>
+	</div>
+</div>
+
+
+
+<!-- 页面js -->
+<script type="text/javascript">
+	require(["back"],function(back){
+		require(["validation/validateExt"]);
+		var info = $("#mobile");
+		var info_editText = info.find("select,input:not(.easyui-datetimebox),textarea");
+		info_editText.prop("disabled",true);
+		var info_editBtn = info.find(".finance-edit");
+		var info_form = info.find("form");
+		info_editBtn.click(function(){
+			var flag = info_editText.prop("disabled");
+			if(flag){
+				info.toEdit();
+				info_form.find("input[name='mobile']").focus();
+			} else {
+				info_form.submit();
+			}
+		});
+
+		info_form.validate({
+			errorPlacement: function(error, element) {
+				error.addClass('back-notice').insertAfter(element);
+			},
+			rules:{
+				"mobile":{
+					required:true,
+					number:true,
+					isMobile:true,
+					remote:{//后端返回的只能是true或者false
+						 url: "@{back.BackAjaxValideCtrl.checkSupervisorMobileExits2()}",
+						 type: "post",
+						 dataType: "json",
+						 data: {
+							 mobile: function() {
+								return $("input[name='mobile']").val();
+							},
+							hidemobile:function(){
+								return $("input[name='hidemobile']").val();
+							}
+						}
+					}
+				}
+			},
+			messages:{
+				"mobile":{
+					required:"请输入手机号码",
+					remote:"手机号码已经存在，请重新输入"
+				}
+				
+			},
+		});
+		
+		/*******************/
+		var info2 = $("#password");
+		var info2_editText = info2.find("select,input:not(.easyui-datetimebox),textarea");
+		info2_editText.prop("disabled",true);
+		var info2_editBtn = info2.find(".finance-edit");
+		var info2_form = info2.find("form");
+		info2_editBtn.click(function(){
+			var flag = info2_editText.prop("disabled");
+			if(flag){
+				info2.toEdit();
+				info2_form.find("input[name='newPassword']").focus();
+			} else {
+				info2_form.submit();
+			}
+		});
+		
+		info2_form.validate({
+			errorPlacement: function(error, element) {
+				error.addClass('back-notice').insertAfter(element);
+			},
+			rules:{
+			
+				"newPassword":{
+					required:true,
+					rangelength:[6,15]
+				},
+				"rePassword":{
+					required:true,
+					rangelength:[6,15],
+					equalTo:"#newPassword"
+				}
+				
+			},
+			messages:{
+				
+				"newPassword":{
+					required:"请输入新的密码"
+				},
+				"rePassword":{
+					required:"请再次输入新的密码",
+					equalTo:"两次密码不一样，请重新输入"
+				}
+				
+			},
+		});
+	});
+</script>

@@ -1,0 +1,96 @@
+/*
+	主色调：#F77B0F
+	辅色调：#f44e43
+*/
+.major,
+a:hover,
+.nav a:hover,
+.nav .selected,
+.index-daynew a:hover,
+.bdbtn,
+.getcode-btn,
+.findpassword-step .selected .step-name,
+.findpassword-step .done .step-name,
+.news-nav .selected,
+.detail-tabmenu .selected,
+.detail-tabmenu li:hover{
+	color: #F77B0F;
+}
+.assistant{
+	color: #f44e43;
+}
+.btn,
+.box_skitter .info_slide .image_number.image_number_select,
+.box_skitter .info_slide .image_number.image_number_select:hover,
+.bdbtn:hover,
+.rightbar li,
+.recticon,
+.getcode-btn:hover,
+.dialog-head,
+.findpassword-step .selected .step-circle,
+.findpassword-step .done .step-circle,
+.findpassword-step .done .step-split,
+.page-num:hover,
+.page-num.selected,
+.progress-bar,
+.detail-intitle i,
+.second-navbox,
+.help-rightbar-head i,
+.safe-check h3,
+.safe-protect h3,
+.joinus-tab th,
+.userapprove .approved,
+.safelevel-value,
+.userasset-table,
+.userasset-control:hover,
+.userasset-control.selected,
+.account-menu .selected,
+.account-autohandle .selected,
+.index-progressbar,
+.help-question .askicon,
+.fade-handle .selected,
+.y-jfxqtab th,
+.y-jfspul li:hover .y-jfbtos{
+	background-color: #F77B0F;
+}
+.btn:hover,
+.rightbar-word,
+.rightbar-kflist{
+	background-color: #FC9845;
+}
+.bdbtn,
+.getcode-btn,
+.financial-buylist,
+.news-top,
+.help-list .selected,
+.title-dialog,
+.account-autostatus,
+.account-autohandle,
+.account-infortitle .left,
+.bank-list li:hover,.bank-list .selected,
+.index-progress,
+.index-progressvalue,
+.progress,
+.y-jfh3 span,
+.y-jfbtos,
+.y-jfxqtab th,.y-jfxqtab td{
+	border-color: #F77B0F;
+}
+.top a:hover,
+.mobile-app:hover{
+	color: #FBA053;
+}
+.index-daynew{
+	background-color: #FBA053;
+}
+.detail-tabmenu .selected,
+.index-progressvalue i:first-child{
+	border-top-color: #F77B0F;
+}
+.help-nav .selected{
+	border-left-color: #F77B0F;
+}
+.title-dialog i:first-child,
+.account-title{
+	border-bottom-color: #F77B0F;
+}

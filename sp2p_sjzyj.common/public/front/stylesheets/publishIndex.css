@@ -1,0 +1,178 @@
+@CHARSET "UTF-8";
+
+.publishBox{
+	width: 1200px;
+	margin: 20px auto;
+	background: #fff;
+	overflow: hidden;
+	padding: 20px 0;
+}
+.publishBox h1{
+	font-size: 22px;
+	padding: 30px 0 30px 40px;
+	color: #000;
+}
+.publishSynopsis{
+	width:1000px;
+	margin: auto;
+}
+.publishSynopsis h2{
+	font-size: 18px;
+	line-height: 30px;
+	font-family: "宋体"
+}
+.publishSynopsis h3{
+	font-size: 18px;
+	padding:15px 0; 
+	color: #000;
+}
+.publishSynopsis p{
+	line-height: 30px;
+	font-family: "宋体"
+}
+.publishSynopsis p span{
+	cursor: pointer;
+}
+.synopsisList{
+	width: 1000px;
+	margin:50px auto;
+}
+.synopsisList li{
+	height: 52px;
+	background:#f3f3f3; 
+	margin-top: 15px;
+	padding: 0 30px;
+	line-height: 52px;
+	font-family: "宋体"
+}
+.synopsisList li a{
+	color: #666;
+}
+.synopsisList li a:HOVER {
+	color: #F77B0F;
+}
+/* 经营信息css */
+.lineStrip{
+	border-bottom: 1px solid #eee;
+}
+.chargeTable{
+	width: 900px;
+	height: 500px;
+	border: 1px solid #000;
+	margin:30px auto;
+	color: #000;
+}
+.chargeTable tr td{
+	text-align: center;
+	font-weight: 600;
+	line-height: 25px;
+}
+.fees{
+	width: 100%;
+	color: #333;
+	margin-top: 10px;
+}
+.fees tr{
+	height: 35px;
+	text-align: center;
+}
+.fees th{
+	width: 14.3%;
+}
+/* 组织信息css */
+.tissue{
+	width: 320px;
+	height: 400px;
+}
+/* 备案信息*/
+.ims{
+	width: 1200px;
+	height: auto;
+	margin: 0 auto;
+	color: #424242;
+	padding: 14px;
+	box-sizing:border-box;
+	background-color: #fff;
+	margin-top: 30px;
+}
+.ims-h1{
+	width: 100%;
+	height: 66px;
+	box-sizing:border-box;
+	padding:0 17px;
+	border-bottom: solid 1px #eee;
+	margin-bottom:10px;
+}
+.ims-h1 span{
+	font-size: 26px;
+	line-height: 66px;
+	float: left;
+}
+.ims-h1 img{
+	width:33px;
+	height:26px;
+	float: right;
+	margin-top: 20px;
+}
+.ims-main{
+	width: 100%;
+	box-sizing:border-box;
+	padding: 17px;
+	overflow:hidden;
+	font-size: 14px;
+}
+.ims-main .column{
+	width: 100%;
+	margin-bottom: 35px;
+}
+.ims-title{
+	margin-bottom: 10px;
+}
+.ims-titles{
+	margin: 40px 25px;
+}
+.column .fontz{
+	font-family: "宋体";
+}
+.column .img{
+	text-align: center;
+}
+.column img{
+	margin: 0 auto;
+}
+.column-main{
+	width: 980px;
+	margin: 40px auto;
+	line-height: 30px;
+	font-family: "宋体";
+}
+.fontz a{
+	color:#0f8afd;
+}
+/* 审计报告 */
+.textRetract{
+	text-indent:2em;
+}
+.person1{
+	text-align: center;
+	padding-bottom: 40px;
+}
+/*风险教育*/
+.paragraph{
+	line-height: 40px;
+	display: none;
+}
+.paragraph p{
+	text-indent: 20px;
+}
+.publishSynopsis h4{
+	font-size: 18px;
+	padding:15px 0; 
+	color: #000;
+	cursor: pointer;
+	text-align: center;
+	border-bottom: 1px dashed;
+}
+.publishSynopsis h4:hover{
+	color:#2196f3;
+}

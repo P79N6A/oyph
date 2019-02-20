@@ -1,0 +1,326 @@
+#{extends 'common/back/teamMain.html' /}
+#{set title:'团队长 | 业务员' /}
+#{set smallclass:0 /}
+#{set crumbs:'团队长 >业务员'/}
+%{
+	java.lang.Integer sType = controllers.common.BackBaseController.getCurrentSupervisorType();
+}%
+<div class="back-main">
+	<!-- 头部筛选条件 -->
+	<div class="back-usertop">
+		<!-- 搜索按钮，控制搜索条件的显示隐藏 -->
+		<div class="left back-usermenu">
+		<a href="@{back.team.TeamCtrl.accountManagerListPre()}"  class="selected">业务员</a>
+		#{if  sType==0}
+		<a href="@{back.team.TeamCtrl.accountManagerInfoPre()}" >个人中心</a>
+		#{/if}
+		#{if  sType==4}
+		<a href="@{back.team.TeamCtrl.accountManagerInfoPre()}" >个人中心</a>
+		#{/if}
+		</div>
+		*{<div class="back-search left #{if loanName} selected#{/if}">
+			<i class="iconfont searchicon">&#xe60a;</i>搜索<i class="iconfont arrowicon">&#xe603;</i>
+		</div>}*
+
+		<form action="@{back.team.TeamCtrl.accountManagerListPre()}" style="float: left; margin-left:0px;" id="yewuyuan">
+
+			<input type="hidden" id="currPage" name="currPage"/>
+	  		<input type="hidden" id="pageSize" name="pageSize" value="${pageBean?.pageSize}"/>
+	  		<input type="hidden" id="exports" name="exports"/><!--是否导出  --><input type="hidden" id="superType" name="type" value="${type}"/> 
+	  		<input type="hidden" id="zhis" name="zhis"/>
+			
+			<select name="month" id="month" style="margin-right: 20px;" onchange="selSubmit()">
+				<option value="0"  #{if month==0} selected="selected"#{/if} id="op0">当月</option>
+				<option value="1" #{if month==1} selected="selected"#{/if} id="op1"></option>
+				<option value="2" #{if month==2} selected="selected"#{/if} id="op2"></option>
+				<option value="3" #{if month==3} selected="selected"#{/if} id="op3"></option>
+				
+				
+			</select>
+			<!-- <input type="submit" value="搜索" style="width: 50px;height: 25px; margin-right: 0px;" /> -->
+		</form>
+		<!-- 右侧功能按钮 -->
+		<div class="right back-rightbtns">
+			#{if type == 0}
+				<a id="disp" href="javascript:void(0);" onclick="displayLock()"><i class="iconfont">&#xe627;</i>内部客户经理</a>
+			#{/if}
+			#{else}
+				<a id="disp" href="javascript:void(0);" onclick="displayLock()"><i class="iconfont">&#xe63c;</i>外部客户经理</a>
+			#{/else}
+		<a href="javascript:exportList(1)"><i class="iconfont">&#xe612;</i>导出</a>
+		</div>
+	</div>
+	<!-- 搜索条件，默认隐藏 -->
+	<div class="back-search-option" >
+		<form action="@{back.team.TeamCtrl.accountManagerListPre()}" method="GET" id="showReleaseListPre">
+			<input type="hidden" id="currPage" name="currPage"/>
+	  		<input type="hidden" id="pageSize" name="pageSize" value="${pageBean?.pageSize}"/>
+	  		<input type="hidden" id="exports" name="exports"/><!--是否导出  -->
+	  		
+			<input type="submit"  class="bgbtn" value="搜索" />
+		</form>
+	</div>
+	<div class="back-cont">
+		<div class="back-box">
+			<table width="100%" class="back-table table-fixed">
+				<tr height="40">
+					<th width="70" class="align-left">
+						<span class="back-order">
+							序号
+						</span>
+					</th>
+					<th>职位</th>
+					<th>
+						<span class="back-order">
+						    推广码
+						</span>
+					</th>
+					<th>真实姓名</th>
+					<th>推广会员人数</th>
+					<th>理财会员人数</th>
+					<th>当月推广理财金额</th>
+					<th>当月年化折算</th>
+					<th>本月业绩提成</th>
+					<th>推广理财总金额</th>
+					<th>名下会员</th>
+					<th width="140">操作</th>
+					
+				</tr>
+			#{if page?.page}
+				#{list page?.page}
+				<tr height="40">
+					<td class="align-left">
+						<label><input type="checkbox" class="back-tdcheck" />${_index}</label>
+					</td>
+					<td data-title="">
+					#{if _?.type==0}
+					业务员
+					#{/if}
+						#{if _?.type==1}
+					部门经理
+					#{/if}
+						#{if _?.type==2}
+					业务部经理
+					#{/if}
+						#{if _?.type==4}
+					外部客户经理
+					#{/if}
+					</td>
+					<td>
+						${_?.code}
+					</td>
+					<td>
+						${_?.realName}
+					</td>
+					<td>
+						${_?.count}
+					</td>
+					<td>
+						${_?.investCount}
+					</td>
+					<td>
+					#{if month==0}
+						${_?.sumMoney?.format("#0.00")}
+					#{/if}
+					#{else}
+						${_?.teamSta?.month_money?.format("#0.00")}
+					#{/else}
+					</td>
+					<td>
+					#{if month==0}
+						${_?.yearConvert?.format("#0.00")}
+					#{/if}
+					#{else}
+						${_?.teamSta?.year_convert?.format("#0.00")}
+					#{/else}
+					</td>
+					<td>
+					#{if month==0}
+						${_?.actual_month_commission?.format("#0.00")}
+					#{/if}
+					#{else}
+						${_?.teamSta?.actual_month_commission?.format("#0.00")}
+					#{/else}
+					</td>
+					<td>
+					#{if month==0}
+						${_?.total_money?.format("#0.00")}
+					#{/if}
+					#{else}
+						${_?.teamSta?.total_money?.format("#0.00")}
+					#{/else}
+					</td>
+					<td style="cursor:pointer;"><a href="@{back.team.TeamCtrl.accountManagerInfooPre(1,10,_?.supervisor_id,month)}">查看</a></td>
+					<td>
+					<a href="javascript:managerDetails('${_?.realName}', '${_?.code}','${_?.mobile}','${_?.total_commission}')" class="">经理详情</a> 
+					</td>
+					
+				</tr>
+				#{/list}
+				<tr height="40">
+						<td colspan="12" class="back-lasttd">
+							<!-- 分页组件--pageTag -->
+							#{backPageTag page:page,showPage:"showReleaseListPre"/}
+						</td>
+					</tr>
+				<!-- 表格数据统计 -->
+			#{/if}
+			#{else}	
+					<!-- 暂无记录 -->
+					<tr height="58">
+						<td colspan="12" class="back-nodata"><i class="iconfont">&#xe613;</i>暂无记录</td>
+					</tr>
+				</table>
+			#{/else}
+		</div>
+	</div>
+</div>
+
+<div class="dialog qd-dialog" id="tg" >
+		<div class="dialog-bg"></div>
+		<div class="qd-dialogbox dialog-cont" style="left: 589px; opacity: 1; margin-top: 0px; top: 110px;">
+		<ul>
+		<li><span>姓名:</span><span id="name"></span></li>
+		<li><span>推广码:</span><span id="code"></span></li>
+		<li><span>手机号码:</span><span id="mobile"></span></li>
+		<li><span>总佣金:</span><span id="amount"></span></li>
+		</ul>
+		</div>
+</div>
+<!-- 页面js -->
+<script type="text/javascript" >
+	require(["back"],function(back){
+		// 搜索 排序 选中
+		require(["search","linechecked"],function(){
+		});
+	});
+	
+	function release(bidNo) {
+		confirm("编号"+bidNo+"，执行放款", function(){
+			waitingDialog();
+			$("#form_"+bidNo).submit();
+		});
+	}
+	
+	function showReleaseListPre(currPage, pageSize) {
+		$("#currPage").val(currPage);
+		$("#pageSize").val(pageSize);
+		
+		$("#yewuyuan").submit();
+	}
+	
+	//导出
+	function exportList(expor){
+		$("#exports").val(expor);
+		
+		$("#yewuyuan").submit();
+		$("#exports").val(0);
+	}
+	
+	//排序
+	function orderBy(orderType,orderValue){
+		$("#showReleaseListPre input[name='orderType']").val(orderType);
+		$("#showReleaseListPre input[name='orderValue']").val(orderValue);
+		
+		$("#showReleaseListPre input[name='currPage']").val(1);
+		
+		$("#showReleaseListPre").submit();
+	}
+	function managerDetails(name,code,mobile,amount){
+		alert("<ul><li><span>姓名:</span><span >"+name+"</span></li><li><span>推广码:</span><span >"+code+"</span></li><li><span>手机号码:</span><span >"+mobile+"</span></li><li><span>总佣金:</span><span>"+amount+"</span></li></ul>")
+	}
+	
+
+	 window.onload=function(){
+		document.getElementById("op0").innerHTML=dateYear()+'年'+dateMonth()+"月";
+		if(dateMonth()>1){
+			document.getElementById("op1").innerHTML=dateYear()+'年'+dateMonth(1)+"月";
+		}else{
+			document.getElementById("op1").innerHTML=(dateYear()-1)+'年'+dateMonth(1)+"月";
+		}
+		if(dateMonth()>2){
+			document.getElementById("op2").innerHTML=dateYear()+'年'+dateMonth(2)+"月";
+		}else{
+			document.getElementById("op2").innerHTML=(dateYear()-1)+'年'+dateMonth(2)+"月";
+		}
+		if(dateMonth()>3){
+			document.getElementById("op3").innerHTML=dateYear()+'年'+dateMonth(3)+"月";
+		}else{
+			document.getElementById("op3").innerHTML=(dateYear()-1)+'年'+dateMonth(3)+"月";
+		}
+		
+	} 	
+
+	//获取月份
+	function dateMonth(flag){
+		 var date=new Date;
+		 var year=date.getFullYear();
+		 var month=date.getMonth()+1;
+		 month =(month<10 ? "0"+month:month); 
+		 var mydate = (year.toString()+month.toString());
+		 if(flag==1){
+			 if(month>1)
+			 	 month=month-1;
+			 else{
+				 month='12';
+			 }
+		}
+		 else if(flag==2){
+		     if(month==1){
+		    	 month="11";
+		     }else if(month==2){
+		    	 month="12";
+		     }else{
+		    	 month=month-2; 
+		     } 
+		}
+		 else if(flag==3){
+			 if(month==1){
+		    	 month="10";
+		     }else if(month==2){
+		    	 month="11";
+		     }else if(month==3){
+		    	 month="12"; 
+		     } else{
+		    	 month=month-3;
+		     }
+		 }
+		 else {
+			 month=month;
+		 }
+		 return month
+	}
+	//获取年份
+	function dateYear(){
+		 var date=new Date;
+		 var year=date.getFullYear();
+		 return year;
+	}
+	
+	function selSubmit(){
+		var month = $("#month").val();
+		var zhi = document.getElementById("op"+month).innerHTML;
+		$("#zhis").val(zhi+"1日");
+		var form=$("#yewuyuan");
+		form.submit();
+	}
+	
+	//显示锁定会员
+	function displayLock() {
+		
+		var status = $("#superType").val();
+		if (status == 0) {
+			$("#superType").val("4");
+			$("#disp").html("外部客户经理");
+		} else {
+			$("#superType").val("0");
+			$("#disp").html("内部客户经理");
+		}
+
+		$("#yewuyuan input[name='currPage']").val(currPage);
+		$("#yewuyuan input[name='pageSize']").val(pageSize); 
+
+		$("#yewuyuan").submit(); 
+	}
+	
+</script>

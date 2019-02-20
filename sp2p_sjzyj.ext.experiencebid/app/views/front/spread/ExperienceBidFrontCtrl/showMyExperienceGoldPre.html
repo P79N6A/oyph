@@ -1,0 +1,134 @@
+<h1 class="azamoney-nav">体验金</h1>
+<div class="account-main" id="exp_bid_invest_list">
+	<table class="account-table" width="100%">
+		<tr height="46">
+			<th>投标金额</th>
+			<th>预计收益</th>
+			<th>投标时间</th>
+			<th>到期时间</th>
+			<th>状态</th>
+		</tr>
+		#{list pageBean?.page}
+		<tr height="46">
+			<td>#{formatIntMoney money:_?.invest_amount}#{/formatIntMoney}元</td>
+			<td>${_?.income?.format(common.constants.Constants.FINANCE_FORMATE_NORMAL)}元</td>
+			<td>${_?.invest_time?.format(common.constants.Constants.DATE_FORMATE)}</td>
+			<td>${_?.repayment_time?.format(common.constants.Constants.DATE_FORMATE)?:'----'}</td>
+			<td>${_?.status?.value}</td>
+		</tr>
+		#{/list}
+	</table>
+
+	#{if pageBean?.page == null}
+	<div class="norecord-box c9">
+		暂无记录
+	</div>
+	#{/if}
+
+	<div class="left account-rednote major">
+		<span id="experienceCount">体验金可领次数&nbsp;&nbsp;${experienceBidAccount?.count?:'0'}次</span>
+		<a onclick="getExperienceGold()" href="javascript:void(0);" class="get-testbtn">领取&gt;</a>
+		<span id="experienceAmount">体验金余额&nbsp;&nbsp;#{formatIntMoney money:experienceBidAccount?.amount?:'0'/}元</span>
+		<a href="/">去出借&gt;</a>
+		<span>体验金收益&nbsp;&nbsp;${experienceBidAccount?.balance?.format(common.constants.Constants.FINANCE_FORMATE_NORMAL)?:'0'}元</span>
+		#{if experienceBidAccount?.balance > 0}
+			<a href="javascript:void(0)" onclick="applayConversion();" class="account-debtbtn">兑换&gt;</a>
+		#{/if}
+		#{else}
+			<a href="javascript:void(0);" class="account-debtbtn">兑换&gt;</a>
+		#{/else}
+	</div>
+
+	<!-- 分页组件 -->
+	#{if pageBean?.page}
+		#{frontPageTag page:pageBean,showPage:"showMyExperienceAccount"/}
+	#{/if}
+	
+</div>
+<div class="account-debt account-exchangeok clearfix none" id="conversion_applay_success">
+	<p class="findepassword-success">
+		<span class="timeout-note major"><i class="icon success-icon"></i>兑换申请成功，平台正在处理！</span>
+	</p>
+	<p class="returnprev">
+		<a href="javascript:showMyExperienceAccount();" class="backpage"><i class="icon return-icon"></i>返回</a>
+	</p>
+</div>
+
+<!-- 领取体验金弹窗 -->
+<div class="dialog test-dialog" id="getExperienceDialog">
+	<div class="dialog-bg"></div>
+	<div class="dialog-cont">
+			<h2 class="dialog-head">
+				<span class="left">平台提示</span>
+				<i class="dialog-close right" title="关闭" >×</i>
+			</h2>
+		<p>
+			恭喜您！获得<span class="major">#{formatIntMoney money:experienceBidAccount?.every_grant}#{/formatIntMoney}元</span>投资体验金！
+		</p>
+	</div>
+</div>
+
+<script type="text/javascript">
+	function getExperienceGold(){
+		#{if isSimulated}
+			alert("模拟登录不能执行该操作");
+			return false;
+		#{/if}
+		#{else}
+		var count = ${experienceBidAccount?.count?:'0'};
+		var amount = ${experienceBidAccount?.amount?:'0'};
+		var everyGrant = ${experienceBidAccount?.every_grant?:'0'};
+		if(parseInt(count)==0){
+			return;
+		}
+		$.ajax({
+			url:"@{front.spread.ExperienceBidFrontCtrl.getExperienceGold()}",
+			type:"POST",
+			success:function(data){
+				var flag = interceptorCheck(data);
+				if(!flag){
+					return;
+				}
+				if(data.code < 1){
+					alert(data.msg);
+					return;
+				}
+				$('#getExperienceDialog').dialog();
+				$("#experienceCount").html("体验金可领次数&nbsp;&nbsp;"+(parseInt(count)-1)+"次");
+				$("#experienceAmount").html("体验金余额&nbsp;&nbsp;"+(parseInt(amount)+parseInt(everyGrant))+"元");
+			},
+			errro:function(){
+				alert('糟糕!领取失败啦...');
+			}
+		});
+		#{/else}
+	}
+	
+	function applayConversion(){
+		#{if isSimulated}
+			alert("模拟登录不能执行该操作");
+			return false;
+		#{/if}
+		#{else}
+		$.ajax({
+			url : "@{front.spread.ExperienceBidFrontCtrl.applayConversion()}",
+			type : "POST",
+			success : function(data) {
+				var flag = interceptorCheck(data);
+				if(!flag){
+					return;
+				}
+				
+				if (data.code < 1) {
+					alert(data.msg);
+				} else {
+					$("#exp_bid_invest_list").addClass('none');
+					$("#conversion_applay_success").removeClass('none');
+				}
+				
+			}
+		});
+		#{/else}
+	}
+	
+</script>

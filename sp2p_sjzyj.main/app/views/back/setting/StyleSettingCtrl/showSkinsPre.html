@@ -1,0 +1,69 @@
+#{extends 'common/back/settingMain.html' /}
+	#{set title:'设置 | 风格设置 | 更换皮肤' /}
+	#{set smallclass:4 /}
+	#{set crumbs:'设置>风格设置>更换皮肤'/}
+
+
+<div class="back-main">
+	<div class="back-usertop">
+		<b class="left font14">更换皮肤</b>
+		<!-- 右侧功能按钮 -->
+		<div class="right back-rightbtns">
+			<a href="javascript:window.history.back();"><i class="iconfont">&#xe60b;</i>返回</a>
+		</div>
+	</div>
+	<div class="back-cont">
+		<div class="back-infor">
+			<h2 class="back-infor-head">
+				<span class="left">选择皮肤</span>
+			</h2>
+			<div class="back-skins">
+				<ul class="back-skins-list">
+					#{list items:themes,as:'theme'}
+						<li>
+							<div class="back-skin-box #{if settings?.get(common.constants.SettingKey.THEME_NAME).equals(theme?.folder)}selected#{/if}">
+								<img src="${theme?.img2}" onerror="this.src='/public/common/default.jpg'" width="282" height="375" alt="" />
+								<div class="back-skin-cover"></div>
+								<p class="back-skin-name">${theme?.name}</p>
+								<form action="@{back.setting.StyleSettingCtrl.changeTheme()}" method="POST">
+									<input type="hidden" name="themeSign" value="${theme?.sign}">
+								</form>
+								
+							</div>
+							<a href="javascript:void(0);" class="back-skin-preview"><i class="iconfont">&#xe618;</i>预览</a>
+							<div class="fancybox-container">
+								<a class="fancybox" data-fancybox-group="skin_${theme?.id}" title="${theme?.name}" href="${theme?.img1}"></a>
+								<a class="fancybox" data-fancybox-group="skin_${theme?.id}" title="${theme?.name}" href="${theme?.img2}"></a>
+								<a class="fancybox" data-fancybox-group="skin_${theme?.id}" title="${theme?.name}" href="${theme?.img3}"></a>
+								<a class="fancybox" data-fancybox-group="skin_${theme?.id}" title="${theme?.name}" href="${theme?.img4}"></a>
+							</div>
+						</li>
+					#{/list}
+				</ul>
+				<p class="back-skins-btn">
+					#{rightMng rightId:805003}
+					<input type="button" value="一键换肤" class="bgbtn" onclick="changeTheme()" />
+					#{/rightMng}
+				</p>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<!-- 页面js -->
+<script type="text/javascript">
+	require(["back"],function(back){
+		$(".back-skin-box").click(function(){
+			$(this).toggleClass("selected").parent().siblings().children(".back-skin-box").removeClass("selected");
+		});
+		require(["fancybox"]);
+	});
+	
+	//更换前台主题
+	function changeTheme(){
+		var obj = $("div .selected");
+		var sign = $(obj).find("form");
+		sign.submit();
+	}
+</script>

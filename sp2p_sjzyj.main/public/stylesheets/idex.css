@@ -1,0 +1,127 @@
+/*内容*/
+
+.content-pic{
+	margin-top:680px;
+	margin-left: 400px;
+	position:relative;
+}
+.content-size{
+	width: 372px;
+	height: 85px;
+	margin-top:3500px; 
+	margin-bottom:420px; 
+	margin-left: 37%;
+}
+.content-size>a{
+	width: 372px;
+	height: 85px;
+	display: block;
+    background: url(/public/images/open.png) no-repeat; 
+}
+.content-size>a:hover{
+	background: url(/public/images/opens.png) no-repeat;
+}
+
+.introduce-size>p{
+	font-size: 20px;
+	font-family: "楷体";
+	line-height: 30px;
+}
+.introduce-size-big{
+	padding: 8px 0;
+}
+
+/*内容*/
+/* 导航 */
+/* CSS Document */
+
+* {
+	margin: 0;
+	padding: 0;
+}
+
+.bcon {
+	width:600px;
+	
+	background-color:rgba(212,0,0,0.2);
+	float: left;
+	position: absolute;
+	top:750px;
+	left:33%;
+}
+
+.bcon h1 {
+	padding: 0 10px;
+	text-align: center;
+}
+
+.bcon h1 b {
+	color:#FFF;
+	font: bold 14px/40px '楷体';
+	padding: 0 8px;
+	margin-top: -1px;
+	font-size:24px;
+	letter-spacing:12px;
+	display: inline-block;
+}
+.bcon h2 b{
+	margin: 0 60px;
+	font-weight:400;
+	color:#FFF;
+	font-family:"楷体"
+}
+.bcon h2>span{
+	padding: 0 10px;
+}
+.list_lh {
+	height: 220px;
+	overflow: hidden;
+}
+
+.list_lh li {
+	padding: 10px;
+}
+
+.list_lh li.lieven {
+	background: red;
+}
+
+.list_lh li p {
+	width: 580px;
+	height: 24px;
+	line-height: 24px;
+	font-size: 12px;
+}
+
+.lf-size{
+	display:block;
+	float:left;
+	color: yellow;
+	font-size:16px;
+	margin-left: 150px;
+}
+.lf-size1{
+	display:block;
+	float:left;
+	font-size:16px;
+	color: yellow;
+	margin-left: 55px;
+}
+.lf-size2{
+	display:block;
+	float:right;
+	margin-right:80px; 
+	color: yellow;
+	font-size:16px;
+}
+.btn_lh:hover {
+	color: #fff;
+	text-decoration: none;
+}
+
+.btm p {
+	font: normal 12px/24px 'Microsoft YaHei';
+	text-align: center;
+}
+
+/* 导航 */

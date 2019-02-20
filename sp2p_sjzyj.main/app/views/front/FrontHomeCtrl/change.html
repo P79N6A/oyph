@@ -1,0 +1,52 @@
+<style>
+.event:hover img{
+    display:block; 
+    position: absolute;
+    z-index: 3;
+} 
+.event img{
+    display:none; 
+}
+</style>
+	<div style="width:150px; border-right:3px solid #f77b0f;background-color: green;">
+		#{list items:page.page}
+			#{if _?.time_day>0}
+				#{if _?.time_month < 10 && _?.time_day<10}
+					<span class="time">${_?.time_year}-0${_?.time_month}-0${_?.time_day}</span><img class="smallpic" src="/public/front/images/timesmall.png">
+				#{/if}
+				 #{if _?.time_month < 10 && _?.time_day>=10}
+					<span class="time">${_?.time_year}-0${_?.time_month}-${_?.time_day}</span><img class="smallpic" src="/public/front/images/timesmall.png">
+				#{/if}
+				#{if _?.time_month >= 10 && _?.time_day<10}
+					<span class="time">${_?.time_year}-${_?.time_month}-0${_?.time_day}</span><img class="smallpic" src="/public/front/images/timesmall.png">
+				#{/if}
+				#{if _?.time_month >= 10 && _?.time_day>=10}
+					<span class="time">${_?.time_year}-${_?.time_month}-${_?.time_day}</span><img  class="smallpic" src="/public/front/images/timesmall.png">
+				#{/if} 
+			#{/if}
+			#{if _?.time_day==0}
+				#{if _?.time_month < 10 }
+					<span class="time">${_?.time_year}-0${_?.time_month}</span><img class="smallpic" src="/public/front/images/timesmall.png">
+				#{/if}
+				 #{if _?.time_month > 10 }
+					<span class="time">${_?.time_year}-${_?.time_month}</span><img class="smallpic" src="/public/front/images/timesmall.png">
+				#{/if}
+			#{/if}
+		#{/list}	
+	</div>
+ 	
+	<div style=" width:800px;margin-left: 150px; border-left:3px solid #f77b0f;padding-top: 8px; " class="content">
+		#{list items:page.page}
+				<span class="event" style="display: inline-block;">
+				${_?.event_content}
+				#{if _?.image_url}
+				<img src="${_?.image_url}" width="700" height="400">
+				#{/if}
+				</span>
+		#{/list}
+	</div>
+	
+	
+
+
+

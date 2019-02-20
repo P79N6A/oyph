@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>讴业大转盘，豪礼送不停</title>
+		<link rel="stylesheet" href="/public/front/stylesheets/index.css" />
+		<link rel="stylesheet" href="/public/front/stylesheets/cps-invite.css" />
+		<link rel="stylesheet" type="text/css" href="@{'/public/front/stylesheets/front.css'}" />
+	</head>
+	<body>
+	<img src='//stats.ipinyou.com/adv.gif?a=XTs8T..UjIWeYwbjEFEcIcX8NqCMP&cm=1&v=2&e=ev%3Dvg' style='display:none;'/>
+		<div class="cps-bg">
+			<div class="cps-main">
+				<span class="zi">注册即可抽取百元话费、iphone xs等豪礼</span>
+				<form action="@{front.account.RegisterCtrl.registerings()}" method="post" id="registerSubmit" class="cps-form">
+					<div class="form-list">
+						<div class="shouji"></div><input type="text" maxlength="11" name="mobile" placeholder="请输入本人手机号" id="cps-cell" class="cps-sr" autocomplete="off" onkeyup="this.value=this.value.replace(/[^\d]/g,'');"/>
+					</div>
+					<p class="verify1"></p>
+					<div class="form-list">
+						<input type="text" placeholder="请输入计算结果" name = "code" maxlength="2" class="cps-yz" id="cps-auth" onkeyup="this.value=this.value.replace(/[^\d]/g,'');"/>
+						<input id="randomNum" name="randomId" value="${randomNum}" type="hidden"/>
+						<img src="@{common.CaptchaController.createCustomColorCaptcha(randomNum,'FFFFFF','FF6347')}" onclick="refreshCaptcha(true);" id = "captchaImage" class="ident" title="换一张"/>
+					</div>
+					<p class="verify2"></p>
+					<div class="form-list">
+						<input type="text" placeholder="请输入6位随机数" name = "smsCode" maxlength="6" class="cps-yz" id="cps-code" onkeyup="this.value=this.value.replace(/[^\d]/g,'');" autocomplete="off"/>
+						<input type="hidden" id="scene" name="scene" value="${common.enums.JYSMSModel.MODEL_SEND_CODE.tplId}">
+						<input type="button" id="vCode" value="获取验证码" >
+					</div>
+					<p class="verify3"></p>
+					<div class="form-list">
+						<div class="suo"></div><input autocomplete="new-password" type="password" placeholder="8~15位字母或数字组合区分大小写" name = "password" class="cps-sr" id="cps-pwd" oncopy="return false" />
+					</div>
+					<p class="verify4"></p>
+					<input type="hidden" value = "${spreadMobile1}" name="spreadMobile" id = "spreadMobile"/>
+					<input type="submit" value="立即注册" id="cps-sub" class="cps-sub"/>
+				</form>
+			</div>
+			<div class="Explain">
+				<p>1、新用户注册即送1金币，注册起7天之内参与项目出借再送1金币（只有首次可送）；</p>
+				<p>2、老用户邀请新用户注册，开户，参与项目出借后即可送1金币；</p>
+				<p>3、分享注册链接到朋友圈即可获得一金币（一天只可获得一金币）；</p>
+				<p>4、一金币只可抽一次奖；</p>
+				<p>5、中奖后须填写详细正确的电话和联系地址（有效期为1天，1天之内未填写即失效） </p>
+				<p>6、联系电话4009018889</p>
+				<p>7、最终解释权归讴业普惠所有</p>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="/public/front/javascripts/jquery.min.js"></script>
+	<script type="text/javascript">
+		$("#cps-sub").click(function(){
+			var cell = $("#cps-cell").val();
+			var auth = $("#cps-auth").val();
+			var code = $("#cps-code").val();
+			var pwd=$('#cps-pwd').val()
+			var reg=/^1[3-9][0-9]{9}$/;//手机号验证规则
+			if (cell == "") {
+				$(".verify1").html("请输入手机号")
+				return false;
+			}else if(!reg.test(cell)){
+				$(".verify1").html("手机号格式不正确")
+				return false;
+			}else{
+				$(".verify1").html("")
+			};
+			if (auth == "") {
+				$(".verify2").html("请输入图文验证码")
+				return false;
+			}else{
+				$(".verify2").html("")
+			};
+			if (code == "") {
+				$(".verify3").html("请输入验证码")
+				return false;
+			}else{
+				$(".verify3").html("")
+			};
+			if (pwd == "") {
+				$(".verify4").html("请输入密码")
+				return false;
+			}
+			if(pwd.length<8 ||pwd.length>16){
+				$(".verify4").html("请输入8--16以内的密码")
+				return false;
+			}else{
+				$(".verify4").html("")
+			}
+			form.submit();
+		});
+		/* 验证码刷新 */
+		function refreshCaptcha(isRefresh){
+			
+			$.ajax({
+				url:"@{common.CaptchaController.flushCaptcha()}",
+				type:"post",
+				success:function(data) {
+					var arr=eval(data);
+					var randomid = arr.randomID;
+					var background = "FFFFFF";
+					var text = "FF6347";
+					$("#captchaImage").attr("src","@{common.CaptchaController.createCustomColorCaptcha()}?uuid="+randomid+"&background="+background+"&text="+text)
+					$("#randomNum").val(randomid);
+				}
+			});
+			if(isRefresh){
+				$("#code").next("p").remove();
+				$("#code").removeClass("text-error focus");
+			}
+			$("#code").removeClass("focus");
+			$("#code").val("");
+		}
+		
+		$("#vCode").click(function () {
+			var cell = $("#cps-cell").val();
+			var auth = $("#cps-auth").val();
+			var randomNum=$('#randomNum').val();
+			var reg=/^1[3-9][0-9]{9}$/;
+			if (cell == "") {
+				$(".verify1").html("请输入手机号")
+				return false;
+			}else if(!reg.test(cell)){
+				$(".verify1").html("手机号格式不正确")
+				return false;
+			} else{
+				$(".verify1").html("")
+			}
+			if (auth == "") {
+				$(".verify2").html("请输入图文验证码")
+				return false;
+			}else{
+				$(".verify2").html("")
+			}
+			
+			$.ajax({
+				url : "@{front.account.RegisterCtrl.sendCodeOfRegister()}",
+				type : "POST",
+				data : {
+					"mobile" : cell,
+					"code" : auth,
+					"randomId" : randomNum,
+					"scene" : $("#scene").val()
+				},
+				dataType:"json",
+				success : function(data) {
+					if(data.code < 1){
+						$(".verify1").html(data.msg);
+						return false;
+					} else {
+						$(".verify1").html('');
+						if($('#vCode').val()=='获取验证码'){
+							var i=60;
+							$('#vCode').val(i+'s').css('background','#ccc')
+							var time=setInterval(function(){
+								if(i==0){
+									$('#vCode').val('获取验证码').css('background','#4CC6FF')
+									clearInterval(time)
+									return false;
+								}else{
+									i--;
+									$('#vCode').val(i+'s')
+								}
+							},1000)
+						}else{
+							return false;
+						}
+						
+					}
+				}
+			});
+		});
+	</script>
+</html>

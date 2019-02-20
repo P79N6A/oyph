@@ -1,0 +1,248 @@
+.form-list input::-webkit-input-placeholder {
+	    color: #c8c8c8;
+	}
+.cps-main input{
+		outline: none;
+		border: none;
+		-webkit-appearance: none;
+	}
+@media screen and (min-width: 500px) and (max-width: 1920px) {
+	.cps-bg{
+		position: absolute;
+	    width: 100%;
+	    min-width: 1200px;
+	    height: 3011px;
+	    background: url(/public/front/images/cps-register.png) no-repeat center;
+	}
+	.cps-img-bg{
+		display: none;
+	}
+	.cps-main{
+		width: 640px;
+		height: 540px;
+		margin: 950px auto 0;
+		text-align: center;
+	}
+	.cps-form p{
+		font-size: 20px;
+		color: #fdcf3c;
+	}
+	.form-list{
+		width: 640px;
+		height: 80px;
+		margin-top: 20px;
+	}
+	.form-list input{
+		box-sizing: border-box;
+		padding-left: 30px;
+		color: #c8c8c8;
+		font-weight: bold;
+		font-size: 22px;
+	}
+	.shouji,.suo{
+		display: inline-block;
+		width: 93px;
+		height: 80px;
+		border-radius:3px 0 0 3px ;
+		float: left;
+	}
+	.shouji{
+		background: url(/public/front/images/MP.png) no-repeat center center #4cc6ff;
+	}
+	.suo{
+		background: url(/public/front/images/LOCK.png) no-repeat center center #4cc6ff;
+	}
+	.cps-sr{
+		width: 547px;
+		height: 80px;
+		border-radius:0 3px 3px 0;
+		float: left;
+	}
+	.cps-yz{
+		width: 320px;
+		height: 80px;
+		border-radius:3px;
+		float: left;  
+	}
+	.ident{
+		width: 215px;
+		height: 80px;
+		float: left;
+		margin-left: 100px;
+		cursor: pointer;
+	}
+	#vCode{
+		width: 235px;
+		height: 80px;
+		float: left;
+		margin-left: 80px;
+		color: #fff;
+		background: #4CC6FF;
+		border: none;
+		border-radius:3px;
+		padding: 0;
+	}
+	.cps-sub{
+		width: 310px;
+		height: 62px;
+		border-radius: 31px;
+		background: #4CC6FF;
+		color: #FFFFFF;
+		margin: 60px auto 0;
+		font-size: 22px;
+	}
+	/*注册成功的样式*/
+	.cps-success{
+		width: 550px;
+		height: 510px;
+		margin: 0 auto;
+		text-align: center;
+	}
+	.cps-success p{
+		font-size: 50px;
+		color: #ffff00;
+	}
+	.cps-erweima{
+		margin: 60px auto 50px;
+	}
+	.cps-xiazai{
+		width: 395px;
+		height: 95px;
+		background: #ffaa00;
+		color: #FFFFFF;
+		font-size: 50px;
+		border-radius: 9px;
+	}
+}
+@media screen and (max-width: 500px){
+	.cps-bg{
+		display: block;
+	}
+	.cps-img-bg{
+		display: block;
+		position: absolute;
+		width: 100%;
+		top: 0;
+	}
+	.cps-main{
+		position: absolute;
+		width: 100%;
+	}
+	.cps-form{
+		width: 260px;
+		margin: 250px auto 0;
+		text-align: center;
+	}
+	.cps-form p{
+		font-size: 16px;
+		color: #fdcf3c;
+	}
+	.form-list{
+		width: 100%;
+		height: 30px;
+		margin-top: 10px;
+	}
+	.form-list input{
+		box-sizing: border-box;
+		padding-left: 10px;
+		color: #c8c8c8;
+		font-size: 13px;
+	}
+	.cps-sr{
+		width: 220px;
+		height: 30px;
+		border-radius:0 3px 3px 0;
+		float: left;
+	}
+	.shouji,.suo{
+		display: inline-block;
+		width: 40px;
+		height: 30px;
+		border-radius:3px 0 0 3px ;
+		float: left;
+	}
+	.shouji{
+		background-size:40px 30px;
+		background: url(/public/front/images/mp1.png) no-repeat center center #4cc6ff;
+	}
+	.suo{
+		background: url(/public/front/images/lock1.png) no-repeat center center #4cc6ff;
+	}
+	.cps-yz{
+		width: 180px;
+		height: 30px;
+		border-radius:3px;
+		float: left; 
+	}
+	.ident{
+		width: 70px;
+		height: 30px;
+		float: left;
+		margin-left: 10px;
+	}
+	#vCode{
+		width: 70px;
+		height: 30px;
+		float: left;
+		margin-left: 10px;
+		color: #fff;
+		background: #4CC6FF;
+		border: none;
+		border-radius:3px;
+		padding: 0;
+		font-size: 12px;
+	}
+	.cps-sub{
+		width: 100px;
+		height: 25px;
+		border-radius: 13px;
+		background: #4CC6FF;
+		color: #FFFFFF;
+		margin: 10px auto 0;
+		font-size: 12px;
+	}
+	/*注册成功的样式*/
+	.cps-success{
+		width: 300px;
+		height: 270px;
+		margin: 250px auto 0;
+		text-align: center;
+	}
+	.cps-success p{
+		font-size: 22px;
+		color: #ffff00;
+	}
+	.cps-erweima{
+		width:105px;
+		margin: 4px auto;
+	}
+	.cps-xiazai{
+		width: 140px;
+	    height: 35px;
+	    background: #ffaa00;
+	    color: #FFFFFF;
+	    font-size: 18px;
+	    border-radius:6px;
+	}
+}
+@media screen and (max-width: 320px){
+	.cps-form {
+	    width: 260px;
+	    margin: 202px auto 0;
+	    text-align: center;
+	}
+	.cps-success{
+		margin: 194px auto 0;
+	}
+	.cps-success p{
+		font-size: 16px;
+	}
+	.cps-erweima{
+		width:90px;
+	}
+	.cps-xiazai{
+		width: 130px;
+	    height: 35px;
+	    font-size: 16px;
+	}
+}

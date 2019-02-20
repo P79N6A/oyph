@@ -1,0 +1,68 @@
+<div class="back-fiance-data">
+	<ul class="back-fiance-important">
+		<li>
+			<dl>
+				<dd id = "annualConvert"><span>${tb?.apr}</span>%</dd>
+				<dt>年利率</dt>
+			</dl>
+		</li>
+		<li>
+			<dl>
+				<dd id = "period"><span>${tb?.period}</span>${tb?.period_unit?.getShowValue()}</dd>
+				<dt>期限</dt>
+			</dl>
+		</li>
+		<li>
+			<dl>
+				<dd><span id = "amount">#{formatIntMoney money:tb?.amount}#{/formatIntMoney}</span>元</dd>
+				<dt>借款金额</dt>
+			</dl>
+		</li>
+		<li>
+			<dl>
+				<dd><span>#{formatIntMoney money:(tb?.amount-tb?.has_invested_amount)}#{/formatIntMoney}</span>元</dd>
+				<dt>可投</dt>
+			</dl>
+		</li>
+	</ul>
+	<ul class="back-fiance-btm">
+		<li><span class="lileft">借款人</span>${tu?.name}</li>
+		<li><span class="lileft">还款方式</span><span id = "repaymentType">${tb?.getRepayment_type()?.value}</span></li>
+		<li><span class="lileft">起投金额</span>#{formatIntMoney money:tb?.min_invest_amount}#{/formatIntMoney}元</li>
+		<li><span class="lileft">发布时间</span>${tb?.time?.format(common.constants.Constants.DATE_TIME_FORMATE)?:"----"}</li>
+		<li><span class="lileft">剩余时间</span><span id="count_down_time"></span></li>
+		<li><span class="lileft">加入人次</span>${tb?.invest_count}人次</li>
+		<li><span class="lileft">借款进度</span>${tb?.loan_schedule}%</li>
+		<li><span class="lileft">项目状态</span>${tb?.getStatus()?.value}</li>
+	</ul>
+</div>
+<script type="text/javascript">
+require(["back"], function(back){
+	if (${models.core.entity.t_bid.Status.FUNDRAISING.code} == ${tb?.status?.code}) {//筹款中
+		var EndTime = new Date('${tb?.invest_expire_time?.format(common.constants.Constants.DATE_PLUGIN)}').getTime();
+		var NowTime = ${sysNowTime?:0};
+		GetRTime(EndTime, NowTime, "count_down_time");
+	} else {
+		 $("#count_down_time").html('0天0时0分0秒');
+	}
+});
+//倒计时
+function GetRTime(EndTime, NowTime, domId){
+	if(NowTime==0) {
+		NowTime = new Date().getTime();
+	}
+	var t =EndTime - NowTime;
+	timeShow(t, domId);
+    setInterval(function() {
+    	t = t-1000;
+    	timeShow(t, domId);
+    },1000);
+}
+function timeShow(t, domId){
+    var d=Math.floor(t/1000/60/60/24);
+    var h=Math.floor(t/1000/60/60%24);
+    var m=Math.floor(t/1000/60%60);
+    var s=Math.floor(t/1000%60);
+    $("#"+domId).html((d<0?0:d)+'天'+(h<0?0:h)+'时'+(m<0?0:m)+'分'+(s<0?0:s)+'秒');
+}
+</script>

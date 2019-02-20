@@ -1,0 +1,120 @@
+#{extends 'common/back/queryMain.html' /}
+	#{set title:'查询 | 交易状态 | 理财会员追踪' /}
+	#{set smallclass:6 /}
+	#{set crumbs:'查询>交易状态>会员列表' /}
+	
+<div class="back-main">
+	<!-- 头部筛选条件 -->
+	<div class="back-search-option" style="display: block;">
+		<form action="@{back.query.UserTraceCtrl.showServiceUserlistPre()}" method="GET" id="showServiceUserlistPre">
+			<input type="hidden" id="currPage" name="currPage"/>
+	  		<input type="hidden" id="pageSize" name="pageSize" value="${pageBean?.pageSize}"/>
+	  		
+	  		<select name="serviceId">
+	  			<option value="0" #{if serviceId==0} selected="selected"#{/if}>所有</option>
+				#{list items:persons,as:"person"}
+					<option value="${person?.id}" #{if serviceId==person?.id} selected="selected"#{/if}>${person?.realityName}</option>
+				#{/list}
+			</select>
+	  		
+	  		<select name="showType" style="margin-right: 20px;">
+				<option value="0"  #{if showType==0} selected="selected"#{/if} >所有</option>
+				<option value="1" #{if showType==1} selected="selected"#{/if} >已开户</option>
+				<option value="2" #{if showType==2} selected="selected"#{/if} >未开户</option>
+			</select>
+			
+			<input type="text" class="iffocus" id="moblie" name="mobile" value="${mobile}" placeholder="电话" maxlength="13"/>
+			<input type="submit" class="bgbtn" value="搜索" />
+		</form>
+	</div>
+	<div class="back-cont">
+		<div class="back-box">
+			<table width="100%" class="back-table table-fixed">
+				<tr height="40">
+					<th width="70" class="align-left">编号</th>
+					<th>账号</th>
+					<th>电话</th>
+					<th>注册时间</th>
+					<th>是否开户</th>
+					<th>待收金额</th>
+					<th>操作</th>
+				</tr>
+			#{if pageBean?.page}
+				#{list pageBean?.page}
+				<tr height="40">
+					<td class="align-left">
+						<label><input type="checkbox" class="back-tdcheck" />${_?.id}</label>
+					</td>
+					<td>${_?.name}</td>
+					<td>
+						${_?.mobile}
+					</td>
+					<td>
+						${_?.time?.format(common.constants.Constants.DATE_TIME_FORMATE)?:"----"}
+					</td>
+					<td>
+						#{if _?.reality_name ==null} 否 #{/if}
+						#{else} 是 #{/else}
+					</td>
+					<td>
+						${_?.collectMoney} 元
+					</td>
+					<td class="back-handle">
+						<a href="@{back.query.UserTraceCtrl.toAddUserTracePre(_?.id)}" data-title="添加" class="iconfont">&#xe60f;</a>
+						
+						<a href="@{back.query.UserTraceCtrl.showUserTraceListPre(_?.id)}" data-title="追踪信息列表" class="iconfont">&#xe61c;</a>
+						
+						<a href="@{back.query.UserTraceCtrl.toAllotUserPre(_?.id)}" data-title="编辑" class="iconfont">&#xe602;</a>
+					</td>
+				</tr>
+				#{/list}
+				<!-- 表格数据统计 -->
+				<tr height="40">
+					<td colspan="7" class="back-lasttd">
+						<span class="back-choose left">
+							<input type="button" id="chooseAll" value="全选" />
+							<input type="button" id="chooseReverse" value="反选" />
+						</span>
+						
+						<!-- 分页组件--pageTag -->
+						#{backPageTag page:pageBean,showPage:"showServiceUserlistPre"/}
+					</td>
+				</tr>
+			#{/if}
+			#{else}	
+						
+					<!-- 暂无记录 -->
+					<tr height="58">
+						<td colspan="7" class="back-nodata"><i class="iconfont">&#xe613;</i>暂无记录</td>
+					</tr>
+				</table>
+			#{/else}
+		</div>
+	</div>
+</div>
+
+<!-- 页面js -->
+<script type="text/javascript">
+	require(["back"],function(back){
+		// 搜索 排序 选中
+		require(["search","linechecked"],function(){
+			
+		});
+	});
+	
+	function showServiceUserlistPre(currPage, pageSize) {
+		$("#currPage").val(currPage);
+		$("#pageSize").val(pageSize);
+		
+		$("#showServiceUserlistPre").submit();
+	}
+	
+	//导出
+	/* function exportList(expor){
+		$("#exports").val(expor);
+		
+		$("#showReleaseListPre").submit();
+		$("#exports").val(0);
+	} */
+	
+</script>

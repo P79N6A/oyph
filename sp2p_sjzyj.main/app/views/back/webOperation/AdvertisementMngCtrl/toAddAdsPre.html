@@ -1,0 +1,358 @@
+#{extends 'common/back/webOperationMain.html' /}
+	#{set title:'运维 | 广告图片 | 添加广告图片' /}
+	#{set smallclass:2 /}
+	#{set crumbs:'运维>广告图片>添加广告图片' /}
+	
+<div class="back-main">
+	<div class="back-usertop">
+		<b class="left font14">添加广告图片</b>
+		<!-- 右侧功能按钮 -->
+		<div class="right back-rightbtns">
+			<a href="javascript:backAndRefresh('@{back.webOperation.AdvertisementMngCtrl.showAdsPre}');"><i class="iconfont">&#xe60b;</i>返回</a>
+		</div>
+	</div>
+	<!-- 左侧菜单 -->
+	<form action="@{back.webOperation.AdvertisementMngCtrl.addAds()}" method="POST" id="addAds">
+		#{authenticityToken /}
+		<input type="hidden" name="uuidRepeat" value="${flash?.submitUuid}">
+		<div class="back-cont">
+			<div class="back-infor">
+				<h2 class="back-infor-head">广告图片</h2>
+				<ul class="back-infor-set">
+					<li>
+						<span class="lileft">位置</span>
+						<div class="liright">
+							#{select 'location', items:models.common.entity.t_advertisement.Location.values(), valueProperty:'code', labelProperty:'value', value:flash?.location, class:'width01', id:'location' /}
+						</div>
+					</li>
+					<li>
+						<span class="lileft">名称</span>
+						<div class="liright">
+							<input type="text" minlength="1" maxlength="10" id="name" name="ads.name" class="width05 required iffocus" value="${flash?.name}" />
+							<span class="back-text-limit">1~10个字符</span>
+						</div>
+					</li>
+					<li>
+						<span class="lileft">图片</span>
+						<div class="liright">
+							<span class="back-imgarea imgrequired">
+								<img src="${flash?.image_url} ? ${flash?.image_url} : '/public/back/images/noimg.jpg'" onerror="this.src='/public/back/images/noimg.jpg'" class="backupimg" height="100" width="200" id='image' name="image" alt="" title="" />
+								<input type="hidden" id="imageUrl" name="ads.image_url" value="${flash?.image_url}">
+							</span>
+							<span class="back-upimg">
+								<label class="back-upbtn">
+									<input type="file" class="upload_file" value="" accept=".jpg,.jpeg,.png,.gif" name="imgFile" id="imgFile" onchange="upload()"/>
+									<i class="iconfont">&#xe608;</i>本地上传
+								</label>
+								
+								<label class="back-lib-upbtn back-cropbtn"  onclick="cropImg(img_width, img_height);" id="cropImgLabel" style="display: none;">
+									<b class="iconfont">&#xe642;</b>裁剪
+								</label>
+								
+								<p class="back-imginfor-note">265*530&nbsp;&nbsp;jpg/png&nbsp;&nbsp;大小不超过2M</p>
+								<span id="resolutionshow">${flash?.image_resolution}</span>&nbsp;<span id="formatshow">${flash?.image_format}</span>&nbsp;<span id="sizeshow">${flash?.image_size}</span>
+								
+								<!-- 图片参数，用于保存 -->
+								<input type="hidden" id="imageResolution" name="ads.image_resolution" value="${flash?.image_resolution}">
+								<input type="hidden" id="imageFormat" name="ads.image_format" value="${flash?.image_format}">
+								<input type="hidden" id="imageSize" name="ads.image_size" value="${flash?.image_size}">								
+							</span>
+						</div>
+					</li>
+					<li>
+						<span class="lileft">链接</span>
+						<div class="liright">
+							<input type="text" maxlength="100" class="width05 iffocus" id="url" name="ads.url" value="${flash?.url}" />
+						
+							<select id="target" name="target">
+								#{list items:common.enums.Target.values(),as:'tar'}
+									<option  #{if flash?.target==tar?.code} selected="selected"#{/if} value="${tar?.code}">${tar?.description}</option>
+								#{/list}
+							</select>
+							<span class="back-text-limit">0~100个字符</span>
+						</div>
+					</li>
+					<li>
+						<span class="lileft">排序时间</span>
+						<div class="liright">
+							<input type="text" class="easyui-datetimebox" id="orderTime" name="order_time" value="${flash?.order_time}" />
+						</div>
+					</li>
+				</ul>
+			</div>
+			<p class="back-audit-btns">
+				#{rightMng rightId:203002}
+					<input type="submit" id="pageSave" value="保存" class="bgbtn">
+				#{/rightMng}
+				<input type="button" value="取消" class="bdbtn" onclick="backAndRefresh('@{back.webOperation.AdvertisementMngCtrl.showAdsPre}');">
+			</p>
+		</div>
+	</form>
+</div>	
+	
+	
+<!-- 图片裁切弹窗 begin -->
+<div class="dialog crop-dialog">
+	<div class="dialog-bg"></div>
+	<div class="dialog-cont">
+		<div class="dialog-head">
+			<span class="left">图片裁剪</span>
+			<a href="javascript:void(0);" class="dialog-close hover-green" id="dialogClose">×</a>
+		</div>
+		<div class="crop-box">
+			<div class="clearfix">
+				<div class="crop-img">
+					<img src="" id="cropimg" />
+				</div>
+				<div class="crop-right">
+					<div class="crop-preview">
+						<div class="preview-container">
+							<img src="" />
+						</div>
+					</div>
+					<ul class="crop-handle">
+						<li><label class=""><input type="radio" id="maxSize" name="cropsize" />最大尺寸</label></li>
+						<li><label class=""><input type="radio" id="standardSize" name="cropsize" />标准尺寸</label></li>
+					</ul>
+				</div>
+			</div>
+			<p class="back-audit-btns">
+				<input type="button" value="保存" class="bgbtn" onclick="saveCropImg(cropImgSuccess)">
+				<input type="button" value="取消" class="bdbtn dialog-console">
+			</p>
+			<input type="hidden" id="x"/>
+			<input type="hidden" id="y"/>
+			<input type="hidden" id="w"/>
+			<input type="hidden" id="h"/>
+			<input type="hidden" id="imageType" /><!-- 图片格式 -->
+		</div>
+	</div>
+</div>
+<!-- 图片裁切弹窗 end -->
+
+<!-- 素材库弹窗 -->
+<!-- 素材库弹窗 -->
+#{imgLib /}
+	
+	
+<script type="text/javascript">
+var img_width = 265;
+var img_height = 530;
+require(["back"],function(back){
+	require(["ajaxfileupload","datatime","cutImg"]);
+	
+	//是否显示默认图
+	
+	
+	var picFlag=true;
+	$("#location").change(function(){
+		var val = $("#location").val();
+			imgLimit = $('.back-imginfor-note');
+		switch(val){
+			case "1": {
+				img_width = 1920;
+				img_height = 800;
+				imgLimit.text('1920*800，jpg/png，大小不超过2M'); 
+				break;
+			}
+			case "2":  {
+				img_width = 1920;
+				img_height = 400;
+				imgLimit.text('1920*400，jpg/png，大小不超过2M');
+				break;
+			}
+			case "3":  {
+				img_width = 1198;
+				img_height = 133;
+				imgLimit.text('1198*133，jpg/png，大小不超过2M');
+				break;
+			}
+			case "4":  {
+				img_width = 360;
+				img_height = 280;
+				imgLimit.text('360*280，jpg/png，大小不超过2M');
+				break;
+			}
+			case "5":  {
+				img_width = 265;
+				img_height = 530;
+				imgLimit.text('265*530，jpg/png，大小不超过2M');
+				break;
+			}
+			case "6":  {
+				img_width = 640;
+				img_height = 230;
+				imgLimit.text('640*230，jpg/png，大小不超过2M');
+				break;
+			}
+			default: {
+				img_width = 265;
+				img_height = 530;
+				imgLimit.text('265*530，jpg/png，大小不超过2M');
+				break;
+			}	
+		}
+	});
+	
+	setImgSize($("#location").val());
+	
+	//添加广告图片
+	$("#addAds").validate({
+		errorPlacement: function(error, element) {
+			error.addClass('back-notice').insertAfter(element);
+		},
+		rules:{
+			"location":{
+				required:true,
+				min:1
+			},
+			"ads.name":{
+				required:true,
+				rangelength:[1,20]
+			},
+			"ads.image_url":{
+				required:true
+			},
+			"ads.image_resolution":{
+				required:true
+			},
+			"ads.image_size":{
+				required:true
+			},
+			"ads.image_format":{
+				required:true
+			},
+			"ads.url":{
+				rangelength:[0,100],
+				url:true
+			},
+			"order_time":{
+				required:true
+			}
+			
+		},
+		messages:{
+			"location":{
+				required:"请选择位置",
+				min:"请选择位置"
+			},
+			"ads.name":{
+				required:"名称1-20个字符"
+			},
+			"ads.image_url":{
+				required:"上传图片不能为空"
+			},
+			"ads.image_resolution":{
+				required:"上传图片不能为空"
+			},
+			"ads.image_size":{
+				required:"上传图片不能为空"
+			},
+			"ads.image_format":{
+				required:"上传图片不能为空"
+			},
+			"ads.url":{
+				rangelength:"链接0到100个字符",
+				url:"http://或者https://开头"
+			},
+			"order_time":{
+				required:"排序时间不能为空"
+			}
+		}
+	});
+	
+});	
+	
+//图片上传 
+function upload(){
+	var fileId = "imgFile";
+	var file = $("#" + fileId).val();
+	var pos = file.lastIndexOf("\\");
+	console.log(file)
+	console.log(pos)
+	var fileName = file.substring(pos + 1);
+	
+	$.ajaxFileUpload({
+		url : '@{back.webOperation.AdvertisementMngCtrl.uploadAdsImage()}',
+		secureuri : false,
+		fileElementId : fileId,
+		data:{
+			"fileName":fileName
+		},
+		dataType : 'json',
+		success : function(result) {
+			if(result.code == 1){
+				var data = result.obj;
+				$("#image").attr("src", data.staticFileName);
+				$("#imageSize").val(data.size+"kb");
+				$("#imageFormat").val(data.fileSuffix);
+				$("#imageResolution").val(data.imageResolution);
+				$("#resolutionshow").html(data.imageResolution);
+				$("#formatshow").html(data.fileSuffix);
+				$("#sizeshow").html(data.size+"kb ");
+				$("#imageUrl").val(data.staticFileName);
+				$("#picUp").css({ "display": "none"}); 
+				$("#image").css({ "display": "block"});
+				$("#cropImgLabel").show();
+			} else {
+				alert(result.msg);
+			}
+		}
+	})
+}
+
+//图片裁剪成功，回调函数 
+var cropImgSuccess = function(data) {
+	$("#image").attr("src", data.staticFileName);
+	$("#imageUrl").val(data.staticFileName);
+	$("#imageSize").val(data.size+"kb");
+	$("#imageResolution").val(data.imageResolution);
+	$("#resolutionshow").html(data.imageResolution);
+	$("#sizeshow").html(data.size+"kb");
+}
+
+
+//图片要求尺寸 
+function setImgSize(barMenu) {
+	imgLimit = $(".back-imginfor-note");
+	switch(barMenu){
+		case "1": {
+			img_width = 1920;
+			img_height = 800;
+			imgLimit.text('1920*800，jpg/png，大小不超过2M'); 
+			break;
+		}
+		case "2":  {
+			img_width = 1920;
+			img_height = 400;
+			imgLimit.text('1920*400，jpg/png，大小不超过2M');
+			break;
+		}
+		case "3":  {
+			img_width = 1198;
+			img_height = 133;
+			imgLimit.text('1198*133，jpg/png，大小不超过2M');
+			break;
+		}
+		case "4":  {
+			img_width = 360;
+			img_height = 280;
+			imgLimit.text('360*280，jpg/png，大小不超过2M');
+			break;
+		}
+		case "5":  {
+			img_width = 265;
+			img_height = 530;
+			imgLimit.text('265*530，jpg/png，大小不超过2M');
+			break;
+		}
+		default: {
+			img_width = 265;
+			img_height = 530;
+			imgLimit.text('265*530，jpg/png，大小不超过2M');
+			break;
+		}		
+	}
+}
+
+</script>

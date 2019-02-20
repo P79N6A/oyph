@@ -1,0 +1,20 @@
+*{
+设置的Main页面
+}*
+
+#{extends 'common/supervisorMain.html' /}
+#{set AItem:8 /}
+
+<!-- 二级导航 -->
+<ul class="back-secnav">
+	<li><a href="@{back.setting.PlateformSettingCtrl.toPlateformSettingPre()}">平台设置</a></li>
+	<li><a href="@{back.setting.InterfaceSettingCtrl.toInterfaceSettingPre()}">接口设置</a></li>
+	<li><a href="@{back.setting.SupervisorEventMngCtrl.showEventLogPre()}">操作日志</a></li>
+	<li><a href="@{back.setting.RightMngCtrl.showAllSupervisorsPre()}">权限管理</a></li>
+	<li><a href="@{back.setting.StyleSettingCtrl.toStyleSettingPre()}">风格设置</a></li>
+	<li><a href="@{back.setting.UkeySetCtrl.toUkeyListPre()}">加密狗设置</a></li>
+</ul>
+
+#{doLayout /}
+		
+		

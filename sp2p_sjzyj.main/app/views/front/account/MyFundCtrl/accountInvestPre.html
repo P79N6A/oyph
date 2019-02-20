@@ -1,0 +1,160 @@
+<h1 class="azamoney-nav">出借项目</h1>
+<div class="account-main" id="invest_account_main">
+	<table class="account-table" width="100%">
+		<tr height="46">
+			<th>项目编号</th>
+			<th>项目</th>
+			<th>投标金额</th>
+			<th>年利率</th>
+			<th>期限</th>
+			<th>还款方式</th>
+			<th>放款时间</th>
+			<th>状态</th>
+			<th width="280">操作</th>
+		</tr>
+		#{list pageBean?.page}
+		<tr height="46">
+			<td>${_?.getBid_no()}</td>
+			<td><a href="@{front.invest.InvestCtrl.investPre(_?.bid_id)}" title="${_?.title}" target="">${_?.title}</a></td>
+			<td>${_?.amount?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}</td>
+			<td>${_?.coupon.format(common.constants.Constants.NUMBER_FORMATE_NORMAL)}%</td>
+			<td>${_?.period}${_?.period_unit?.getShowValue()}</td>
+			<td>${_?.repayment_type?.value}</td>
+			<td>${_?.release_time?.format(common.constants.Constants.DATE_TIME_FORMATE)?:'----'}</td>
+			<td>${_?.status?.value}</td>
+			<td>
+				<a #{if _?.totalPay>0}onclick="pullDownInvest(${_?.id},${_?.bid_id})" class="major account-billbtn"#{/if}#{else}class="c9"#{/else}>账单(${_?.alreadRepay}/${_?.totalPay})</a>
+				
+				&nbsp;
+				#{if _?.contract_id !=null || _?.contract!=null}
+					<span style="cursor: pointer;"   class="major account-debtbtn" onclick="previewContract(${_?.bid_id},'${_?.release_time}',${_?.user_id})" target="_blank">合同</span>
+				#{/if}
+				#{else}
+					#{if models.core.entity.t_bid.Status.REPAYING.equals(_?.status) || models.core.entity.t_bid.Status.REPAYED.equals(_?.status)} 
+						<a href="@{front.account.MyFundCtrl.showBidPactPre(_?.bid_id, _?.release_time, _?.user_id)}"  class="major account-debtbtn" target="_blank">合同</a>
+					#{/if}
+					#{else}
+						<a href="javascript:void(0)"  class="c9">合同</a>
+					#{/else}
+				#{/else}
+				&nbsp;
+				#{if models.core.entity.t_bid.Status.REPAYING.equals(_?.status) && controllers.front.account.MyFundCtrl.isInvestCanbeTransfered(_?.id) }
+					<a href="javascript:void(0);" onclick="applayDebt('${_?.sign}')" class="major account-debtbtn">转让</a>
+				#{/if}
+				#{else}
+					<a href="javascript:void(0)"  class="c9">转让</a>
+				#{/else}
+
+			</td>
+		</tr>
+		<!-- 下拉账单 -->
+		<tr class="account-bill" id="invest_bill_${_?.id}">
+		</tr>
+		#{/list}
+	</table>
+	
+<!-- 分页组件 -->
+#{if pageBean?.page}
+	#{frontPageTag page:pageBean,showPage:'accountInvestPre' /}
+#{/if}
+#{if pageBean?.page == null}
+<div class="norecord-box c9">
+	暂无记录
+</div>
+#{/if}
+</div>
+
+<!-- 转让 start -->
+<div class="account-debt clearfix none" id="invest_account_debt">
+	
+</div>
+<!-- 转让 start -->
+
+<script type="text/javascript">
+
+function pullDownInvest(investId,bidId){
+	var $bill_box = $("#invest_bill_"+investId),
+		$bill_box_cont = $bill_box.find('.account-billbox'),
+		siblings = $('.account-billbox:visible');
+	if($bill_box_cont.is(':visible')){
+		$bill_box_cont.stop(true,true).slideUp(300);
+	}else{
+		queryBillInvest(investId,bidId, function(data){
+			$bill_box.html(data);
+			$bill_box.find('.account-billbox').stop(true,true).slideDown(300);
+			siblings.stop(true,true).slideUp(300);
+		});
+	}
+}
+
+function queryBillInvest(investId,bidId, callback){
+	$.ajax({
+		url : "@{front.account.MyFundCtrl.pullDownMyBillInvestPre()}",
+		type : "GET",
+		data : {
+			"investId" :investId
+			
+		},
+		success : function(data){
+			var flag = interceptorCheck(data);
+			if(!flag){
+				return;
+			}
+			if(callback){
+				callback(data);
+			}
+		}
+	});
+}
+
+function applayDebt(sign) {
+		$.ajax({
+		url : "@{front.account.MyFundCtrl.applyDebtPre()}",
+		type : "GET",
+		data : {
+			"sign" :sign	
+		},
+		success : function(data){
+			var flag = interceptorCheck(data);
+			if(!flag){
+				return;
+			}
+			if( data.code<1 ){
+				alert(data.msg);
+				accountInvestPre(1,5);
+			} else {
+				console.log(data)
+				$(".account-box").html(data);
+			}
+
+		}
+	});
+
+}
+
+
+function previewContract(bidId,time,userId) {
+		$.ajax({
+		url : "@{front.account.MyFundCtrl.showBidPactSSQPre()}",
+		type : "GET",
+		data : {
+			"bidId" :bidId,
+			"time" : time,
+			"userId" :userId
+		},
+		success : function(data){
+			
+			if (data.url !=undefined){
+				
+				window.location.href = data.url;
+			}else {
+				window.location.href ='/account/fund/showBidPact.html?bidId='+bidId+'&release_time='+time+'&userId='+userId;
+			}
+					
+		}
+	});
+}
+	
+
+
+</script>

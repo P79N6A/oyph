@@ -1,0 +1,120 @@
+#{extends 'common/back/financeMain.html' /}
+	#{set title:'财务 | 托管记录' /}
+	#{set smallclass:9 /}
+	#{set crumbs:'财务>托管记录'/}
+	
+	
+<div class="back-main">
+	<!-- 头部筛选条件 -->
+	<div class="back-usertop">
+		<div class="left back-usermenu">
+			<a href="@{back.finance.PaymentLogMngCtrl.showRequestLogsPre(0)}" #{if showType==0} class="selected"#{/if}>所有</a>
+			*{<a href="@{back.finance.PaymentLogMngCtrl.showRequestLogsPre(1)}" #{if showType==1} class="selected"#{/if}>掉单</a>}*
+			<a href="@{back.finance.PaymentLogMngCtrl.showRequestLogsPre(2)}" #{if showType==2} class="selected"#{/if}>失败</a>
+		</div>
+		<!-- 搜索按钮，控制搜索条件的显示隐藏 -->
+		<div class="back-search left  #{if serviceType || userName || serviceOrderNo || orderNo}selected#{/if}">
+			<i class="iconfont searchicon">&#xe60a;</i>搜索<i class="iconfont arrowicon">&#xe603;</i>
+		</div>
+	</div>
+	<!-- 搜索条件，默认隐藏 -->
+	<div class="back-search-option" #{if serviceType || userName || serviceOrderNo || orderNo}style="display: block;" #{/if}>
+		<form action="@{back.finance.PaymentLogMngCtrl.showRequestLogsPre()}" method="GET" id="showRequestLogsPre">
+			<!-- currPage禁止回显，否则筛选时定位不到第一页 -->
+			<input type="hidden" id="currPage" name="currPage"/>
+			<!-- pageSize必须回显，否则筛选时不能保持选择的pageSize -->
+	  		<input type="hidden" id="pageSize" name="pageSize" value="${page?.pageSize}"/>
+	  		<!-- 如果有，则showType必须回显，否则分页和筛选时不能保持选择的showType -->
+	  		<input type="hidden" id="showType" name="showType" value="${showType}"/>
+	  		
+	  		<select name="serviceType">
+				<option value="" #{if serviceType==null}selected="selected"#{/if}>--业务类型--</option>
+	  			#{list items:common.enums.ServiceType.values(), as:'options'}
+					<option value="${options.code}" #{if options.code==serviceType}selected="selected"#{/if}>${options.value}</option>
+				#{/list}
+	  		</select>
+			<input type="text" class="iffocus" name="userName" placeholder="用户名" value="${userName}" maxlength="13"/>
+			<input type="text" class="iffocus" name="serviceOrderNo" placeholder="业务订单号" value="${serviceOrderNo}" maxlength="20"/>
+			<input type="text" class="iffocus" name="orderNo" placeholder="交易订单号" value="${orderNo}" maxlength="20"/>
+			<input type="submit" class="bgbtn" value="搜索" />
+		</form>
+	</div>
+	<div class="back-cont">
+		<div class="back-box">
+			<table width="100%" class="back-table table-fixed">
+				<tr height="40">
+					<th width="70" class="align-left">编号</th>
+					<th>用户名</th>
+					<th>订单号</th>
+					<th>业务类型</th>
+					<th>接口类型</th>
+					<th>请求时间</th>
+					<th>状态</th>
+					<th>操作</th>
+				</tr>
+		#{if page?.page}
+			#{list items:page.page,as:"reqs"}
+				<tr height="40">
+					<td class="align-left">
+						<label><input type="checkbox" class="back-tdcheck" />${reqs?.id}</label>
+					</td>
+					<td>${reqs?.user_name}</td>
+					<td class="align-left">
+					<span>业务号：${reqs?.service_order_no}</span>
+					<br>
+					<span>交易号：#{if reqs?.order_no == ""}无#{/if}#{else}${reqs?.order_no}#{/else}</span>
+					</td>
+					<td>${reqs?.service_type?.note}</td>
+					<td>${reqs?.pay_type}</td>
+					<td>${reqs?.time?.format(common.constants.Constants.DATE_TIME_FORMATE)}</td>
+					<td>${reqs?.status?.value}</td>
+					<td class="back-handle">
+						#{rightMng rightId:510002}
+							<a href="@{back.finance.PaymentLogMngCtrl.showRequestDataPre(reqs?.mark)}" data-title="查看请求日志" class="iconfont">&#xe63f;</a>
+						#{/rightMng}
+						#{rightMng rightId:510003}
+							<a href="@{back.finance.PaymentLogMngCtrl.showCBDatasPre(reqs?.id)}" data-title="查看回调日志" class="iconfont">&#xe63b;</a>
+						#{/rightMng}
+					</td>
+				</tr>
+			#{/list}
+				<!-- 表格数据统计 -->
+				<tr height="40">
+					<td colspan="8" class="back-lasttd">
+						<span class="back-choose left">
+							<input type="button" id="chooseAll" value="全选" />
+							<input type="button" id="chooseReverse" value="反选" />
+						</span>
+
+						<!-- 分页组件--pageTag -->
+						#{backPageTag page:page,showPage:"showPage"/}
+						
+					</td>
+				</tr>
+		#{/if}
+		#{else}	
+				<!-- 暂无记录 -->
+				<tr height="58">
+					<td colspan="8" class="back-nodata"><i class="iconfont">&#xe613;</i>暂无记录</td>
+				</tr>
+		#{/else}
+			</table>
+		</div>
+	</div>
+</div>
+
+<!-- 页面js -->
+<script type="text/javascript">
+	require(["back"],function(back){
+		// 搜索 排序 选中
+		require(["search","linechecked"]);
+	});
+	
+	function showPage (currPage, pageSize) {
+		$("#currPage").val(currPage);
+		$("#pageSize").val(pageSize);
+		
+		$("#showRequestLogsPre").submit();
+	}
+	
+</script>

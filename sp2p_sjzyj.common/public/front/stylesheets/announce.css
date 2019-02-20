@@ -1,0 +1,228 @@
+@CHARSET "UTF-8";
+.navBg{
+	width:100%;
+	height:400px;
+	background: url(https://image.ouyepuhui.com/images/announceBg.png) no-repeat center;
+}
+.navBg h1{
+	width:100%;
+	text-align: center;
+	font-size: 20px;
+	color: #fff;
+	font-weight: 600;
+	float: left;
+	margin-top: 260px;
+}
+.navBg h1 span{
+	padding: 0 10px;
+	font-size: 28px;
+}
+.tit {
+	position:relative;
+	width:1200px;
+	margin:auto;
+    padding: 30px 0;
+    text-align: center;
+}
+.tit h4 {
+    background: url(/public/front/images/J1.png) repeat-x center;
+    font-size: 18px;
+    color: #333;
+    height: 25px;
+    line-height: 25px;
+    margin-bottom: 20px;
+}
+.tit h4 span {
+    background:#fff;
+    display: inline-block;
+    padding: 0 50px;
+    font-weight: 600;
+}
+#bg{
+	background:#f3f3f3;
+}
+.tit strong {
+    background: #eeeeee;
+    border-radius: 20px;
+    color: #999;
+    display: inline-block;
+    font-size: 12px;
+    font-weight: normal;
+    height: 25px;
+    line-height: 25px;
+    padding: 0 20px;
+} 
+.box{
+	width:1200px;
+	margin: auto;
+	margin-bottom:50px;
+	overflow: hidden;
+}   
+.items {
+    background: #eee;
+    color: #00a8e7;
+    font-size: 30px;
+    height: 160px;
+    text-align: center;
+    width: 353px;
+    float: left;
+}
+
+.items i{
+	font-size: 20px;
+}
+.items span {
+    color: #999;
+    display: block;
+    font-size: 14px;
+    height: 70px;
+    line-height: 70px;
+}
+.items strong {
+    font-size: 30px;
+    height: 50px;
+    color: #00a8e7;
+    line-height: 50px;
+}
+.items.second {
+    margin: 0 30px;
+}
+ .items:hover {
+    background: #00a8e7;
+    color: #fff;
+    cursor: text;
+}
+.items:hover  strong{
+	 color: #fff;
+}
+.items:hover  span{
+	 color: #fff;
+}
+.item1:hover {
+    background: #eee;
+    color: #fff;
+    cursor: text;
+}
+.item1:hover  strong{
+	 color: #00a8e7;
+}
+.item1:hover  span{
+	 color: #999;
+}
+.item1:hover  i{
+	 color: #00a8e7;
+}
+/*jingcang*/
+.chart{
+	width:1200px;
+	height:770px;
+	margin: 10px auto;
+}
+#Monthly{
+	width: 1200px;
+	height: 400px;
+	margin-bottom: 20px;
+}
+#sum1,#sum2{
+	width:590px;
+	height: 350px;
+	float: left;
+}
+.chart1{
+	width:1200px;
+	height:400px;
+	margin: 10px auto;
+}
+#sum4,#sum5,#sum6,#sum7{
+	width:590px;
+	height: 390px;
+	float: left;
+}
+/**/
+.centralize{
+	width: 1200px;
+	height: 600px;
+	margin:auto;
+}
+.box1{
+	width:800px;
+	margin: auto;
+	margin-bottom:50px;
+	overflow: hidden;
+}
+.second1{
+	float: right;
+}
+.centralize-left{
+	width: 520px;
+	height: 470px;
+	float:left;
+	margin-top:65px;
+}
+.centralize-left{ float:left;margin-bottom:30px;}
+.centralize-left table{ width:520px;}
+.centralize-left th{ background:#00a8e8; color:#fff; height:60px; line-height:60px; font-weight:normal; font-size:18px; text-align:center;}
+.centralize-left .tops{ background:#f5f5f5; color:#333; height:50px; line-height:50px;}
+.centralize-left .tops td{ background:#f5f5f5; font-size:14px; font-size:14px; border-bottom:0;}
+.centralize-left td{ background:#fffdf8; border-bottom:1px solid #ccc; height:35px;}
+.centralize-left td em{ background:#dedede; border-radius:22px; color:#333; display:inline-block; height:22px; line-height:22px; margin:0 10px; text-align:center; width:22px;}
+.centralize-left .front td{background:#fffaf2;}
+.centralize-left .front td em{background:#00a8e8; color:#fff;}
+.centralize-right{
+	width: 520px;
+	height: 470px;
+	margin-top:65px;
+	float:right;
+}
+#sum3{
+	width: 520px;
+	height: 470px;
+}
+.monthBox{
+	position: absolute;
+	top: 583px;
+    left: 104px;
+    width: 100px;
+    height: 25px;
+}
+.monthList{
+	width: 100px;
+	height: 25px;
+	outline-style: none;
+}
+.ulList{
+	position: absolute;
+	top: 75px;
+    line-height:26px;
+    text-align:center;
+    width: 120px;
+    height: 25px;
+    font-size:12px;
+    border:1px solid #ccc;
+   	background:url(/public/front/images/jiantou.png) no-repeat;
+    cursor: pointer;
+    background-position: 104px 11px;; 
+}
+.ulList1{
+	position: absolute;
+	top: 25px;
+    text-align:center;
+    left:-1px;
+    width: 120px;
+    overflow:auto;
+    max-height:100px;
+    font-size:12px;
+    border:1px solid #ccc;
+    background: #fff ;
+    display: none;
+}
+.ulList1 li{
+	width: 120px;
+    height: 25px;
+    cursor: pointer;
+    text-align:center;
+    line-height: 25px;
+}
+.ulList1 li:hover{
+	background: #00a8e7;
+}

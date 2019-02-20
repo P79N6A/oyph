@@ -1,0 +1,56 @@
+#{extends 'common/back/financeMain.html' /}
+	#{set title:'财务 | 财务报表' /}
+	#{set smallclass:15 /}
+	#{set crumbs:'财务>财务报表'/}
+<div class="back-main">
+	<div class="back-usertop">
+		<div class="left back-usermenu">
+			<a href="@{back.finance.FinanceInterfaceCtrl.balanceSheetPre()}">资产负债表</a>
+			<a href="@{back.finance.FinanceInterfaceCtrl.profitStatementPre()}">利润表</a>
+			<a href="@{back.finance.FinanceInterfaceCtrl.cashFlowSheetPre()}">现金流量表</a>
+			<a href="@{back.finance.FinanceInterfaceCtrl.financialOfficePre()}">金融办</a>
+			<a href="@{back.finance.FinanceInterfaceCtrl.financialStatementsPre()}" class="selected">财务报表</a>
+		</div>
+	</div>
+	<div class="back-box" id='back-box'>
+		<form action="@{back.finance.FinanceInterfaceCtrl.exportFinancialExcel()}" method="post" id = "financial">
+			<table style="width: 500px; margin: 50px auto;">
+				<tr>
+					<td class="one">请选择需要生成的报表</td>
+					<td class="two">:</td>
+					<td class="tre">
+						<select name = "export">
+							<option value = "0">------------------请选择------------------</option>
+							<option value = "1">清理整顿阶段工作进展情况汇总表</option>
+							<option value = "2">重点对象（整改类）整改落实进展监测明细表</option>
+							<option value = "3">重点机构流动性缺口监测统计表</option>
+							<option value = "4">网贷机构验收进度明细统计表</option>
+						</select>
+					</td>
+					<td class="for" ></td>
+				</tr>
+				<tr>
+					<td class="one"></td>
+					<td class="two"></td>
+					<td class="tre"><input type="submit" value="导出excel表格文件" id="sbmt" onclick = ""/></td>
+					<td class="for"></td>
+				</tr>
+			</table>
+		</form>
+	</div>
+
+</div>
+
+<script type="text/javascript">
+	$("tr").css({"width":"500px","height":"38px"});
+	$(".one").css({"text-align":"right","width":"200px"});
+	$(".two").css({"width":"15px","text-align":"center"});
+	$(".tre").css({"text-align":"left","width":"250px"});
+	$("input").css({"width":"250px", "height":"26px"});
+	$("select").css({"width":"300px"});
+	$("#sbmt").css({"width":"300px", "height":"31px"});
+	$("#sbmt1").css({"width":"300px", "height":"31px"});
+	$("#sbmt2").css({"width":"300px", "height":"31px"});
+	$(".for").css({"width":"75px","text-align":"left", "padding-left":"10px", "color":"red"});
+	
+</script>

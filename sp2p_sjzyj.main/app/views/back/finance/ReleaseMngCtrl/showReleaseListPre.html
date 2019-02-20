@@ -1,0 +1,204 @@
+#{extends 'common/back/financeMain.html' /}
+	#{set title:'财务 | 财务放款' /}
+	#{set smallclass:0 /}
+	#{set crumbs:'财务>财务放款'/}
+	
+<div class="back-main">
+	<!-- 头部筛选条件 -->
+	<div class="back-usertop">
+		<div class="left back-usermenu">
+			<a href="@{back.finance.ReleaseMngCtrl.showReleaseListPre(0)}" #{if showType==0} class="selected"#{/if}>所有</a>
+			<a href="@{back.finance.ReleaseMngCtrl.showReleaseListPre(1)}" #{if showType==1} class="selected"#{/if}>待放款</a>
+			<a href="@{back.finance.ReleaseMngCtrl.showReleaseListPre(2)}" #{if showType==2} class="selected"#{/if}>已放款</a>
+		</div>
+		
+		<!-- 搜索按钮，控制搜索条件的显示隐藏 -->
+		<div class="back-search left #{if loanName} selected#{/if}">
+			<i class="iconfont searchicon">&#xe60a;</i>搜索<i class="iconfont arrowicon">&#xe603;</i>
+		</div>
+		
+		<!-- 右侧功能按钮 -->
+		<div class="right back-rightbtns">
+			<a href="javascript:exportList(1)"><i class="iconfont">&#xe612;</i>导出</a>
+		</div>
+	</div>
+	<!-- 搜索条件，默认隐藏 -->
+	<div class="back-search-option" #{if loanName}style="display: block;"#{/if}>
+		<form action="@{back.finance.ReleaseMngCtrl.showReleaseListPre()}" method="GET" id="showReleaseListPre">
+			<input type="hidden" id="currPage" name="currPage"/>
+	  		<input type="hidden" id="pageSize" name="pageSize" value="${pageBean?.pageSize}"/>
+	  		<input type="hidden" id="showType" name="showType" value="${showType}"/><!-- 筛选类型 -->
+	  		<input type="hidden" id="orderType" name="orderType" value="${orderType}" /><!-- 排序的类型 -->
+			<input type="hidden" id="orderValue" name="orderValue" value="${orderValue}" /><!-- 排序的值(0:降序，1:升序) -->
+	  		<input type="hidden" id="exports" name="exports"/><!--是否导出  -->
+			
+			<input type="text" class="iffocus" name="loanName" value="${loanName}" placeholder="借款人" maxlength="13"/>
+			<input type="submit" class="bgbtn" value="搜索" />
+		</form>
+	</div>
+	<div class="back-cont">
+		<div class="back-box">
+			<table width="100%" class="back-table table-fixed">
+				<tr height="40">
+					<th width="70" class="align-left">
+						<span class="back-order">
+							编号
+							#{backPageColumTag orderType:orderType,currOrderType:0,orderValue:orderValue,orderBy:'orderBy' /}
+						</span>
+					</th>
+					<th>项目</th>
+					<th>
+						<span class="back-order">
+							借款金额
+							#{backPageColumTag orderType:orderType,currOrderType:2,orderValue:orderValue,orderBy:'orderBy' /}
+						</span>
+					</th>
+					<th>借款人</th>
+					<th>初审管理员</th>
+					<th>满标审管理员</th>
+					<th>放款</th>
+					<th>
+						<span class="back-order">
+							放款时间
+							#{backPageColumTag orderType:orderType,currOrderType:7,orderValue:orderValue,orderBy:'orderBy' /}
+						</span>
+					</th>
+					<th width="80">状态</th>
+					<th width="140">操作</th>
+				</tr>
+			#{if pageBean?.page}
+				#{list pageBean?.page}
+				<tr height="40">
+					<td class="align-left">
+						<label><input type="checkbox" class="back-tdcheck" />${_?.bid_no}</label>
+					</td>
+					<td data-title="${_?.title}">${_?.title}</td>
+					<td>
+						${_?.amount?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}
+					</td>
+					<td>
+						${_?.name}
+					</td>
+					<td>
+						${_?.pre_audit_supervisor?:"----"}
+					</td>
+					<td>
+						#{if _?.audit_supervisor==null}----#{/if}
+						#{else}
+							${_?.audit_supervisor?:"----"}
+						#{/else}
+					</td>
+					<td>
+						${_?.release_supervisor?:"----"}
+					</td>
+					<td>
+						${_?.release_time?.format(common.constants.Constants.DATE_TIME_FORMATE)?:"----"}
+					</td>
+					<td>
+						${_?.getStatus()?.value}
+					</td>
+					<td class="back-handle">
+						#{rightMng rightId:501002}
+							#{if models.core.entity.t_bid.Status.WAIT_RELEASING.code==_?.status?.code}
+							<a href="javascript:release('${_?.bid_no}');" data-title="放款" class="iconfont">&#xe620;</a>
+							<form action="@{back.finance.ReleaseMngCtrl.release()}" method="POST" id="form_${_?.bid_no}">
+								<input type="hidden" name="bidSign" value="${_?.sign}"/>
+							</form>
+							#{/if}
+							#{else}
+							<a class="iconfont unable">&#xe620;</a>
+							#{/else}
+						#{/rightMng}
+						
+						#{rightMng rightId:501002}
+							#{if models.core.entity.t_bid.Status.REPAYING.code==_?.status?.code && _?.contract_id ==null}
+							<a href="javascript:ssqContract('${_?.bid_no}')" data-title="生成合同" class="iconfont">&#xe61c;</a>
+							<form action="@{back.finance.ReleaseMngCtrl.ssqContract()}" method="POST" id="ssq_${_?.bid_no}">
+								<input type="hidden" name="bidSign" value="${_?.sign}"/>
+							</form>
+							#{/if}
+							#{else}
+							<a class="iconfont unable" id="pre_audit_href">&#xe61c;</a>
+							#{/else}
+						#{/rightMng}
+						
+					</td>
+				</tr>
+				#{/list}
+				<!-- 表格数据统计 -->
+				<tr height="40">
+					<td colspan="10" class="back-lasttd">
+						<span class="back-choose left">
+							<input type="button" id="chooseAll" value="全选" />
+							<input type="button" id="chooseReverse" value="反选" />
+						</span>
+						<p class="back-table-totle left">
+							合计&nbsp;借款金额&nbsp;<span>${totalAmt?.format(common.constants.Constants.FINANCE_FORMATE_NORMAL)}元</span>
+						</p>
+						
+						<!-- 分页组件--pageTag -->
+						#{backPageTag page:pageBean,showPage:"showReleaseListPre"/}
+					</td>
+				</tr>
+			#{/if}
+			#{else}	
+						
+					<!-- 暂无记录 -->
+					<tr height="58">
+						<td colspan="10" class="back-nodata"><i class="iconfont">&#xe613;</i>暂无记录</td>
+					</tr>
+				</table>
+			#{/else}
+		</div>
+	</div>
+</div>
+
+<!-- 页面js -->
+<script type="text/javascript">
+	require(["back"],function(back){
+		// 搜索 排序 选中
+		require(["search","linechecked"],function(){
+			
+		});
+	});
+	
+	function release(bidNo) {
+		confirm("编号"+bidNo+"，执行放款", function(){
+			waitingDialog();
+			$("#form_"+bidNo).submit();
+		});
+	}
+	
+	function ssqContract(bidNo) {
+		confirm("编号"+bidNo+",生成合同", function(){
+			waitingDialog();
+			$("#ssq_"+bidNo).submit();
+		});
+	}
+	
+	function showReleaseListPre(currPage, pageSize) {
+		$("#currPage").val(currPage);
+		$("#pageSize").val(pageSize);
+		
+		$("#showReleaseListPre").submit();
+	}
+	
+	//导出
+	function exportList(expor){
+		$("#exports").val(expor);
+		
+		$("#showReleaseListPre").submit();
+		$("#exports").val(0);
+	}
+	
+	//排序
+	function orderBy(orderType,orderValue){
+		$("#showReleaseListPre input[name='orderType']").val(orderType);
+		$("#showReleaseListPre input[name='orderValue']").val(orderValue);
+		
+		$("#showReleaseListPre input[name='currPage']").val(1);
+		
+		$("#showReleaseListPre").submit();
+	}
+	
+</script>

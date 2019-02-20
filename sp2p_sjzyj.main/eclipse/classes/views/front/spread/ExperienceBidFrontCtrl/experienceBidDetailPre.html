@@ -1,0 +1,197 @@
+#{extends 'common/frontMain.html' /}
+#{set title:experienceBid?.title /}
+#{set AItem:1 /}
+
+<!-- main -->
+<div class="container mt30">
+<!-- 理财详情头部 -->
+	<div class="clearfix">
+		<div class="detail-box detail-left left">
+			<input type="hidden" value="${experienceBid?.id}" id="experienceBidId_head"/>
+			<h2 class="detail-head">
+				<span class="left c3">${experienceBid?.getBid_no()}&nbsp;&nbsp;${experienceBid?.title}</span>
+			</h2>
+			<ul class="detail-data">
+				<li class="left data01">
+					<div class="left">
+						<p class="assistant"><strong>${experienceBid?.apr}</strong>%</p>
+						<span class="c9">年利率</span>
+					</div>
+				</li>
+				<li class="left data02">
+					<p class="c3"><strong>${experienceBid.period}</strong>天</p>
+					<span class="c9">期限</span>
+				</li>
+				<li class="right data03">
+					<p class="c3"><strong>无限制</strong></p>
+					<span class="c9">借款金额</span>
+				</li>
+			</ul>
+			<ul class="detail-otherdata">
+				<li><span class="c9">剩余时间</span><span class="c3" id="count_down_time"></span></li>
+				<li><span class="c9">还款方式</span><span class="c3">${experienceBid?.repayment_type}</span></li>
+				<li><span class="c9">起投金额</span><span class="c3">#{formatIntMoney money:experienceBid?.min_invest_amount?:'0'}#{/formatIntMoney} 元</span></li>
+				<li><span class="c9">加入人次</span><span class="c3">${experienceBid?.invest_count}人次</span></li>
+			</ul>
+			<ul class="detail-infor c3">
+				<li>
+					发布时间&nbsp;&nbsp;${experienceBid.time?.format(common.constants.Constants.DATE_TIME_FORMATE)}
+				</li>
+			</ul>
+		</div>
+		<!-- 购买成功 -->
+		#{if flash?.investExperienceBidSuccess}
+			#{include "front/spread/ExperienceBidFrontCtrl/investExperienceBidSuc.html"/}
+		#{/if}
+		<!-- 购买页面 -->
+		#{else}
+			#{include "front/spread/ExperienceBidFrontCtrl/prepareInvestExperienceBid.html"/}
+		#{/else}
+		
+	</div>
+<!-- 理财详情头部 end -->
+<!-- 理财详情 start -->
+	<div class="detail-box mt30">
+		<ul class="detail-tabmenu tab-menu c3">
+			<li class="selected">借款详情</li>
+			<li onclick="pageOfRecord()">投标记录</li>
+		</ul>
+		<div class="detail-cont c3">
+		<!-- 竞拍记录 -->
+			<div class="tab-cont experience-detail">
+				#{if currUser}
+				<h2>体验标说明</h2>
+				<div>
+					1、体验标是由讴业普惠设立的一个专门提供给平台客户使用体验金进行投资体验的虚拟项目。<br/>
+					2、投资体验标无需实名认证。<br/>
+					3、体验金是由讴业普惠用平台自有资金设立的一个专门用于提供给平台客户进行平台项目投资体验的基金，只能投资体验项目，使用后可产生利息收益。<br/>
+					4、获得体验金后，在体验标项目专区点击使用。<br/>
+					5、体验金是一种投资体验项目的虚拟资金，不能提现，但是投资后产生的收益归用户所有，可用于投资或提现等操作。<br/>
+					6、客户使用体验金投资项目到期后，所得的收益归客户所有(可提现或续投讴业普惠平台的任意项目)，本金部分由平台收回。
+				</div>
+				<br/>
+				<p>本活动规则解释权归讴业普惠所有，如有疑问请联系在线客服 或 拨打400-901-8889</p>
+				#{/if}
+				<!--未登录--> 
+				#{else}
+				<p class="detail-unlogin">请<a href="@{front.LoginAndRegisteCtrl.loginPre()}" class="major">登录</a>或<a href="@{front.LoginAndRegisteCtrl.registerPre()}" class="major">注册</a>后查看</p>
+				#{/else}
+			</div>
+			<div class="tab-cont none" id="experienceBidInvestRecord">
+			</div>
+		</div>
+	</div>
+<!-- 理财详情 end -->
+</div>
+<!-- main end-->
+
+
+<script type="text/javascript">
+require(['front'],function(front){
+	$(".detail-record").each(function(){front.treven($(this))});
+	
+	if (${models.ext.experience.entity.t_experience_bid.Status.FUNDRAISING.code} == ${experienceBid?.status.code}) {//筹款中
+		var createTime = new Date('${experienceBid?.time?.format(common.constants.Constants.DATE_PLUGIN)}');
+		var investPeriod = '${experienceBid?.invest_period}';
+		var EndTime = createTime.getTime() + parseInt(investPeriod) * 24 * 60 * 60 * 1000
+		var NowTime = ${sysNowTime?:0};
+		GetRTime(EndTime, NowTime, "count_down_time");
+	} else {
+		 $("#count_down_time").html('0天0时0分0秒');
+	}
+	//投标
+	$("#investExperienceForm").submit(function(){
+		#{ifnot currUser}
+			window.location.href="@{front.LoginAndRegisteCtrl.loginPre()}";
+			return false;
+		#{/ifnot}
+		
+		#{if isSimulated}
+			alert("模拟登录不能执行该操作");
+			return false;
+		#{/if}
+		
+		var visualBalance = "${visualBalance?:'0'}";//体验金
+		var investAmount = $("#invest_amount").val();
+		if(investAmount==null || investAmount=='' || investAmount==undefined){
+			weakDialog('请输入购买金额!');
+			return false;
+		}
+		if(parseFloat(visualBalance)<parseFloat(investAmount)){
+			weakDialog('体验金可用余额不足!');
+			return false;
+		}
+		if(parseInt(investAmount) > 200000){
+			weakDialog('单笔投资不能超过20万!');
+			return false;
+		}
+		if(parseInt(investAmount)%1000 != 0){
+			weakDialog('体验标投资金额必须为1000的正整数倍!');
+			return false;
+		}
+	});
+});
+//倒计时
+function GetRTime(EndTime, NowTime, domId){
+	if (NowTime == 0) {
+		NowTime = new Date().getTime();
+	}
+	var t = EndTime - NowTime;
+	timeShow(t, domId);
+    setInterval(function() {
+    	t = t-1000;
+    	timeShow(t, domId);
+    },1000);
+}
+function timeShow(t, domId){
+    var d=Math.floor(t/1000/60/60/24);
+    var h=Math.floor(t/1000/60/60%24);
+    var m=Math.floor(t/1000/60%60);
+    var s=Math.floor(t/1000%60);
+    $("#"+domId).html((d<0?0:d)+'天'+(h<0?0:h)+'时'+(m<0?0:m)+'分'+(s<0?0:s)+'秒');
+}
+
+function pageOfRecord(){
+	if($("#experienceBidInvestRecord").children('table').length != 0){
+		return;
+	}
+	loadInvestExperienceBidRecord();
+}
+function loadInvestExperienceBidRecord(callback){
+
+	var experienceBidId = $("#experienceBidId_head").val();
+	var currPage = $("#investCurrpage").val();
+	var pageSize = $("#investPagesize").val();
+	$.ajax({
+		url:'@{front.spread.ExperienceBidFrontCtrl.doInvestExperienceBidRecordPre()}',
+		type:"GET",
+		data:{
+			"experienceBidId":experienceBidId,
+			"currPage" : currPage,
+			"pageSize" : pageSize
+		},
+		success:function(data){
+			var flag = interceptorCheck(data);
+			if(!flag){
+				return;
+			}
+			if(callback){
+				callback(data);
+			}else{
+				$("#experienceBidInvestRecord").html(data);
+				trevenRows();
+				if($("#investTotalsize").val()<=$("#investPagesize").val()){
+					$(".loadmore").html("<span>没有更多了</span>");
+					return;
+				}
+			}
+		}
+	});
+}
+//表格隔行换色
+function trevenRows(){
+	$('.detail-record').each(function(){
+		$(this).children('tbody').children('tr:not(.detail-record):even').addClass('treven');
+	});
+}
+</script>

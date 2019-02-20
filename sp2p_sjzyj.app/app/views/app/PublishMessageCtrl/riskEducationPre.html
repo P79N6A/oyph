@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link rel="stylesheet" href="/public/app/css/front.css" type="text/css"/>
+		<link rel="stylesheet" href="/public/app/css/publishIndex.css" type="text/css"/>
+		<script type="text/javascript" src="/public/front/javascripts/jquery-1.8.3.min.js"></script>
+		<title>风险教育</title>
+	</head>
+	<body>
+		<div class="content">
+			<h1>风险教育</h1>
+			<div class="main">
+				#{if information}
+		    		#{list items:information, as:'_'}
+			       <h3 style="text-align: center;font-weight: bold;">${_?.title}</h3>
+			       <span class="paragraph">
+			       		#{verbatim}${_?.content}#{/verbatim}
+					</span>
+					#{/list}
+					<div class="loadingMore" >
+						#{if information.size()< size }<span>点击加载更多</span>#{/if}
+						#{else }没有更多了#{/else}
+					</div>
+				#{/if}
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript">
+		$(".loadingMore span").click(function() {
+			var limit = $(".main .paragraph").length + 2;
+			window.location.href="@{app.PublishMessageCtrl.riskEducationPre()}?limit="+limit;
+	
+		});
+	</script>
+</html>

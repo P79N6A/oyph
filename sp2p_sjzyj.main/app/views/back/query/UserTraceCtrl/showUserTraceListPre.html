@@ -1,0 +1,85 @@
+#{extends 'common/back/queryMain.html' /}
+	#{set title:'查询 | 交易状态 | 理财会员追踪' /}
+	#{set smallclass:6 /}
+	#{set crumbs:'查询>交易状态>客户追踪信息列表' /}
+	
+<div class="back-main">
+	<!-- 头部筛选条件 -->
+	<div class="back-search-option" style="display: display;">
+		<form action="@{back.query.UserTraceCtrl.showUserTraceListPre()}" method="GET" id="showUserTraceListPre">
+			<input type="hidden" id="userId" name="userId" value="${userId}"/>
+			<input type="hidden" id="currPage" name="currPage"/>
+	  		<input type="hidden" id="pageSize" name="pageSize" value="${pageBean?.pageSize}"/>
+			<input type="submit" class="bgbtn" value="搜索" />
+		</form>
+	</div>
+	<div class="back-cont">
+		<div class="back-box">
+			<table width="100%" class="back-table table-fixed">
+				<tr height="40">
+					<th width="70" class="align-left">编号</th>
+					<th>客户账号</th>
+					<th>客服</th>
+					<th>内容</th>
+					<th>添加时间</th>
+				</tr>
+			#{if pageBean?.page}
+				#{list pageBean?.page}
+				<tr height="40">
+					<td class="align-left">
+						<label><input type="checkbox" class="back-tdcheck" />${_?.id}</label>
+					</td>
+					<td>${_?.name}</td>
+					<td>
+						${_?.reality_name}
+					</td>
+					<td title="${_?.content}">
+						${_?.content}
+					</td>
+					<td>
+						${_?.time?.format(common.constants.Constants.DATE_TIME_FORMATE)?:"----"}
+					</td>
+				</tr>
+				#{/list}
+				<!-- 表格数据统计 -->
+				<tr height="40">
+					<td colspan="5" class="back-lasttd">
+						<span class="back-choose left">
+							<input type="button" id="chooseAll" value="全选" />
+							<input type="button" id="chooseReverse" value="反选" />
+						</span>
+						
+						<!-- 分页组件--pageTag -->
+						#{backPageTag page:pageBean,showPage:"showUserTraceListPre"/}
+					</td>
+				</tr>
+			#{/if}
+			#{else}	
+						
+					<!-- 暂无记录 -->
+					<tr height="58">
+						<td colspan="5" class="back-nodata"><i class="iconfont">&#xe613;</i>暂无记录</td>
+					</tr>
+				</table>
+			#{/else}
+		</div>
+	</div>
+</div>
+
+<!-- 页面js -->
+<script type="text/javascript">
+	require(["back"],function(back){
+		// 搜索 排序 选中
+		require(["search","linechecked"],function(){
+			
+		});
+	});
+	
+	function showUserTraceListPre(currPage, pageSize) {
+		$("#currPage").val(currPage);
+		$("#pageSize").val(pageSize);
+		
+		$("#showUserTraceListPre").submit();
+	}
+	
+</script>

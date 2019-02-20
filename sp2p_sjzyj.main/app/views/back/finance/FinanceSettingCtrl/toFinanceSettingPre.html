@@ -1,0 +1,280 @@
+#{extends 'common/back/financeMain.html' /}
+	#{set title:'财务 | 理财设置' /}
+	#{set smallclass:7 /}
+	#{set crumbs:'财务>理财设置'/}
+
+	
+<div class="back-main">
+	<!-- 左侧菜单 -->
+	<div class="back-cont">
+		<div class="back-infor">
+			<form action="@{back.finance.FinanceSettingCtrl.editWithdrawSetting()}" method="POST" id="withdraw">
+				#{authenticityToken /}
+				<h2 class="back-infor-head"><span class="left">提现设置</span>
+					#{rightMng rightId:508002}
+					<a href="javascript:void(0);" class="right iconfont finance-edit" data-title="编辑" >&#xe602;</a>
+					#{/rightMng}
+				</h2>
+				<div class="back-infor-lcset">
+					<span class="lileft">提现手续费：</span>
+					<div class="liright">
+						（提现金额&nbsp;&nbsp;&nbsp;—&nbsp;&nbsp;&nbsp;
+						<label class="back-unitinput">
+							<input type="text" oninput="$(this).ndigitInteger(8)" onpropertychange="$(this).ndigitInteger(8)" name="withdraw_fee_point" data-title="不超过8位正整数" maxlength=8 class="width01 iffocus" value="${withdraw_fee_point}"/><i class="unit">元</i>
+						</label>
+						）&nbsp;*&nbsp;
+						<label class="back-unitinput">
+							<input type="text"  data-title="小于100保留一位小数" name="withdraw_fee_rate" oninput="$(this).proportionRange()" onpropertychange="$(this).proportionRange()" value="${withdraw_fee_rate}" class="width02 iffocus"/><i class="unit">‱</i>
+						</label>
+						&nbsp;&nbsp;+&nbsp;
+						<label class="back-unitinput">
+							<input type="text" name="withdraw_fee_min" data-title="不超过3位正整数" oninput="$(this).ndigitInteger(3)" onpropertychange="$(this).ndigitInteger(3)" value="${withdraw_fee_min}" class="width02 iffocus"/><i class="unit">元</i>
+						</label>
+					</div>
+					<div class="liright" id="withdraw_notice"></div>
+				</div>
+				
+				<div class="back-infor-lcset">
+					<span class="lileft">单笔提现金额：</span>
+					<div class="liright">
+						<label class="back-unitinput">
+							<input type="text"  name="withdraw_amount_min" data-title="1~4位正整数" oninput="$(this).ndigitInteger(4)" onpropertychange="$(this).ndigitInteger(4)" value="${withdraw_amount_min}" class="width01 iffocus"/><i class="unit">元</i>
+						</label>
+						&nbsp;~&nbsp;
+						<label class="back-unitinput">
+							<input type="text"  name="withdraw_amount_max" data-title="5~8位正整数" oninput="$(this).ndigitInteger(8)" onpropertychange="$(this).ndigitInteger(8)" value="${withdraw_amount_max}" class="width01 iffocus"/><i class="unit">元</i>
+						</label>
+					</div>
+					<div class="liright" id="recharge_notice"></div>
+				</div>
+			</form>
+		</div>
+		<div class="back-infor">
+			<form action="@{back.finance.FinanceSettingCtrl.editTransferSetting()}" method="POST" id="transfer">
+				#{authenticityToken /}
+				<h2 class="back-infor-head"><span class="left">转让设置</span>
+				#{rightMng rightId:508003}
+				<a href="javascript:void(0);" class="right iconfont finance-edit" data-title="编辑" >&#xe602;</a>
+				#{/rightMng}
+				</h2>
+				<div class="back-infor-lcset">
+					<span class="lileft">转让服务费：</span>
+					<div class="liright">
+						待收本金&nbsp;*
+						<label class="back-unitinput">
+							<input type="text" name="transfer_fee_rate" oninput="$(this).proportionRange()" onpropertychange="$(this).proportionRange()" data-title="小于100保留一位小数"  value="${transfer_fee_rate}" class="width02 iffocus"/><i class="unit">%</i>
+						</label>
+					</div>
+					<div class="liright" id="transfer_notice"></div>
+				</div>
+			</form>
+		</div>
+		<div class="back-infor">
+			<form action="@{back.finance.FinanceSettingCtrl.editRechargeSetting()}" method="POST" id="recharge">
+				#{authenticityToken /}
+				<h2 class="back-infor-head"><span class="left">充值设置</span>
+				#{rightMng rightId:508004}
+				<a href="javascript:void(0);" class="right iconfont finance-edit" data-title="编辑" >&#xe602;</a>
+				#{/rightMng}
+				</h2>
+				<div class="back-infor-lcset">
+					<span class="lileft">单笔充值金额：</span>
+					<div class="liright">
+						<label class="back-unitinput">
+							<input type="text"  name="recharge_amount_min" data-title="1~4位正整数" oninput="$(this).ndigitInteger(4)" onpropertychange="$(this).ndigitInteger(4)" value="${recharge_amount_min}" class="width01 iffocus"/><i class="unit">元</i>
+						</label>
+						&nbsp;~&nbsp;
+						<label class="back-unitinput">
+							<input type="text"  name="recharge_amount_max" data-title="5~8位正整数" oninput="$(this).ndigitInteger(8)" onpropertychange="$(this).ndigitInteger(8)" value="${recharge_amount_max}" class="width01 iffocus"/><i class="unit">元</i>
+						</label>
+					</div>
+					<div class="liright" id="recharge_notice"></div>
+				</div>
+			</form>
+		</div>
+		
+		<div class="back-infor">
+			<form action="@{back.finance.FinanceSettingCtrl.editExpiresSetting()}" method="POST" id="expires">
+				#{authenticityToken /}
+				<h2 class="back-infor-head"><span class="left">催收短信设置</span>
+				#{rightMng rightId:508005}
+				<a href="javascript:void(0);" class="right iconfont finance-edit" data-title="编辑" >&#xe602;</a>
+				#{/rightMng}
+				</h2>
+				<div class="back-infor-lcset">
+					<span class="lileft">账单到期前：</span>
+					<div class="liright">
+						<label class="back-unitinput">
+							<input type="text" name="bill_expires" data-title="1~30正整数" oninput="$(this).ndigitInteger(2)" onpropertychange="$(this).ndigitInteger(2)" value="${bill_expires}" class="width01 iffocus"/><i class="unit">天</i>
+						</label>
+						&nbsp;&nbsp;开始催收
+					</div>
+					<div class="liright" id="expires_notice"></div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+
+
+<!-- 页面js -->
+<script type="text/javascript">
+	require(["back"],function(back){
+		//js验证扩展
+		require(["validation/validateExt"]);
+		
+		$(".back-infor").each(function(){
+			var that = this,
+				editBtn = $(this).find(".finance-edit"),
+				editText = $(this).find("input");
+			editText.prop("disabled",true);
+			editBtn.click(function(){
+				disable = editText.prop("disabled");
+				if(disable){
+					editBtn.html("&#xe630;").data("title","保存");
+					
+					$(".titlebox").text(editBtn.data('title'));
+					editText.prop("disabled",!disable);
+					editText.eq(0).focus();
+				}else{
+					
+					var withdrawForm = $(that).children("form[id='withdraw']");
+					if(withdrawForm.eq(0).length != 0){
+						withdrawForm.submit();
+					}
+					
+					var transferForm = $(that).children("form[id='transfer']");
+					if(transferForm.eq(0).length != 0){
+						transferForm.submit();
+					}
+					
+					var rechargeForm = $(that).children("form[id='recharge']");
+					if(rechargeForm.eq(0).length != 0){
+						rechargeForm.submit();
+					}
+					
+					var expiresForm = $(that).children("form[id='expires']");
+					if(expiresForm.eq(0).length != 0){
+						expiresForm.submit();
+					}
+					
+				}
+			});
+		});
+		
+		//***********************//
+		$("form[id='withdraw']").validate({
+			errorPlacement: function(error, element) {
+				error.addClass('back-notice');
+				$("#withdraw_notice").html(error);
+			//	error.addClass('back-notice').insertAfter(element);
+			},
+			rules:{
+				"withdraw_fee_point":{
+					required:true,
+					digits:true,
+					rangelength:[1,8]
+				},
+				"withdraw_fee_rate":{
+					required:true,
+					isFloat:true,
+					range:[0,100]
+				},
+				"withdraw_fee_min":{
+					required:true,
+					digits:true,
+					rangelength:[1,3]
+				}
+			},
+			messages:{
+				"withdraw_fee_point":{
+					digits:"不超过8位整数",
+					rangelength:"不超过8位整数"
+				},
+				"withdraw_fee_rate":{
+					isFloat:"整数或者带一位小数"
+				},
+				"withdraw_fee_min":{
+					digits:"不超过8位正整数",
+					rangelength:"不超过8位正整数"
+				}
+			}
+		});
+		
+		
+		//***********************//
+		$("form[id='transfer']").validate({
+			errorPlacement: function(error, element) {
+				error.addClass('back-notice');
+				$("#transfer_notice").html(error);
+			//	error.addClass('back-notice').insertAfter(element);
+			},
+			rules:{
+				"transfer_fee_rate":{
+					required:true,
+					isFloat:true,
+					range:[0,100]
+				}
+			},
+			messages:{
+				"transfer_fee_rate":{
+					isFloat:"整数或者带一位小数"
+				}
+			}
+		});
+		
+		//***********************//
+		$("form[id='recharge']").validate({
+			errorPlacement: function(error, element) {
+				error.addClass('back-notice');
+				$("#recharge_notice").html(error);
+			//	error.addClass('back-notice').insertAfter(element);
+			},
+			rules:{
+				"recharge_amount_min":{
+					required:true,
+					digits:true,
+					rangelength:[1,4]
+				},
+				"recharge_amount_max":{
+					required:true,
+					digits:true,
+					rangelength:[5,8]
+				}
+			},
+			messages:{
+				"recharge_amount_min":{
+					rangelength:'最低充值金额限制为1~4位正整数'
+				},
+				"recharge_amount_max":{
+					rangelength:'最高充值金额限制为5~8位正整数'
+				}
+			}
+		});
+		
+		//***********************//
+		
+		$("form[id='expires']").validate({
+			errorPlacement: function(error, element) {
+				error.addClass('back-notice');
+				$("#expires_notice").html(error);
+			//	error.addClass('back-notice').insertAfter(element);
+			},
+			rules:{
+				"bill_expires":{
+					required:true,
+					digits:true,
+					range:[1,30]
+				}
+			},
+			messages:{
+				"bill_expires":{
+					digits:'1~30正整数'
+				}
+			}
+		});
+	
+		
+	});
+</script>	

@@ -1,0 +1,185 @@
+#{extends 'common/front/accountMain.html' /}
+#{set title:'个人中心 | 账户首页 | 提现' /}
+#{set smallclass:0 /}
+
+<!-- 账户主要表格 -->
+<div class="account-box">
+	<h2 class="account-title">
+		<div class="right account-menu">
+			<a href="@{front.account.MyAccountCtrl.withdrawPre()}" class="selected">&nbsp;提现&nbsp;</a>
+			<a href="@{front.account.MyAccountCtrl.rechargePre()}">账户直充</a>
+			*{<a href="quickRecharge.html">闪电快充</a>}*
+		</div>
+	</h2>
+	<div class="withdraw-box recharge-box clearfix">
+		#{if userInfo.enterprise_name !=null && userInfo.enterprise_credit !=null && userInfo.enterprise_name !="" && userInfo.enterprise_credit !=""}
+		<form action="@{front.account.MyAccountCtrl.enterpriseWithdrawal()}" method="post" id="withdrawform" target="_blank">
+			#{authenticityToken /}
+			<input type="hidden" name="uuidRepeat" value="${flash?.submitUuid}">
+			<div class="left withdraw-right">				
+				<span >企业对公账户：</span>
+				<label class="unit-input">
+					<select style="width:322px;padding: 10px 0px;border: 1px solid #E5E5E5; outline: none; font-size: 14px;border-radius:4px;margin-top: 20px;" name = "bankAccount">
+					<option value='${enterprise_bank_no}'>${enterprise_bank_no} &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</option>
+					</select>
+				</label>
+				  <p class="withdraw-title"><span class="right major tExtSize">单笔最高提现${withdrawHighest}元，最低提现${withdrawLowest}元</span></p>
+				<span style="margin-left: 16px;">提现金额：</span>
+				<label class="unit-input">
+					<input type="text" class="text coltext" id="withdrawalAmt" name="withdrawalAmt" oninput="$(this).ndigitInteger(6)" onpropertychange="$(this).ndigitInteger(6)" maxlength="6">
+					<i class="unit">元</i>
+					
+				</label>
+				
+				<p class="withdraw-error withdraw-error2" id="withdraw-error">错误提示</p>
+				<p class="withdraw-title"><span class="major right">手续费 第三方收取<strong id="withdrawFee" style="color: #F77B0F;">2.00</strong>元</span>
+				</p>
+				<input type="submit" value="企业提现" style="margin-top: 16px;" class="condition-btn deposit-btn" id="submit_withdraw">
+			</div>
+		</form>
+		#{/if}
+		#{else}
+		<form action="@{front.account.MyAccountCtrl.withdrawal()}" method="post" id="withdrawform" target="_blank">
+			#{authenticityToken /}
+			<input type="hidden" name="uuidRepeat" value="${flash?.submitUuid}">
+			<div class="left withdraw-right">
+							
+				<span >选择银行卡：</span>
+				<label class="unit-input ">
+				
+					<select style="width:322px;padding: 10px 0px;border: 1px solid #E5E5E5; outline: none; font-size: 14px;border-radius:4px;margin-top: 20px;" name = "bankAccount">
+					#{list bankList}
+					<option value='${_?.account}'>${_?.account} &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;${_?.bank_name}</a></option>
+					#{/list}
+					</select>
+				</label>
+				  <p class="withdraw-title"><span class="right major tExtSize">单笔最高提现${withdrawHighest}元，最低提现${withdrawLowest}元</span></p>
+				<span style="margin-left: 16px;">提现金额：</span>
+				<label class="unit-input">
+					<input type="text" class="text coltext" id="withdrawalAmt" name="withdrawalAmt" oninput="$(this).ndigitInteger(6)" onpropertychange="$(this).ndigitInteger(6)" maxlength="6">
+					<i class="unit2">元</i>
+					
+				</label>
+				
+				<p class="withdraw-error withdraw-error2" id="withdraw-error">错误提示</p>
+				<p class="withdraw-title"><span class="major right">手续费 第三方收取<strong id="withdrawFee" style="color: #F77B0F;">2.00</strong>元</span>
+				</p>
+				<input type="submit" value="提  现" style="margin-top: 16px;" class="condition-btn deposit-btn" id="submit_withdraw">
+			</div>
+		</form>
+		#{/else}
+		
+		<div class="bankcard-addnote c9 left">
+			<div class="sug">
+			     <p id="sug-tlt">温馨提示：</p>
+			     <p>1.身份认证、账户托管开通、提现银行卡均设置成功后，才能进行提现操作；</p>
+			     <p>2.体现必须为银行借记卡，不支持存折、信用卡提现；</p>
+			     <p>3.严禁信用卡套现、转账、洗钱等行为，一经发现将予以惩罚，包括但不限于：限制交易、冻结账户、永久停止服务，并会影响银行记录；</p>
+			     <p>4.预计到账时间与提现限额：</p>
+			     <p>（1）、工作日工作时间，大额开放，所以单笔无限额；<br/>
+			                （2）、工作日非工作时间，大额关闭，单笔限额五万；（9:00-18:00）；<br/>
+			                （3）、 非工作日全天，大额关闭，小额开放每笔上限50万交易都是实时或准实时到客户银行卡（实时到账时间为5分钟之内，准实时到账时间为半小时之内）；<br/> 
+			                （4）、提现费：取现款项＊万分之五＋2元/笔收取            
+			     </p>
+			     <p>注：快速取现和即时取现，取现款项*万分之5+2元/每笔收取；节假日（包括周末和法定节假日）前一个工作日使用快速取现和即时取现，按照取现款项*万分之五*（节假日天数+1）+2元/笔收取</p>
+			     
+			</div>
+		</div>
+	</div>
+	
+	
+	<p class="returnprev">
+		<a href="@{front.account.MyAccountCtrl.homePre()}" class="backpage"><i class="icon return-icon"></i>返回</a>
+	</p>
+	
+	<!-- 提现弹窗 -->
+	<div class="dialog" id="dialog_withdraw">
+		<div class="dialog-bg"></div>
+		<div class="dialog-cont trusteeship-dialog">
+			<h2 class="dialog-head">
+				<span class="left">平台提示</span>
+			</h2>
+			<div class="trusteeship-cont">
+				<div class="trusteeship-wrap">
+					<i class="trusteeship-icon"></i>
+					<p class="major">请在新页面完成提现。</p>
+					<a href="@{front.account.MyAccountCtrl.homePre()}" class="bdbtn">提现成功</a>
+					<p class="trusteeship-help"><a href="@{front.FrontHomeCtrl.helpPre(models.common.entity.t_help_center.Column.FINANCIAL_KNOWLEDGE.code,1)}" class="c9">提现遇到问题></a></p>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+require(['front'],function(front){
+	require(['account']);
+	
+    var balance = ${balance};
+    var withdrawFeePoint = ${withdrawFeePoint};
+    var withdrawFeeRate= ${withdrawFeeRate};
+    var withdrawFeeMin = ${withdrawFeeMin};
+    var withdrawMaxRate = ${withdrawMaxRate};
+    
+    $("#withdrawalAmt").keyup(function(){
+    	//提现金额
+    	var withdrawalAmt = $(this).val();
+ 		//最高提现手续费
+    	var withdrawFee = 0.00; 
+ 		withdrawFee = withdrawFeeMin + (withdrawalAmt - withdrawFeePoint) * withdrawFeeRate * 0.0001;
+ 		withdrawFee = parseFloat(withdrawFee).toFixed(2)
+
+    	$("#withdrawFee").html(withdrawFee);
+   
+    })
+    
+	$("#withdrawform").submit(function(){
+		#{if isSimulated}
+	    	alert("模拟登录不能执行该操作");
+	    	return false;
+	    #{/if}
+	    #{else}
+		var withdrawalAmt = $("#withdrawalAmt").val();
+		
+		if($("#bankAccount").val() == 0){
+			$("#withdraw-error").css("display","block").html("请选择银行卡");
+	  	  	return false;
+		}
+		
+	    if(withdrawalAmt == ''){
+	    	$("#withdraw-error").css("display","block").html("提现金额不能为空");
+	  	  	return false;
+	    }
+	    
+	    if(isNaN(withdrawalAmt)){
+	    	$("#withdraw-error").css("display","block").html("请输入正确的提现金额");
+	    	return false;
+	    }
+	    
+	    if(withdrawalAmt > ${withdrawHighest}){
+	    	$("#withdraw-error").css("display","block").html("单笔最高提现${withdrawHighest}元");
+			return false;
+	    }
+	    
+	    if(withdrawalAmt < ${withdrawLowest}){
+	    	$("#withdraw-error").css("display","block").html("单笔最低提现${withdrawLowest}元");
+			return false;
+	    }
+	    
+	    /* 可提现金额 */
+	  /*   var withdrawMin = balance - ((withdrawalAmt - withdrawFeePoint) * withdrawFeeRate * 0.01 + withdrawFeeMin); */
+	    
+	    if(withdrawalAmt > balance){
+	    	$("#withdraw-error").css("display","block").html("余额不足");
+			return false;
+	    }
+	    
+	    $("#withdraw-error").css("display","none").html("");
+	    
+	    
+	    	$("#dialog_withdraw").dialog();
+	    #{/else}
+	    
+	});
+});
+</script>

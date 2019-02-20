@@ -1,0 +1,258 @@
+#{extends 'common/back/teamMain.html' /}
+#{set title:'自定义提成 | 选择业务员' /}
+#{set smallclass:3 /}
+#{set crumbs:'团队长 >收益规则'/}
+%{
+	java.lang.Integer type = controllers.common.BackBaseController.getCurrentSupervisorType();
+}%
+<div class="back-main">
+	<!-- 头部筛选条件 -->
+	<div class="back-usertop">
+		<!-- 搜索按钮，控制搜索条件的显示隐藏 -->
+		<div class="left back-usermenu">
+		<a href="@{back.team.TeamCtrl.differentCommissionPre()}"  class="selected">自定义提成</a>
+		
+		</div>
+		*{<div class="back-search left #{if loanName} selected#{/if}">
+			<i class="iconfont searchicon">&#xe60a;</i>搜索<i class="iconfont arrowicon">&#xe603;</i>
+		</div>}*
+
+		<form action="@{back.team.TeamCtrl.differentCommissionPre()}" style="float: left; margin-left:0px;" id="yewuyuan">
+			<select name="comId" style="margin-right: 20px;" onchange="selSubmit()">
+			#{set count:1/}
+			#{list comIdList,as:'comList'}
+				#{if comList==comId}<option value="${comList}" selected="selected">提成规则${count}</option>#{/if}
+				#{else}<option value="${comList}">提成规则${count}</option>#{/else}
+				#{set count:count+1/}
+			#{/list}
+			</select>
+			
+			<select name="selMonth" style="margin-right: 20px;" onchange="selSubmit()">
+				<option value="0"  #{if selMonth==0} selected="selected"#{/if} id="op0">当月</option>
+				<option value="1" #{if selMonth==1} selected="selected"#{/if} id="op1"></option>
+				<option value="2" #{if selMonth==2} selected="selected"#{/if} id="op2"></option>
+				<option value="3" #{if selMonth==3} selected="selected"#{/if} id="op3"></option>			
+			</select>
+			<!-- <input type="submit" value="搜索" style="width: 50px;height: 25px; margin-right: 0px;" /> -->
+		</form>
+		<!-- 右侧功能按钮 -->
+		
+	</div>
+	
+	<div class="back-cont">
+		<form action="@{back.team.TeamCtrl.addDiffComm()}" method="POST" id="form_addDiff">		 
+			<div class="back-infor">
+				<h2 class="back-infor-head">
+					<span class="left">添加业务员到列表</span>
+				</h2>				
+				<ul class="back-infor-set">	
+					<li>			   				 	
+						<span class="lileft">业务员列表：</span>
+						<div class="liright">
+							<select id="teamXid" name="teamXid" style="width:280px;" class="left back-select">
+							#{list allTeams,as:'allteams'}
+								<option value="${allteams.id}">${allteams.code}&nbsp;&nbsp;${allteams.realName}</option>
+							#{/list}
+							</select>
+							<input id="comId" name="comId" type="hidden" value="${comId}">							
+						</div>
+					</li>							
+					<li>
+						<p class="back-audit-btns">
+							<input type="submit" id="pageSave" value="添加" class="bgbtn">
+							<input type="reset" value="取消" class="bdbtn dialog-console">
+						</p>
+					</li>				
+				</ul>
+			</div>			
+			
+		</form>
+	</div>	
+	
+	<div class="back-cont">
+		<div class="back-box">
+			<table width="100%" class="back-table table-fixed">
+				<tr height="40">
+					<th width="70" class="align-left">
+						<span class="back-order">
+							序号
+						</span>
+					</th>
+					<th>职位</th>
+					<th>
+						<span class="back-order">
+						    推广码
+						</span>
+					</th>
+					<th>真实姓名</th>
+					<th>推广会员人数</th>
+					<th>理财会员人数</th>
+					<th>当月推广理财金额</th>
+					<th>本月业绩提成</th>
+					<th>操作</th>
+					
+				</tr>
+			#{if teamList!=null}
+				#{set count:1/}
+				#{list teamList,as:'teamss'}
+				<tr height="40">
+					<td class="align-left">
+						<label>${count}</label>
+					</td>
+					<td data-title="">
+					#{if teamss.type==0}
+					业务员
+					#{/if}
+					#{if teamss.type==1}
+					部门经理
+					#{/if}
+					#{if teamss.type==2}
+					业务部经理
+					#{/if}
+					#{if teamss.type==4}
+					外部客户经理
+					#{/if}
+					</td>
+					<td>
+						${teamss.code}
+					</td>
+					<td>
+						${teamss.realName}
+					</td>
+					<td>
+						${teamss.count}
+					</td>
+					<td>
+						${teamss.investCount}
+					</td>
+					<td>
+					${teamss.sumMoney?.format("#0.00")}
+					</td>
+					<td>
+					${teamss.actual_month_commission_special?.format("#0.00")}
+					</td>
+					<td><a href="@{back.team.TeamCtrl.deleDifferentCommissionPre(selMonth,comId,teamss.id)}">删除</a></td>
+				</tr>
+				#{set count:count+1/}
+				#{/list}
+			#{/if}
+				<!-- 表格数据统计 -->
+
+			#{else}	
+					<!-- 暂无记录 -->
+					<tr height="58">
+						<td colspan="9" class="back-nodata"><i class="iconfont">&#xe613;</i>暂无记录</td>
+					</tr>
+				</table>
+			#{/else}
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript" >
+	require(["back"],function(back){
+		// 搜索 排序 选中
+		require(["search","linechecked"],function(){
+		});
+	});
+	
+	function release(bidNo) {
+		confirm("编号"+bidNo+"，执行放款", function(){
+			waitingDialog();
+			$("#form_"+bidNo).submit();
+		});
+	}
+	
+	function showReleaseListPre(currPage, pageSize) {
+		$("#currPage").val(currPage);
+		$("#pageSize").val(pageSize);
+		
+		$("#yewuyuan").submit();
+	}
+	
+	//排序
+	function orderBy(orderType,orderValue){
+		$("#showReleaseListPre input[name='orderType']").val(orderType);
+		$("#showReleaseListPre input[name='orderValue']").val(orderValue);
+		
+		$("#showReleaseListPre input[name='currPage']").val(1);
+		
+		$("#showReleaseListPre").submit();
+	}
+	function managerDetails(name,code,mobile,amount){
+		alert("<ul><li><span>姓名:</span><span >"+name+"</span></li><li><span>推广码:</span><span >"+code+"</span></li><li><span>手机号码:</span><span >"+mobile+"</span></li><li><span>总佣金:</span><span>"+amount+"</span></li></ul>")
+	}
+	 -->
+
+	 window.onload=function(){
+		document.getElementById("op0").innerHTML=dateYear()+'年'+dateMonth()+"月份";
+		if(dateMonth()>1){
+			document.getElementById("op1").innerHTML=dateYear()+'年'+dateMonth(1)+"月份";
+		}else{
+			document.getElementById("op1").innerHTML=(dateYear()-1)+'年'+dateMonth(1)+"月份";
+		}
+		if(dateMonth()>2){
+			document.getElementById("op2").innerHTML=dateYear()+'年'+dateMonth(2)+"月份";
+		}else{
+			document.getElementById("op2").innerHTML=(dateYear()-1)+'年'+dateMonth(2)+"月份";
+		}
+		if(dateMonth()>3){
+			document.getElementById("op3").innerHTML=dateYear()+'年'+dateMonth(3)+"月份";
+		}else{
+			document.getElementById("op3").innerHTML=(dateYear()-1)+'年'+dateMonth(3)+"月份";
+		}
+		
+	} 	
+
+	//获取月份
+	function dateMonth(flag){
+		 var date=new Date;
+		 var year=date.getFullYear();
+		 var month=date.getMonth()+1;
+		 month =(month<10 ? "0"+month:month); 
+		 var mydate = (year.toString()+month.toString());
+		 if(flag==1){
+			 if(month>1)
+			 	 month=month-1;
+			 else{
+				 month='12';
+			 }
+		}
+		 else if(flag==2){
+		     if(month==1){
+		    	 month="11";
+		     }else if(month==2){
+		    	 month="12";
+		     }else{
+		    	 month=month-2; 
+		     } 
+		}
+		 else if(flag==3){
+			 if(month==1){
+		    	 month="10";
+		     }else if(month==2){
+		    	 month="11";
+		     }else if(month==3){
+		    	 month="12"; 
+		     } else{
+		    	 month=month-3;
+		     }
+		 }
+		 else {
+			 month=month;
+		 }
+		 return month
+	}
+	//获取年份
+	function dateYear(){
+		 var date=new Date;
+		 var year=date.getFullYear();
+		 return year;
+	}
+	
+	function selSubmit(){
+		var form=$("#yewuyuan");
+		form.submit();
+	}
+	
+</script>

@@ -1,0 +1,155 @@
+#{extends 'common/back/queryMain.html' /}
+	#{set title:'查询 | 客户信息' /}
+	#{set smallclass:3 /}
+	#{set crumbs:'查询>客户信息' /}
+	
+<div class="back-main">
+	<div class="back-cont">
+		<div class="back-box">
+			<form action="@{back.query.QuestionFeedbackCtrl.updateQuestion()}" method="post">
+				<input type="hidden" name="questionId" value="${question?.id}" />
+			
+			
+			
+			
+			<table style="width: 1000px; margin: 50px auto;">
+
+				<tr>
+					<td>用户信息</td>
+					<td>用户   ID：${userInfo?.user_id}</td>
+					<td>用户姓名：${userInfo?.reality_name}</td>
+					<td>用户手机：${userInfo?.mobile}</td>	
+				</tr>
+				
+				<tr>
+					<td>提问时间：</td>
+					<td>${question?.stime}</td>
+					<td></td>
+					<td></td>	
+				</tr>
+				<tr>
+					<td>问题类型：</td>
+					<td colspan="3" style="color: black;">
+					#{if question?.type == 1}
+						功能异常：功能故障或不可用
+					#{/if}
+						
+					#{if question?.type == 2}
+						产品建议：用的不爽，我有建议
+					#{/if}
+					
+					#{else}
+						其他问题
+					#{/else}
+					</td>
+				</tr>
+				
+				<tr>
+					<td>问题描述：</td>
+					<td colspan="3"><textarea disabled="disabled" rows="4" cols="100" style="margin-top: 20px; margin-bottom: 20px; color: black; font-weight: bold;">${question?.question}</textarea></td>	
+				</tr>
+				
+				<tr>
+					<td>问题图片：</td>
+					<td colspan="3" style="margin-bottom: 20px; height: 80px;">
+						#{if question?.imageList}
+							#{list items:question?.imageList,as:'imagePath'}
+								<img alt="" src="${imagePath}" style="margin-bottom: 20px; height: 80px;" onclick='picBig(this);'>
+							#{/list}
+						#{/if}
+					</td>
+				</tr>
+				
+				<tr>
+					<td>问题状态：</td>
+					<td colspan="3" style="font-weight: bold; color: black;">
+					#{if question?.status == 1}
+						已提交
+					#{/if}
+						
+					#{if question?.status == 2}
+						已查看，待解决
+					#{/if}
+					
+					#{if question?.status == 3}
+						已解决
+					#{/if}
+					</td>	
+				</tr>
+				
+				<tr>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>	
+				</tr>
+				<tr>
+					<td>解决人信息</td>
+					<td>用户   ID：${supervisor?.id}</td>
+					<td>用户姓名：${supervisor?.reality_name}</td>
+					<td>用户手机：${supervisor?.mobile}</td>	
+				</tr>
+				<tr>
+					<td>解决时间：</td>
+					<td>${question?.etime}</td>
+					<td></td>
+					<td></td>	
+				</tr>
+
+				<tr>
+					<td>问题原因：</td>
+					<td colspan="3">
+						#{if question?.status == 3}
+						<textarea disabled="disabled" rows="5" cols="100" style="margin-top: 20px; color: black; font-weight: bold;">${question?.reason}</textarea>
+						#{/if}
+						#{else}
+							<textarea rows="5" cols="100" style="margin-top: 20px;" name="reason"></textarea>
+						#{/else}
+					</td>	
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>	
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>	
+				</tr>
+				<tr>
+					<td colspan="4" style="padding-left: 350px;">
+						#{if question?.status == 3}
+						
+						#{/if}
+						#{else}
+							<input type="submit" value="提交" style="width: 200px; height: 38px; "/>
+						#{/else}
+					</td>
+				</tr>
+
+			</table>
+			</form>
+			
+			<div id="divCenter" align="center" style="position: absolute; z-index: 9; display: none; left:450px;top:130px;">
+            <img id="disPic" src="XXXXXX" onclick="picClose();" style="width: 1000px; height: 800px;"/>
+        	</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	$("tr").css({"width":"1000px","height":"38px"});
+	
+	 function picBig(obj) {
+         var v = document.getElementById('divCenter');
+ 
+         $("#disPic").attr("src",obj.src);
+         v.style.display = "block";
+     }
+     function picClose() {
+         var v = document.getElementById('divCenter');
+         v.style.display = "none";
+     }
+</script>

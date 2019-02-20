@@ -1,0 +1,249 @@
+#{extends 'common/frontMain.html' /}
+#{set title:detail?.title/}
+#{set AItem:1 /}
+		<link rel="stylesheet" type="text/css" href="/public/front/stylesheets/commonality.css"/>
+		<link rel="stylesheet" type="text/css" href="/public/front/stylesheets/make_over.css"/>
+
+<div class="cen-tit">
+			<div class="cen-tit-lf">
+				<div class="cent-box">
+					<h2>
+						
+					<a class="next-tit-col" href="javascript:;"> ${detail?.debt_transfer_no} ${detail?.title}</a>
+					</h2>
+					<ul class="text-list">
+						<li>债权总额</li>
+						<li class="c7"><span class="text-big">${detail?.debt_amount?.format(common.constants.Constants.FINANCE_FORMATE_NORMAL)}</span> 元</li>
+					</ul>
+					<ul class="text-list wrf-2">
+						<li>转让期数</li>
+						<li><span class="c7">${detail?.period}</span> 期</li>
+					</ul>
+					<ul class="text-list wrf-3">
+						<li>转让价额</li>
+						<li><span class="c7">#{formatIntMoney money:detail?.transfer_price /}</span> 元</li>
+					</ul>
+					<ul class="text-list1">
+						
+						<li><span class="c9">剩余时间：</span><span class="c3" id="count_down_time"></span></li>
+			
+					</ul>
+					<div class="jooin-box">
+						<p>竞拍方式：一口价</p>
+					</div>
+				</div>
+				<ul class="brw-time">
+					<li>转让人： #{asterisk str:detail?.user_name, start:2, end:2, count:4/} </li>
+					<li class="brw-time2">发售时间 ：${detail?.start_time?.format(common.constants.Constants.DATE_TIME_FORMATE)}</li>
+					<li>
+						<a href="management-details.html">
+						<!--<img class="gssf" src="img/book.png" />-->
+						<a href="@{front.invest.InvestCtrl.investPre(detail?.bid_id)}" target="_blank" class="dgg">查看原借款标</a>
+						</a>
+					</li>
+				</ul>
+			</div>
+			<div class="cen-tit-rg">
+				<ul class="rg-list">
+						<!-- 未登录 -->
+				#{if !currUser}
+				<li class="detail-lastmoney">
+					<span class="left lileft accountLeft">账户余额</span>
+					
+				</li>
+				<li class="detail-lastmoney">
+					<span class="lastmoney right rightbian">
+						------------元
+					</span>
+				</li>
+				<li class="detail-lastmoney">
+					
+					<a href="@{front.LoginAndRegisteCtrl.loginPre()}" title="" target="" class="major right majorRight">登录查看余额</a>
+				</li>
+				#{/if}
+				<!-- 已登录 -->
+				#{else}
+				<li class="detail-lastmoney">
+					<span class="left lileft balance">账户余额</span>
+					
+				</li>
+				<li class="detail-lastmoney">
+					<span class="lastmoney right rightbian1">
+						#{formatIntMoney money:balance}#{/formatIntMoney}元
+					</span>
+				</li>
+				<li class="detail-lastmoney">
+					<a href="@{front.account.MyAccountCtrl.rechargePre()}" title="" target="" class="major right" id="detailRecharge">充值</a>
+				</li>
+				#{/else}
+				
+				<!-- 转让中，且未过期的可以购买 -->
+				#{if models.core.entity.t_debt_transfer.Status.AUCTING.equals(detail?.status) && sysNowTime?.compareTo(detail?.end_time) == -1}
+				<li class="transfer-buybtn">
+					<form action="@{front.invest.InvestCtrl.buyDebt()}" method="POST" id="form_auction" target="_blank">
+						#{authenticityToken /}
+						<input type="hidden" value="${detail?.sign}" name="debtSign" />
+						<input type="hidden" name="uuidRepeat" value="${flash?.submitUuid}">
+						<input type="button" id="form_auction_button" value="立即购买" class="btn detail-buybtn restrain" />
+					</form>
+				</li>
+				#{/if}
+				#{else}
+				<li class="detail-buyover">
+					<span>已结束</span>
+				</li>
+				#{/else}
+				</ul>
+					<p class="rg-prudent"> <img class="img-big" src="/public/front/images/!.png/"> <span  class="prudent">温馨提示：把控风险，谨慎操作</span></p>
+			</div>	
+		</div>
+		<!--转让详情-->
+		<!--投标记录-->
+		<div class="tou-biao">
+			<div class="strd">
+				<p>回款计划</p>
+			</div>
+			
+			#{if !currUser}
+			<div class="tab-cont">
+				<p class="detail-unlogin">请<a href="@{front.LoginAndRegisteCtrl.loginPre()}" class="major">登录</a>或<a href="@{front.LoginAndRegisteCtrl.registerPre()}" class="major">注册</a>后查看</p>
+			</div>
+		#{/if}
+		#{else}
+			<!-- 回款计划 -->
+			<!-- 回款计划 -->
+			<div class="tab-cont" id="repayment_record">
+			</div>
+		#{/else}
+		</div>
+
+<div class="dialog" id="dialog_transfer">
+	<div class="dialog-bg"></div>
+	<div class="dialog-cont trusteeship-dialog">
+		<h2 class="dialog-head">
+			<span class="left">平台提示</span>
+		</h2>
+		<div class="trusteeship-cont">
+			<div class="trusteeship-wrap">
+				<i class="trusteeship-icon"></i>
+				<p class="major">请在新页面完成支付。</p>
+				<a href="javascript:window.location.reload(true)" class="bdbtn">支付成功</a>
+				<p class="trusteeship-help"><a href="@{front.FrontHomeCtrl.helpPre(models.common.entity.t_help_center.Column.FINANCIAL_KNOWLEDGE.code,1)}" class="c9">支付遇到问题></a></p>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+
+<!-- main end-->
+<script type="text/javascript">
+ 
+
+require(['front'],function(front){
+	if (${models.core.entity.t_debt_transfer.Status.AUCTING.code} == ${detail?.status?.code}) {//筹款中
+		var EndTime = new Date('${detail?.end_time?.format(common.constants.Constants.DATE_PLUGIN)}').getTime();
+		var NowTime = new Date('${sysNowTime?.format(common.constants.Constants.DATE_PLUGIN)}').getTime();
+		GetRTime(EndTime, NowTime, "count_down_time");
+	} else {
+		 $("#count_down_time").html('0天0时0分0秒');
+	}
+
+	$("#form_auction_button").click(function(){
+		#{ifnot currUser}
+			window.location.href="@{front.LoginAndRegisteCtrl.loginPre()}";
+			return ;
+	    #{/ifnot}
+	    
+	    #{if isSimulated}
+			alert("模拟登录不能执行该操作");
+			return false;
+		#{/if}
+		#{else}
+	    #{if detail?.user_id == currUser?.id}
+	   		weakDialog("不能购买自己转让的债权");
+			return;
+	    #{/if}
+	    
+	    #{if detail?.loan_user_id == currUser?.id}
+	   		weakDialog("原借款人不能购买该债权");
+			return;
+	    #{/if}
+		
+		var transfer_price = ${detail?.transfer_price?:0};
+		var balance = ${balance?:0};
+		if(balance<transfer_price){
+			weakDialog('可用余额不足以购买该债权');
+			return;
+		}
+	
+			$('#dialog_transfer').dialog();
+			$("#form_auction").submit();
+		#{/else}
+		
+	});
+	
+	if ($("#repayment_record").find("tr").length > 1) {
+		return false;
+	} else {
+		repaymentRecordPre(function(data){
+			$("#repayment_record").html(data);
+			trevenRows();
+			if(parseInt($("#repaymentTotalSize").val())<=parseInt($("#repaymentPagesize").val())){
+				$(".loadmore").html("<span>没有更多了</span>");
+			}
+		});
+	}
+});
+
+//倒计时
+function GetRTime(EndTime, NowTime, domId){
+	if (NowTime == 0) {
+		NowTime = new Date().getTime();
+	}
+	var t = EndTime - NowTime;
+	timeShow(t, domId);
+    setInterval(function() {
+    	t = t-1000;
+    	timeShow(t, domId);
+    },1000);
+}
+function timeShow(t, domId){
+    var d=Math.floor(t/1000/60/60/24);
+    var h=Math.floor(t/1000/60/60%24);
+    var m=Math.floor(t/1000/60%60);
+    var s=Math.floor(t/1000%60);
+    $("#"+domId).html((d<0?0:d)+'天'+(h<0?0:h)+'时'+(m<0?0:m)+'分'+(s<0?0:s)+'秒');
+}
+
+function repaymentRecordPre(callback){
+	var investId = ${detail?.invest_id};
+	var currPage = $("#repaymentCurrpage").val();
+	var pageSize = $("#repaymentPagesize").val();
+	$.ajax({
+		url : "@{front.invest.InvestCtrl.repaymentInvestRecordPre()}",
+		type : "GET",
+		data : {
+			"investId" : investId,
+			"currPage" : currPage,
+			"pageSize" : pageSize
+		},
+		success : function(data) {
+			if(callback){
+				callback(data);
+			}
+		}
+	});
+}
+
+
+//表格隔行换色
+function trevenRows(){
+	$('.detail-record').each(function(){
+		$(this).children('tbody').children('tr:not(.detail-record):even').addClass('treven');
+	});
+}
+</script>
+
+

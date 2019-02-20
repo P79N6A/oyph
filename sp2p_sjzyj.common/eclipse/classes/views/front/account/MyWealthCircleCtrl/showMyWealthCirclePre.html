@@ -1,0 +1,132 @@
+<h1 class="azamoney-nav">财富圈</h1>
+<div class="account-main " id="wealthCircleMain">
+	
+		<table class="account-table" width="100%">
+			<tr height="46">
+				<th>邀请码</th>
+				<th>受邀人</th>
+				<th>累计理财</th>
+				<th>累计返佣</th>
+				<th>可领返佣</th>
+				<th>邀请时间</th>
+				<th>状态</th>
+				<th>操作</th>
+			</tr>
+			#{if page?.page}
+			#{list items:page?.page,as:'wcUser'}
+				<tr height="46" class="account-billbtn">
+					<td>${wcUser?.wc_code}</td>
+					<td>${wcUser?.user_name?:'----'}</td>
+					<td>${wcUser?.total_invest?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}</td>
+					<td>${wcUser?.total_rebate?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}</td>
+					<td>${wcUser?.recivable_rebate?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}</td>
+					<td>${wcUser?.active_time?.format(common.constants.Constants.DATE_TIME_FORMATE)?:'----'}</td>
+					<td>
+						${wcUser?.status?'已使用':'未使用'}
+					</td>
+					<td>
+						#{if wcUser?.recivable_rebate > 0}
+							<a href="javascript:void(0);" onclick="reciveWealthCircle('${wcUser?.sign}')" class="major cursor">领取</a>
+						#{/if}
+						#{else}
+							<span class="c9">领取</span></td>
+						#{/else}
+					
+				</tr>
+			#{/list}
+			#{/if}
+		</table>
+		#{if page?.page}
+		<div class="left major account-rednote">
+			<span>可兑换返佣&nbsp;&nbsp;&nbsp;${account?.balance?.format(common.constants.Constants.FINANCE_FORMATE_NORMAL)}元<a href="javascript:void(0);" #{if account?.balance > 0}onclick="wealthCircleExchange()"#{/if}  class="account-debtbtn">兑换&gt;</a></span>
+		</div>
+		#{frontPageTag page:page,showPage:'showMyWealthCircle' /}
+		#{/if}
+		#{else}
+			<div class="norecord-box c9">
+				暂无记录
+			</div>
+		#{/else}
+	
+	<div class="account-extension clearfix extension-rule">
+		<div class="left" style="font-size:12px;">
+			<h3 class="major">邀请规则</h3>
+			<p>理财每满&nbsp;<span class="major">#{formatIntMoney money:initial_amount /}</span>&nbsp;可获得一个邀请码，邀请码在邀请好友注册时使用;</p>
+			<p>邀请成功，邀请人将获得被推广人理财金额的千分之&nbsp;<span class="major">${Double.parseDouble(rebate_invest)?.format(common.constants.Constants.NUMBER_FORMATE_NORMAL)}</span>&nbsp;的返佣，被推广人理财服务费享有&nbsp;<span class="major">${Double.parseDouble(discount_invest)?.format(common.constants.Constants.NUMBER_FORMATE_NORMAL)}</span>&nbsp;折优惠。</p>
+			
+		</div>
+		<div class="right">
+			<p class="right invest-right" style="font-size:12px;">距离下一个邀请码还差<span class="major">#{formatIntMoney money:more_invested /}</span>&nbsp;元</p>
+		</div>
+	</div>
+</div>
+<div class="account-debt account-exchangeok clearfix none" id="wealthCircleConvDia">
+	<p class="findepassword-success">
+		<span class="timeout-note major"><i class="icon success-icon"></i>兑换申请成功，平台正在处理！</span>
+	</p>
+	<p class="returnprev">
+		<a href="javascript:void(0);" onclick="showMyWealthCircle(1)" class="backpage"><i class="icon return-icon"></i>返回</a>
+	</p>
+</div>
+<script type="text/javascript">
+require(['front'],function(front){
+})
+
+//领取返佣
+function reciveWealthCircle(sign){
+	#{if isSimulated}
+		alert("模拟登录不能执行该操作");
+		return false;
+	#{/if}
+	#{else}
+		$.ajax({
+			url : "@{front.account.MyWealthCircleCtrl.reciveWealthCircle()}",
+			type : "POST",
+			data : {
+				"wcSign":sign
+			},
+			success : function(result) {
+				var flag = interceptorCheck(result);
+				if(!flag){
+					return;
+				}
+				if (result.code < 1) {
+					alert(result.msg);
+				} else {
+					weakDialog(result.msg);
+					showMyWealthCircle(1);
+				}
+			}
+		});
+	#{/else}
+}
+
+//财富圈
+function wealthCircleExchange(){
+	#{if isSimulated}
+	alert("模拟登录不能执行该操作");
+	return false;
+	#{/if}
+	#{else}
+	$.ajax({
+		url : "@{front.account.MyWealthCircleCtrl.wealthCircleExchange()}",
+		type : "POST",
+		success : function(result) {
+			var flag = interceptorCheck(result);
+			if(!flag){
+				return;
+			}
+			
+			if (result.code < 1) {
+				alert(result.msg);
+			} else {
+				var	debtForm = $('#wealthCircleConvDia');
+				var	mainTable = $('#wealthCircleMain');
+				mainTable.addClass('none');
+				debtForm.removeClass('none');
+			}
+		}
+	});
+	#{/else}
+}
+</script>

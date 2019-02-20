@@ -1,0 +1,149 @@
+#{extends 'common/back/weChatMain.html' /}
+	#{set title:'微信 | 文本回复' /}
+	#{set smallclass:0 /}
+	#{set crumbs:'微信>文本回复列表'/}
+
+<div class="back-main">
+	<!-- 头部筛选条件 -->
+	<div class="back-usertop">
+		<div class="left back-usermenu">
+			<a href="" class="selected">所有</a>
+		</div>
+		<!-- 搜索按钮，控制搜索条件的显示隐藏 -->
+		<div class="back-search left">
+			<i class="iconfont searchicon">&#xe60a;</i>搜索<i class="iconfont arrowicon">&#xe603;</i>
+		</div>
+		
+		<!-- 右侧功能按钮 -->
+		<div class="right back-rightbtns">
+			<a href="@{back.weChat.TextMessageCtrl.toAddTextPre()}" class="back-addmsg"><i class="iconfont">&#xe60f;</i>添加</a>
+		</div>
+	</div>
+		<!-- 搜索条件，默认隐藏 -->
+	<div class="back-search-option">
+		<form action="@{back.weChat.TextMessageCtrl.showTextListPre()}" method="GET" id="showTextListPre">
+			<input type="hidden" id="showType" name="showType" value="${showType}" />
+			<input type="hidden" id="currPage" name="currPage"/>
+	  		<input type="hidden" id="pageSize" name="pageSize" value="${page?.pageSize}"/>
+	  		
+	  		<input type="text" class="iffocus" name="keywords" placeholder="关键词" value="${keywords}" maxlength="20" />
+			<input type="submit" class="bgbtn" value="搜索" />
+		</form>
+	</div>
+	<!-- 列表菜单 -->
+	<div class="back-cont">
+		<div class="back-box">
+			<table class="agentTable back-table table-fixed" border="0" >
+				<tr height="40">
+					<th>编号</th>
+					<th>关键词</th>
+					<th>回答</th>
+					<th>时间</th>
+					<th>匹配类型</th>
+					<th>状态</th>
+					<th>操作</th>
+					</tr>
+				#{if page?.page}
+					#{list page?.page}
+						<tr>
+							<td>${_?.id}</td>
+							<td>${_?.keywords}</td>
+							<td title="${_?.content}">${_?.content}</td>
+							<td>${_?.time.format(common.constants.Constants.DATE_TIME_FORMATE)}</td>
+							<td>
+								#{if _?.matchs == 1}
+									正常匹配
+								#{/if}
+								#{else}
+									模糊匹配
+								#{/else}
+							</td>
+							#{if _?.is_use.code == true}
+								<td>上架</td>
+							#{/if}
+							#{else}
+								<td>下架</td>
+							#{/else}
+							<td class="back-handle">
+								<a href="@{back.weChat.TextMessageCtrl.toEditTextPre(_?.id)}" target="" data-title="编辑" class="iconfont">&#xe602;</a>
+								#{if _?.is_use.code == true}
+									<a id="${_?.sign}" data-title="下架" class="iconfont">&#xe600;</a>	
+								#{/if}
+								#{else}
+									<a id="${_?.sign}" data-title="上架" class="iconfont">&#xe61b;</a>	
+								#{/else}
+							</td>
+						</tr>
+					#{/list}
+					<tr height="40">
+						<td colspan="7" class="back-lasttd">
+							<!-- 分页组件--pageTag -->
+							#{backPageTag page:page,showPage:"showTextListPre"/}
+						</td>
+					</tr>
+				#{/if}
+				#{else}	
+					<!-- 暂无记录 -->
+					<tr height="58">
+						<td colspan="7" class="back-nodata"><i class="iconfont">&#xe613;</i>暂无记录</td>
+					</tr>
+				#{/else}
+			</table>
+		</div>
+	</div>
+</div>
+
+<!-- 页面js -->
+<script type="text/javascript">
+require(["back"],function(back){
+	// 搜索、左侧菜单展开收缩、表格排序
+	require(["search","side","linechecked"],function(){
+		$(".back-sidebtn").click();//左侧菜单搜索
+	});
+	var $a = $(".back-handle").children("a");
+	$a.click(function(){
+		var sign = $(this).attr("id");
+		if(sign==null || sign=='' || sign==undefined){
+			return;
+		}
+		upDownHelp(sign, $(this));
+	});
+	
+});
+/* 分页组建 */
+function showTextListPre(currPage, pageSize) {
+	$("#currPage").val(currPage);
+	$("#pageSize").val(pageSize);
+	
+	$("#showTextListPre").submit();
+}
+
+//上下架 
+function upDownHelp(sign,dom){
+	var flag=dom.attr("data-title");
+	$.post('@{back.weChat.TextMessageCtrl.changeStatus()}',{"sign":sign,"flag": flag},function(data){
+		var flag = interceptorCheck(data);
+		if(!flag){
+			return;
+		}
+		if(data.code < 1){
+			alert(data.msg);
+			return;
+		}
+		if(!data.obj){
+			weakDialog("已经更新文本状态为[上架]");
+			dom.attr("data-title", "下架");
+			$('.titlebox').text('下架');
+			dom.html("&#xe600;");
+			dom.parent().prev().html('上架');
+		}else{
+			weakDialog("已经更新文本状态为[下架]");
+			dom.attr("data-title", "上架");
+			$('.titlebox').text('上架');
+			dom.html("&#xe61b;");
+			dom.parent().prev().html('下架');
+		}
+	});
+}
+
+</script>

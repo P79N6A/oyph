@@ -1,0 +1,76 @@
+#{extends 'back/spread/cpsMain.html' /}
+	#{set title:'推广 | CPS | 落地页设置' /}
+	#{set smallclass:4 /}
+	#{set crumbs:'推广>CPS>落地页设置'/}
+
+	
+<div class="back-main">
+	<div class="back-cont">
+		<div class="back-infor">
+			<form action="@{back.spread.LandingPageSettingCtrl.editLandingPage()}" method="POST" id="form_LandingPage" >
+				#{authenticityToken /}
+				<h2 class="back-infor-head"><span class="left">设置</span>
+				#{rightMng rightId:704001}
+					<a href="javascript:void(0);" class="right iconfont finance-edit" data-title="编辑" >&#xe602;</a>
+				#{/rightMng}
+				</h2>
+				<ul class="back-infor-set">
+					<li>
+						<span class="lileft">标题:</span>
+						<div class="liright">
+						<input class="xfht_zr_input iffocus " type="text" style="width:600px;" name="title" value="${setting?.title}"  maxlength="50">
+			            <input type="hidden" name="id" value="${setting?.id}">
+			            <input type="hidden" id="_key" name="_key" value="landing_page_key" >
+						</div>
+					</li>
+					<li>
+						<span class="lileft">关键词:</span>
+						<div class="liright">
+						<input class="xfht_zr_input iffocus" type="text" style="width:600px;" name="keywords" value="${setting?.keyword}" maxlength="50">
+						</div>
+					</li>
+					<li>
+						<span class="lileft">描述:</span>
+						<div class="liright">
+							<textarea id="describe" name="description" class="back-textarea " >${setting?.describe1}</textarea>
+						</div>
+					</li>
+				</ul>
+			</form>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+require([ "back" ], function(back) {
+	require(["editor"],function(editor){
+		infor_content = editor('#describe');
+	});
+	$(".back-infor").each(function() {
+		var that = this, 
+			editBtn = $(this).find(".finance-edit"), 
+			editText = $(this).find("select,input:not(.easyui-datetimebox),textarea");
+		editText.prop("disabled", true);
+		editBtn.click(function() {
+			disable = editText.prop("disabled");
+			if (disable) {
+				editBtn.html("&#xe630;").data("title", "保存");
+				
+				$(".titlebox").text(editBtn.data('title'));
+				editText.prop("disabled",!disable);
+				editText.eq(0).focus();
+			} else {
+				var emailForm = $(that) .children( "form[id='form_LandingPage']");
+				if (emailForm.eq(0).length != 0) {
+					emailForm.submit();
+				}
+			}
+		});
+	})
+	$("form[id='form_LandingPage']").validate({
+		errorPlacement: function(error, element) {
+			error.addClass('back-notice').insertAfter(element.parent());
+		}
+	});
+})
+
+</script>

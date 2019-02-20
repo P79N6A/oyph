@@ -1,0 +1,317 @@
+#{extends 'common/frontMain.html' /}
+#{set title: '首页'/}
+ 
+
+<link rel="stylesheet" type="text/css" href="/public/front/stylesheets/integral.css" />
+<link rel="stylesheet" type="text/css" href="/public/front/stylesheets/validationEngine.jquery.css" />
+<link rel="stylesheet" type="text/css" href="/public/front/stylesheets/front1.css" />
+		<div class="container5">
+			<div class="nav-lf">
+				<div class="nav-box">
+					<div class="nav-tit">
+						<p class="inte-pic"></p>
+						<h2 class="inte-tit">
+							<a href="@{front.MallCtrl.mallHomePre()}">积分商城</a>
+						</h2>
+						<p class="inte-tit-bot">讴业积分可兑换各种好礼</p>
+					</div>
+                  
+					#{if currUser != null}
+					<div  class="storeBox">
+						<p class="inte-wl">欢迎来到积分商城</p>
+						<p class="inte-logout">
+							<a class="inte-name" href="javascript:;">
+								<i class="inte-icon"></i> ${currUser?.name}
+							</a>
+							<a class="inte-cancel inte-col" href="@{front.LoginAndRegisteCtrl.loginPre()}">【注销】</a>
+						</p>
+						<p class="inte-logout">
+							<i class="inte-icon1"></i> &nbsp;&nbsp;可用积分：
+							<span class="inte-col">${scroe}</span>
+						</p>
+						<p class="inte-logout">
+							<a href="@{front.MallCtrl.scroeRecordPre()}" class="inte-col" id="credits">积分记录</a>
+							<a href="@{front.MallCtrl.exchangedGoodsPre()}" class="inte-col inte-commodity" id="redemption">已兑换商品</a>
+						</p>
+						<div class="package">
+							<p class="check-box">
+								<i class="inte-icon2"></i>&nbsp;签到可得积分
+							</p>
+						</div>
+					</div>
+					#{/if}
+					  #{else}
+					<div  class="ssd">
+						<div class="enter">
+							<i class="inte-icon3"></i>
+							<a href="@{front.LoginAndRegisteCtrl.loginPre()}">登录</a>
+						</div>
+					</div>
+					#{/else}
+				</div>
+				<div class="convert-notice">
+					<h3 class="convert-tit">
+						兑换排行榜
+					</h3>
+					<ul class="convert-list">
+						#{list items:pageBean.page}
+						<li>
+							<div class="pic-none">
+								<img style="width: 215px;height: 200px;" src="${_?.pic_path}" />
+							</div>
+							<div class="ranking-list">
+								<p><a href="@{front.MallCtrl.goodsDetailPre(_?.id)}">&nbsp;${_?.name}</a></p>
+								<p class="ranking-col"><span>积分价</span><span class="size-place">${_?.exchange_scroe}万</span></p>
+								<i class="line-ridvo">${_index}</i>
+							</div>
+						</li>
+						#{/list}
+					</ul>
+				</div>
+			</div>
+			
+			<div class="nav-rg">
+			#{if banners}
+				 <div class="banner-box">
+					 <div class="example2">
+						<ul>
+						 #{list items:banners,as:'banner'}
+		    				#{if banner.url}
+							<li><a href="${banner.url}" target="${banner.target?.value?:'_blank'}"><img style="width:890px;height:450px;" src="${banner.image_url}" onerror="this.src='/public/common/default.jpg'"/></a></li>
+							#{/if}
+							#{else}
+							<li><a href="javascript:void(0)" ><img style="width:890px;height:450px;"  src="${banner.image_url}" onerror="this.src='/public/common/default.jpg'" /></a></li>
+							#{/else}
+						#{/list}	
+						</ul>					
+						<ol>
+							#{set count:1/}
+		   					 #{list items:banners,as:'banner'}
+			    				#{if count==1}
+			  			   			<li></li>
+						   		 #{/if}
+						   		 #{else}
+						   			 <li></li>
+						   		 #{/else}
+					   		 #{set count:count+1/}
+					   		 #{/list}
+						</ol>
+					</div> 
+				</div>
+			#{/if}
+			<div class="y-jfrgh mt25" id="showExchangeGoods">
+					<h2 class="y-jfh3"><span>已兑换商品</span></h2>
+				
+					<ul class="exchange-list">
+					#{list items:page.page, as:'goods'}
+						<li>
+							<img class="exchange-iocn" src="${goods?.goodsPicPath}" />
+						</li>
+						<li>
+							<p>${goods?.goodsName}</p>
+						</li>
+						<li>
+							<p>${goods?.scroe/10000*(-1)}万积分</p>
+						</li>
+						<li>
+							<p>${goods?.time?.format("yy-MM-dd")}</p>
+						</li>
+						<li>
+							<p>已兑换 <span class="logistics">查看物流</span></p>
+							<div class="dfs"  onclick="soso('${goods.logistics_number}')">
+								
+							</div>
+						</li>
+						#{/list}
+					</ul>
+					<div class="page-wrap" style="padding: 5px 0 0;">
+						<form action="@{front.MallCtrl.exchangedGoodsPre()}" method="GET" id="toInvestPre">
+						<input type="hidden" id="currPage" name="currPage"/>
+						<input type="hidden" id="currPage" name="pageSize"/>
+						</form>
+						#{if page?.page}
+							#{frontPageTag page:page,showPage:"showPage"/}
+						#{/if}
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="dody-bg" id="dody-bg1">
+			<div class="pop-up-box" id="pop-up-box1">
+
+				<h2 class="pop-up-box-tit">
+					填写信息
+					<i class="stop" id="stop1"><img src="/public/front/images/inte/close-pic.png"/></i>
+				</h2>
+				<div class="pop-up-box-from">
+					 <form id="pop-up-box-from1" action="" method="post">
+						<ul class="pop-up-box-from-list">
+							<li>
+								<span class="name-lee">姓&emsp;&emsp;名：</span>
+								<input class="pop-up-box-text validate[required,custom[chinese]]" type="text" name="" id="" value="" placeholder="请输入您的姓名" />
+							</li>
+							<li>
+								<span>商品分类：</span>
+								<input class="pop-up-box-text validate[required]" type="text" name="" id="" value="" placeholder="请输入商品名称" />
+							</li>
+							<li>
+								<span class="name-lee">联系电话：</span>
+								<input class="pop-up-box-text  validate[required,minSize[11],custom[phone]]" type="text" name="" id="" value="" placeholder="请输入您的联系电话" />
+							</li>
+							<li>
+								<span>收货地址：</span>
+								<input class="pop-up-box-text validate[required]" type="text" name="" id="" value="" placeholder="请输入您的收货地址" />
+							</li>
+							<li>
+								<span class="name-lee">邮&emsp;&emsp;编：</span>
+								<input class="pop-up-box-text validate[required,custom[onlyNumberSp],custom[chinaZip]]" type="text" name="" id="" value="" placeholder="请输入您的邮箱" />
+							</li>
+						</ul>
+						<input class="pop-up-box-from-tijiao" type="submit" value="马上兑换" />
+					</form> 
+				</div>
+			</div>
+		</div>
+		
+		
+	    <div class="dody-bg" id="dody-bg">
+
+			<div class="pop-up-box" id="pop-up-box">
+
+				<h2 class="pop-up-box-tit">
+					物流信息
+					<i class="stop" id="stop"><img src="/public/front/images/inte/close-pic.png"/></i>
+				</h2>
+				<div class="freightBox">
+					
+				</div>
+			</div>
+		</div>
+		
+		
+	<!--Luara js文件-->
+	<script src="/public/front/javascripts/js/jquery.luara.0.0.1.min.js""></script>
+	<script src="/public/front/javascripts/js1/jquery.validationEngine.js" type="text/javascript" charset="utf-8"></script>
+	<script src= "/public/front/javascripts/js1/jquery.validationEngine-zh_CN.js" type="text/javascript" charset="utf-8"></script>
+
+	<script>
+		$(function() {
+			$(".example2").luara({
+				width: "890",
+				height: "450",
+				interval: 4500,
+				selected: "seleted",
+				deriction: "left"
+			});
+		});
+	</script>
+	<script type="text/javascript">
+		$("#redemption").click(function() {
+			$(".products-description").hide();
+			$(".querylotusrecord-box").hide()
+			$(".nav-rg").show();
+			$(".exchange-accomplish").show();
+		});
+		$("#credits").click(function() {
+			$(".nav-rg").hide();
+			$(".querylotusrecord-box").show();
+		});
+
+		function popo() {
+			$("#pop-up-box1").show();
+			$("#dody-bg1").show();
+		};
+		$("#stop1").click(function() {
+			$("#pop-up-box1").hide();
+			$("#dody-bg1").hide();
+		});
+ 
+	</script>
+	<script type="text/javascript">
+		$(function() {
+			$('#pop-up-box-from1').validationEngine({
+				promptPosition: 'bottomRight',
+				addPromptClass: 'formError-white'
+			});
+		});
+	</script>
+   <script type="text/javascript">
+     function soso(nu){
+			//ajax请求数据
+				 $.ajax({
+					url : "@{front.MallCtrl.jsonpCallback()}",
+					type : "POST",
+					data : {
+						"nu" : nu,
+					},
+					success : function(data1){
+						
+						if(data1.success==true){
+								$("#pop-up-box").show();
+								$("#dody-bg").show(); 
+								$('.freightBox').html('<img src="'+data1.ico+'" style="width:60px;height:45px;" class="LogisticsQuery">')
+								for(var i=0;i<data1.data.length;i++){
+									
+									$('.LogisticsQuery').after('<p class="textO1"><i class="radi"></i> <span class="radiText1" id="sex">'+data1.data[i].time+'</span> <span class="radiText2">'+data1.data[i].context+'</span></p>')
+								}
+						}else{
+							
+							alert('暂无物流信息')
+						}
+						
+						
+					}
+				}); 
+		    
+     };
+		$("#stop").click(function() {
+			$("#pop-up-box").hide();
+			$("#dody-bg").hide();
+		});
+    </script> 
+   <script> 
+      function showPage(currPage){
+	  var pagesize=12;
+	  var typeid=$("#typeId").val();
+    $.post(
+    	"/MallCtrl/showExchangedGoodsPre",
+    	{currPage:currPage,pageSize:pagesize,typeId:typeid},
+    	function(data){
+    		$("#showExchangeGoods").html(data);
+    	}
+    )
+    //$("#submit").submit();
+  }
+  function detail(newsId,type) {
+	window.open("contentDetail?newsId=" + newsId + "&type=" + type);
+  }
+  function goodMail(id){
+	  if("${currUser}"==""){
+		  weakDialog("您还未登录");
+		  return;
+	  }
+	  location.href = "/MallCtrl/goodsDetailPre?goods_id="+id;
+  }
+  /* liuyang 2017-2-6 --------------begin---------------------- */
+  function overclasses(){
+	  $(".hiddens").css("display","block");
+  }
+  function outclasses(){
+	  $(".hiddens").css("display","none");
+  }
+  /* liuyang 2017-2-6 --------------end------------------------ */
+</script>
+
+ <script type="text/javascript">
+   
+     $(".logistics").mouseover(function(){
+	  $(".dfs").css("display","block");
+	});
+     $(".dfs").hover(function(){
+    
+    	 $(".dfs").css("display","block");
+     },function(){
+    	 $(".dfs").css("display","none");
+    	 
+     });
+     </script>

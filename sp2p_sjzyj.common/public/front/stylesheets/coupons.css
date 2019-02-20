@@ -1,0 +1,55 @@
+.voucher1,.voucher2,.voucher3{
+	width: 274px;
+	height: 131px;
+	float:left;
+	color:#fff;
+	margin-left:25px;
+	margin-bottom: 25px;
+}
+.voucher2,.voucher3{
+	color:#b5b5b5;
+}
+.voucher1{
+	background: url(/public/front/images/voucher1.png) no-repeat ;
+}
+.voucher2{
+	background: url(/public/front/images/voucher2.png) no-repeat ;
+}
+.voucher3{
+	background: url(/public/front/images/voucher3.png) no-repeat ;
+}
+.voucher-left{
+	float: left;
+	width: 100px;
+	height: 155px;
+}
+.voucher-right{
+	float: right;
+	width: 174px;
+	height: 120px;
+}
+.numerically1,.numerically2,.numerically3,.numerically4,.numerically5{
+	text-align: center;
+}
+.numerically2 i{
+	font-size: 31px;
+}
+.numerically1{
+	margin-top: 10px;
+}
+.numerically2{
+	margin:10px 0px 10px 6px;
+}
+.numerically3{
+	color: red;
+    margin-top: 16px;
+    font-size: 13px;
+}
+.numerically4{
+	margin-top: 50px;
+}
+.numerically5{
+	font-size: 13px;
+    color: #b5b5b5;
+    margin-top: 27px;
+}   

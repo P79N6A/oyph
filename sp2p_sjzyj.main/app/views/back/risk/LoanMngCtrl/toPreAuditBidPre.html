@@ -1,0 +1,474 @@
+#{extends 'common/back/riskMain.html' /}
+	#{set title:'风控 | 理财项目 | 初审' /}
+	#{set smallclass:0 /}
+	#{set crumbs:'风控>理财项目>初审'/}
+	
+	
+<div class="back-main">
+	<div class="back-usertop">
+		<b class="left font14">${tb?.getBid_no()}  <i id="edit_bid_title_up">${tb?.title}</i>>初审</b>
+		<!-- 右侧功能按钮 -->
+		<div class="right back-rightbtns">
+			<a href="javascript:backAndRefresh('@{back.risk.LoanMngCtrl.showBidPre}');"><i class="iconfont">&#xe60b;</i>返回</a>
+		</div>
+	</div>
+	<div class="back-cont">
+		<div class="back-infor">
+			<h2 class="back-infor-head"><span id="bidNo">${tb?.getBid_no()}</span>&nbsp;<span class="edit-text back-title-width" maxlength="15" id = "headTitle">${tb?.title}</span><!-- <i data-title="编辑" class="iconfont edit-btn" title="" id="edit_bid_title"></i> --><input type="hidden" value="" id="hidden_title"/></h2>
+			<!-- 理财详情项目信息 -->
+			<span id = "backResource" style ="display:none;" >${tb?.getBack_resource()}</span>
+			<span id = "projectNameOnWeiXin" style ="display:none;" >${tb?.project_name_on_weixin}</span>
+			#{include "back/risk/LoanMngCtrl/bidDetail.html" /}
+		</div>
+		<!-- 理财详情项目详情选项卡 -->
+		<div class="back-fiance-detail">
+			<ul class="back-finace-menu">
+				<li class="selected">项目详情</li>
+				<li>投标记录</li>
+				<li>回款计划</li>
+			</ul>
+		<!-- 项目详情 -->
+		<div class="back-finace-cont" id="bid_detail">
+				<dl class="back-finace-infor">
+					<dt>借款人信息</dt>
+					#{include "back/risk/LoanMngCtrl/bidUserDetail.html" /}
+					<dt><span class="left">借款说明</span><a href="javascript:void(0);" id="descriptionBtn" data-title="编辑" class="right iconfont">&#xe602;</a></dt>
+					<dd>
+						<div id="descriptioncont" class="edittext newline">${tb?.description}</div>
+						<input type="hidden" value="" id="hidden_description"/>
+					</dd>
+				</dl>
+				</div>
+				<!-- 投标记录 -->
+				<div class="back-finace-cont" id="invest_record">
+				</div>
+				<!-- 回款计划 -->
+				<div class="back-finace-cont" id="repayment_record">
+				</div>
+				
+				#{include "back/risk/LoanMngCtrl/charges.html"/}
+				#{include "back/risk/LoanMngCtrl/itemUser.html"/}
+				#{include "back/risk/LoanMngCtrl/itemSupervisorPre.html"/}
+				<form action="" method="POST" id="preAudit">
+				<input type="hidden" name="uuidRepeat" value="${flash?.submitUuid}">
+				<input type="hidden" name="invite_code" value="${tb?.invite_code}">
+				<div class="back-infor">
+					<h2 class="back-infor-head">风控建议</h2>
+					<div class="back-finace-suggest">
+						<textarea class="required"  minlength="20" name="suggest" id="suggest">鉴于借款人净资产大于借款金额，个人征信以及资产状况良好，符合讴业普惠借款规定，经风控小组初审，决策小组复审，同意借款。</textarea>
+						<span class="back-text-limit">20~2000字的综合建议，例如: 借款人信用良好，收入稳定，无不良爱好，三好青年，具备偿还能力，批准在讴业普惠平台公开筹款。</span>
+					</div>
+					<div class="back-checktime">
+						<label>发售时间</label><input type="text" class="easyui-datetimebox" value="" name="pre_release_time"/>
+					</div>
+				</div>
+				<div class="back-infor">
+					<h2 class="back-infor-head">提示</h2>
+					<div class="back-invite-code" style="padding-bottom:0px;">
+						<label>生成官方公告模板,发布官方公告</label>
+						<input type="radio" name="notice" value="1" checked="checked" /><label>是</label><input type="radio" name="notice" value="0"/><label>否</label>
+					</div>
+					<div class="back-invite-code" style="padding-bottom:0px;">
+						<label>生成微信公告模板</label>
+						<input type="radio" name="weixinnotice" value="1" onclick="weiXinModel()"/><label>是</label><input type="radio" name="weixinnotice" value="0"  onclick="unWeiXinModel()" checked="checked" /><label>否</label>
+					</div>
+					<div class="back-note-template" id="weiXinTemplate" style = "margin-bottom:0px;padding-bottom:0px;">
+						<label>微信公告模板</label><textarea id="weiXinContent" class="required"  minlength="20" style = "overflow-y:scroll" readonly="readonly"></textarea>
+					</div>
+					<div class="back-invite-code" style="padding-bottom:0px;">
+						<label>本标类型</label>
+						<input type="radio" value="0" name="bid_type" checked="checked" onclick="backInviteCode1()" /><label>普通标</label><input type="radio" value="1" id="inviteCode" name="bid_type" onclick="backInviteCode2()"/><label>定向标</label>
+					</div>
+					<div class="back-note-template" id="backNoteTemplate" style = "margin-bottom:0px;">
+						<label>短信模板</label><textarea class="required"  minlength="20" readonly="readonly">【讴业普惠】亲爱的会员：讴业普惠平台出新标啦！标号：${tb?.getBid_no()},邀请码：${tb?.invite_code},详情查看公司官网http://www.ouyepuhui.com/。</textarea>
+					</div>
+				</div>
+				<p class="back-audit-btns">
+					<input type="hidden" name="bidSign" value='${tb?.sign}' id="bid_id"/>
+					<input type="button" id="pageSave" value="通过" class="bgbtn" onclick="setPassAction()"/>
+					<input type="button" id="notPass" value="不通过" class="bdbtn" onclick="setNotPassAction()"/>
+					<input type="button" id="notPass" value="取消" class="bdbtn" onclick="backAndRefresh('@{back.risk.LoanMngCtrl.showBidPre}');"/>
+				</p>
+				<!-- <input type = "button" id = "dsfs" value = "点击" > -->
+				</form>
+			</div>
+		</div>
+</div>
+
+
+<!-- 页面js -->
+<script type="text/javascript">
+	require(["back"],function(back){
+		//日期时间组件
+		require(["datatime"]);
+		require(["ajaxfileupload"]);
+		//效验组件
+		require(["validation/validateExt"]);
+		require(["tab","slide"],function(tab){
+			tab($(".back-finace-menu>li"),$(".back-finace-cont"));
+		});
+		
+		//文本域换行 
+		$(this).newline();
+		
+		
+		require(["textedit"],function(textedit){
+			var titleBtn = $(".edit-btn"),
+				titleText = $(".edit-text");
+			//编辑标题
+			titleBtn.click(function(){
+				textedit(titleBtn,titleText);
+			});
+			//编辑描述
+			var descriptionBtn = $("#descriptionBtn"),
+				descriptioncont = $("#descriptioncont");
+			descriptionBtn.click(function(){
+				textedit(descriptionBtn,descriptioncont);
+			});
+		});
+		
+		//编辑标题的事件
+		$("#edit_bid_title").bind("click", function(){
+			if($(this).hasClass("save-btn")){
+				editBidTitle($(this).prev().children("input").val());
+			}else{
+				$("#hidden_title").val($(this).prev().text());
+			}
+		});
+		
+		//编辑描述的事件
+		$("#descriptionBtn").bind("click", function(){
+			if($(this).hasClass("save-btn")){
+				editBidDescription($("#descriptioncont").children().val());
+			}else{
+				$("#hidden_description").text($("#descriptioncont").text());
+			}
+		});
+		//投标记录
+		$(".back-finace-menu").children().eq(1).click(function(){
+			queryInvestRecord(function(data){
+				$("#invest_record").html(data);
+				trevenRows();
+				if($("#investTotalsize").val()<=$("#investPagesize").val()){
+					$(".loadmore").html("<span class='back-nodata'>没有更多了</span>");
+				}
+			});
+		});
+		//还款计划
+		$(".back-finace-menu").children().eq(2).click(function(){
+			queryRepaymentRecord(function(data){
+				$("#repayment_record").html(data);
+				trevenRows();
+				if($("#repaymentTotalsize").val()<=$("#repaymentPagesize").val()){
+					$(".loadmore").html("<span class='back-nodata'>没有更多了</span>");
+				}
+			});
+		});
+		$("#preAudit").validate({
+			errorPlacement:function(error, element){
+				error.addClass('back-notice').insertAfter(element);
+			},
+			rules:{
+				"suggest": {
+					minlength:20
+				}
+			},
+			messages:{
+				"suggest": {
+					minlength:"最少输入20字"
+				}
+			},
+			submitHandler:function(form){
+				waitingDialog();
+				form.submit();
+			}
+		});
+	});
+	
+	function backInviteCode1(){
+		$("#backNoteTemplate").css("display","none");
+	}
+	
+	function backInviteCode2(){
+		$("#backNoteTemplate").css("display","block");
+	}
+	
+	function setPassAction(){
+		var value = $("input[name = 'notice']:checked").val();
+		if (value == 1) {
+			$("#preAudit").attr("action", "/supervisor/risk/loan/preAuditBidThrough?bidNo="+$("#bidNo").text()+"&&headTitle="+$("#headTitle").text()+"&&saleTime="+$("input[name = 'pre_release_time']").val()+"&&amount="+$("#amount").text()+"&&period="+$("#period").text()+"&&annualConvert="+$("#annualConvert").text()+"&&repaymentMethod="+$("#repaymentType").text());
+			$("#preAudit").submit();
+		} else {
+			$("#preAudit").attr("action","/supervisor/risk/loan/preAuditBidThrough");
+			$("#preAudit").submit();
+		}
+	}
+	function setNotPassAction(){
+		$("#preAudit").attr("action", "@{back.risk.LoanMngCtrl.preAuditBidNotThrough()}");
+		$("#preAudit").submit();
+	}
+	
+	function editBidTitle(title){
+		var preTitle = $("#hidden_title").val();
+		if(title == preTitle){
+			return;
+		}
+		if(!title.isNotBlank()){
+			alert("请填写借款标题");
+			$("#edit_bid_title").prev().text(preTitle);
+			return;
+		}
+		if(title.length<3 || title.length>15){
+			alert("借款标题长度为3~15位，请正确填写");
+			$("#edit_bid_title").prev().text(preTitle);
+			return;
+		}
+		editBidAjax(title, "@{back.risk.LoanMngCtrl.editBidTitle()}", function(resultInfoCode){
+			if(resultInfoCode < 1){
+				$("#edit_bid_title").prev().text(preTitle);
+			}else{
+				$("#edit_bid_title_up").text(title);
+			}
+		});
+	}
+	
+	function editBidDescription(description){
+		var preDescription = $("#hidden_description").text();
+		if(description == preDescription){
+			return;
+		}
+		if(!description.isNotBlank()){
+			alert("请填写借款说明");
+			$("#descriptioncont").text(preDescription);
+			return;
+		}
+		if(description.length<20 || description.length>2000){
+			alert("借款说明长度为20~2000位，请正确填写");
+			$("#descriptioncont").text(preDescription);
+			return;
+		}
+		editBidAjax(description, "@{back.risk.LoanMngCtrl.editBidDescription()}", function(resultInfoCode){
+			if(resultInfoCode < 1){
+				$("#descriptioncont").text(preDescription);
+			}
+		})
+	}
+	
+	function editBidAjax(new_str, urlAction, callback){
+		var bidSign = $("#bid_id").val();
+		$.ajax({
+			url : urlAction,
+			type : "POST",
+			data : {
+				"bidSign" : bidSign,
+				"newStr" : new_str
+			},
+			success : function(data){
+				var flag = interceptorCheck(data);
+				if(!flag){
+					return;
+				}
+				
+				if(data.code < 1){
+					alert(data.msg);
+				}else{
+					weakDialog("修改成功");
+				}
+				callback(data.code);
+			},
+			error : function(){
+				alert("修改失败");
+				callback(-1);
+			}
+		});
+	}
+	function queryInvestRecord(callback){
+		var bidSign = $("#bid_id").val();
+		var currPage = $("#investCurrpage").val();
+		var pageSize = $("#investPagesize").val();
+		$.ajax({
+			url : "@{back.risk.LoanMngCtrl.investRecordPre()}",
+			type : "GET",
+			data : {
+				"bidSign" : bidSign,
+				"currPage" : currPage,
+				"pageSize" : pageSize
+			},
+			success : function(data){
+				var flag = interceptorCheck(data);
+				if(!flag){
+					return;
+				}
+				
+				if(callback){
+					callback(data);
+				}
+			}
+		});
+	}
+	function queryRepaymentRecord(callback){
+		var bidSign = $("#bid_id").val();
+		var currPage = $("#repaymentCurrpage").val();
+		var pageSize = $("#repaymentPagesize").val();
+		$.ajax({
+			url : "@{back.risk.LoanMngCtrl.repaymentRecordPre()}",
+			type : "GET",
+			data : {
+				"bidSign" : bidSign,
+				"currPage" : currPage,
+				"pageSize" : pageSize
+			},
+			success : function(data){
+				var flag = interceptorCheck(data);
+				if(!flag){
+					return;
+				}
+				if(callback){
+					callback(data);
+				}
+			}
+		});
+	}
+
+	//表格隔行换色
+	function trevenRows(){
+		$('.detail-record').each(function(){
+			$(this).children('tbody').children('tr:not(.detail-record):even').addClass('even');
+		});
+	}
+	
+	function weiXinModel () {
+		/*借款类型*/
+		var title  = "";
+		var headTitle = $("#edit_bid_title_up").text();
+		if (headTitle.indexOf("房") > 0) {
+			title = "惠房贷";
+		} else if (headTitle.indexOf("车") > 0) {
+			title = "惠车贷";
+		} else {
+			title = headTitle;
+		}
+		
+		var oldTime = "";
+		/*发标时间（年月日）*/
+		var saleDate = "";
+		/*发标时间h：m*/
+		var saleTime = "";
+		/*发标时间 小时h 上午or下午*/
+		var amOrPm = "";
+		var saleBidTime = $("input[name = 'pre_release_time']").val();
+		if (saleBidTime) {
+			oldTime = (new Date(saleBidTime)).getTime();
+			saleDate = new Date(oldTime).format("yyyy年MM月dd日");
+			saleTime = new Date(oldTime).format("hh:mm");
+			var hours = new Date(oldTime).format("hh");
+			
+			if (hours >= 12 ) {
+				amOrPm = "下午";
+			}else {
+				amOrPm = "上午";
+			}
+		}
+		
+		/*标的编号*/
+		var bidNo = $("#bidNo").text();
+		
+		/*项目金额*/
+		var amount = $("#amount").text();
+		var money = amount / 10000.00;
+			money += "万";
+		/*项目期限*/
+		var period = $("#period").text();
+		
+		/*年利率*/
+		var annualConvert = $("#annualConvert").text();
+		
+		/*月还利息*/
+		var annual = annualConvert.replace("%","");
+		var monthInterest = (amount * annual / 100 / 12).toFixed(2);
+		monthInterest += "元";
+		/*还款来源*/
+		var repaymentSource = $("#backResource").text();
+		
+		/*还款方式*/
+		var method = "";
+		var repaymentMethod = $("#repaymentType").text();
+		if (repaymentMethod =="02") {
+			method = "先息后本,按月还息";
+		} else if (repaymentMethod == "01") {
+			method = "一次性还款";
+		} else if (repaymentMethod == "03") {
+			method = "等额本息";
+		}
+		/*借款说明*/
+		var projectIntroduction = $("#descriptioncont").text();
+		
+		/*项目名称*/
+		var projectNameOnWeiXin = $("#projectNameOnWeiXin").text();
+		if (title == "惠房贷") {
+			
+			$("#weiXinContent").val(title
+					+"\n"+saleDate+amOrPm+saleTime+"发标公告"
+					+"\n项目名称:"+projectNameOnWeiXin+title+bidNo+"号"
+					+"\n发标时间:"+saleDate+amOrPm+saleTime
+					+"\n项目金额:"+money
+					+"\n项目期限:"+period
+					+"\n年利率:"+annualConvert
+					+"\n月还利息:"+monthInterest
+					+"\n还款来源:"+repaymentSource
+					+"\n还款方式:"+method
+					+"\n项目介绍:"+projectIntroduction+"经核查，借款人征信良好，无逾期记录，无民间借贷，提供资料真实有效，具有按期偿付本息的能力。"
+					+"\n详情:www.ouyepuhui.com"
+					+"\n详情请咨询客服热线:"
+					+"\n400-901-8889!");
+			
+		} else if (title == "惠车贷") {
+			
+			$("#weiXinContent").val(title
+					+"\n"+saleDate+amOrPm+saleTime+"发标公告"
+					+"\n项目名称:"+projectNameOnWeiXin+title+bidNo+"号"
+					+"\n发标时间:"+saleDate+amOrPm+saleTime
+					+"\n项目金额:"+money
+					+"\n项目期限:"+period
+					+"\n年利率:"+annualConvert
+					+"\n月还利息:"+monthInterest
+					+"\n还款来源:"+repaymentSource
+					+"\n还款方式:"+method
+					+"\n项目介绍:"+projectIntroduction+"借款人收入稳定，提供信息真实有效，征信良好，无不良记录，具有按期还款能力。"
+					+"\n详情:www.ouyepuhui.com"
+					+"\n详情请咨询客服热线:"
+					+"\n400-901-8889!");
+			
+		}
+		
+		
+		$("#weiXinTemplate").show();
+		
+	}
+	
+	function unWeiXinModel(){
+		$("#weiXinTemplate").hide();
+	}
+	/*日期格式化*/
+	Date.prototype.format = function(fmt) { 
+	     var o = { 
+	        "M+" : this.getMonth()+1,                 //月份 
+	        "d+" : this.getDate(),                    //日 
+	        "h+" : this.getHours(),                   //小时 
+	        "m+" : this.getMinutes(),                 //分 
+	        "s+" : this.getSeconds(),                 //秒 
+	        "q+" : Math.floor((this.getMonth()+3)/3), //季度 
+	        "S"  : this.getMilliseconds()             //毫秒 
+	    }; 
+	    if(/(y+)/.test(fmt)) {
+	            fmt=fmt.replace(RegExp.$1, (this.getFullYear()+"").substr(4 - RegExp.$1.length)); 
+	    }
+	     for(var k in o) {
+	        if(new RegExp("("+ k +")").test(fmt)){
+	             fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));
+	         }
+	     }
+	    return fmt; 
+	}
+</script>	
+	

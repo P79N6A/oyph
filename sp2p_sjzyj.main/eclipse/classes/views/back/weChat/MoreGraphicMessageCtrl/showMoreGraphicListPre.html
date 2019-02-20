@@ -1,0 +1,98 @@
+#{extends 'common/back/weChatMain.html' /}
+	#{set title:'微信 | 多图文回复' /}
+	#{set smallclass:3 /}
+	#{set crumbs:'微信>多图文回复'/}
+<div class="back-main">
+	<!-- 头部筛选条件 -->
+	<div class="back-usertop">
+		<div class="left back-usermenu">
+			<a href="" class="selected">所有</a>
+		</div>
+		<!-- 搜索按钮，控制搜索条件的显示隐藏 -->
+		<div class="back-search left">
+			<i class="iconfont searchicon">&#xe60a;</i>搜索<i class="iconfont arrowicon">&#xe603;</i>
+		</div>
+		
+		<!-- 右侧功能按钮 -->
+		<div class="right back-rightbtns">
+			<a href="@{back.weChat.MoreGraphicMessageCtrl.toAddMoreGraphicPre()}" class="back-addmsg"><i class="iconfont">&#xe60f;</i>添加</a>
+		</div>
+	</div>
+		<!-- 搜索条件，默认隐藏 -->
+	<div class="back-search-option">
+		<form action="" method="GET" id="showMoreGraphicListPre">
+			<input type="hidden" id="showType" name="showType" value="${showType}" />
+			<input type="hidden" id="currPage" name="currPage"/>
+	  		<input type="hidden" id="pageSize" name="pageSize" value="${page?.pageSize}"/>
+	  		
+	  		<input type="text" class="iffocus" name="keywords" placeholder="关键词" value="${keywords}" maxlength="20" />
+			<input type="submit" class="bgbtn" value="搜索" />
+			<span style="font-size:12px;position: relative;left: 8px;top: 4px;color: red;cursor: pointer;" title="1.只有认证公众号才能使用（其他类型公众号请不要使用第三方群发，否则微信可能会封号）2.由于群发任务彻底完成需要较长时间，送达成功人数和送达失败人数统计需要一段时间，群发状态的失败成功状态也需要时间3.审核人未通过发送的群发消息或群发消息已经发送则不允许编辑图文4.认证订阅号每天可以群发1次，认证服务号每天可以群发100次，但用户每月只能接收4条群发消息，多于4条的群发将对该用户发送失败5.用户设置拒收或用户接收已超4条会被自动过滤掉不会被发送，所以发送成功人数+发送失败人数不一定和你选择的总人数一致">温馨提示</span>
+		</form>
+	</div>
+	<!-- 列表菜单 -->
+	<div class="back-cont">
+		<div class="back-box">
+			<table class="agentTable back-table table-fixed" border="0" >
+				<tr height="40">
+					<th>编号</th>
+					<th>关键词</th>
+					<th>绑定图文消息标题</th>
+					<th>操作</th>
+					</tr>
+				#{if page?.page}
+					#{list page?.page}
+						<tr>
+							<td>${_?.id}</td>
+							<td>${_?.keywords}</td>
+							<td title="${_?.content}">${_?.content}</td>
+							<td class="back-handle">
+								<a href="@{back.weChat.GroupSentMessageCtrl.toEditGroupSentPre()}" target="" data-title="编辑" class="iconfont">&#xe602;</a>
+							</td>
+						</tr>
+					#{/list}
+					<tr height="40">
+						<td colspan="4" class="back-lasttd">
+							<!-- 分页组件--pageTag -->
+							#{backPageTag page:page,showPage:"showMoreGraphicListPre"/}
+						</td>
+					</tr>
+				#{/if}
+				#{else}	
+					<!-- 暂无记录 -->
+					<tr height="58">
+						<td colspan="4" class="back-nodata"><i class="iconfont">&#xe613;</i>暂无记录</td>
+					</tr>
+				#{/else}
+			</table>
+		</div>
+	</div>
+</div>
+
+<!-- 页面js -->
+<script type="text/javascript">
+require(["back"],function(back){
+	// 搜索、左侧菜单展开收缩、表格排序
+	require(["search","side","linechecked"],function(){
+		$(".back-sidebtn").click();//左侧菜单搜索
+	});
+	var $a = $(".back-handle").children("a");
+	$a.click(function(){
+		var sign = $(this).attr("id");
+		if(sign==null || sign=='' || sign==undefined){
+			return;
+		}
+		upDownHelp(sign, $(this));
+	});
+	
+});
+/* 分页组建 */
+function showMoreGraphicListPre(currPage, pageSize) {
+	$("#currPage").val(currPage);
+	$("#pageSize").val(pageSize);
+	
+	$("#showMoreGraphicListPre").submit();
+}
+
+
+</script>

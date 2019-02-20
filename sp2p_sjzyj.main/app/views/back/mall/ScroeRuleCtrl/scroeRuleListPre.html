@@ -1,0 +1,307 @@
+#{extends 'common/back/mallMain.html' /}
+#{set title:'积分商城 | 积分兑换规则' /}
+#{set smallclass:3 /}
+#{set crumbs:'积分商城 >积分兑换规则'/}
+<div class="back-main">
+	<div class="back-cont">
+		<div class="back-infor">
+			<form action="@{back.mall.ScroeRuleCtrl.saveScroeRule()}"   method="POST" id="info">
+				#{authenticityToken /}
+				<input type="hidden" name="imgChanged" value="0"/>
+				<h2 class="back-infor-head">
+					<span class="left">积分兑换规则</span>
+					#{rightMng rightId:801002}
+					<a href="javascript:void(0);" class="right iconfont finance-edit" data-title="编辑" >&#xe602;</a>
+					#{/rightMng}
+				</h2>
+				<ul class="back-infor-set" >
+					<li>
+						<span class="lileft" >注册获得:</span>
+						<div class="liright" >
+							<input type="text" class="width01 iffocus" name="signScroe" value="${rule?.scroe}"  />分
+						</div>
+					</li>
+					<li>
+						<span class="lileft">签到获得:</span>
+						<div class="liright">
+							<input type="text" class="width01 iffocus" name="registerScore" value="${rule1?.scroe}" />分
+						</div>
+					</li>
+					<li>
+						<span class="lileft">投资:</span>
+						<div class="liright">
+							<input type="text" class="width01 iffocus" name="amount" value="${rule2?.amount}" />元,获得<input type="text" class="width01 iffocus" value="${rule2?.scroe}" name="investScore"/>分
+						</div>
+					</li>
+				</ul>
+				</form>
+		</div>
+	</div>
+</div>
+<!-- 页面js -->
+<script type="text/javascript">
+	require(["back"],function(back){
+		
+		//js验证扩展
+		require(["validation/validateExt"]);
+		//上传功能的js
+		require(["ajaxfileupload"]);	
+
+		$(".back-infor").each( function() {
+			var that = this, 
+			editBtn = $(this).find( ".finance-edit"),
+			editText = $(this).find("select,input:not(.easyui-datetimebox),textarea");
+			editText.prop("disabled", true);
+			$("#autoInvestInput").prop("disabled", false);
+			editBtn.click(function() {
+				disable = editText.prop("disabled");
+				if (disable) {
+					editBtn.html("&#xe630;").data("title","保存");
+					
+					$(".titlebox").text( editBtn.data('title'));
+					editText.prop("disabled", !disable);
+					editText.eq(0).focus();
+				} else {
+					/*
+					alert(editText.val());
+					editBtn.html("&#xe602;").data("title", "编辑");
+					$(".titlebox").text( editBtn.data('title'));
+					editText.prop("disabled", !disable);
+					*/
+					
+					var infoForm = $(that).children("form[id='info']");
+					if(infoForm.eq(0).length != 0){
+						infoForm.submit();
+					}
+					
+					var seoForm = $(that).children("form[id='seo']");
+					if(seoForm.eq(0).length != 0){
+						seoForm.submit();
+					}
+					
+					var securityForm = $(that).children("form[id='dire']");
+					if(securityForm.eq(0).length != 0){
+						securityForm.submit();
+					}
+						
+					var registerCodeForm = $(that).children("form[id='info2']");
+					if(registerCodeForm.eq(0).length != 0){
+						registerCodeForm.submit();
+					}
+				}
+			});
+		});
+		
+		//定位到正版授权的位置 
+		#{if flash?.noRegister}
+		$("#registerCode_a").click();
+		var height = $("body").height()-$(window).height();
+		$("html,body").animate({scrollTop: height+132});
+		#{/if}
+		
+		//***********************//
+		//基本信息
+		$("form[id='info']").validate({
+			errorPlacement: function(error, element) {
+				error.addClass('back-notice').insertAfter(element);
+			},
+			rules:{
+				"customer_commission":{
+					required:true
+				},
+				"financial_fee":{
+					required:true
+				},
+				"director_quota":{
+					required:true
+				},
+				"director_manager_quota":{
+					required:true
+				},
+				"standard_bid":{
+					required:true
+				},
+				"director_commission":{
+					required:true
+				},
+				"director_manager_commission":{
+					digits:true
+				}
+			},
+			messages:{
+			},
+			submitHandler:function(form){
+				form.submit();
+			}
+		});
+		$("form[id='dire']").validate({
+			errorPlacement: function(error, element) {
+				error.addClass('back-notice').insertAfter(element);
+			},
+			rules:{
+				"customer_commission":{
+					required:true
+				},
+				"financial_fee":{
+					required:true
+				},
+				"director_quota":{
+					required:true
+				},
+				"director_manager_quota":{
+					required:true
+				},
+				"standard_bid":{
+					required:true
+				},
+				"director_commission":{
+					required:true
+				},
+				"director_manager_commission":{
+					digits:true
+				}
+			},
+			messages:{
+			},
+			submitHandler:function(form){
+				   form.submit();
+			}
+		});
+		
+		
+		//***********************//
+		//SEO设置
+		$("form[id='seo']").validate({
+			errorPlacement: function(error, element) {
+				error.addClass('back-notice').insertAfter(element);
+			},
+			rules:{
+				"baidu_code":{
+					required:true,
+					maxlength:1024
+				},
+				"seo_title":{
+					maxlength:1024
+				},
+				"seo_description":{
+					maxlength:1024
+				},
+				"seo_keywords":{
+					maxlength:1024
+				}
+			},
+			submitHandler:function(form){
+			  var json1 ="[";
+			   for(var i=1;i<=6;i++){
+				  var minAmount =$("#minAmount"+i).val();
+				  var maxAmount =$("#maxAmount"+i).val();
+				  var amount =$("#amount"+i).val();
+				  if(i==6){
+				  json1 = json1+"{minAmount:"+minAmount+",maxAmount:"+maxAmount+",amount:"+amount+"}";
+				  }else{
+				  json1 = json1+"{minAmount:"+minAmount+",maxAmount:"+maxAmount+",amount:"+amount+"},";
+				  }
+			   }
+			   json1 = json1+"]";
+			   $("#customer_commission").val(json1);
+			   form.submit();
+			}
+		});
+		
+		
+		//***********************//
+		$("form[id='info2']").validate({
+			errorPlacement: function(error, element) {
+				error.addClass('back-notice').insertAfter(element);
+			},
+			rules:{
+				"register_code":{
+					required:true,
+					rangelength:[1,128]
+				}
+			},
+			messages:{
+				"register_code":{
+					required:"请输入正版授权号"
+				}
+			},
+			submitHandler:function(form){
+				  var json1 ="[";
+				   for(var i=1;i<=3;i++){
+					  var minAmount =$("#serMinAmount"+i).val();
+					  var maxAmount =$("#serMaxAmount"+i).val();
+					  var amount =$("#serAmount"+i).val();
+					  if(i==3){
+					  json1 = json1+"{minAmount:"+minAmount+",maxAmount:"+maxAmount+",amount:"+amount+"}";
+					  }else{
+					  json1 = json1+"{minAmount:"+minAmount+",maxAmount:"+maxAmount+",amount:"+amount+"},";
+					  }
+				   }
+				   json1 = json1+"]";
+				   $("#director_manager_commission").val(json1);
+				   form.submit();
+				}
+		});
+	});
+	
+	
+ 	function uploadICON(){
+ 		
+ 		var fileId = "platform_icon_filename";
+		var file = $("#" + fileId).val();
+		var pos = file.lastIndexOf("\\");
+		var fileName = file.substring(pos + 1);
+		
+		$.ajaxFileUpload({
+			url : '@{back.setting.PlateformSettingCtrl.uploadPlatformImage()}',
+			secureuri : false,
+			fileElementId : fileId,
+			data:{
+				"fileName":fileName
+			},
+			dataType : 'json',
+			success : function(result) {
+				if(result.code == 1){
+					var data = result.obj;
+					$("img[name='platform_icon_filename']").attr("src", data.staticFileName);
+					$("input[name='platform_icon_filename']").val(data.staticFileName);
+					
+					$("#resolutionshow2").html(data.imageResolution+", ");
+					$("#formatshow2").html(data.fileSuffix+", ");
+					$("#sizeshow2").html(data.size+"kb");
+				
+					$("#picNew2").css({ "display": "block"});
+				} else {
+					alert(result.msg);
+				}
+			}
+		})
+	} 
+ 	
+ 	function updateIsAutoInvestShow(obj) {
+		var flag = false;
+		if(obj.is(':checked')){
+				 flag = true;
+		}
+		$.ajax({
+				url : "@{back.setting.PlateformSettingCtrl.updateIsAutoInvestShow()}",
+				type : "POST",
+				data : {
+					"flag" : flag
+				},
+				dataType:"json",
+				success : function(result) {
+					var flag = interceptorCheck(result);
+					if(!flag){
+						return;
+					}
+					if(result.code < 1){
+						alert(result.msg);
+					} else {
+						weakDialog(result.msg);
+					}
+				}
+		});
+	}
+ 	
+</script>

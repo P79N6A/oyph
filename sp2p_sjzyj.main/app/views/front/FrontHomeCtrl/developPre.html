@@ -1,0 +1,331 @@
+ #{extends 'common/frontMain.html' /} #{set title: '首页'/} #{set AItem:5
+/}
+<link rel="stylesheet" type="text/css"
+	href="/public/front/stylesheets/commonality.css" />
+<link rel="stylesheet" type="text/css"
+	href="/public/front/stylesheets/company_profile.css" />
+
+<script type="text/javascript"
+	src="https://api.map.baidu.com/api?v=2.0&ak=PdAQXjrLc1LV8SgFtnkm1QCo&s=1"></script>
+<script src="/public/front/javascripts/js/ace.min.js"
+	type="text/javascript" charset="utf-8"></script>
+
+<div id="number" style="display:none;">${no}</div>
+<!--左边导航栏-->
+<div class="center-box">
+	<!--左边栏-->
+	<div id="leftmenu">
+		<ul>
+			<li class="menu-title"><a class="btn-anquan"
+				href="@{front.FrontHomeCtrl.aboutUsPre()}">公司简介</a></li>
+			<li class="menu-title"><a class="btn-licehng"
+				href="javascript:void(0);">发展历程</a></li>
+			<li class="button"><a href="javascript:void(0);">媒体资讯<img
+					class="jt-r" src="/public/front/images/pic/right-jt.png" /></a></li>
+			<li class="dropdown" style="display: none;">
+				<ul class="menu-left-box">
+					<li><a class="btn-guanfang" href="javascript:void(0);" id="info_bulletin">官方公告</a></li>
+					<li><a class="btn-meiti" href="javascript:void(0);" id="info_report">媒体公告</a></li>
+					<li><a class="btn-gushi" href="javascript:void(0);" id="info_story">金融故事</a></li>
+				</ul>
+			</li>
+			<li class="menu-title" onclick="ioio()"><a class="btn-baozhang"
+				href="javascript:void(0);">安全保障</a></li>
+			<li class="menu-title"><a class="btn-zizhi"
+				href="javascript:void(0);">荣誉资质</a></li>
+			<li class="menu-title"><a class="btn-xinshou"
+				href="@{front.FrontHomeCtrl.newhandPre()}">新手指引</a></li>
+			<li class="menu-title"><a class="btn-lianxi"
+				href="javascript:void(0);">联系我们</a></li>
+			<li class="button"><a href="javascript:void(0);">帮助中心<img
+					class="jt-r" src="/public/front/images/pic/right-jt.png" /></a></li>
+			<li class="dropdown" style="display: none;">
+				<ul class="menu-left-box">
+					#{list items:models.common.entity.t_help_center.Column.values(),as:'column'}
+					<li>
+						<a class="btn-help" href="javascript:void(0);">${column?.value}</a>
+						<span style="display:none;">${column?.code}</span>
+					</li>
+					#{/list}
+				</ul>
+			</li>
+		</ul>
+	</div>
+	<!--左边栏-->
+	<div class="rg-box"></div>
+</div>
+
+<!--左边导航栏-->
+
+
+
+
+
+<script type="text/javascript">
+	function ioio() {
+		window.location.href = "@{front.FrontHomeCtrl.sainPre()}";
+	};
+</script>
+<script>
+window.onload=myfun;
+function myfun() {
+	/* number(1,2,3,4,5,6,7)
+	1企业风貌
+	2员工风采
+	3网站公告
+	4媒体报道
+	5联系我们
+	6帮助中心
+	7荣誉资质
+	8理财故事
+	*/
+	var number=document.getElementById("number").innerText;
+	
+	if (number==1) {
+		
+		companyStylePre();
+		
+	} else if (number==2) {
+		
+		employeeStylePre();
+		
+	} else if (number==3) {
+		
+		bulletin();
+		
+	} else if (number==4) {
+		
+		report();
+		
+	} else if (number==5) {
+		
+		contactus();
+		
+	} else if (number==6) {
+		
+		help();
+		
+	} else if (number==7) {
+		
+		honor();
+		
+	} else if (number==8) {
+		
+		story();
+		
+	} else {
+		
+		developmentHistoryPre();
+		
+	}
+}
+
+
+//发展历程
+function developmentHistoryPre() {
+	
+	$.ajax({
+		type : "get",
+		url : "@{front.FrontHomeCtrl.developmentHistoryPre()}",
+		success : function(data) {
+			
+			$(".rg-box").html(data);
+			
+		}
+	})
+	
+}
+$(".btn-licehng").click(developmentHistoryPre);
+
+//企业风貌
+function companyStylePre() {
+	var id = $(this).next().text();
+	
+	if (id == '') {
+		id = 1;
+	}
+	$.ajax({
+		type : "get",
+		url : "@{front.FrontHomeCtrl.companyStylePre()}",
+		data : {
+			"id": id
+		},
+		success : function(data) {
+			
+			$(".rg-box").html(data);
+			
+		}
+	})
+	
+}
+$(".btn-company-city").click(companyStylePre);
+
+//员工风采
+function employeeStylePre() {
+	var id = $(this).next().text();
+	
+	if (id == '') {
+		id = 1;
+	}
+	$.ajax({
+		type : "get",
+		url : "@{front.FrontHomeCtrl.employeeStylePre()}",
+		data : {
+			"id": id
+		}, 
+		success : function(data) {
+			
+			$(".rg-box").html(data);
+			
+		}
+	})
+	
+}
+$(".btn-employee-city").click(employeeStylePre);
+
+
+//官方公告
+function bulletin() {
+	
+	$.ajax({
+		type : "get",
+		url : "@{front.FrontHomeCtrl.informationPre()}",
+		data : {
+			"info": "info_bulletin",
+			"limit": 4
+		}, 
+		success : function(data) {
+			
+			$(".rg-box").html(data);
+			omit();
+			
+		}
+	})
+}
+$(".btn-guanfang").click(bulletin);
+
+//媒体公告
+function report() {
+	
+	$.ajax({
+		type : "get",
+		url : "@{front.FrontHomeCtrl.informationPre()}",
+		data : {
+			"info": "info_report",
+			"limit": 4
+		}, 
+		success : function(data) {
+			
+			$(".rg-box").html(data);
+			omit();
+			
+		}
+	})
+}
+$(".btn-meiti").click(report);
+
+//理财故事
+function story() {
+	
+	$.ajax({
+		type : "get",
+		url : "@{front.FrontHomeCtrl.informationPre()}",
+		data : {
+			"info": "info_story",
+			"limit": 4
+		}, 
+		success : function(data) {
+			
+			$(".rg-box").html(data);
+			omit();
+			
+		}
+	})
+}
+$(".btn-gushi").click(story);
+
+//荣誉资质
+function honor() {
+	
+	$.ajax({
+		type : "get",
+		url : "@{front.FrontHomeCtrl.honor2Pre()}",
+		success : function(data) {
+			
+			$(".rg-box").html(data);
+			
+		}
+	})
+}
+$(".btn-zizhi").click(honor);
+
+//联系我们
+function contactus() {
+	
+	$.ajax({
+		type : "get",
+		url : "@{front.FrontHomeCtrl.contactus2Pre()}",
+		success : function(data) {
+			
+			$(".rg-box").html(data);
+			
+		}
+	})
+}
+$(".btn-lianxi").click(contactus);
+
+//帮助中心
+function help() {
+	
+	var columnNo = $(this).next().text();
+	if (columnNo == '') {
+		
+		columnNo = 1;
+	}
+	$.ajax({
+		type : "get",
+		url : "@{front.FrontHomeCtrl.help2Pre()}",
+		data : {
+			"columnNo" : columnNo ,
+			"currPage" : "1"
+		},
+		success : function(data) {
+			
+			$(".rg-box").html(data);
+			
+		}
+	})
+}
+$(".btn-help").click(help);
+
+//省略号
+function omit() {
+	
+	$(".official-size #content").each(function() {
+		var end;
+		var html = $(this).html();
+		var text = $(this).text()
+		if(html.length > 0){
+		var firstText =[];
+			firstText = html.split("</p>");
+		
+			if(firstText[0].indexOf("img") > 0) {
+				end = html;
+			}else {
+			
+				if(text.length >= 100) {
+				
+					end =text.substring(0,100)+"...";
+				
+				} else {
+				
+					end = text.substring(0,text.length);
+				
+				}
+			}
+		}
+		
+		$(this).html(end);
+	});
+}
+</script>

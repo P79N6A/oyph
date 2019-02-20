@@ -1,0 +1,25 @@
+#{extends 'front/proxy/proxyMainPre.html' /}
+#{set AItem:3 /}
+
+<!-- 更改密码 -->
+<div class="center-main">
+	<div class="center-main-title">修改密码</div>
+	<div class="modify-password">
+		<div style="height: 20px; margin-bottom: 20px;">
+			<label style="color: red;">
+ 				#{if flash.error != null}
+					${flash.error}
+				#{/if}
+ 			</label>
+		</div>
+		<form action="@{front.proxy.LoginCtrl.updatePwd()}" method="post">
+			<span>账&nbsp;&nbsp;&nbsp;号</span><input disabled="disabled"  type="text" value="${currSaleMan?.mobile}" name="" class="text-input"/>
+			<span>原密码</span><input  type="password"  name="originalPwd" class="text-input"/>
+			<span>新密码</span><input  type="password"  name="newPwd" class="text-input"/>
+			<input type="submit" class="modify-button" value="修改" name="" />
+		</form>
+	</div>
+</div>
+<script type="text/javascript">	
+		$('.updatePwd').addClass('text-color').siblings().removeClass("text-color");
+</script>

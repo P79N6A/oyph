@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>忘记密码${' | '+settings?.get(common.constants.SettingKey.SEO_TITLE)+' | '+settings?.get(common.constants.SettingKey.PLATFORM_NAME)}</title>
+		<meta name="keywords" content="${settings?.get(common.constants.SettingKey.PLATFORM_NAME)}" />
+		<meta name="description" content="${settings?.get(common.constants.SettingKey.PLATFORM_NAME)}" />
+		<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+		<link rel="shortcut icon" type="image/png" href="${settings?.get(common.constants.SettingKey.PLATFORM_ICON_FILENAME)}" />
+		<link rel="stylesheet" type="text/css" href="@{'/public/front/stylesheets/front.css'}" />
+		
+		<!-- 皮肤背景、颜色 -->
+		<link rel="stylesheet" type="text/css" href="@{'/public/front/themes/'+settings?.get(common.constants.SettingKey.THEME_NAME)+'/background.css'}" />
+		#{if settings?.get(common.constants.SettingKey.THEME_CUSTOMIZE).equals('0')}
+			<link rel="stylesheet" type="text/css" href="@{'/public/front/themes/'+settings?.get(common.constants.SettingKey.THEME_NAME)+'/color.css'}" />
+		#{/if}
+		#{else}
+			
+			#{set mainColor:'#'+settings?.get(common.constants.SettingKey.THEME_MAIN_COLOR) /}
+			#{set auxColor:'#'+settings?.get(common.constants.SettingKey.THEME_AUX_COLOR) /}
+			#{set thdColor:'#'+common.utils.StrUtil.colorByAlpha(settings?.get(common.constants.SettingKey.THEME_MAIN_COLOR)) /}
+			#{include 'common/front/colorCont.html' /}
+		#{/else}
+	</head>
+	<body>
+		<div class="login-body">
+			<!-- 重置密码head start -->
+			 <div class="login">
+	    	<div class="login1" style="background-image: url(/public/front/images/denglu-bg.jpg);"></div>
+	    	<div class="login-logo">
+	    		<a href="@{front.FrontHomeCtrl.frontHomePre()}">
+	    			<img src="/public/front/images/logo.png"/>
+	    		</a>
+	    	</div>	
+			<!-- 重置密码head end -->
+			<form action="@{front.LoginAndRegisteCtrl.forgetPwdSecond()}" method="post" id="forgetPwdFrom">
+				<div class="container1 register-box">
+					<ul class="findpassword-step clearfix">
+						<li class="selected">
+							<span class="step-circle">1</span>
+							<p class="step-name">身份验证</p>
+							<div class="step-split"></div>
+						</li>
+						<li>
+							<span class="step-circle">2</span>
+							<p class="step-name">重置密码</p>
+							<div class="step-split"></div>
+						</li>
+						<li>
+							<span class="step-circle">✔</span>
+							<p class="step-name">成功</p>
+						</li>
+					</ul>
+					<ul class="register-list">
+						<li class="clearfix mb30">
+							<span class="register-left left">
+								<i class="important-point">*</i>手机号
+							</span>
+							<div class="register-wrap left">
+								<input type="text" id="mobile" name="mobile" class="text" value="${flash?.mobile}" maxlength="11" placeholder="填写本人手机号" onkeyup="$(this).ndigitInteger(11)"/>
+							</div>
+						</li>
+						<li class="clearfix mb30">
+							<span class="register-left left">
+								<i class="important-point">*</i>图文验证码
+							</span>
+							<div class="register-wrap left">
+								<div class="codetext left">
+									<input type="text" class="text" id="code" name="code" value="${flash?.code}" placeholder="计算结果" maxlength="2"/>
+								</div>
+								<!-- 按钮点击后添加disabled属性 -->
+								<input id="randomId" name="randomId" value="${randomId}" type="hidden"/>
+								<img src="@{common.CaptchaController.createCaptcha(randomId)}" id="captchaImage" onclick="refreshCaptcha();" class="codeimg right" height="46" alt="" title="换一张" />
+							</div>
+						</li>
+						<li class="clearfix mb30">
+							<span class="register-left left">
+								<i class="important-point">*</i>短信验证码
+							</span>
+							<div class="register-wrap left">
+								<div class="codetext left">
+									<!-- 短信验证码是否为再次发送标识 -->
+									<input type="text" class="text" id="smsCode" name="smsCode" value="" placeholder="6位随机数" maxlength="6"/>
+									<input type="hidden" id="flag" value="1">
+									<input type="hidden" id="scene" name="scene" value="${common.enums.JYSMSModel.MODEL_SEND_CODE.tplId}">
+								</div>
+								<!-- 按钮点击后添加disabled属性 -->
+								<input type="button" value="获取验证码" onclick="sendCode()" id="getsmscode" class="getcode-btn right" />
+								<div class="code-note" id="code-note">
+									验证码已发送，<br/>请注意查收，<br/>
+									1~3分钟内收到短信，<br/>
+									如未接收到短信，<br/>请点再次发送验证码。
+								</div>
+							</div>
+						</li>
+						<li class="clearfix">
+							<span class="register-left left">
+								&nbsp;
+							</span>
+							<input type="submit" id="nextstepbtn" value="下一步" class="condition-btn btn left"/>
+						</li>
+					</ul>
+					<p class="timeout-return"><a href="@{front.LoginAndRegisteCtrl.loginPre()}" class="backpage"><i class="icon return-icon"></i>返回</a></p>
+				</div>
+			</form>
+			<!-- 重置密码footer start -->
+			<div class="footer-msg">
+				©2016&nbsp;${settings?.get(common.constants.SettingKey.PLATFORM_NAME)}&nbsp;All&nbsp;rights&nbsp;resered<i class="footer-split">|</i>${settings?.get(common.constants.SettingKey.COMPANY_NAME)}<i class="footer-split">|</i>${settings?.get(common.constants.SettingKey.SITE_ICP_NUMBER)}
+			</div>
+			<!-- 重置密码footer end -->
+		</div>
+	</body>
+	<!-- 页面js -->
+	<script type="text/javascript" data-main="/public/front/javascripts/front.js" src="@{'public/front/javascripts/require.js'}" ></script>
+	<script type="text/javascript">
+		require(['front'],function(){
+			#{if flash?.error}
+				alert('${flash?.error}');
+			#{/if}
+			//取消获取验证码按钮禁用效果
+			$(".getcode-btn").removeAttr("disabled");
+			
+			require(["validation/validateExt"]);
+			$("#forgetPwdFrom").validate({
+				errorPlacement: function(error, element) {
+					if(element.is("#mobile")){
+						$("p[id='mobile-error']").remove();
+						$("input[id='mobile']").removeClass("focus").addClass("text-error");
+						error.addClass('error register-error').appendTo(element.parent());
+					}else if(element.is("#code")){
+						$("p[id='code-error']").remove();
+						$("input[id='code']").removeClass("focus").addClass("text-error");
+						error.addClass('register-error').appendTo(element.parent());
+					}else if(element.is("#smsCode")){
+						$("p[id='smsCode-error']").remove();
+						$("input[id='smsCode']").removeClass("focus").addClass("text-error");
+						error.addClass('register-error').appendTo(element.parent());
+					}
+				},
+				success:function(label){
+					label.removeClass('error register-error');
+					$(label).parent().children("input").eq(0).addClass("focus");
+				},
+				errorElement:'p',
+				rules:{
+				    "mobile":{
+						required:true,
+						isMobile:true,
+						remote:{//后端返回的只能是true或者false
+							 url: "@{front.FrontAjaxValideCtrl.userMobileExists()}",
+							 type: "post",
+							 dataType: "json",
+							 data: {
+								 mobile: function() {
+									return $("input[id='mobile']").val();
+								}
+							}
+						}
+					},
+					"code":{
+						required:true,
+						number:true
+					},
+					"smsCode":{
+						required:true,
+						number:true,
+						minlength:6
+					}
+				},
+				messages:{
+					"mobile":{
+						required:"手机号不能为空",
+						isMobile:"手机号格式不正确",
+						remote:"手机号未注册"
+					},
+					"code":{
+						required:"验证码不能为空",
+						number:"验证码不正确",
+					},
+					"smsCode":{
+						required:"短信验证码不能为空",
+						number:"短信验证码不正确",
+						minlength:"短信验证码不正确"
+					}
+				},
+				submitHandler:function(form){
+					$.ajax({
+						url : "@{front.LoginAndRegisteCtrl.checkSmsCode()}",
+						type : "POST",
+						data : {
+							"mobile": $("#mobile").val(),
+							"randomId": $("#randomId").val(),
+							"code": $("#code").val(),
+							"smsCode": $("#smsCode").val(),
+							"type" : 1,
+							"scene": "${common.enums.JYSMSModel.MODEL_SEND_CODE.tplId}"
+						},
+						success : function(data){
+							if (data.code < 1) {
+								if($("#smsCode-error").length == 0){
+									$("#smsCode").after("<p style='display: block;' class='error register-error' id='smsCode-error'>"+data.msg+"</p>");
+								}else{
+									$("#smsCode-error").addClass("error register-error").css("display","block");
+									$("#smsCode-error").html(data.msg);
+								}
+							} else {
+								$("#smscode-error").css("display","none");
+								$("#smscode-error").html('');
+								form.submit();
+							}
+						}
+					});
+				}
+			});
+		});
+		
+		var getCodeNum = 3; 	//获取短信验证码次数
+		/* 发送手机验证码  */
+		function sendCode(){
+			
+			if($("#flag").val() == 2){
+				$("#code").val('');
+				$("#flag").val("1");
+				$("#getsmscode").val("获取验证码");
+				$("#code-note").css("display","none");
+				$("#code-error").addClass("error register-error").css("display","block").html("请重新输入图文验证码");
+				refreshCaptcha(false);
+			}
+			
+			var mobile = $("#mobile").val().trim();
+			var randomId = $("#randomId").val().trim();
+			var code = 	$("#code").val().trim();
+			
+		    if(mobile == ''){
+		    	if($("#mobile-error").length == 0){
+					$("#mobile").after("<p style='display: block;' class='error register-error' id='mobile-error'>手机号不能为空</p>");
+		    	}
+				
+				return;
+		    }else if (!mobile.isMobileNum()) {
+		    	if($("#mobile-error").length == 0){
+			    	$("#mobile").after("<p style='display: block;' class='error register-error' id='mobile-error'>手机号格式不正确</p>");
+		    	}
+		    	
+		    	return;
+			}
+			
+			if(code == ''){
+				if($("#code-error").length == 0){
+					$("#code").after("<p style='display: block;' class='error register-error' id='code-error'>验证码不能为空</p>");
+				}
+				
+				return;
+			}
+			
+			$.ajax({
+				url : "@{front.LoginAndRegisteCtrl.sendCodeOfForgetPWD()}",
+				type : "POST",
+				data : {
+					"mobile" : mobile,
+					"randomId" : randomId,
+					"code" : code,
+					"scene" : "${common.enums.JYSMSModel.MODEL_SEND_CODE.tplId}"
+				},
+				dataType:"json",
+				success : function(data) {
+					/* 判断短信验证码发送是否成功 */
+					if(data.code < 1){
+						if(data.code == -2){
+							//手机号码错误提示
+							if($("#mobile-error").length == 0){
+								$("#mobile").after("<p style='display: block;' class='error register-error' id='mobile-error'>"+data.msg+"</p>");
+							}else{
+								$("#mobile-error").addClass("error register-error").css("display","block");
+								$("#mobile-error").html(data.msg);
+							}
+							refreshCaptcha(false); //刷新验证码
+						}else if(data.code == -3){
+							//验证码错误提示
+							if($("#code-error").length == 0){
+								$("#captchaImage").after("<p style='display: block;' class='error register-error' id='code-error'>"+data.msg+"</p>");
+							}else{
+								$("#code-error").addClass("error register-error").css("display","block");
+								$("#code-error").html(data.msg);
+							}
+							refreshCaptcha(false); //刷新验证码
+						}else if(data.code == -4){
+							//短信提示
+							if($("#smsCode-error").length == 0){
+								$("#code-note").after("<p style='display: block;' class='error register-error' id='smsCode-error'>"+data.msg+"</p>");
+							}else{
+								$("#smsCode-error").addClass("error register-error").css("display","block");
+								$("#smsCode-error").html(data.msg);
+							}
+						}
+						$("#flag").val("1");
+					} else {
+						/* 短信发送成功，清除页面错误提示 */
+						$("#mobile-error").css("display","none");
+						$("#mobile-error").html('');
+						$("#code-error").css("display","none");
+						$("#code-error").html('');
+						$("#smsCode-error").css("display","none");
+						$("#smsCode-error").html('');
+						
+						if(!$(".getcode-btn").prop("disabled")){
+							if(getCodeNum > 0){
+								getCodeNum --;
+								$(".getcode-btn").prop("disabled",true).next(".code-note").show();
+								var getCode = $(".getcode-btn"),
+									timeid,
+									i = 60; 	//再次获取验证码等待时间
+								getCode.val(i+'s');
+								timeid = setInterval(function(){
+									if(i > 1){
+										i--;
+										getCode.val(i+'s');
+									}else{
+										getCode.removeAttr("disabled");
+										getCode.val('再次获取');
+										clearInterval(timeid);
+										$("#flag").val("2");
+									}
+								},1000);
+							}
+						}
+					}
+				}
+			});
+		}
+		
+		/* 验证码刷新 */
+		function refreshCaptcha(isRefresh){
+			$.post("@{common.CaptchaController.flushCaptcha()}",function(data){
+				var arr=eval(data);
+				var randomid = arr.randomID;
+				$("#captchaImage").attr("src","@{common.CaptchaController.createCaptcha()}?uuid="+randomid);	
+				$("#randomId").val(randomid);
+			});
+			if(isRefresh){
+				$("#code").next("p").remove();
+				$("#code").removeClass("text-error focus");
+			}
+			$("#code").removeClass("focus");
+			$("#code").val("");
+		}
+	</script>
+</html>

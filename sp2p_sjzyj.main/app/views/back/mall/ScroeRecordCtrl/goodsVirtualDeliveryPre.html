@@ -1,0 +1,150 @@
+#{extends 'common/back/mallMain.html' /}
+#{set title:'积分商城 | 商品发货 | 虚拟' /}
+#{set smallclass:2 /}
+#{set crumbs:'积分商城 >商品发货>虚拟'/}
+<style>
+.blackBox{
+ position: fixed;
+ width: 100%;
+ height: 100%;
+ background: rgba(0,0,0,.4);
+ z-index: 1;
+ top:0px;
+ left: 0px;
+ display:none;
+}
+.logistics{
+padding:20px;
+width:1200px;
+position:fixed;
+font-size:14px;
+top:200px;
+left:20%;
+background: #fff;
+z-index: 2;
+border-radius:15px;
+}
+.stopbut{
+
+float:right;
+}
+.logistics li{
+width:1200px;
+height: 40px;
+}
+.logistics-time{
+display:inline-block;
+float: left;
+width:200px;
+height: 40px;
+margin-left:30px;
+line-height: 40px;
+margin-right: 20px;
+}
+.information{
+display:inline-block;
+width:900px;
+float: left;
+height: 40px;
+line-height: 40px;
+}
+</style>
+<div class="back-main">
+	<!-- 头部筛选条件 -->
+	<div class="back-usertop">
+		<!-- 左侧功能按钮 -->
+		<div class="left back-usermenu">
+		<a href="@{back.mall.ScroeRecordCtrl.goodsDeliveryPre()}">实物</a>
+		<a href="@{back.mall.ScroeRecordCtrl.goodsVirtualDeliveryPre()}" class="selected">虚拟</a>
+		</div>
+		<!-- 右侧功能按钮 -->
+		<div class="back-search-option" >
+			<form action="@{back.mall.ScroeRecordCtrl.goodsVirtualDeliveryPre()}" method="GET" id="submit">
+				<input type="hidden" id="currPage" name="currPage"/>
+	  			<input type="hidden" id="pageSize" name="pageSize" value="${pageBean?.pageSize}"/>
+	  			<input type="hidden" id="exports" name="exports"/><!--是否导出  -->
+				<input type="submit" class="bgbtn" value="搜索" />
+			</form>
+		</div>
+	</div>
+	<!-- 搜索条件，默认隐藏 -->
+	<div class="back-cont">
+		<div class="back-box">
+			<table width="100%" class="back-table table-fixed">
+				<tr height="40">
+					<th width="70" class="align-left">
+						<span class="back-order">
+							序号
+						</span>
+					</th>
+					<th>会员名称</th>
+					<th>
+						<span class="back-order">
+						    兑换物品
+						</span>
+					</th>
+					<th>兑换日期</th>
+					<th>兑换数量</th>
+					<th>所需积分</th>
+					<th colspan="2">有效时间</th>
+					<th>使用状态</th>
+				</tr>
+			#{if page?.page}
+				#{list items:page.page, as:'content'}
+				<tr height="40">
+					<td class="align-left">
+						<label><input type="checkbox" class="back-tdcheck" />${(page?.currPage-1)*page?.pageSize + content_index}</label>
+					</td>
+					<td data-title="">
+					${content?.user_name}
+					</td>
+					<td>
+					${content?.goodsName}
+					</td>
+					<td>
+					${content?.dateTime}
+					</td>
+					<td>
+					${content?.quantity}<span>个</span>
+					</td>
+					<td>
+					${content?.score}
+					</td>
+					<td colspan="2">
+					${content?.limitDay}
+					</td>
+					<td>
+					${content?.status}
+					</td>
+				</tr>
+				#{/list}
+				<!-- 表格数据统计 -->
+					<tr height="40">
+						<td colspan="9" class="back-lasttd">
+							<!-- 分页组件--pageTag -->
+							#{backPageTag page:page,showPage:"virtualPage"/}
+						</td>
+					</tr>
+			#{/if}
+			#{else}	
+					<!-- 暂无记录 -->
+					<tr height="58">
+						<td colspan="9" class="back-nodata"><i class="iconfont">&#xe613;</i>暂无记录</td>
+					</tr>
+			#{/else}
+				</table>
+		</div>
+	</div>
+</div>
+<div class="blackBox">
+	<div class="logistics">
+	<input type="button" value='关闭' class='stopbut'>
+	</div>
+</div>
+<script>
+function virtualPage(currPage, pageSize){
+    $("#currPage").val(currPage);
+    $("#pageSize").val(pageSize);
+    $("#submit").submit();
+  }
+</script>

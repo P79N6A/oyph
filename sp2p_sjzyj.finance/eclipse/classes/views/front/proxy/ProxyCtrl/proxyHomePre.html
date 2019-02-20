@@ -1,0 +1,140 @@
+#{extends 'front/proxy/proxyMainPre.html' /}
+#{set AItem:0 /}
+
+<!-- 代理商首页 -->
+<div class="message_container">
+
+	<!-- 代理商信息 -->
+	<div class="message_Box">
+		<h6 class="message_title">代理商信息披露</h6>
+		<ul class="message_list">
+			<li>
+				<div class="statisticsBox bgimg1">
+				    <p>业务员数量</p>
+				    <span>${proxy?.sale_count}</span>
+				</div>
+			</li>
+			<li>
+				<div class="statisticsBox bgimg2">
+				    <p>理财会员数量</p>
+				    <span>${proxy?.invest_user_count}</span>
+				</div>
+			</li>
+			<li>
+				<div class="statisticsBox bgimg3">
+				    <p>当月总投资</p>
+				    <span>${proxy?.cur_total_invest}元</span>
+				</div>					</li>
+			<li>
+				<div class="statisticsBox bgimg4">
+				    <p>当月年化折算</p>
+				    <span>${proxy?.cur_year_convert}元</span>
+				</div>
+			</li>
+			<li>
+				<div class="statisticsBox bgimg5">
+				    <p>当月提成</p>
+				    <span>${proxy?.cur_profit}元</span>
+				</div>
+			</li>
+		</ul>
+	</div>
+	
+	<!-- 业务员信息 -->
+	<div class="message_Box">
+		<h6 class="message_title">业务员信息披露</h6>
+		<ul class="message_list">
+			<li>
+				<div class="statisticsBox bgimg1">
+				    <p>当月推广的会员</p>
+				    <span>${salesman?.cur_user}</span>
+				</div>
+			</li>
+			<li>
+				<div class="statisticsBox bgimg2">
+				    <p>当月理财的会员</p>
+				    <span>${salesman?.cur_invest_user}</span>
+				</div>
+			</li>
+			<li>
+				<div class="statisticsBox bgimg3">
+				    <p>当月会员总投资</p>
+				    <span>${salesman?.cur_invest_amount}元</span>
+				</div>					</li>
+			<li>
+				<div class="statisticsBox bgimg4">
+				    <p>当月年化折算</p>
+				    <span>${salesman?.cur_year_convert}元</span>
+				</div>
+			</li>
+			<li>
+				<div class="statisticsBox bgimg5">
+				    <p>当月提成</p>
+				    <span>${salesman?.cur_profit}元</span>
+				</div>
+			</li>
+		</ul>
+	</div>
+	
+	
+	<div class="datum">
+	    <div class="means">
+	    	<h3>个人资料</h3>
+	    	<div class="materialBox">
+	    		<p class="zhiwei"><span>职位</span><em>代理商</em></p>
+	    		<p class="zhiwei"><span>真实姓名</span><em>${salesman?.sale_name}</em></p>
+	    		<p class="zhiwei"><span>手机号码</span><em>${salesman?.sale_mobile}</em></p>
+	    		<p class="zhiwei"><span>推广码</span><em>D${salesman?.id}</em></p>
+	    		<p class="zhiwei"><span>推广链接</span><input class="popularize input" id="biao1" type="text" value="${extLink}"><input class="copyBtn" onClick="copyUrl2()" type="button" value="复制"></p>
+	    	</div>
+	    </div>
+	    <!-- 二维码 -->
+	    <div id="qrcode"></div>
+	    
+	    <!-- 二维码 -->
+	    <div class="generalize_people">
+	    	<!-- 代理商 -->
+	    	<h3>代理商推广信息</h3>
+	    	<p><span class="generalize_people-left">共推广会员人数：${proxy?.total_user_count}人</span><sapn class="generalize_people-right">共理财会员人数：${proxy?.invest_user_count}人</sapn></p>
+	    	<p><span class="generalize_people-left">共理财金额：${proxy?.total_amount}元</span><sapn class="generalize_people-right">共赚取理财会员佣金：${proxy?.total_profit}元</sapn></p>
+	    	<h3>业务员推广信息</h3>
+	    	<!-- 代理商 -->
+	    	<p><span class="generalize_people-left">共推广会员人数：${salesman?.total_user}人</span><sapn class="generalize_people-right">共理财会员人数：${salesman?.total_invest_user}人</sapn></p>
+	    	<p><span class="generalize_people-left">共理财金额：${salesman?.total_amount}元</span><sapn class="generalize_people-right">共赚取理财会员佣金：${salesman?.total_profit}元</sapn></p>
+	    </div>
+    </div>
+    <div class="Commission">
+    	<h3>历史三个月提成查看</h3>
+ 
+		<table width="100%">
+			<tr height="45">
+				<th width="40" style="font-weight: bold;">时间</th>
+				<th width="60" style="font-weight: bold;">推广理财金额</th>
+				<th width="70" style="font-weight: bold;">年化折算</th>
+				<th width="70" style="font-weight: bold;">业绩提成</th>
+			</tr>
+    	#{list items:list,as:'profit'} 
+			<tr height="45" class="table-main">
+				<th width="40">${profit?.profit_time}</th>
+				<th width="70">${profit?.invest_amount}</th>
+				<th width="60">${profit?.year_convert}</th>
+				<th width="60">${profit?.profit}</th>
+			</tr>
+		#{/list}
+
+		</table>
+	</div>
+    	
+    	
+</div>
+<script type="text/javascript">	
+			var link = $("#biao1").val();
+			$('.Home').addClass('text-color').siblings().removeClass("text-color");
+			jQuery('#qrcode').qrcode({
+			    render: "canvas", //也可以替换为table
+			    width: 200,
+			    height: 200,
+			    text: link
+			});
+			$('#qrcode').append('<p class="qrcode">推广二维码</p>')
+</script>

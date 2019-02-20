@@ -1,0 +1,22 @@
+#{extends 'common/back/mallMain.html' /}
+#{set title:'积分商城 | 话费充值管理' /}
+#{set smallclass:4 /}
+#{set crumbs:'积分商城 >话费充值管理'/}
+
+<div class="back-main">
+	<div class="back-cont">
+		<div class="back-infor">
+			<h2 class="back-infor-head">
+				<span class="left">话费充值余额查询</span>
+			</h2>
+			<ul class="back-infor-set" >
+				<li>
+					<span class="lileft" >话费余额:</span>
+					<div class="liright" >
+						<input type="text" class="width01 iffocus" name="signScroe" value="${obj?.result?.money.format(common.constants.Constants.FINANCE_FORMATE_NORMAL)}"  />&nbsp;元
+					</div>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>

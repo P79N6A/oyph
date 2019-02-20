@@ -1,0 +1,41 @@
+
+	
+	<div class="treasure-center">
+									
+		<dl class="earning">
+			<dt>总可用余额</dt>
+			<dd><span>${userFundInfo?.balance?.format(common.constants.Constants.FINANCE_FORMATE_NORMAL)}</span>元</dd>
+		</dl>
+		<dl class="earning">
+			<dt>总收益</dt>
+			<dd><span>${userFundInfo?.total_income?.format(common.constants.Constants.FINANCE_FORMATE_NORMAL)}</span>元</dd>
+		</dl>
+		<div class="earning-recharge">
+			<input type="button" name="" id="anniu1" value="充值" onclick="javascript:window.location.href='@{front.account.MyAccountCtrl.rechargePre()}'"/>
+			<input type="button" name="" id="anniu2" value="提现" onclick="javascript:window.location.href='@{front.account.MyAccountCtrl.withdrawPre()}'"/>
+
+		</div>
+	</div>
+	<div class="treasure-bottom">
+		<div class="money-line">
+			<div class="money-column">
+				<i class="ridus-clr1"></i><span>可用&nbsp;&nbsp;￥&nbsp;&nbsp;${userFundInfo?.balance?.format(common.constants.Constants.FINANCE_FORMATE_NORMAL)}元</span>
+			</div>
+			<div class="money-column">
+				<i class="ridus-clr2"></i><span>待收&nbsp;&nbsp;￥&nbsp;&nbsp;${userFundInfo?.no_receive?.format(common.constants.Constants.FINANCE_FORMATE_NORMAL)}元</span>
+			</div>
+			<div class="money-column">
+				<i class="ridus-clr3"></i><span>我的奖励&nbsp;&nbsp;￥&nbsp;&nbsp;${userFundInfo?.reward?.format(common.constants.Constants.FINANCE_FORMATE_NORMAL)}元</span>
+			</div>
+		</div>
+		<div class="money-line">
+			
+			<div class="money-column">
+				<i class="ridus-clr4"></i><span>冻结&nbsp;&nbsp;￥&nbsp;&nbsp;${userFundInfo?.freeze?.format(common.constants.Constants.FINANCE_FORMATE_NORMAL)}元</span>
+			</div>
+			<div class="money-column">
+				<i class="ridus-clr5"></i><span>待还&nbsp;&nbsp;￥&nbsp;&nbsp;${userFundInfo?.no_repayment?.format(common.constants.Constants.FINANCE_FORMATE_NORMAL)}元</span>
+			</div>
+		</div>
+	</div>
+<!-- 资产状态end -->

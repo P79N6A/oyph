@@ -1,0 +1,11 @@
+# This file defines all module routes (Higher priority routes first)
+#
+# import these routes in the main app as :
+# *     /                                           module:sp2p_sjzyj.core
+#
+# ~~~~
+
+# 模块路由配置规范：
+# *     /模块名/[功能模块名]/controller名去掉后缀action(首字母小写)/{action} 例外注意对齐       
+# 示例：
+# *     /core/ajaxValidation/{action}.html           core.AjaxValidationAction.{action}  

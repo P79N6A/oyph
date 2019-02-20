@@ -1,0 +1,86 @@
+*{
+说明:后台一级栏目(AItem)Main页面【包括底部的面包屑(位置导航栏)】
+使用:二级banner(如运维栏目的Main页面，设置栏目的banner)或者页面(后台首页)直接继承自本页面，并提供相关参数【title,AItem,smallclass,crumbs】
+	title:hmtl的title
+	AItem:一级栏目(从0开始)
+	smallclass:二级栏目(从0开始，如果没有(如后台首页)可以不提供该参数)
+	crumbs:页面所在位置(如运维>内容>内容编辑)
+}*
+<!DOCTYPE html>
+%{
+	java.lang.String supervisorName = controllers.common.BackBaseController.getCurrentSupervisorName();
+}%
+<html>
+	<head>
+		<title>#{get 'title'/}${' | '+settings?.get(common.constants.SettingKey.PLATFORM_NAME)} </title>
+		<meta name="keywords" content="讴业普惠系统" />
+		<meta name="description" content="讴业普惠系统" />
+		<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+		<!-- 企业开户 -->
+		
+		
+		<link rel="shortcut icon" type="image/png" href="${settings?.get(common.constants.SettingKey.PLATFORM_ICON_FILENAME)}" />
+		<link rel="stylesheet" type="text/css" href="@{'/public/back/stylesheets/iconfont.css'}" />
+		<link rel="stylesheet" type="text/css" href="@{'/public/back/stylesheets/back.css'}" />
+		<link rel="stylesheet" type="text/css" href="@{'/public/back/stylesheets/agentCss.css'}" />
+		
+		#{get 'moreStyles' /}
+		<!-- 页面js -->
+		<script type="text/javascript" src="/public/back/javascripts/clipboard.min.js"></script>
+		<script type="text/javascript" src="/public/back/javascripts/jquery-1.8.3.min.js"></script>
+		<script type="text/javascript" data-main="/public/back/javascripts/back.js" src="@{'/public/back/javascripts/require.js'}" ></script>
+		
+		#{get 'moreScripts' /}
+	</head>
+	<body>
+	<!-- header start -->
+		<div class="back-header">
+			<h1>${settings?.get(common.constants.SettingKey.PLATFORM_NAME)}</h1>
+			<ul class="back-nav">
+				<li><a href="@{back.BackHomeCtrl.backHomePre()}" title="" target="">首页</a></li>
+				<li><a href="@{back.webOperation.ColumnMngCtrl.showColumnsPre()}" title="" target="">运维</a></li>
+				<li><a href="@{back.UserMngCtrl.showUsersPre()}" title="" target="">会员</a></li>
+				<li><a href="@{back.risk.LoanMngCtrl.showBidPre()}" title="" target="">风控</a></li>
+				<li><a href="@{back.finance.ReleaseMngCtrl.showReleaseListPre()}" title="" target="">财务</a></li>
+				<li><a href="@{back.mall.GoodsCtrl.goodsListPre()}" title="" target="">积分商城</a></li>
+				<li><a href="@{back.spread.DataCtrl.showDatasPre()}" title="" target="">推广</a></li>
+				 <li><a href="@{back.setting.PlateformSettingCtrl.toPlateformSettingPre()}" title="" target="">设置</a></li> 
+				<li><a href="@{back.appversion.AppVersionCtrl.toAppVersionSettingPre()}" title="" target="">APP</a></li>
+				*{<li><a href="@{wechat.back.WechatCtrl.toEditWechatPre()}" title="" target="">微信</a></li> }*
+				<li><a href="@{back.BackHomeCtrl.createAccountsPre()}" title="" target="">企业开户</a></li>
+				<li><a href="@{back.query.TradeStatusCtrl.tradeStatusPre()}" title="" target="">查询</a></li>
+				<li><a href="@{back.activity.ActivityCtrl.activityPre()}" title="" target="">活动</a></li>
+				<li><a href="@{back.proxy.BackProxyCtrl.backProxyHomePre()}" title="" target="">网络推广</a></li>
+			</ul>
+			<div class="back-headerr">
+				<a href="@{back.BackLoginCtrl.logoutPre()}" target="_top" class="back-quit"><i class="iconfont">&#xe60c;</i>退出</a>
+				<span class="back-username"><i class="iconfont">&#xe609;</i>${supervisorName}</span>
+			</div>
+		</div>
+	<!-- header end -->
+		
+		 #{doLayout /}
+		<script type="text/javascript">
+			require(["back"],function(back){
+				// 头部导航选中效果
+				back.navSelected($(".back-nav>li").eq(#{get 'AItem' /}));
+				// 二级菜单
+				back.navSelected($(".back-secnav>li").eq(#{get 'smallclass' /}));
+				//列表隔行换色
+				back.listeven($(".back-table tbody"));
+			
+				#{if flash?.success}
+						weakDialog('${flash?.success}');
+				#{/if}
+				#{if flash?.error}
+					alert('${flash?.error}');
+				#{/if}
+			});
+		</script>
+		
+		<div class="back-footer">
+			<span class="left">#{get 'crumbs' /}</span>
+			<span class="right">当前版本${common.constants.ConfConst.SP2P_VERSION}</span>
+		</div>
+	</body>
+</html>

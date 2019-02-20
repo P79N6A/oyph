@@ -1,0 +1,186 @@
+#{extends 'common/back/userMain.html' /}
+	#{set title:'会员 | 平台会员 | 编辑会员' /}
+	#{set smallclass:0 /}
+	#{set crumbs:'会员>平台会员>编辑会员'/}
+
+	
+<div class="back-main">
+	<div class="back-usertop">
+		<b class="left font14">${user?.id}  ${user?.name}>编辑</b>
+		<!-- 右侧功能按钮 -->
+		<div class="right back-rightbtns">
+			<a href="javascript:backAndRefresh('@{back.UserMngCtrl.showUsersPre}');"><i class="iconfont">&#xe60b;</i>返回</a>
+		</div>
+	</div>
+	<div class="back-cont">
+		<h2 class="back-user-head">
+			<div class="left">
+			
+				#{img src:userInfo?.photo,class:'back-user-img', width:"60", height:"60"/}
+			</div>
+		</h2>
+		<!-- 理财详情项目信息 -->
+	<div class="back-infor">
+			<ul class="back-fiance-btm back-user-important back-user-infor">
+				<li><span class="lileft">昵称</span>${user?.name}</li>
+				<li><span class="lileft">真实姓名</span>#{if userInfo?.reality_name !=null && userInfo?.reality_name !=''}${userInfo?.reality_name}#{/if}#{else} ---- #{/else}</li>
+				<li><span class="lileft">注册时间</span>${user?.time.format(common.constants.Constants.DATE_TIME_FORMATE)}</li>
+				<li><span class="lileft">总资产</span>${userDetail?.total_assets.format("##0.00")}元</li>
+				<li><span class="lileft">可用余额</span>${userFund?.balance.format("##0.00")}元</li>
+				<li><span class="lileft">总收益</span>${userDetail?.total_income.format("##0.00")}元</li>
+				<li><span class="lileft">团队长推广号</span>T${user?.supervisor_id}</li>
+				<li>
+					#{if user?.supervisor_id==0}
+					<form onsubmit="return jiaoYan();" method="post" action="@{back.UserMngCtrl.distributionUser()}" style="display: inline;">
+					<span class="lileft">团队长编号</span><input type="text" id="superId" name="superId" style="width: 50px;">
+					&nbsp;&nbsp;<input type="hidden" name="userId" value="${user?.id}"><input type="hidden" id="sign" name="sign" value="${user?.sign}">
+					<input type="submit" value="分配">
+					</form>
+					#{/if}
+					#{else}
+					<span class="lileft">团队长编号</span>已分配
+					#{/else}
+				</li>
+				<li></li>
+				<li><span class="lileft">代理商推广号</span>D${user?.proxy_salesMan_id}</li>
+				<li>
+					#{if user?.proxy_salesMan_id==0}
+					<form onsubmit="return jiaoYan1();" method="post" action="@{back.UserMngCtrl.distributionProxyUser()}" style="display: inline;">
+					<span class="lileft">代理商编号</span><input type="text" id="superIds" name="superId" style="width: 50px;">
+					&nbsp;&nbsp;<input type="hidden" name="userId" value="${user?.id}"><input type="hidden" id="sign" name="sign" value="${user?.sign}">
+					<input type="submit" value="分配"></form>
+					#{/if}
+					#{else}
+					<span class="lileft">代理商编号</span>已分配
+					#{/else}
+				</li>
+				<li></li>
+			</ul>
+		</div>
+		<div class="back-infor">
+			<h2 class="back-infor-head">基本信息</h2>
+			<ul class="back-fiance-btm back-user-infor">
+				<li><span class="lileft">年龄</span>#{if userInfo?.age !=0}${userInfo?.age}#{/if}#{else} ---- #{/else}</li>
+				<li><span class="lileft">学历</span>#{if userInfo?.education?.value !=null && userInfo?.education?.value !=''}${userInfo?.education?.value}#{/if}#{else} ---- #{/else}</li>
+				<li><span class="lileft">婚姻</span>#{if userInfo?.marital?.value !=null && userInfo?.marital?.value !=''}${userInfo?.marital?.value}#{/if}#{else} ---- #{/else}</li>
+			</ul>
+		</div>
+		<div class="back-infor">
+			<h2 class="back-infor-head">资产情况</h2>
+			<ul class="back-fiance-btm back-user-infor">
+				<li><span class="lileft">工作期限</span>#{if userInfo?.work_experience?.value !=null && userInfo?.work_experience?.value !=''}${userInfo?.work_experience?.value}#{/if}#{else} ---- #{/else}</li>
+				<li><span class="lileft">房产</span>#{if userInfo?.house?.value !=null && userInfo?.house?.value !=''}${userInfo?.house?.value}#{/if}#{else} ---- #{/else}</li>
+				<li><span class="lileft">车产</span>#{if userInfo?.car?.value !=null && userInfo?.car?.value !=''}${userInfo?.car?.value}#{/if}#{else} ---- #{/else}</li>
+				<li><span class="lileft">年收入</span>#{if userInfo?.annual_income?.value !=null && userInfo?.annual_income?.value !=''}${userInfo?.annual_income?.value}#{/if}#{else} ---- #{/else}</li>
+			</ul>
+		</div>
+		<div class="back-infor">
+			<h2 class="back-infor-head">紧急联系人</h2>
+			<ul class="back-fiance-btm back-user-infor">
+				<li><span class="lileft">关系</span>#{if userInfo?.emergency_contact_type?.code < 1} ---- #{/if}#{else}${userInfo?.emergency_contact_type?.value}#{/else}</li>
+				<li><span class="lileft">姓名</span>#{if userInfo?.emergency_contact_name !=null && userInfo?.emergency_contact_name !=''}${userInfo?.emergency_contact_name}#{/if}#{else} ---- #{/else}</li>
+				<li><span class="lileft">手机</span>
+					#{if userInfo?.emergency_contact_mobile != null && userInfo?.emergency_contact_mobile != ""}
+						${userInfo?.emergency_contact_mobile}
+					#{/if}
+					#{else}
+						----
+					#{/else}
+				</li>
+			</ul>
+		</div>
+		<div class="back-infor">
+			<h2 class="back-infor-head">信用情况</h2>
+			<ul class="back-fiance-btm back-user-infor">
+				<li><span class="lileft">申请借款</span>${userDetail?.apply_bid_count}笔</li>
+				<li><span class="lileft">信用额度</span>${userInfo?.credit_line.format("##00.00")}元</li>
+				<li><span class="lileft">逾期金额</span>${userDetail?.overdue_fine.format("##00.00")}元</li>
+				<li><span class="lileft">成功借款</span>${userDetail?.complete_borrow_count}笔</li>
+				<li><span class="lileft">借款总额</span>${userDetail?.total_borrow.format("##00.00")}元</li>
+				<li><span class="lileft">逾期期数</span>${userDetail?.overdue_count}期</li>
+				<li><span class="lileft">还清借款</span>${userDetail?.complete_repayment_count}笔</li>
+				<li><span class="lileft">待还本息</span>${userDetail?.no_repayment_interest.format("##00.00")}元</li>
+			</ul>
+		</div>
+		<div class="back-infor">
+			<h2 class="back-infor-head">安全设置</h2>
+			<ul class="back-fiance-btm back-user-infor">
+				<li><span class="lileft">实名认证</span>已认证</li>
+				<li>
+					<span class="lileft">绑定手机</span>
+					#{rightMng rightId:301007}
+					<span class="back-phonenum" maxlength="11">${user?.mobile}</span><i class="iconfont edit-btn" data-title="编辑">&#xe602;</i>
+				 	#{/rightMng}
+				 	<input type="hidden" id="sign" name="sign" value="${user?.sign}">
+				 </li>
+				<li><span class="lileft">绑定邮箱</span>#{if userInfo?.email !=null && userInfo?.email !=''}${userInfo?.email}#{/if}#{else} ---- #{/else}</li>
+				<li><span class="lileft">开户</span>已开户</li>
+				<li><span class="lileft">绑定银行卡</span>${userDetail?.bank_card_count}张</li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+
+<!-- 页面js -->
+<script type="text/javascript">
+
+	require([ "back" ], function(back) {
+		require(["textedit"],function(textedit){
+			var btn = $(".edit-btn"),
+				text = $(".back-phonenum");
+			function fn(){
+				var mobile = text.children("input").val();
+				var sign = $("#sign").val();
+				var ajaxPath = "@{back.UserMngCtrl.editUserMobile()}",
+					ajaxData = { "mobile" : mobile, "sign" : sign };
+					textedit(btn, text, ajaxPath, ajaxData,function(){
+						if(mobile == null || mobile.trim() == ''){
+							alert("手机号码不能为空",function(){
+								$(".back-phonenum").children(".edit-input").select();
+							});
+							return false;
+						}else{
+							return true;
+						}
+					});
+			}
+			btn.click(fn);
+			text.on('keydown','.edit-input',function(event){
+				if(event.keyCode == "13"){
+					fn();
+				}
+			});
+
+		});
+	});
+	//lvweihuan
+	var reglv=/^\d+$/;
+	
+	 function jiaoYan(){
+
+		 var thisInputs=$("#superId").val();
+		 if(!reglv.test(thisInputs)){
+			 alert("请输入数字格式的业务员编号");
+			 return false;
+		 }else{
+			 
+			 return true;
+		 }
+		 
+	 }
+	 
+	 function jiaoYan1(){
+
+		 var thisInputs=$("#superIds").val();
+		 if(!reglv.test(thisInputs)){
+			 alert("请输入数字格式的业务员编号");
+			 return false;
+		 }else{
+			 
+			 return true;
+		 }
+		 
+	 }
+	 
+</script>

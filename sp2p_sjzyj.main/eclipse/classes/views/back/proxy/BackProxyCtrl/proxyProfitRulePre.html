@@ -1,0 +1,150 @@
+#{extends 'common/back/proxyMain.html' /}
+	#{set title:'代理商 | 收益规则' /}
+	#{set crumbs:'代理商>代理商收益规则'/}
+<!-- 以下代码区 -->
+<link rel="stylesheet" href="/public/back/stylesheets/profitRule.css" type="text/css" media="all"/>
+<div class="back-main">
+	<!-- 头部筛选条件 -->
+	<div class="back-usertop">
+		<div class="left back-usermenu">
+			<a href="javascript:void(0)" class="selected">代理商  -> 代理商收益规则</a>
+		</div>
+		<a  title="返回" style="float: right;" id="disp" href="javascript:window.history.back(-1)"><i class="iconfont">&#xe607;</i> &nbsp;返回</a>
+	</div>
+	
+	<div class="back-cont">
+		<div class="back-infor">
+			<form action="@{back.proxy.BackProxyCtrl.addOrUpdateProfitRule(proxyId,1)}" method="post" id="proxyRule">
+				<h2 class="back-infor-head">
+					<span class="left">代理商提成规则设置</span>
+					<a href="javascript:void(0);" class="right iconfont finance-edit" data-title="编辑" >&#xe602;</a>
+				</h2>
+				<table class="ReducedForm" border="0" id="proxy">
+		    		<tr>
+		    			#{if profitRule }
+			    		<th class="term">理财期限</th>
+			    		<th class="discount">提成点</th>
+			    		<th class="example">提成计算举例说明</th>
+			    		#{/if}
+			    		<th id="a" style="display:none">理财期限</th>
+			    		<th id="b" style="display:none">提成点</th>
+			    		<th id="c" style="display:none">提成计算举例说明</th>
+			    		<th><a id="zengj" style="float: right;display: none" href="javascript:addRow()"><i class="iconfont">&#xe60f;</i>添加一行</a></th>
+		    		</tr>
+		    		
+		    		#{set count:1 /}
+		    		#{list profitRule , as : 'rule'}
+		    		<tr id="${rule?.timeLimit}+p">
+			    		<td class="term">
+							<input class="monthBox qixian" type="text" disabled="disabled"  value="${rule?.timeLimit}"><span>个月</span>
+			    		</td>
+			    		<td class="discount">
+							<input class="monthBox zhesuan" type="text"  disabled="disabled"  value="${rule?.discountRate}"><span>‱</span>
+			    		</td>
+			    		<td class="example">
+							<p class="formula">1万元*${rule?.discountRate}‱=${rule?.sum}元</p>
+						</td>
+						<td>
+							<span class="delZhe" onclick="delRow('${rule?.timeLimit}+p')" style="display:none; cursor: pointer; float: right; ">删除</span>
+						</td>
+					</tr>
+					#{set count:count+1 /}
+					#{/list}
+					<input type="hidden" id="profit_rule" name="profit_rule" value="">
+				</table>
+				
+			</form>
+			
+		</div>
+	</div>
+</div>
+<script type="text/javascript" src="/public/back/javascripts/profitRule.js"></script>
+<script type="text/javascript">
+	require(["back"] , function (back) {
+		
+		require(["validation/validateExt"]);
+		
+		$(".back-infor").each( function() {
+			var that = this, 
+			editBtn = $(this).find( ".finance-edit"),
+			editText = $(this).find("select,input:not(.easyui-datetimebox),textarea");
+			editText.prop("disabled", true);
+			
+			editBtn.click(function() {
+				disable = editText.prop("disabled");
+				if (disable) {
+					editBtn.html("&#xe630;").data("title","保存");
+					if ($("#proxyRule").has($(this)).length>0) {
+						$("#zengj").show();
+						$(".delZhe").show();
+						
+						if ($("#proxy").find("th").length <= 4) {
+							$("#a").show();
+							$("#b").show();
+							$("#c").show();
+						}
+					}
+					
+					editText.prop("disabled", !disable);
+					editText.css("background","white");
+				}else{
+					if ($("#proxyRule").has($(this)).length>0) {
+						$("#zengj").hide();
+						$(".delZhe").hide();
+					}
+					
+					var proxyRuleForm = $(that).children("form[id='proxyRule']");
+					if(proxyRuleForm.eq(0).length != 0) { 
+						proxyRuleForm.submit();
+					}
+					
+				}
+			});
+		});
+		
+		$("form[id='proxyRule']").validate({
+			errorPlacement: function(error, element) {
+				error.addClass('back-notice').insertAfter(element);
+			},
+			rules:{
+				"profit_rule":{
+					required:true
+				}
+			},
+			messages:{
+				
+			},
+			submitHandler:function(form){
+				var qixians=[];
+				var zhesuans=[];
+				$(".qixian").each(function(){
+					qixians.push($(this).val());
+				});
+				$(".zhesuan").each(function(){
+					zhesuans.push($(this).val());
+				});
+				var json1 ="[";
+				   for(var i=0;i<$(".qixian").length;i++){
+						 var timeLimit =qixians[i];
+						 
+						 var discountRate =zhesuans[i];
+						 if(i==$(".qixian").length-1){
+							 json1 = json1+"{timeLimit:"+timeLimit+",discountRate:"+discountRate+"}"; 
+						 }else{
+							 json1 = json1+"{timeLimit:"+timeLimit+",discountRate:"+discountRate+"},"; 
+						 }
+					 }  
+					   json1 = json1+"]";
+					   $("#profit_rule").val(json1);
+					   if(jiaoYan("proxyRule")==1){
+						   alert("请检查输入必须是数字，且小数点后最多两位");
+						   $(".delZhe").show();
+						 
+					   }else{
+						   form.submit();
+					   }
+				}
+		});
+		
+	});
+</script>

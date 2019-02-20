@@ -1,0 +1,193 @@
+#{extends 'common/back/weChatMain.html' /}
+	#{set title:'微信 | 图文回复' /}
+	#{set smallclass:2 /}
+	#{set crumbs:'微信>添加图文回复'/}
+<div class="back-main">	
+	<div class="back-usertop">
+		<b class="left font14">编辑文本自定义内容</b>
+		<!-- 右侧功能按钮 -->
+		<div class="right back-rightbtns">
+			<a href="@{back.weChat.ImageTextMessageCtrl.showImageTextListPre()}"><i class="iconfont">&#xe60b;</i>返回</a>
+		</div>
+	</div>
+	<form action="@{back.weChat.ImageTextMessageCtrl.addImageText()}" method="post" id="" class="WeChatContent">
+			<ul class="back-ul">
+				<li>
+					<span class="lileft">关键词</span>
+					<div class="liright">
+						<input type="text" name="keywords" class="required" value="${flash?.keywords}">
+						<span class="ccc">多个关键词请用空格隔开 例如：美丽 漂亮 好看</span>
+					</div>
+				</li>
+				<li>
+					<span class="lileft">关键词类型</span>
+					<div class="liright">
+						<label class="radio">
+							<input type="radio" name="matchs" checked="checked" value="0">包含匹配（当此关键词包含粉丝输入关键词时有效）
+						</label>
+						<label class="radio">
+						<input type="radio" name="matchs" value="1">完全匹配（当此关键词包含粉丝输入关键词完全相同时有效）
+						</label>
+					</div>
+				</li>
+				<li>
+					<span class="lileft">标题</span>
+					<div class="liright">
+						<input type="text" name="title" class="required"  value="${flash?.title}">
+					</div>
+				</li>
+				<li>
+					<span class="lileft">作者</span>
+					<div class="liright">
+						<input type="text" name="author" class="required">
+					</div>
+				</li>
+				<li>
+					<span class="lileft">内容</span>
+					<div class="liright">
+						<textarea name="showContent" class="required">${flash?.showContent}</textarea>
+						<span class="ccc">限字在100字之内</span>
+					</div>
+				</li>
+				<li>
+					<span class="lileft">文章所属类别</span>
+					<div class="liright">
+						<select name="typeId" class="required">
+							#{list wechatT, as:'wechatT'}
+								<option value="${wechatT?.id}">${wechatT?.content}</option>
+							#{/list}
+						</select>
+						<button class='back-but'>添加分类</button>
+					</div>
+				</li>
+				<li>
+					<span class="lileft">封面图片地址</span>
+					<div class="liright">
+						<span class="back-imgarea imgrequired">
+							<img src="${flash?.image_url}" onerror="this.src='/public/back/images/noimg.jpg'" class="backupimg" height="100" width="200" id='image' name="image" alt="" title="" />
+							<input type="hidden" id="imageUrl" name="image_url" value="${flash?.image_url}">
+						</span>
+						<span class="back-upimg" style='line-height: 30px;'> 
+							<label class="back-upbtn">
+								<input type="file" class="upload_file" value="" accept=".jpg,.jpeg,.png,.gif" name="imgFile" id="imgFile" onchange="upload()"/>
+								<i class="iconfont">&#xe608;</i>本地上传
+							</label>
+							
+							<p class="back-imginfor-note">700*420&nbsp;&nbsp;jpg/png&nbsp;&nbsp;大小不超过2M</p>
+							<span id="resolutionshow">${flash?.image_resolution}</span>&nbsp;<span id="formatshow">${flash?.imageFormat}</span>&nbsp;<span id="sizeshow">${flash?.image_size}</span>
+							
+							<!-- 图片参数，用于保存 -->
+							<input type="hidden" id="imageFormat" name="imageFormat" value="${flash?.image_format}">
+							<input type="hidden" id="imageSize" name="image_size" value="${flash?.image_size}">								
+						</span>
+					</div>
+				</li>
+				<li>
+					<span class="lileft">是否开启点赞</span>
+					<div class="liright">
+						<label class="radios">
+							<input type="radio" name="isLikenum" checked="checked" value="0">开启
+						</label>
+						<label class="radios">
+							<input type="radio" name="isLikenum"  value="1">关闭
+						</label>
+					</div>
+				</li>
+				<li>
+					<span class="lileft">是否开启阅读数</span>
+					<div class="liright">
+						<label class="radios">
+							<input type="radio" name="isPageview" checked="checked" value="0">开启
+						</label>
+						<label class="radios">
+							<input type="radio" name="isPageview"  value="1">关闭
+						</label>
+					</div>
+				</li>
+				<li>
+					<span class="lileft">详情页是否显示封面</span>
+					<div class="liright">
+						<label class="radios">
+							<input type="radio" name="isShow" checked="checked" value="0">开启
+						</label>
+						<label class="radios">
+							<input type="radio" name="isShow"  value="1">关闭
+						</label>
+					</div>
+				</li>
+				<li>
+					<span class="lileft">关注查看原文</span>
+					<div class="liright">
+						<label class="radios">
+							<input type="radio" name="isAttention" checked="checked" value="0">开启
+						</label>
+						<label class="radios">
+							<input type="radio" name="isAttention"  value="1">关闭
+						</label>
+						<span class="ccc" style="display: block;">设置隐藏后，关键词触发图文消息不会显示diy素材中的“关注”和“原文”素材。（微信粉丝接收信息不受影响）</span>
+					</div>
+				</li>
+				<li>
+					<span class="lileft">图文详情页内容</span>
+					<div class="liright" style="width: 660px;">
+						<textarea id="inforTextarea" name="content" class="back-textarea" ></textarea>
+						<span class="red">必须填写，不然无法同步</span>
+					</div>
+				</li>
+				<li>
+					<span class="lileft">图文外链网址</span>
+					<div class="liright">
+						<input type="text" name="outreachUrl" class="required">
+						<span class="red">如需跳转到其他网址，请在输入框右侧选择或这里填写网址(例如：http://baidu.com，记住如果填写必须有http://)如果填写了图文详细内容，这里请留空，不要设置！(如果此图文用于群发，图文外链地址则显示为群发消息的阅读原文地址)</span>
+					</div>
+				</li>
+				<li>
+					<span class="lileft"></span>
+					<div class="liright">
+						<input type="submit" class="WeChatbut" value="保存">
+						<input type="reset" value="取消" class="WeChatbut addWeChatbut">
+					</div>
+				</li>
+			</ul>
+	</form>
+</div>
+<script type="text/javascript">
+
+require(["back"],function(back){
+	require(["ajaxfileupload","datatime","cutImg"]);
+	var infor_content = null;
+	require(["editor"],function(editor){
+		infor_content = editor('#inforTextarea');
+	});
+})
+
+function upload(){
+	var fileId = "imgFile";
+	var file = $("#" + fileId).val();
+	var pos = file.lastIndexOf("\\");
+	var fileName = file.substring(pos + 1);
+	
+	$.ajaxFileUpload({
+		url : '@{back.weChat.ImageMessageCtrl.uploadImage()}',
+		secureuri : false,
+		fileElementId : fileId,
+		data:{
+			"fileName":fileName
+		},
+		dataType : 'json',
+		success : function(result) {
+			if(result.code == 1){
+				var data = result.obj;
+				$("#image").attr("src", data.staticFileName);
+				$("#imageUrl").val(data.staticFileName);
+				$("#imageFormat").val(data.fileSuffix);
+				$("#imageSize").val(data.size+"kb");
+				$("#image").css({ "display": "block"});
+			} else {
+				alert(result.msg);
+			}
+		}
+	})
+}
+
+</script>

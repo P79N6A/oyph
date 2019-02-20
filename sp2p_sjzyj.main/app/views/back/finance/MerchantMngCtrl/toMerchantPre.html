@@ -1,0 +1,82 @@
+#{extends 'common/back/financeMain.html' /}
+	#{set title:'财务 | 商户号管理' /}
+	#{set smallclass:8 /}
+	#{set crumbs:'财务>商户号管理'/}
+	
+	
+<div class="back-main">
+	<!-- 左侧菜单 -->
+	<div class="back-cont">
+		<div class="back-infor">
+			<h2 class="back-infor-head">
+				<span class="left">代偿账户</span>
+				<span class="right back-money-transfer">
+					#{rightMng rightId:509002}
+						<a href="@{back.finance.MerchantMngCtrl.toMerchantRechargePre(1)}" class="iconfont" data-title="充值" >&#xe635;</a>
+					#{/rightMng}
+					#{rightMng rightId:509003}
+						<a href="@{back.finance.MerchantMngCtrl.toMerchantWithdrawalPre(1)}" class="iconfont" data-title="提现" >&#xe636;</a>
+					#{/rightMng}
+				</span>
+			</h2>
+			<div class="back-infor-lcset">
+				<span class="lileft">账户余额</span>
+				<div class="liright">
+					${merBalance?.format(common.constants.Constants.FINANCE_FORMATE_NORMAL)}元
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="back-cont">
+		<div class="back-infor">
+			<h2 class="back-infor-head">
+				<span class="left">营销账户</span>
+				<span class="right back-money-transfer">
+					#{rightMng rightId:509002}
+						<a href="@{back.finance.MerchantMngCtrl.toMerchantRechargePre(2)}" class="iconfont" data-title="充值" >&#xe635;</a>
+					#{/rightMng}
+					#{rightMng rightId:509003}
+						<a href="@{back.finance.MerchantMngCtrl.toMerchantWithdrawalPre(2)}" class="iconfont" data-title="提现" >&#xe636;</a>
+					#{/rightMng}
+				</span>
+			</h2>
+			<div class="back-infor-lcset">
+				<span class="lileft">账户余额</span>
+				<div class="liright">
+					${marBalance?.format(common.constants.Constants.FINANCE_FORMATE_NORMAL)}元
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="back-cont">
+		<div class="back-infor">
+			<h2 class="back-infor-head">
+				<span class="left">费用账户</span>
+				<span class="right back-money-transfer">
+					#{rightMng rightId:509002}
+						<a href="@{back.finance.MerchantMngCtrl.toMerchantRechargePre(3)}" class="iconfont" data-title="充值" >&#xe635;</a>
+					#{/rightMng}
+					#{rightMng rightId:509003}
+						<a href="@{back.finance.MerchantMngCtrl.toMerchantWithdrawalPre(3)}" class="iconfont" data-title="提现" >&#xe636;</a>
+					#{/rightMng}
+				</span>
+			</h2>
+			<div class="back-infor-lcset">
+				<span class="lileft">账户余额</span>
+				<div class="liright">
+					${cosBalance?.format(common.constants.Constants.FINANCE_FORMATE_NORMAL)}元
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+<!-- 页面js -->
+<script type="text/javascript">
+	require(["back"],function(back){
+		
+	});
+</script>	
+	

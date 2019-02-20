@@ -1,0 +1,228 @@
+.reportBox1{
+	width: 1194px;
+	margin: auto;
+}
+.chooseBox{
+	width: 1194px;
+	height: 40px;
+	margin: auto;
+}
+.selectStyle{
+	height: 30px;
+	margin: 5px 0;
+	text-align: center;
+	text-align-last: center;
+	outline-style: none;
+	
+}
+.contentBox{
+	width: 1160px;
+	border: 5px solid #ca9a37;
+    margin-top: 10px;
+    font-size:14px;
+    margin-bottom: 40px;
+    padding:10px;
+    margin: auto;
+    background-color: #fbfbfb;
+    box-shadow: 2px 3px 5px #ccc;
+}
+.contentBox h1{
+	color: #996666;
+	font-weight:normal;
+	font-size:30px;
+	padding-top:20px;
+	padding-bottom:20px;
+	text-align: center;
+	border-bottom: 1px solid #666;
+}
+
+.overview{
+	margin: 30px auto;
+	overflow: hidden;
+}
+.overview dl {
+	display: inline-block;
+	margin: 2px 0;
+	width: 480px;
+	color: #131313;
+	padding-left:40px;
+	vertical-align: top;
+}
+
+.overview dt {
+	display: inline-block;
+	font-weight: bold !important;
+	line-height: 25px;
+	padding-left: 10px;
+	position: relative;
+}
+
+.overview dd {
+	display: inline;
+	line-height: 25px;
+	margin-left: 10px;
+}
+.websiteInformation{
+	margin-top:10px;
+	border-top: 1px solid #efefef;
+    padding: 20px 20px 40px;
+}
+.textStyle{
+	text-align: center;
+	padding:10px 0;
+	margin-top:10px;
+	border: 1px solid #efefef;
+	background-color: #f9f9f9;
+
+}
+.classify {
+    background: url(/public/front/images/diandian.png) no-repeat scroll left center;
+    color: #804000 !important;
+    font-size: 16px;
+    margin-bottom: 20px;
+    padding-left: 11px;
+}
+.needPaging_share{
+	border-collapse: collapse;
+    width: 100%;
+    table-layout: fixed;
+    box-sizing: border-box;
+}
+.needPaging_share tr th {
+    border: 1px solid #efefef;
+    background-color: #eae3d8;
+    color: #997528;
+    padding: 12px;
+    box-sizing: border-box;
+}
+.needPaging_share tr td {
+    border: 1px solid #efefef;
+    padding: 8px 10px;
+    text-align: center;
+    background-color: #f9f9f9;
+}
+.display {
+	width: 100%；
+}
+.display th {
+    border: 1px solid #efefef;
+    background-color: #eae3d8;
+    color: #997528;
+    padding: 8px 10px;
+    box-sizing: border-box;
+}
+/*2014*/
+.contentBox-title{
+	width:1180px;
+	background: url(/public/front/images/diandian.png) no-repeat scroll left center;
+    color: #804000 !important;
+    font-size: 16px;
+    margin-bottom: 10px;
+    padding-left: 11px;
+    box-sizing: border-box;
+}
+
+.td{
+	border: 1px solid #efefef;
+    padding: 8px 10px;
+    text-align: center;
+    background-color: #f9f9f9;
+}
+table.dataTable {
+    border-collapse: collapse;
+    width: 100%;
+    table-layout: fixed;
+    box-sizing: border-box;
+}
+table.dataTable tr.odd {
+    border: 1px solid #efefef;
+    padding: 0px 0px;
+    text-align: center;
+    box-sizing: border-box;
+    /* height: 100%; */
+    line-height: 35px;
+    background-color: #F3F7FA;
+}
+table.dataTable tr td {
+    border: 1px solid #efefef;
+    background-color: #f9f9f9;
+    padding-left: 12px;
+    padding-right: 12px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: center;
+    box-sizing: border-box;
+    /* height: 100%; */
+    word-break: break-all;
+    line-height: 20px;
+    color: #666;
+}
+table.dataTable tr th {
+    border: 1px solid #efefef;
+    background-color: #eae3d8;
+    color: #997528;
+    padding: 12px;
+    box-sizing: border-box;
+}
+th {
+    border: 1px solid #efefef;
+    background-color: #eae3d8;
+    color: #997528;
+    padding: 8px 10px;
+    box-sizing: border-box;
+}
+#needPaging_assert th, #needPaging_sfc_assert th, #needPaging_AnRepAsset th {
+    text-align: right;
+}
+td {
+    border: 1px solid #efefef;
+    padding: 8px 10px;
+    text-align: center;
+    background-color: #f9f9f9;
+}
+#needPaging_assert td, #needPaging_sfc_assert td, #needPaging_AnRepAsset td {
+    text-align: left;
+    color: #666;
+}
+table#needPaging_assert {
+    border-collapse: collapse;
+    width: 100% !important;
+    table-layout: fixed;
+    box-sizing: border-box;
+}
+#webSiteList li{
+  width: 230px;
+  height: 100px;
+  padding: 7px;
+  margin: 14px;
+  background: #f6f9f9;
+  border: solid 1px #ddd;
+  display: inline-block;
+  text-align: left;
+  vertical-align: middle;
+  cursor: pointer;
+  margin-right:20px;
+  line-height: 28px;
+  margin-bottom:5px;
+}
+
+#forInvsmentList li{
+  width: 337px;
+  height: 78px;
+  padding: 10px;
+  margin: 7px;
+  background: #f6f9f9;
+  border: solid 1px #ddd;
+  display: inline-block;
+  text-align: left;
+  vertical-align: middle;
+  cursor: pointer;
+  line-height: 28px;
+  font-style: normal;
+  margin-bottom:15px;
+}
+#annualReportHidden > div{
+	border: 1px solid #efefef;
+	border-top: 0 none;
+	padding: 20px 20px 40px;
+}

@@ -1,0 +1,33 @@
+<h1 class="azamoney-nav">交易记录</h1>
+<table class="account-table" width="100%">
+	<tr height="46">
+		<th>流水号</th>
+		<th>类型</th>
+		<th>金额</th>
+		<th>账户余额</th>
+		<th>冻结金额</th>
+		<th>时间</th>
+		<th>备注</th>
+	</tr>
+	#{if dealPageBean.page != null}
+		#{list items:dealPageBean.page,as:'dealRecord'}
+			<tr height="56">
+				<td>${dealRecord?.order_no}</td>
+				<td>${dealRecord?.deal_type?.value}</td>
+				<td>${dealRecord?.amount?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}</td>
+				<td>${dealRecord?.balance?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}</td>
+				<td>${dealRecord?.freeze?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}</td>
+				<td>${dealRecord?.time?.format(common.constants.Constants.DATE_TIME_FORMATE)}</td>
+				<td>${dealRecord?.summary}</td>
+			</tr>
+		#{/list}
+	#{/if}
+</table>
+#{if dealPageBean?.page}
+	#{frontPageTag page:dealPageBean,showPage:'listOfDealRecordsPre' /}
+#{/if}
+#{if dealPageBean?.page == null}
+	<div class="norecord-box c9">
+		暂无记录
+	</div>
+#{/if}

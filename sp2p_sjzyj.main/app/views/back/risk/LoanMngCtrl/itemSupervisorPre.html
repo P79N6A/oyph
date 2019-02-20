@@ -1,0 +1,435 @@
+<div class="back-infor" id="item_supervisor">
+	<h2 class="back-infor-head">科目上传</h2>
+	<ul class="back-audit">
+		<input type="hidden" name="location" id="location" value="6"/>
+		#{list supervisorLoop, as:'supervisorUpload'}
+		<li>
+			<h3 class="slide-menu">
+				<span class="back-audit-name left"><i class="iconfont slide-arrow">&#xe603;</i>${supervisorUpload?.bid_audit_subject?.name}</span>
+				<span class="back-audit-note left">${supervisorUpload?.bid_audit_subject?.description}</span>
+				<label class="back-upbtn right" for="auditup1" onclick="addImages(${supervisorUpload?.bid_audit_subject?.id},'${supervisorUpload?.bid_audit_subject?.name}')">
+					<!-- <input type="file" name="imgFile" accept=".jpg,.jpeg,.png,.gif" id="imgFile_${supervisorUpload?.bid_audit_subject?.id}" multiple="multiple" onchange="uploadImg('imgFile_${supervisorUpload?.bid_audit_subject?.id}')"> -->
+					<i class="iconfont">&#xe608;</i>添加
+				</label>
+				<label class="back-upbtn right" for="auditup1">
+					<input type="file" name="imgFile" accept=".jpg,.jpeg,.png,.gif" id="imgFile_${supervisorUpload?.bid_audit_subject?.id}" multiple="multiple" onchange="uploadImg('imgFile_${supervisorUpload?.bid_audit_subject?.id}')">
+					<i class="iconfont">&#xe608;</i>上传
+				</label>
+			</h3>
+			<div class="back-audit-tab slide-cont">
+				<table width="100%">
+					#{list supervisorUpload?.bid_item_supervisor, as:'item'}
+					<tr height="40" id="tr_${item?.id}">
+						<td width="16%">${item_index}</td>
+						<td width="28%"><img alt="加载失败" src="${item?.url}" style="width: 100px;height: 60px" crossorigin="anonymous"></td>
+						<td width="28%">已通过</td>
+						<td width="28%">
+							<a data-alt="编辑" class="iconfont Mosaic" data-title="编辑" name="${item?.id}">&#xe602;</a>
+							<a data-url="${item?.url}" data-alt="预览" class="iconfont preview-btn" onclick="javascript:$(this).preview('${item?.url}')" data-title="预览" >&#xe618;</a>
+							<a href="javascript:void(0);" class="iconfont" data-title="删除" onclick="delItemSup(${item?.id})">&#xe601;</a>
+						</td>
+					</tr>
+					#{/list}
+				</table>
+			</div>
+		</li>
+		#{/list}
+		
+	</ul>
+
+<!-- 图片裁切 -->
+<div class="dialog crop-dialog">
+	<div class="dialog-bg"></div>
+	<div class="dialog-cont">
+		<div class="dialog-head"><span class="left">图片裁剪</span><a href="javascript:void(0);" class="dialog-close hover-green" id="dialogClose">×</a></div>
+		<div class="crop-box">
+			<div class="clearfix">
+				<div class="crop-img">
+					<img src="" id="cropimg" />
+				</div>
+				<div class="crop-right">
+					<div class="crop-preview">
+						<div class="preview-container">
+							<img src="" />
+						</div>
+					</div>
+					<ul class="crop-handle">
+						<li><label class=""><input type="radio" id="maxSize" name="cropsize" />最大尺寸</label></li>
+						<li><label class=""><input type="radio" id="standardSize" name="cropsize" />标准尺寸</label></li>
+					</ul>
+				</div>
+			</div>
+			<p class="back-audit-btns">
+				<input type="button" value="保存" class="bgbtn" onclick="saveCropImg()">
+				<input type="button" value="取消" class="bdbtn dialog-console">
+			</p>
+			<input type="hidden" id="x"/>
+			<input type="hidden" id="y"/>
+			<input type="hidden" id="w"/>
+			<input type="hidden" id="h"/>
+			<input type="hidden" id="imageType" /><!-- 图片格式 -->
+		</div>
+	</div>
+</div>
+<style>
+	/*马赛克弹窗*/
+	.mosaic{
+		display:none;
+	    position: fixed;
+	    left: 0;
+	    top: 0;
+	    min-width: 1140px;
+	    width: 100%;
+	    height: 100%;
+	    z-index: 100;
+	}
+	.mosaic-bg{
+		position: absolute;
+	    left: 0;
+	    top: 0;
+	    width: 100%;
+	    height: 100%;
+	    background: #000;
+	    opacity: 0.5;
+	    z-index: 1;
+	}
+	.mosaic-box{
+		z-index: 20;
+		position: absolute;
+	}
+	#vanvas1{
+		display: block;
+		cursor: url("/public/back/images/circular1.png"),auto;
+	}
+	.mosaic-but{
+		margin-top: 10px;
+		color: #6bfc00;
+	}
+	.mosaic-box button{
+		width: 50px;
+		height: 20px;
+		background: #fff;
+		border: 1px solid #ccc; 
+	}
+	.mosaic-but .control{
+		width: 45px;
+		height: 25px;
+	}
+</style>
+<!-- 图片打马赛克 -->
+<div class="mosaic">
+	<div class="mosaic-bg"></div>
+	<div class="mosaic-box">
+		<canvas id="vanvas1" width="800" height="700"></canvas>  
+		<div class='mosaic-but'>
+			<button id='revoked'>撤销</button>
+			<button id="saveimg">保存</button>
+			<button id="mosaicend" style="color:red">关闭</button>
+			马赛克大小<input type="number" value="2" class='control'  oninput="if(value.length>2)value=value.slice(0,2)" id='quan' onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">
+			马赛克数量<input type="number" value="6" class='control'  oninput="if(value.length>2)value=value.slice(0,2)" id='num' onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">
+		</div>
+		<input type="hidden" value="" id='itemId'>
+	</div>
+</div>
+
+</div>
+
+<script type="text/javascript">
+	function delItemSup(itemId){
+		$.ajax({
+			url : "@{back.risk.LoanMngCtrl.delItemSupervisor()}",
+			type : "POST",
+			data : {
+				"itemId" : itemId
+			},
+			success : function(data){
+				var flag = interceptorCheck(data);
+				if(!flag){
+					return;
+				}
+				if(data.code < 1){
+					alert(data.msg);
+					return;
+				}
+				$("#tr_"+itemId).parent().children("#tr_"+itemId).remove();
+				$('.titlebox').remove();
+				weakDialog('删除成功!');
+			}
+		});
+	}
+	function uploadImg(fileId){
+		var bidAuditSubjectId = fileId.substring(fileId.indexOf("_")+1);
+		var bidSign = $("#bid_id").val();
+		var file = $("#" + fileId).val();
+		var pos = file.lastIndexOf("\\");
+		var fileName = file.substring(pos + 1);
+		$.ajaxFileUpload({
+			url : '@{back.risk.LoanMngCtrl.imagesUpload()}',
+			secureuri : false,
+			fileElementId : fileId,
+			data:{
+				"fileName" : fileName,
+				"bidAuditSubjectId" : bidAuditSubjectId,
+				"bidSign" : bidSign
+			},
+			dataType : 'json',
+			success : function(data) {
+				var flag = interceptorCheck(data);
+				if(!flag){
+					return;
+				}
+				if (data.code < 1) {
+					alert(data.msg);
+					return;
+				}
+				weakDialog('上传成功!');
+				reloadItemSupervisor();				
+			}
+		})
+	}
+	
+	function addImages(bidAuditSubjectId,names){
+		var bidAuditSubjectId = bidAuditSubjectId;
+		var names = names;
+		var bidSign = $("#bid_id").val();
+		$.ajax({
+			url : '@{back.risk.LoanMngCtrl.addImages()}',
+			type : "POST",
+			data:{
+				"bidAuditSubjectId" : bidAuditSubjectId,
+				"bidSign" : bidSign,
+				"names" : names
+			},
+			dataType : 'json',
+			success : function(data) {
+				var flag = interceptorCheck(data);
+				if(!flag){
+					return;
+				}
+				if (data.code < 1) {
+					alert(data.msg);
+					return;
+				}
+				weakDialog('上传成功!');
+				reloadItemSupervisor();				
+			}
+		})
+	}
+	
+	function reloadItemSupervisor(){
+		var bidSign = $("#bid_id").val();
+		$.ajax({
+			url : '@{back.risk.LoanMngCtrl.itemSupervisorPre()}',
+			type : "GET",
+			data : {
+				"bidSign" : bidSign
+			},
+			success : function(data){
+				var flag = interceptorCheck(data);
+				if(!flag){
+					return;
+				}
+				$("#item_supervisor").replaceWith(data);
+			}
+		});
+	}
+	
+	
+	function cropImg(src, imageType){
+		var size = new Array(912, 516);
+		var src = src+'?t=' + new  Date().getTime();
+		$('.crop-dialog').dialog();
+		var image = new Image();
+		image.src = src;
+		image.onload = function(){
+			require(["imgcrop"],function(crop){
+				$('.crop-img,.preview-container').find('img').attr('src',src);
+				$('#imageType').val(imageType);
+				crop(size);
+			});
+		}
+	}
+	function saveCropImg(){
+		$.ajax({
+			url : '@{common.BackBaseController.imageCrop()}',
+			type: 'POST',
+			data : {
+				'imgSrc' : $("#cropimg").attr('src'),
+				'x' : $("#x").val(),
+				'y' : $("#y").val(),
+				'w' : $("#w").val(),
+				'h' : $("#h").val(),
+				'imageType' : $("#imageType").val(),
+				'createNewImg' : false
+			},
+			success : function(data){
+				var flag = interceptorCheck(data);
+				if(!flag){
+					return;
+				}
+				if(data.code < 1){
+					alert(data.msg);
+					return;
+				}
+				$("#dialogClose").trigger('click');
+				weakDialog('裁剪成功!') ;
+				reloadItemSupervisor();	
+			}
+		});
+	}
+/* 图片打马赛克 */
+	$('#mosaicend').click(function(){
+		$('.mosaic').hide()
+	})
+	$('#saveimg').click(function(){
+		var canvas = document.getElementById("vanvas1");
+		var image =canvas.toDataURL("image/png");
+		var lengths=image.indexOf('base64,')
+		var itemId=$('#itemId').val();
+		 var base64=image.slice(lengths+7)
+		  $.ajax({  
+			     url: '@{back.webOperation.AdvertisementMngCtrl.uploadMaSaiKeAdsImage()}',
+			     type: 'POST',  
+			     data:{
+			    	 'base64Code':base64,
+			    	 'fileName':'liuyang.png',
+			    	 'itemId':itemId
+			     },
+			     success: function(data){
+			    	 var struts=JSON.parse(data);
+			    	 if(struts.code>0){
+			    		 $('.mosaic').hide();
+			    		 location.reload();
+			    	 }else{
+			    		 alert(struts.msg)
+			    	 }
+			     }  
+			});
+	})
+	$('.Mosaic').click(function(){
+		var imgurl=$(this).parent().prev().prev().children().attr('src');
+		var itemId=$(this).attr('name')
+		$('#itemId').val(itemId);
+		$('.mosaic').show()
+		var canvas = document.getElementById("vanvas1");  
+        var context = canvas.getContext("2d");  
+        context.clearRect(0,0,canvas.width,canvas.height);  
+        var quan = 2; //马赛克的大小
+        var num = 6; //一次操作包含马赛克的个数
+        //创建image对象
+        var imgObj = new Image();
+        imgObj.crossOrigin = "*"; //用于解决图片跨域问题，但在chrome下依旧无效，建议起个node服务或者用safari打开
+        imgObj.src =imgurl;
+        //改变画布大小和图片一致
+        //canvas.width=imgObj.width;
+        //canvas.height=imgObj.height;
+        //根据图片宽度改变按钮位置
+        $('.mosaic-but').css('margin-left',canvas.width/2-77)
+        //待图片加载完后，将其显示在canvas上
+        imgObj.onload = function(){
+          context.drawImage(this, 0, 0,canvas.width,canvas.height);//this即是imgObj,保持图片的原始大小
+          start(this);
+        }
+
+        function start(obj){
+          //修改缓存
+          var lastImgArr = [];
+          canvas.onmousedown = function(ev){
+        	  //每次下笔前获取马赛克大小和马赛克的个数
+        	  if($('#quan').val()>0){
+        		  quan=$('#quan').val();
+            	  num=$('#num').val();
+        	  }
+        	  
+        	  //每次下笔前先保存
+              lastImgArr.push(context.getImageData(0,0,canvas.width,canvas.height));
+            
+              var ev=ev || window.event;
+              var dx = ev.clientX-canvas.offsetLeft;
+              var dy = ev.clientY-canvas.offsetTop;
+              drawLine(obj,dx,dy);
+              document.onmousemove = function(ev){
+                  var ev = ev || window.event;
+                  var mx = ev.clientX-canvas.offsetLeft;
+                  var my = ev.clientY-canvas.offsetTop;
+                  if(Math.pow(dx-mx,2)+Math.pow(dy-my,2)>= Math.pow(quan*num,2)){  //(quan*马赛克个数*2)的平方
+                    drawLine(obj,mx,my);
+                    dx = mx;
+                    dy = my;
+                  }
+              };
+              document.onmouseup = function(){
+                  document.onmousemove = null;
+                  document.onmouseup = null;
+              };
+
+          }
+          //撤销修改
+          document.getElementById('revoked').onclick = function(){
+            if(lastImgArr && lastImgArr.length){
+              context.putImageData(lastImgArr.pop(), 0, 0);
+            }
+          }
+        }
+        function drawLine(obj,dx,dy){
+          //原始图像
+          var originalImgData = context.getImageData(0,0,canvas.width,canvas.height);  
+          var originalPxData = originalImgData.data;  
+            
+          //用于循环修改  
+          var modifyImgData = context.getImageData(0,0,canvas.width,canvas.height);  
+          var modifyPxData = modifyImgData.data;  
+
+          for(var i=dx-quan*num;i<dx+quan*num;i = i+2*quan+1){  
+            for(var j=dy-quan*num;j<dy+quan*num;j = j+2*quan+1){
+              //中心点(dx,dy)
+              // if(Math.pow(i-dx,2)+Math.pow(j-dy,2) <= Math.pow(quan*num/2,2)){
+              if(!((i==dx-quan*num&&j==dy-quan*num)||(i==dx-quan*num&&j==dy-quan*num+2*quan+1)||
+                (i==dx-quan*num&&j==dy-quan*num+4*quan+2)||(i==dx-quan*num&&j==dy-quan*num+12*quan+6)||
+                (i==dx-quan*num&&j==dy-quan*num+14*quan+7)||(i==dx-quan*num&&j==dy-quan*num+16*quan+8)||
+                (i==dx-quan*num+16*quan+8&&j==dy-quan*num)||(i==dx-quan*num+16*quan+8&&j==dy-quan*num+2*quan+1)||
+                (i==dx-quan*num+16*quan+8&&j==dy-quan*num+4*quan+2)||(i==dx-quan*num+16*quan+8&&j==dy-quan*num+12*quan+6)||
+                (i==dx-quan*num+16*quan+8&&j==dy-quan*num+14*quan+7)||(i==dx-quan*num+16*quan+8&&j==dy-quan*num+16*quan+8)||
+                (i==dx-quan*num+2*quan+1&&j==dy-quan*num)||(i==dx-quan*num+4*quan+2&&j==dy-quan*num)||
+                (i==dx-quan*num+12*quan+6&&j==dy-quan*num)||(i==dx-quan*num+14*quan+7&&j==dy-quan*num)||
+                (i==dx-quan*num+2*quan+1&&j==dy-quan*num+16*quan+8)||(i==dx-quan*num+4*quan+2&&j==dy-quan*num+16*quan+8)||
+                (i==dx-quan*num+12*quan+6&&j==dy-quan*num+16*quan+8)||(i==dx-quan*num+14*quan+7&&j==dy-quan*num+16*quan+8))){
+              var sumR = 0;  
+              var sumG = 0;  
+              var sumB = 0;  
+              //找他周围的元素 
+              for(var x = -quan;x<=quan;x++){  
+                  for(var y = -quan;y<=quan;y++){  
+                    var xx = i+x;  
+                    var yy = j+y;  
+                    var pp = yy*canvas.width+xx; //周围的元素。  
+                    sumR += originalPxData[pp*4+0];  
+                    sumG += originalPxData[pp*4+1];  
+                    sumB += originalPxData[pp*4+2];  
+                  }  
+              }  
+                
+              var totlal = (2*quan+1)*(2*quan+1);  
+              var avgR = sumR/totlal;  
+              var avgG = sumG/totlal;  
+              var avgB = sumB/totlal;  
+                
+              for(var x = -quan;x<=quan;x++){  
+                for(var y = -quan;y<=quan;y++){  
+                  var xx = i+x;  
+                  var yy = j+y;  
+                  var pp = yy*canvas.width+xx; //周围的元素。  
+                  modifyPxData[pp*4+0] = avgR;  
+                  modifyPxData[pp*4+1] = avgG;  
+                  modifyPxData[pp*4+2] = avgB;  
+                }  
+              }  
+            }  
+          }
+          } 
+          context.putImageData(modifyImgData,0,0,0,0,canvas.width,canvas.height); 
+        }
+	})
+	/*下拉菜单*/
+		
+</script>

@@ -1,0 +1,61 @@
+*{
+前台分页标签:
+分页标签：
+	参数【page】:pageBean对象
+	参数【showPage】:分页获取数据的Js函数名，该函数有一个参数：currPage
+	Demo:
+	<!-- 分页组件--pageTag -->
+	#{frontPageTag page:page,showPage:"showPage"/}
+	
+	<!-- JS -->
+	<script type="text/javascript">
+		require(["back"],function(back){
+			// 搜索 排序 选中
+			require(["search","order","linechecked"],function(){
+				#{if serviceType || userName || serviceOrderNo || orderNo}
+					$(".back-search").click();//搜索展开
+				#{/if}
+			});
+		});
+		
+		function showPage (currPage) {   注意：如果同一个页面包含多个分页标签 ，则函数名不能相同。如：showBidPage，showBillPage
+			$("#currPage").val(currPage);          注意：如果同一个页面包含多个分页标签 ，则id不能相同。      如："#currBidPage"，"#currBillPage" 
+			
+			//获取结果的方法 
+			$("#showRequestLogsPre").submit();     注意：复制代码时，不要忘了将，表单Id改掉
+		}
+	</script>
+}*
+
+#{if _page?.page}
+	#{set pageAry:common.utils.StrUtil.getPageArr(_page.totalPageCount,_page.currPage) /}
+	<div class="page-wrap">
+		#{if _page?.currPage == 1}
+			<a href="javascript:void(0);" class="page-btn">上一页</a>
+		#{/if}
+		#{else}
+			<a href="javascript:void(0);" onclick="${_showPage}(${_page?.currPage - 1})" class="page-btn">上一页</a>
+		#{/else}
+		
+		#{list items:pageAry,as:'i'}
+			#{if  (_page?.currPage+'').equals(i)}
+				<a href="javascript:void(0);" class="page-num selected">${i}</a>
+			#{/if}
+			#{else}
+				#{if common.utils.StrUtil.isNumericInt(i)}
+						<a href="javascript:void(0);" onclick="${_showPage}(${i})" class="page-num">${i}</a>
+				#{/if}
+				#{else}
+						<a href="javascript:void(0);" class="page-num">${i}</a>
+				#{/else}
+			#{/else}
+		#{/list}
+		
+		#{if _page?.currPage == _page?.totalPageCount}
+			<a href="javascript:void(0);" class="page-btn">下一页</a>
+		#{/if}
+		#{else}
+			<a href="javascript:void(0);"  onclick="${_showPage}(${_page?.currPage + 1})" class="page-btn">下一页</a>
+		#{/else}
+	</div>
+#{/if}

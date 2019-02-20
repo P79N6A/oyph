@@ -1,0 +1,27 @@
+/* 首页新手专项 */
+.newbie{
+	border-color: #FF7F44;
+	background-color: #fff;
+}
+.newbie-img{
+	background: url(images/newbie.jpg) center center no-repeat;
+}
+.newbie-icon{
+	position: absolute;
+	right: 0;
+	top: -35px;
+	width: 206px;
+	height: 35px;
+	background: url(images/newbie_icon.png) no-repeat;
+}
+/* 首页散标投资 */
+.disperse{
+	border-top-color: #FF5558;
+}
+.disperse-img{
+	background: url(images/disperse.jpg) center center no-repeat;
+}
+/* 首页转让专区 */
+.transfer-img{
+	background: url(images/transfer.jpg) center center no-repeat;
+}

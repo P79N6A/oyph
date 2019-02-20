@@ -1,0 +1,39 @@
+<td colspan="9">
+	<div class="account-billbox none">
+		<table width="100%">
+			<tr height="46">
+				<td>账单编号</td>
+				<td>期数</td>
+				<td>应收本息</td>
+				<td>本金</td>
+				<td>利息</td>
+				<td>服务费</td>
+				<td>预计到账</td>
+				<td>到期时间</td>
+				<td>回款时间</td>
+				<td>状态</td>
+			</tr>
+			#{list billInvestList}
+			<tr height="46">
+				<td>${_?.bill_invest_no}</td>
+				<td>${_?.period}/${_?.totalPeriod}</td>
+				<td>${_?.corpus_interest?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}</td>
+				<td>${_?.receive_corpus?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}</td>
+				<td>${_?.coupon_interest?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}</td>
+				<td>${_?.loan_fee?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}</td>
+				<td>${_?.expected_arrival?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}</td>
+				<td>${_?.receive_time?.format(common.constants.Constants.DATE_FORMATE)}</td>
+				<td>
+					#{if _?.real_receive_time == null}
+						----
+					#{/if}
+					#{else}
+						${_?.real_receive_time?.format(common.constants.Constants.DATE_FORMATE)}
+					#{/else}
+				</td>
+				<td class="c9">${_?.status?.value}</td>
+			</tr>
+			#{/list}
+		</table>
+	</div>
+</td>

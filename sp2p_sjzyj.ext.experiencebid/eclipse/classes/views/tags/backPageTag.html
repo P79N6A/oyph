@@ -1,0 +1,78 @@
+*{
+	分页标签：
+	参数【page】:pageBean对象
+	参数【showPage】:分页获取数据的Js函数名，该函数有两个参数：currPage, pageSize。
+	Demo:
+		<form action="@{back.finance.PaymentLogMngCtrl.showRequestLogsPre()}" method="GET" id="showRequestLogsPre">
+			<!-- currPage禁止回显，否则筛选时定位不到第一页 -->
+			<input type="hidden" id="currPage" name="currPage"/>
+			<!-- pageSize必须回显，否则筛选时不能保持选择的pageSize -->
+	  		<input type="hidden" id="pageSize" name="pageSize" value="${page?.pageSize}"/>
+	  		<!-- 如果有showType，则showType必须回显，否则分页和筛选时不能保持选择的showType -->
+	  		<input type="hidden" id="showType" name="showType" value="${showType}"/>
+	  		
+	  		<select name="serviceType">
+				<option value="" #{if serviceType==null}selected="selected"#{/if}>--业务类型--</option>
+	  			#{list items:common.enums.ServiceType.values(), as:'options'}
+					<option value="${options.code}" #{if options.code==serviceType}selected="selected"#{/if}>${options.value}</option>
+				#{/list}
+	  		</select>
+			<input type="text" class="iffocus" name="userName" placeholder="用户名" value="${userName}" />
+			<input type="text" class="iffocus" name="serviceOrderNo" placeholder="业务订单号" value="${serviceOrderNo}" />
+			<input type="text" class="iffocus" name="orderNo" placeholder="交易订单号" value="${orderNo}" />
+			<input type="submit" class="bgbtn" value="搜索" />
+		</form>
+		
+		<!-- 分页组件--pageTag -->
+		#{backPageTag page:page,showPage:"showPage"/}
+		
+		<!-- JS -->
+		<script type="text/javascript">
+			require(["back"],function(back){
+				// 搜索 排序 选中
+				require(["search","order","linechecked"],function(){
+					#{if serviceType || userName || serviceOrderNo || orderNo}
+						$(".back-search").click();//搜索展开
+					#{/if}
+				});
+			});
+			
+			function showPage (currPage, pageSize) {   注意：如果同一个页面包含多个分页标签 ，则函数名不能相同。如：showBidPage，showBillPage
+				$("#currPage").val(currPage);          注意：如果同一个页面包含多个分页标签 ，则id不能相同。      如："#currBidPage"，"#currBillPage" 
+				$("#pageSize").val(pageSize);          注意：如果同一个页面包含多个分页标签 ，则id不能相同。
+				
+				$("#showRequestLogsPre").submit();     注意：复制代码时，不要忘了将，表单Id改掉
+			}
+		</script>
+}*
+
+#{if _page.page}
+		<div class="right back-page">
+		<span class="left">共&nbsp;${_page?.totalCount}&nbsp;条记录&nbsp;,&nbsp;</span>
+		<select class="left" onChange="${_showPage}(1,this.value)">
+			<option value="5" #{if _page?.pageSize == 5} selected="selected" #{/if} >每页5条</option>
+			<option value="10" #{if _page?.pageSize == 10} selected="selected" #{/if} >每页10条</option>
+			<option value="20" #{if _page?.pageSize == 20} selected="selected" #{/if} >每页20条</option>
+		</select>
+		<span class="back-page-num left">${_page?.currPage}/${_page?.totalPageCount}</span>
+		
+		#{if _page?.currPage == 1}
+			<a href="javascript:void(0)" data-title="返回首页" class="iconfont left unable">&#xe62f;</a>
+			<a href="javascript:void(0);" data-title="上一页" class="iconfont left unable">&#xe607;</a>
+		#{/if}
+		#{else}
+			<a href="javascript:void(0)" onclick="${_showPage}(1,${_page?.pageSize})" data-title="返回首页" class="iconfont left">&#xe62f;</a>
+			<a href="javascript:void(0)" data-title="上一页" onclick="${_showPage}(${_page?.currPage - 1},${_page?.pageSize})" class="iconfont left">&#xe607;</a>
+		#{/else}
+		
+		#{if _page?.currPage == _page?.totalPageCount}
+			<a href="javascript:void(0)" data-title="下一页" class="iconfont left unable">&#xe605;</a>
+			<a href="javascript:void(0)" data-title="跳到尾页" class="iconfont left unable">&#xe62e;</a>
+		#{/if}
+		#{else}
+			<a href="javascript:void(0)" onclick="${_showPage}(${_page?.currPage + 1},${_page?.pageSize})" data-title="下一页" class="iconfont left">&#xe605;</a>
+			<a href="javascript:void(0)" onclick="${_showPage}(${_page?.totalPageCount},${_page?.pageSize})" data-title="跳到尾页" class="iconfont left">&#xe62e;</a>
+		#{/else}
+		
+	</div>
+#{/if}

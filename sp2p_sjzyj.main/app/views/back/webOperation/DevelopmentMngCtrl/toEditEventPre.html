@@ -1,0 +1,170 @@
+#{extends 'common/back/webOperationMain.html' /}
+	#{set title:'运维 | 发展历程 | ' /}
+	#{set smallclass:7 /}
+	#{set crumbs:'运维>发展历程>添加发展历程' /}
+%{
+	java.lang.String supervisorName = controllers.common.BackBaseController.getCurrentSupervisorName();
+}%
+<div class="back-main">
+	<div class="back-usertop">
+		<b class="left font14">添加发展历程</b>
+		<!-- 右侧功能按钮 -->
+		<div class="right back-rightbtns">
+			<a href="javascript:backAndRefresh('@{back.webOperation.DevelopmentMngCtrl.showEventPre}');"><i class="iconfont">&#xe60b;</i>返回</a>
+		</div>
+	</div>
+	<div class="back-cont">
+		<form action="@{back.webOperation.DevelopmentMngCtrl.editEvent()}" method="POST" id="form_editEvent">
+		 
+			#{authenticityToken /}
+			<div class="back-infor">
+				<h2 class="back-infor-head">
+					<span class="left">历程详情</span>
+				</h2>
+				
+				<ul class="back-infor-set">
+				   
+					<li style="display: block; height: 32px;">
+						<span class="lileft">历程类型</span>
+						<div class="liright">
+							<input type="text" id="leixing" readonly="readonly" value="${deve.time_year}年度事件">
+						</div>
+					</li>
+				 	
+					<li style="display: block;height: 32px;"> 
+						<span class="lileft">历程时间</span>
+						<div class="liright">
+							<select id="eveYear" name="deve.time_year" style="width: 80px;" class="left back-select" onchange="gaibian()">
+								<option #{if deve.time_year==currYear} selected="selected" #{/if} value="${currYear}">${currYear}年</option>
+								<option #{if deve.time_year==currYear-1} selected="selected" #{/if} value="${currYear-1}">${currYear-1}年</option>
+								<option #{if deve.time_year==currYear-2} selected="selected" #{/if} value="${currYear-2}">${currYear-2}年</option>
+								<option #{if deve.time_year==currYear-3} selected="selected" #{/if} value="${currYear-3}">${currYear-3}年</option>
+							</select>
+							<select id="eveMonth" name="deve.time_month" style="width: 80px;"  class="left back-select">
+								<option #{if deve.time_month==1} selected="selected" #{/if} value="1">1月</option>
+								<option #{if deve.time_month==2} selected="selected" #{/if} value="2">2月</option>
+								<option #{if deve.time_month==3} selected="selected" #{/if} value="3">3月</option>
+								<option #{if deve.time_month==4} selected="selected" #{/if} value="4">4月</option>
+								<option #{if deve.time_month==5} selected="selected" #{/if} value="5">5月</option>
+								<option #{if deve.time_month==6} selected="selected" #{/if} value="6">6月</option>
+								<option #{if deve.time_month==7} selected="selected" #{/if} value="7">7月</option>
+								<option #{if deve.time_month==8} selected="selected" #{/if} value="8">8月</option>
+								<option #{if deve.time_month==9} selected="selected" #{/if} value="9">9月</option>
+								<option #{if deve.time_month==10} selected="selected" #{/if} value="10">10月</option>
+								<option #{if deve.time_month==11} selected="selected" #{/if} value="11">11月</option>
+								<option #{if deve.time_month==12} selected="selected" #{/if} value="12">12月</option>
+							</select>
+							<select id="eveDay" name="deve.time_day" style="width: 80px;" class="left back-select">
+								<option #{if deve.time_day==1} selected="selected" #{/if} value="1">1日</option>
+								<option #{if deve.time_day==2} selected="selected" #{/if} value="2">2日</option>
+								<option #{if deve.time_day==3} selected="selected" #{/if} value="3">3日</option>
+								<option #{if deve.time_day==4} selected="selected" #{/if} value="4">4日</option>
+								<option #{if deve.time_day==5} selected="selected" #{/if} value="5">5日</option>
+								<option #{if deve.time_day==6} selected="selected" #{/if} value="6">6日</option>
+								<option #{if deve.time_day==7} selected="selected" #{/if} value="7">7日</option>
+								<option #{if deve.time_day==8} selected="selected" #{/if} value="8">8日</option>
+								<option #{if deve.time_day==9} selected="selected" #{/if} value="9">9日</option>
+								<option #{if deve.time_day==10} selected="selected" #{/if} value="10">10日</option>
+								<option #{if deve.time_day==11} selected="selected" #{/if} value="11">11日</option>
+								<option #{if deve.time_day==12} selected="selected" #{/if} value="12">12日</option>
+								<option #{if deve.time_day==13} selected="selected" #{/if} value="13">13日</option>
+								<option #{if deve.time_day==14} selected="selected" #{/if} value="14">14日</option>
+								<option #{if deve.time_day==15} selected="selected" #{/if} value="15">15日</option>
+								<option #{if deve.time_day==16} selected="selected" #{/if} value="16">16日</option>
+								<option #{if deve.time_day==17} selected="selected" #{/if} value="17">17日</option>
+								<option #{if deve.time_day==18} selected="selected" #{/if} value="18">18日</option>
+								<option #{if deve.time_day==19} selected="selected" #{/if} value="19">19日</option>
+								<option #{if deve.time_day==20} selected="selected" #{/if} value="20">20日</option>
+								<option #{if deve.time_day==21} selected="selected" #{/if} value="21">21日</option>
+								<option #{if deve.time_day==22} selected="selected" #{/if} value="22">22日</option>
+								<option #{if deve.time_day==23} selected="selected" #{/if} value="23">23日</option>
+								<option #{if deve.time_day==24} selected="selected" #{/if} value="24">24日</option>
+								<option #{if deve.time_day==25} selected="selected" #{/if} value="25">25日</option>
+								<option #{if deve.time_day==26} selected="selected" #{/if} value="26">26日</option>
+								<option #{if deve.time_day==27} selected="selected" #{/if} value="27">27日</option>
+								<option #{if deve.time_day==28} selected="selected" #{/if} value="28">28日</option>
+								<option #{if deve.time_day==29} selected="selected" #{/if} value="29">29日</option>
+								<option #{if deve.time_day==30} selected="selected" #{/if} value="30">30日</option>
+								<option #{if deve.time_day==31} selected="selected" #{/if} value="31">31日</option>
+								<option #{if deve.time_day==0} selected="selected" #{/if} value="0">其他</option>
+							</select>
+						</div>
+					</li>	
+					
+					<li>
+						<input type="hidden" value="${supervisorName}" id="createSupervisor" name="deve.create_supervisor" />
+						<input type="hidden" value="${deve.id}" id="deveId" name="deve.id">
+					</li>
+					
+					<li style="display: block;">
+						<span class="lileft">历程内容</span>
+						<div class="liright">
+							<input type="text"  class="width01 iffocus" autofocus="autofocus" onpropertychange="$(this).integerAndLetters()" value="${deve?.event_content}"  name="deve.event_content"/>
+						</div>
+					</li>	
+					
+					<li>
+						<span class="lileft">缩略图</span>
+						<div class="liright">
+							<span class="back-imgarea imgrequired">
+								<img src="${deve?.image_url}" onerror="this.src='/public/back/images/noimg.jpg'" class="backupimg" height="100" width="200" id='image' name="image" alt="" title="" />
+								<input type="hidden" id="image_url" name="image_url" value="${deve?.image_url}">
+								<input type="hidden" id="imageFormat" name="imageFormat" value="${deve?.image_format}">
+							</span>
+							<span class="back-upimg">
+								<label class="back-upbtn">
+									<input type="file" class="upload_file" value="" accept=".jpg,.jpeg,.png,.gif" name="imgFile" id="imgFile" onchange="upload()"/>
+									<i class="iconfont">&#xe608;</i>本地上传
+								</label>
+							</span>
+						</div>
+					</li>			
+				</ul>
+			</div>
+			
+			<p class="back-audit-btns">
+				<input type="submit" id="pageSave" value="保存" class="bgbtn">
+				<input type="button" onclick="backAndRefresh('@{back.webOperation.DevelopmentMngCtrl.showEventPre}');" value="取消" class="bdbtn dialog-console">
+			</p>
+		</form>
+	</div>
+</div>
+
+<script type="text/javascript">
+require(["back"],function(back){
+	require(["ajaxfileupload"]);
+	
+});
+function upload(){
+	var fileId = "imgFile";
+	var file = $("#" + fileId).val();
+	var pos = file.lastIndexOf("\\");
+	var fileName = file.substring(pos + 1);
+	
+	$.ajaxFileUpload({
+		url : '@{back.webOperation.AdvertisementMngCtrl.uploadAdsImage()}',
+		secureuri : false,
+		fileElementId : fileId,
+		data:{
+			"fileName":fileName
+		},
+		dataType : 'json',
+		success : function(result) {
+			if(result.code == 1){
+				var data = result.obj;
+				$("#image").attr("src", data.staticFileName);
+				$("#image_url").val(data.staticFileName);
+				$("#imageFormat").val(data.fileSuffix);
+				$("#image").css({ "display": "block"});
+			} else {
+				alert(result.msg);
+			}
+		}
+	})
+}
+
+function gaibian(){
+	var lxlv=$("#eveYear").val();
+	$("#leixing").val(lxlv+"年度事件");
+}
+</script>

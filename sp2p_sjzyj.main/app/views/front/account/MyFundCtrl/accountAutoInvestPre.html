@@ -1,0 +1,168 @@
+<h1 class="azamoney-nav">自动投标</h1>
+<div class="account-auto clearfix">
+	<div class="left account-autoleft">
+		<form action="@{front.account.MyFundCtrl.openAutoInvest()}" method="POST" id="open_auto_invest" target="_blank">
+		#{authenticityToken /}
+		<ul class="borrow-list">
+			<li class="account-autohead">
+				<h2 class="major">自动投资设置</h2>
+				<p class="c9">系统会帮你同时尝试投资所勾选的各个期限项目，已最终投资成功为准。</p>
+			</li>
+			<li>
+				<span class="left c3 borrowleft"><i class="important-point">*</i>年利率不低于</span>
+				<div class="borrowright">
+					<label class="unit-input">
+						<input type="text" class="text" id="min_apr" name="min_apr" value="${autoInvestOption?.min_apr}"  oninput="$(this).proportionRange();" onpropertychange="$(this).proportionRange();" />
+						<i class="unit">%</i>
+					</label>
+				</div>
+			</li>
+			<li>
+				<span class="left c3 borrowleft"><i class="important-point">*</i>投资期限不超过</span>
+				<div class="borrowright">
+					<label class="unit-input">
+						<input type="text" class="text" id="max_period" name="max_period" value="${autoInvestOption?.max_period}" autocomplete="off" oninput="$(this).ndigitInteger(2);" onpropertychange="$(this).ndigitInteger(2)" maxlength="2" />
+						<i class="unit">月</i>
+					</label>
+				</div>
+			</li>
+			<li>
+				<span class="left c3 borrowleft"><i class="important-point">*</i>投资每笔次</span>
+				<div class="borrowright">
+					<label class="unit-input">
+						<input type="text" class="text" id="invest_amt" name="invest_amt" value="#{formatIntMoney money:autoInvestOption?.amount/}" autocomplete="off" oninput="$(this).ndigitInteger(6);" onpropertychange="$(this).ndigitInteger(6)" maxlength="6" />
+						<i class="unit">元</i>
+					</label>
+				</div>
+			</li>
+			<li>
+				<span class="left c3 borrowleft"><i class="important-point">*</i>自动投标有效时长</span>
+				<div class="borrowright">
+					<label class="unit-input">
+						<input type="text" class="text" id="valid_time" name="valid_time" value="${autoInvestOption?.valid_day}" autocomplete="off" oninput="$(this).ndigitInteger(2);" onpropertychange="$(this).ndigitInteger(2)" maxlength="2" />
+						<i class="unit">天</i>
+					</label>
+				</div>
+			</li>
+			
+				<li><div class="borrowright"><label class="borrow-read"><input type="checkbox" name="agree_pact" #{if autoInvestOption?.status}checked#{/if}/>我已阅读并同意签署<a href="@{front.invest.InvestCtrl.investEntrustDealPre()}" target="_blank" title="" class="major" >《委托投资协议》</a></label></div></li>
+			<li>
+				<span class="left c3 borrowleft">&nbsp;</span>
+				<div class="borrowright">
+					#{if autoInvestOption?.status == 1}
+						<input type="hidden" value="1" name ="type">
+						<input type="submit" value="关闭自动投标" class="condition-btn btn Automark" />
+						
+					#{/if}
+					#{else}
+						<input type="hidden" value="2" name ="type">
+						<input type="submit" value="开启自动投标" class="condition-btn btn Automark" />
+						
+					#{/else}
+				</div>
+			</li>
+		</ul>
+		</form>
+	</div>
+	<div class="right rightDistance">
+		<div class="borrow-note c9">
+			<span class="borrow-notehead"><i class="icon note-icon"></i>投标机器人工具说明：</span><br/>
+			1、贷款进入招标中十五分钟后，才会启动自动投标。<br/>
+			2、投标进度达到95%时停止自动投标。若投标后投标进度超过95%，则按照投标进度达到95%的金额向下取50的倍数金额值投标。<br/>
+			3、单笔投标金额若超过该标贷款总额的20%，则按照20%比例的金额向下取50的倍数金额值投标。<br/>
+			4、满足自动投标规则的金额小于设定的每次投标金额，也会进行自动投标。<br/>
+			5、贷款用户在获得贷款时会自动关闭自动投标，以避免借款被用作自动投标资金。
+		</div>
+	</div>
+	
+	<!-- 自动投标弹窗 -->
+	<div class="dialog" id="auto_invest_dialog">
+		<div class="dialog-bg"></div>
+		<div class="dialog-cont trusteeship-dialog">
+			<h2 class="dialog-head">
+				<span class="left">平台提示</span>
+			</h2>
+			<div class="trusteeship-cont">
+				<div class="trusteeship-wrap">
+					<i class="trusteeship-icon"></i>
+					<p class="major">请在新页面完成设置。</p>
+					<a href="@{front.account.MyFundCtrl.accountManagePre(4)}" class="bdbtn">设置成功</a>
+					<p class="trusteeship-help"><a href="@{front.FrontHomeCtrl.helpPre(models.common.entity.t_help_center.Column.FINANCIAL_KNOWLEDGE.code,1)}" class="c9">开启自动投标遇到问题></a></p>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+console.log($('#invest_amt').val())
+	require(["front"],function(back){
+		require(['validation/validateExt']);
+		
+		$("#open_auto_invest").validate({
+			errorPlacement: function(error, element){
+				error.addClass('register-error').appendTo(element.closest('.borrowright'));
+			},
+			rules: {
+				"min_apr": {
+					required: true,
+					min: 0.1
+				},
+				"max_period": {
+					required: true,
+					min: 1,
+					max: 36
+				},
+				"invest_amt": {
+					required: true,
+					min: 1,
+					max: 200000
+				},
+				"agree_pact": {
+					required: true
+				}
+			},
+			messages: {
+				"min_apr": {
+					required: "请输入年利率",
+					min: "必须大于0"
+				},
+				"max_period": {
+					required: "请输入投资期限",
+					min: "必须大于或等于1",
+					max: "必须小于或等于36"
+				},
+				"invest_amt": {
+					required: "请输入投资每笔次金额",
+					min: "必须大于或等于1",
+					max: "必须小于或等于200000"
+				},
+				"agree_pact": {
+					required: "请勾选委托协议",
+				}
+			},
+			/* submitHandler: function(form){
+				#{if isSimulated}
+					alert("模拟登录不能执行该操作");
+					return false;
+				#{/if}
+				#{else}
+				var checkForms = $(".borrow-unlogin").children();
+				for(var i = 0; i< checkForms.length; i++){
+					if(checkForms.eq(i).hasClass('assistant')){
+						weakDialog(checkForms.eq(i).text());
+						return false;
+					}
+				}
+				
+				$("#auto_invest_dialog").dialog();
+				form.submit();
+				#{/else}
+			
+			}, 
+			errorElement: "div"*/
+		});
+		
+	});
+
+</script>

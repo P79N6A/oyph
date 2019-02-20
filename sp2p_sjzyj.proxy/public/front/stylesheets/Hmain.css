@@ -1,0 +1,122 @@
+body{
+	font-family: "微软雅黑";
+}
+.container{
+	width: 100%;
+}
+.selection-list{
+	width: 290px;
+	background: #172850;
+	height: 100%;
+	position: fixed;
+	z-index: 1;
+}
+.selection-list-ioc{
+	width: 100%;
+	height: 135px;
+	border-bottom: solid 1px #253760;
+	background: url(/public/front/images/logo513.png) no-repeat center center;
+}
+.selection-list-tab{
+	width: 100%;
+	height: 925px;
+	padding-top: 20px;
+}
+.list{
+	height: 80px;
+	padding: 0 37px;
+	line-height: 80px;
+	box-sizing: border-box;
+	cursor: pointer;
+	color: #6f8298;
+}
+.list:hover{
+	background: #2f3e62;
+	color: #fff;
+}
+.selection-list-tab .list .img{
+	width: 35px;
+	float: left;
+	height: 80px;
+	line-height: 80px;
+}
+.selection-list-tab .list img{
+	display: inline;
+}
+.selection-list-tab .list span{
+	margin-left: 35px;
+	font-size: 20px;
+	float: left;
+}
+
+.container-right{
+	width: 100%;
+	padding-left: 290px;
+	box-sizing: border-box;
+	background: #fff;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+.container-right .erweima{
+	position:relative;
+	float:right;
+	width:90px;
+	height: 25px;
+	line-height:25px;
+	color:#2f3e62;
+	border: 1px solid #2f3e62;
+	border-radius:5px;
+	text-align: center;
+	margin-top: 15px;
+	margin-right: 25px;
+	cursor: pointer;
+}
+.container-right .erweima:hover .shoujiewm{
+	display: block;
+}
+.shoujiewm img{
+	width: 100px;
+	height: 100px;
+}
+.erweima .shoujiewm{
+	position: absolute;
+	top:30px;
+	left: 0;
+	color: #2f3e62;
+	display: none;
+}
+.user-top{
+	width: 100%;
+	height: 67px;
+	border-bottom: 1px solid #f0f0f0;
+	padding-top: 15px;
+}
+.user-top-main{
+	width: 267px;
+	height: 53px;
+	line-height: 53px;
+	float: right;
+	margin-right: 20px;
+}
+.user-top-main .return{
+	width: 95px;
+	height: 53px;
+	background: url(/public/front/images/out.png) no-repeat center center;
+	border-left: 1px solid #f0f0f0;
+	float: right;
+}
+.user-top-main span,.user-top-main img{
+	float: right;
+}
+.user-top-main span{
+	width: 120px;
+	text-align: center;
+	color: #4d4d4d;
+	font-size: 20px;
+}
+.text-color{
+	background: #2f3e62;
+	color: #fff;
+	border-left: 4px royalblue solid;
+}

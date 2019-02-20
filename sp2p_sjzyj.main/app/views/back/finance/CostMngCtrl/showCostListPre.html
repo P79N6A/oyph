@@ -1,0 +1,91 @@
+#{extends 'common/back/financeMain.html' /}
+	#{set title:'财务 | 费用账户明细' /}
+	#{set smallclass:13 /}
+	#{set crumbs:'财务>费用账户明细'/}
+
+
+<div class="back-main">
+	<!-- 搜索条件，默认隐藏 -->
+	<div class="back-search-option">
+		<form action="@{back.finance.CostMngCtrl.showCostListPre()}" method="GET" id="showCostListPre">
+			<!-- <input type="hidden" id="showType" name="showType" value="${showType}" />
+			<input type="hidden" id="orderType" name="orderType" value="${orderType}" />排序的类型
+			<input type="hidden" id="orderValue" name="orderValue" value="${orderValue}" />排序的值(0:降序，1:升序) -->
+			<input type="hidden" id="currPage" name="currPage"/>
+	  		<input type="hidden" id="pageSize" name="pageSize" value="${page?.pageSize}"/>
+	  		
+			<input type="submit" class="bgbtn" value="搜索" />
+		</form>
+	</div>
+	<div class="back-cont">
+		<div class="back-box">
+			<table width="100%" class="back-table table-fixed">
+				<tr height="40">
+					<th width="100">
+						编号
+					</th>
+					<th>项目标号</th>
+					<th>收支</th>
+					<th>类型</th>
+					<th>
+						交易金额
+					</th>
+					<th>账户余额</th>
+					<th>
+						时间
+					</th>
+				</tr>
+			#{if page?.page}
+				#{list items:page.page,as:"cost"}
+					<tr height="40">
+						<td>${cost?.id}</td>
+						<td>${cost?.bid_id}</td>
+						<td>#{if cost?.type==0} 收入 #{/if}#{if cost?.type==1} 支出 #{/if}</td>
+						<td>#{if cost?.sort==0} 充值 #{/if}#{if cost?.sort==1} 提现 #{/if}#{if cost?.sort==2} 提现手续费 #{/if}#{if cost?.sort==3} 服务费 #{/if}</td>
+						<td>${cost?.amount}元</td>
+						<td>${cost?.balance}元</td>
+						<td>${cost?.time?.format(common.constants.Constants.DATE_PLUGIN)}</td>
+					</tr>
+				#{/list}
+					<!-- 表格数据统计 -->
+					<tr height="40">
+						<td colspan="7" class="back-lasttd">
+							<!-- <p class="back-table-totle left">
+								合计&nbsp;账单金额&nbsp;<span>${totalAmt?.format(common.constants.Constants.FINANCE_FORMATE_NORMAL)}元</span>
+							</p> -->
+							
+							<!-- 分页组件--pageTag -->
+							#{backPageTag page:page,showPage:"showCostList"/}
+							
+						</td>
+					</tr>
+			#{/if}
+			#{else}	
+					<!-- 暂无记录 -->
+					<tr height="58">
+						<td colspan="7" class="back-nodata"><i class="iconfont">&#xe613;</i>暂无记录</td>
+					</tr>
+			#{/else}
+			</table>
+		</div>
+	</div>
+</div>
+
+
+
+<!-- 页面js -->
+<script type="text/javascript">
+	require(["back"],function(back){
+		// 搜索 排序 选中
+		require(["search","linechecked"],function(){
+		});
+	});
+	
+	function showCostList (currPage, pageSize) {
+		$("#currPage").val(currPage);
+		$("#pageSize").val(pageSize);
+		
+		$("#showCostListPre").submit();
+	}
+	
+</script>

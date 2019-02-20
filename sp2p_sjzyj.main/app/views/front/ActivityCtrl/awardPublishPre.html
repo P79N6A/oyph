@@ -1,0 +1,91 @@
+#{if flag == true}
+<div class="f2">
+	<div class="size1">
+		<h1 class="regards">尊敬的${user?.name}<span>您好</span></h1>
+	</div>
+	<div class="tupian">
+		<div class="tu-kuang1" style="float: right; height: auto;">
+		    <p class="kaijiang" style="color: #000;">您还未参加活动，请先报名</p>
+		</div>
+	</div>
+</div>
+#{/if}
+
+#{if flag == false}
+	#{if zhi == 2}
+	<h1 class="regards">尊敬的hg0162161561<span>您好</span></h1>
+	<div class="over-wrap">
+		<div class="over-lf over-1">
+		<img id="image" name="image" src="${parts?.img_url}" onerror="this.src='/public/back/images/noimg.jpg'" style="width: 500px; height: 400px;">
+		</div>
+		<div class="over-lf">
+			<table>
+				<tr>
+					<td>排名:</td>
+					<td>${parts?.orderNum}</td>
+				</tr>
+				<tr>
+					<td>编号:</td>
+					<td>${parts?.id}</td>
+					
+				</tr>
+				<tr>
+					<td>票数:</td>
+					<td>${parts?.poll_num}</td>
+					
+				</tr>
+				<tr>
+					<td>姓名:</td>
+					<td>${parts?.name}</td>
+					
+				</tr>
+				<tr>
+					<td>参赛口号:</td>
+					<td>${parts?.slogan}</td>
+					
+				</tr>
+				<tr>
+					<td>照片信息:</td>
+					<td>${parts?.description}</td>
+					
+				</tr>
+				<tr>
+					<td>【所获奖项】</td>
+					<td>
+					#{if activityPrizes}
+					    #{list items:activityPrizes,as:'activityPrizes'}
+							${activityPrizes?.prize_describe}
+						#{/list}
+					#{/if}
+					#{else}
+						很抱歉，感谢您对讴业的关注
+					#{/else}
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	#{/if}
+	#{if zhi == 1}
+	<div class="f2">
+		<h1 class="regards">尊敬的${user?.name}<span>您好</span></h1>
+		<div class="tupian">
+			<div class="tu-kuang1" style="float: right; height: auto;">
+			    <p class="kaijiang" style="color: #000;">还未开奖，敬请期待！</p>
+			    
+			</div>
+		</div>
+	</div>
+	#{/if}
+	#{if zhi == 3}
+	<div class="f2">
+		<h1 class="regards">尊敬的${user?.name}<span>您好</span></h1>
+		<div class="tupian">
+			<div class="tu-kuang1" style="float: right; height: auto;">
+			    <p  class="kaijiang" style="color: #000;">您的条件不符合开奖要求！</p>
+			</div>
+		</div>
+	</div>
+	#{/if}
+	
+#{/if}

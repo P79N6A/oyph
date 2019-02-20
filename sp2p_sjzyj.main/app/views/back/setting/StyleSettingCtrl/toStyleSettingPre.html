@@ -1,0 +1,112 @@
+#{extends 'common/back/settingMain.html' /}
+	#{set title:'设置 | 风格设置' /}
+	#{set smallclass:4 /}
+	#{set crumbs:'设置>风格设置'/}
+
+
+<div class="back-main">
+	<div class="back-cont">
+		<div class="back-infor">
+			<h2 class="back-infor-head">
+				<span class="left">当前皮肤</span>
+				<span class="right back-thisskin">${theme?.name}</span>
+			</h2>
+			<div class="back-skins">
+				<ul class="back-skins-list back-skins-now-list">
+					<li>
+						<img src="${theme?.img1}" onerror="this.src='/public/common/default.jpg'" onclick="javascript:$(this).preview()" width="282" height="" alt="" />
+					</li>
+					<li>
+						<img src="${theme?.img2}" onerror="this.src='/public/common/default.jpg'" onclick="javascript:$(this).preview()" width="282" height="" alt="" />
+					</li>
+					<li>
+						<img src="${theme?.img3}" onerror="this.src='/public/common/default.jpg'" onclick="javascript:$(this).preview()" width="282" height="" alt="" />
+					</li>
+					<li>
+						<img src="${theme?.img4}" onerror="this.src='/public/common/default.jpg'" onclick="javascript:$(this).preview()" width="282" height="" alt="" />
+					</li>
+				</ul>
+				<p class="back-skins-btn">
+					#{rightMng rightId:805003}
+					<a href="@{back.setting.StyleSettingCtrl.showSkinsPre()}" class="bgbtn">更换皮肤</a>
+					#{/rightMng}
+				</p>
+			</div>
+		</div>
+		<div class="back-infor" id="back_color_set">
+			<h2 class="back-infor-head">
+				<span class="left">风格自定义</span>
+				#{rightMng rightId:805002}
+				<a href="javascript:void(0);" class="right iconfont finance-edit" data-title="编辑" >&#xe602;</a>
+				#{/rightMng}
+			</h2>
+			<div class="clearfix back-color-set">
+				<div class="back-color-img">
+					<img src="/public/back/images/skin-demo.jpg" width="772" alt="" />
+				</div>
+				<div class="back-colset" >
+					<form action="@{back.setting.StyleSettingCtrl.changeColor()}" method="POST" id="form_colset">
+						<p>
+							主色系
+							<span class="colpick-show"></span>
+							#<input type="text" class="colpicker iffocus" disabled="disabled" name="mainColor" value="${settings?.get(common.constants.SettingKey.THEME_MAIN_COLOR)}" />
+						</p>
+						<p>
+							辅色系
+							<span class="colpick-show"></span>
+							#<input type="text" class="colpicker iffocus" disabled="disabled" name="auxColor" value="${settings?.get(common.constants.SettingKey.THEME_AUX_COLOR)}" />
+						</p>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 素材库弹窗 -->
+
+
+<!-- 页面js -->
+<script type="text/javascript">
+	require(["back"],function(back){
+		require(["colorset","finance-edit"]);
+		//js验证扩展
+		require(["validation/validateExt"]);
+		
+		var that = $("#back_color_set"), 
+		editBtn = $(that).find( ".finance-edit"),
+		editText = $(that).find("select,input:not(.easyui-datetimebox),textarea");
+		editText.prop("disabled", true);
+		editBtn.click(function() {
+			disable = editText.prop("disabled");
+			if (disable) {
+				editBtn.html("&#xe630;").data("title","保存");
+				editText.eq(0).focus();
+				$(".titlebox").text( editBtn.data('title'));
+				editText.prop("disabled", !disable);
+			} else {
+				$("form[id='form_colset']").submit();
+				
+			}
+		});
+	
+		//自定义主色系
+		$("form[id='form_colset']").validate({
+			errorPlacement: function(error, element) {
+				error.addClass('back-notice').insertAfter(element);
+			},
+			rules:{
+				"mainColor":{
+					required:true,
+					isColor:true
+				},
+				"auxColor":{
+					required:true,
+					isColor:true
+				}
+			}
+		});
+		
+		
+	});
+</script>
+

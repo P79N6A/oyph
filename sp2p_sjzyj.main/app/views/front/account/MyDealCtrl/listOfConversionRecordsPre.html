@@ -1,0 +1,32 @@
+<h1 class="azamoney-nav">兑换记录</h1>
+<table class="account-table" width="100%">
+	<tr height="46">
+		<th>编号</th>
+		<th>类型</th>
+		<th>金额</th>
+		<th>申请时间</th>
+		<th>兑换时间</th>
+		<th>状态</th>
+	</tr>
+	
+	#{if pageBean.page}
+		#{list items:pageBean.page,as:'conversion'}
+			<tr height="56">
+				<td>${conversion?.id}</td>
+				<td>${conversion?.conversion_type?.value}</td>
+				<td>${conversion?.amount?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}</td>
+				<td>${conversion?.time?.format(common.constants.Constants.DATE_TIME_FORMATE)}</td>
+				<td>${conversion?.audit_time?.format(common.constants.Constants.DATE_TIME_FORMATE)?:'----'}</td>
+				<td>${conversion?.status?.value}</td>
+			</tr>
+		#{/list}
+	#{/if}
+</table>
+#{if pageBean?.page}
+	#{frontPageTag page:pageBean,showPage:'listOfConversionRecordsPre' /}
+#{/if}
+#{else}
+	<div class="norecord-box c9">
+		暂无记录
+	</div>
+#{/else}

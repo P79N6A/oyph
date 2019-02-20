@@ -1,0 +1,659 @@
+#{extends 'common/front/accountMain.html' /}
+#{set title:'个人中心 | 安全中心 | 绑定银行卡' /}
+#{set smallclass:4 /}
+
+<style type="text/css">
+	.bank-box{
+		width: 960px;
+		margin: auto;
+		background: #FFF;
+	}
+	.ban-title{
+		width: 100%;
+		padding: 15px 0;
+		border-bottom: 1px solid #ccc;
+	}
+	.banl-title-size{
+		font-size: 22px;
+		color: #999;
+		font-weight: 400;
+		margin-left: 25px;
+	}
+	.bank-list{
+		margin-left: 110px;
+	}
+	.bank-list>li{
+		width: 136px;
+		height: 49px;
+		float: left;
+		margin: 15px 14px;
+		cursor: pointer;
+		border-radius: 6px;
+	}
+	.import{
+		width: 800px;
+		height: 40px;
+		margin: 15px 50px;
+		line-height: 40px;
+		position: relative;
+		
+	}
+	.import-sizes{
+		padding:10px;
+		outline: none;
+		border: 1px solid #ccc;
+		border-radius: 6px;
+		background: #ccc;
+	}
+	.import-size{
+		padding:10px;
+		outline: none;
+		border: 1px solid #ccc;
+		border-radius: 6px;
+	}
+	
+	.bound{
+		width: 185px;
+		height: 40px;
+		background: #ff9711;
+		border-radius: 6px;
+		color: #FFF;
+		cursor: pointer;
+		margin: 30px 0 30px 400px;
+		border: none;
+		outline: none;
+	}
+	.bound:hover{
+		background: #f08b08;
+	}
+	.import1{
+		margin-left: 66px;
+	}
+	.import2{
+		margin-left: 35px;
+	}
+	.import-col{
+		color: #999999;
+	}
+	.import-col1{
+		color: #ff9711;
+	}
+	.list-bg{
+		background: rgba(243,181,102,.5);
+	}
+	.graph{
+		display: block;
+		width: 120px;
+		height: 40px;
+		position: absolute;
+		top:0px;
+		padding: 0 8px;
+		left: 310px;
+		cursor: pointer;
+		border-radius: 6px;
+	}
+	.graph1{
+		display: block;
+		width: 113px;
+		height: 40px;
+		position: absolute;
+		top:0px;
+		color: #FFF;
+		border-radius: 6px;
+		left: 279px;
+		font-style: normal;
+		padding: 0 8px;
+		cursor: pointer;
+		background: #ff9711;
+	}
+	.errors{
+		color: #f44e43;
+		font-weight: 700;
+	}
+</style>
+
+<!-- 账户主要表格 -->
+<div class="account-infor">
+	<!-- 修改银行卡 -->
+	<div class="account-setbank">
+		<h2 class="account-title">
+			<span class="left bankcard-title c3"><i class="icon"></i>绑定银行卡</span>
+		</h2>
+		
+		<form action="@{front.account.MySecurityCtrl.bindCardPre()}" method="get" id="bankFrom" >
+			<p class="import"><span>真实姓名：</span><input class="import-sizes" readonly="readonly" size="26" type="text" placeholder="请输入您的真实姓名" value="${userInfo?.reality_name}"/></p>
+			<p class="import"><span>身份证号：</span><input class="import-sizes" readonly="readonly" size="26" type="text" placeholder="请输入您的身份证号码" value="${userInfo?.id_number}"/></p>
+			<p class="import">
+				<span>银行卡号：</span>
+				<input class="import-size" name="t_bankno" id="t_bankno" size="26" type="text" placeholder="请输入银行卡号" onblur="CheckBankNo($('#t_bankno'));" onfocus="clearbanknoInfo()"/>&nbsp;&nbsp;
+			    <span class="errors" id="banknoInfo"></span>
+			</p>
+			<p class="import"><span>银行名称：</span><input class="import-size" name="bankName" id="bankName" readonly="readonly" size="26" type="text" placeholder="请输入银行名称"/></p>
+			<p class="import import1">
+				<span>手机号：</span>
+				<input class="import-size" value="${flash?.mobile}" id="mobile" size="26" name="mobile" type="text" placeholder="请输入银行预留手机号" onblur="checkBankMobile()" onfocus="clearBankMobile()" oninput="$(this).ndigitInteger(11)" onpropertychange="$(this).ndigitInteger(11)" />&nbsp;&nbsp;
+				<span class="errors" id="mobileInfo"></span>
+			</p>
+			<p class="import import2">
+				<span>图形验证码：</span>
+				<input class="import-size" id="code" size="26" name="code" value="${flash?.code}" type="text" placeholder="请输入图形验证码" onblur="checkPicCode()" onfocus="clearPicCode()"/>
+				<input id="randomId" name="randomId" value="${randomId}" type="hidden"/>&nbsp;&nbsp;
+				<img src="@{common.CaptchaController.createCaptcha(randomId)}" id="captchaImage" onclick="refreshCaptcha(true);" class="codeimg" height="46" alt="" title="换一张" />&nbsp;&nbsp;
+				<span class="errors" id="codeInfo"></span>
+			</p>
+			<input type="hidden" name="bankCode" id="bankCode"  value="">
+			<input type="hidden" id="scene" name="scene" value="${common.constants.SmsScene.PC_FORGET_PWD}">
+			<input class="bound" type="button" value="立即绑定" onclick="submitCheck()"/>
+		</form>
+		
+		<p class="returnprev">
+			<a href="@{front.account.MySecurityCtrl.securityPre()}" class="backpage"><i class="icon return-icon"></i>返回</a>
+		</p>
+	</div>
+</div>
+<div class="hide" style="display: none;">
+<input class="index">
+</div>
+
+<script type="text/javascript">
+
+require(['front'],function(front){
+	$("#bankcard_add").click(function(){
+		#{if isSimulated}
+			alert("模拟登录不能执行该操作");
+			return false;
+		#{/if}
+		#{else}
+			$('#bandcard').dialog();
+			window.open("@{front.account.MySecurityCtrl.bindCardPre()}"); 
+		#{/else}
+	});
+	
+	listOfUserBankCardPre(1,5);
+})
+
+$(".bank-list li").click(function(){
+	$(this).addClass("list-bg").siblings().removeClass("list-bg");
+	var currImg=$(this).children("p").children("img");
+	var imgName=currImg.attr("name");
+	var imgTitle=currImg.attr("title");
+	$("#bankName").val(imgName);
+	$("#bankCode").val(imgTitle);
+	$(".hide .index").val('1')
+});
+	
+require(['front'],function(){
+	#{if flash?.error}
+		alert('${flash?.error}');
+	#{/if}
+	//判断密码强度、引入validate验证框架
+	require(['passwordLevel','validation/validateExt']);
+	//取消获取验证码按钮禁用效果
+	$(".getcode-btn").removeAttr("disabled");
+	
+	$("#bankFrom").validate({
+		errorPlacement: function(error, element) {
+			if(element.is("#mobile")){
+				$("span[id='mobile-error']").remove();
+				$("input[id='mobile']").removeClass("focus").addClass("text-error");
+				error.addClass('errors').appendTo(element.parent());
+			}else if(element.is("#code")){
+				$("span[id='code-error']").remove();
+				$("input[id='code']").removeClass("focus").addClass("text-error");
+				error.addClass('errors').appendTo(element.parent());
+			}else if(element.is("#smsCode")){
+				$("span[id='smsCode-error']").remove();
+				$("input[id='smsCode']").removeClass("focus").addClass("text-error");
+				error.addClass('errors').appendTo(element.parent());
+			}
+		},
+		success:function(label){
+			label.removeClass('errors');
+			$(label).parent().children("input").eq(0).addClass("focus");
+		},
+		errorElement:'span',
+		rules:{
+		    "mobile":{
+				required:true,
+				isMobile:true,
+				remote:{
+					 url: "@{front.account.MySecurityCtrl.checkUserMobile()}",
+					 type: "post",
+					 dataType: "json",
+					 data: {
+						 mobile: function() {
+							return $("input[id='mobile']").val();
+						}
+					}
+				}
+			},
+			"code":{
+				required:true,
+				digits:true
+			},
+			"smsCode":{
+				required:true,
+				digits:true,
+				minlength:6
+			},
+		},
+		messages:{
+			"mobile":{
+				required:"手机号不能为空",
+				isMobile:"手机号格式不正确",
+				remote:"该手机号已被占用"
+			},
+			"code":{
+				required:"验证码不能为空",
+				digits:"验证码不正确"
+			},
+			"smsCode":{
+				required:"短信验证码不能为空",
+				digits:"短信验证码不正确",
+				minlength:"短信验证码不正确"
+			},
+		},
+		submitHandler:function(form){
+			$.ajax({
+				url : "@{front.account.MySecurityCtrl.checkSmsCodes()}",
+				type : "POST",
+				data : {
+					"mobile": $("#mobile").val(),
+					"randomId": $("#randomId").val(),
+					"code": $("#code").val(),
+					"smsCode": $("#smsCode").val(),
+					"scene": "${common.constants.SmsScene.PC_REGISTER}"
+				},
+				success : function(data){
+					if (data.code < 1) {
+						if($("#smsCode-error").length == 0){
+							$("#smsCode").after("<span style='display: block;' class='errors' id='smsCode-error'>"+data.msg+"</span>");
+						}else{
+							$("#smsCode-error").addClass("errors").css("display","block");
+							$("#smsCode-error").html(data.msg);
+						}
+					} else {
+						$("#smscode-error").css("display","none");
+						$("#smscode-error").html('');
+						form.submit();
+					}
+				}
+			});
+		}
+	})
+});
+
+/* 验证码刷新 */
+function refreshCaptcha(isRefresh){
+	$.post("@{common.CaptchaController.flushCaptcha()}",function(data){
+		var arr=eval(data);
+		var randomid = arr.randomID;
+		$("#captchaImage").attr("src","@{common.CaptchaController.createCaptcha()}?uuid="+randomid);	
+		$("#randomId").val(randomid);
+	});
+	if(isRefresh){
+		$("#code").next("p").remove();
+		$("#code").removeClass("text-error focus");
+	}
+	$("#code").removeClass("focus");
+	$("#code").val("");
+}
+
+var flag = true;
+/* 发送手机验证码  */
+function sendCodes(){
+	/* var bankno = $("#mobile").val();
+　　   if(bankno == "") {
+	 　　$("#mobileInfo").html("请填写手机号");
+	  return false;
+	}
+	if(bankno.length ！= 11) {
+	  $("#mobileInfo").html("手机号长度不正确");
+	  return false;
+	}
+	if(!(/^1[34578]\d{9}$/.test(bankno))){ 
+	  $("#mobileInfo").html("手机号码格式不正确");  
+      return false; 
+    }
+	 */
+	
+	if($("#flag").val() == 2){
+		$("#code").val('');
+		$("#getsmscode").val("获取验证码");
+		$("#flag").val("1");
+		$("#code-note").css("display","none");
+		refreshCaptcha(false);
+		$("#code-error").addClass("errors").css("display","block").html("请重新输入图文验证码");
+	}
+	
+	var mobile = $("#mobile").val().trim();
+	var randomId = $("#randomId").val().trim();
+	var code = 	$("#code").val().trim();
+	
+    if(mobile == ''){
+    	if($("#mobile-error").length == 0){
+			$("#mobile").after("<span style='display: block;' class='errors' id='mobile-error'>手机号不能为空</span>");
+    	}
+		
+		return;
+    }else if (!mobile.isMobileNum()) {
+    	if($("#mobile-error").length == 0){
+	    	$("#mobile").after("<span style='display: block;' class='errors' id='mobile-error'>手机号格式不正确</span>");
+    	}
+    	
+    	return;
+	}
+     
+	if(code == ''){
+		if($("#code-error").length == 0){
+			$("#code").after("<span style='display: block;' class='errors' id='code-error'>验证码不能为空</span>");
+		}
+		
+		return;
+	}
+     
+	 $.ajax({
+			 url:"@{front.FrontAjaxValideCtrl.checkUserMobile()}",
+			 type: "POST",
+			 async:false,
+			 data:{
+				 'mobile':mobile
+			 },
+			 success:function(data){
+		 		if(!data){
+					flag = true;
+				}else{
+					flag = false;
+				}
+			}
+	 });
+	 //根据手机号码和验证码判断是否应该发送短信验证码
+    if(flag){
+    	
+    	return;
+    }
+
+	 $.ajax({
+		url : "@{front.account.MySecurityCtrl.sendCodeOfRegister()}",
+		type : "POST",
+		data : {
+			"mobile" : mobile,
+			"randomId" : randomId,
+			"code" : code,
+			"scene" : "${common.constants.SmsScene.PC_REGISTER}"
+		},
+		dataType:"json",
+		success : function(data) {
+			/* 判断短信验证码发送是否成功 */
+			if(data.code < 1){
+				if(data.code == -2){
+					//手机号码错误提示
+					if($("#mobile-error").length == 0){
+						$("#mobile").after("<span style='display: block;' class='errors' id='mobile-error'>"+data.msg+"</span>");
+					}else{
+						$("#mobile-error").addClass("errors").css("display","block");
+						$("#mobile-error").html(data.msg);
+					}
+					refreshCaptcha(false); //刷新验证码
+				}else if(data.code == -3){
+					//验证码错误提示
+					if($("#code-error").length == 0){
+						$("#captchaImage").after("<span style='display: block;' class='errors' id='code-error'>"+data.msg+"</span>");
+					}else{
+						$("#code-error").addClass("errors").css("display","block");
+						$("#code-error").html(data.msg);
+					}
+					refreshCaptcha(false); //刷新验证码
+				}else if(data.code == -4){
+					//短信提示
+					if($("#smsCode-error").length == 0){
+						$("#code-note").after("<span style='display: block;' class='errors' id='smsCode-error'>"+data.msg+"</span>");
+					}else{
+						$("#smsCode-error").addClass("errors").css("display","block");
+						$("#smsCode-error").html(data.msg);
+					}
+				}
+				$("#flag").val("1");
+			} else {
+				/* 短信发送成功，清除页面错误提示 */
+				$("#mobile-error").css("display","none");
+				$("#mobile-error").html('');
+				$("#code-error").css("display","none");
+				$("#code-error").html('');
+				$("#smsCode-error").css("display","none");
+				$("#smsCode-error").html('');
+				
+				if(!$(".getcode-btn").prop("disabled")){
+					$(".getcode-btn").prop("disabled",true).next(".code-note").show();
+					var getCode = $(".getcode-btn"),
+						timeid,
+						i = 60;//再次获取验证码等待时间
+					getCode.val(i+'s');
+					timeid = setInterval(function(){
+						if(i > 1){
+							i--;
+							getCode.val(i+'s');
+						}else{
+							getCode.removeAttr("disabled");
+							getCode.val('再次获取');
+							clearInterval(timeid);
+							$("#flag").val("2");
+						}
+					},1000);
+				}
+			}
+		}
+	});
+}
+
+//验证银行卡号
+function CheckBankNo(t_bankno) {
+　　   var bankno = $.trim(t_bankno.val());
+　　   if(bankno == "") {
+	 　　$("#banknoInfo").html("请填写银行卡号");
+	  return false;
+	}
+	if(bankno.length < 16 || bankno.length > 19) {
+	  $("#banknoInfo").html("银行卡号长度必须在16到19之间");
+	  return false;
+	}
+	var num = /^\d*$/; //全数字
+	if(!num.exec(bankno)) {
+	  $("#banknoInfo").html("银行卡号必须全为数字");
+	  return false;
+	}
+	//开头6位
+	var strBin = "10,18,30,35,37,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,58,60,62,65,68,69,84,87,88,94,95,98,99";
+	if(strBin.indexOf(bankno.substring(0, 2)) == -1) {
+	  $("#banknoInfo").html("银行卡号开头6位不符合规范");
+	  return false;
+	}
+	//Luhm校验（新）
+	/* if(!luhmCheck(bankno))
+	  return false; */
+	
+	  $("#banknoInfo").html("验证通过!");
+	  var t_bankno1=$('#t_bankno').val()
+	  checkBankName(t_bankno1);
+	  return true;
+
+}
+
+function checkBankName(t_bankno) {
+	$.ajax({
+        url : "@{front.account.MySecurityCtrl.checkBankName()}",
+        type : "POST",
+        data : {
+            "t_bankno":t_bankno
+        },
+        dataType:"json",
+        success : function(data){
+        	console.log(data)
+            if(data.code<0){
+            	$("#bankName").val(data.msg);
+            	return false;
+            }else{
+            	$("#bankName").val(data.msg);
+            	$("#bankCode").val(data.obj);
+            	return true;
+            }
+        }
+    });
+}
+
+	function clearbanknoInfo(){
+		 $("#banknoInfo").html("");
+	}
+//验证手机号
+	function checkBankMobile(){
+	var mobile = $("#mobile").val().trim();
+	if(!mobile){
+		$("#mobileInfo").html("请填写手机号");
+		return false;
+	}
+	
+	var reg=/^1[3|4|5|7|8][0-9]\d{8}$/;
+	if(!reg.test(mobile)){
+		 $("#mobileInfo").html("电话号码格式不正确！");
+		 return false;
+	 }
+	 $("#mobileInfo").html(""); 
+	return true;	
+	}
+	
+	function clearBankMobile(){
+		 $("#mobileInfo").html("");
+	}
+	
+//图形验证
+	function checkPicCode(){
+	var code=$("#code").val().trim();
+	if(!code){
+		$("#codeInfo").html("请输入验证码");
+		return false;
+	}
+	 $("#codeInfo").html(""); 
+		return true;	
+	}
+	function clearPicCode(){
+		 $("#codeInfo").html(""); 
+	}
+	
+	//获取短信验证码
+	function sendCode(){
+		var mobile = $("#mobile").val().trim();
+		var code = $("#code").val().trim();
+		var randomId = $("#randomId").val().trim();
+		var flag1=CheckBankNo($('#t_bankno'));
+		var flag2=checkBankMobile();
+		var flag3=checkPicCode();
+	if(flag1&&flag2&&flag3){
+			
+		
+		
+		/* $.ajax({
+			 url:"@{front.FrontAjaxValideCtrl.checkUserMobile()}",
+			 type: "POST",
+			 async:false,
+			 data:{
+				 'mobile':mobile
+			 },
+			 success:function(data){
+		 		if(!data){
+					flag = true;
+				}else{
+					flag = false;
+				}
+			}
+		 }); */
+		 //根据手机号码和验证码判断是否应该发送短信验证码
+	   /*  if(flag){
+	    	$("#codeInfo").html("");
+	    	$("#mobileLi").show();
+    		$("#mobileInfo").css("color","red");
+    		$("#mobileInfo").html("您的手机号已被注册");
+    		refreshCaptcha(true);
+	    	return;
+	    } */
+	    
+		$.ajax({
+			url : "@{front.account.MySecurityCtrl.sendCodeOfRegister()}",
+			type : "POST",
+			data : {
+				"mobile" : mobile,
+				"code" : code,
+				"randomId" : randomId,
+				"scene" : "${common.constants.SmsScene.PC_FORGET_PWD}"
+			},
+			dataType:"json",
+			success : function(data) {
+				/* 判断短信验证码发送是否成功 */
+				if(data.code < 1){
+					if(data.code == -2){
+						//手机号码错误提示
+			    		$("#mobileInfo").html(data.msg);
+			    		refreshCaptcha(true);
+					}else if(data.code == -3){
+			    		$("#codeInfo").html(data.msg);
+			    		refreshCaptcha(true);
+					}else if(data.code == -4){
+						//短信验证码错误提示
+			    		$("#smsCodeInfo").html(data.msg);
+			    		refreshCaptcha(true);
+					}
+					$("#flag").val("1");
+				} else {
+					$("#code-note").show();
+                    /* 按钮显示倒计时1分钟 */
+					var getCode = $("#getsmscode"),
+						timeid,
+						i = 120;//再次获取验证码等待时间
+					getCode.val(i + 's');
+					timeid = setInterval(function(){
+						i--;
+						$("#sign").val("2");
+						if(i >= 0){
+							
+							getCode.val(i + 's');
+						}
+						
+						if(i < 0) {
+							$("#sign").val("1");
+							getCode.val('再次获取');
+							clearInterval(timeid);
+							$("#flag").val("2");
+						}
+					
+					},1000);
+				}
+			}
+		});
+    }
+	}
+	
+	/**提交校验短信验证码*/
+	function submitCheck(){
+		
+		/* 银行名称js拦截    cang */
+		/* var a=$('.hide .index').val()
+		if(a==''){
+			alert('请选择绑卡银行名称')
+			return false;
+		} */
+		
+		var flag1=CheckBankNo($('#t_bankno'));
+		var flag2=checkBankMobile();
+		var flag3=checkPicCode();
+		//var smsCode=$("#smsCode").val();
+		if(flag1&&flag2&&flag3){
+			$("#bankFrom").submit();
+			return true;
+		}else{
+			return false;
+		}
+		
+		
+	}
+	
+
+</script>

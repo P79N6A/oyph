@@ -1,0 +1,11 @@
+<div class="evolution-box">
+	<h2 class="evolution-course">${column?.value}</h2>
+	<div class="knowledge">
+	#{if page?.page}
+		#{list items:page.page,as:'help'}
+		<h2 class="knowledge-tit">${help?.title}</h2>
+		<div class="knowledge-size">#{verbatim}${help?.content}#{/verbatim}</div>
+		#{/list}
+	#{/if}
+	</div>
+</div>

@@ -1,0 +1,81 @@
+<link rel="stylesheet" type="text/css" href="@{'/public/back/stylesheets/demos.css'}" />
+<link rel="stylesheet" type="text/css" href="@{'/public/back/stylesheets/custom.css'}" />
+<link rel="stylesheet" type="text/css" href="@{'/public/back/stylesheets/slicebox.css'}" />
+<script type="text/javascript" src="/public/back/javascripts/jquery.slicebox.js"></script>
+<script type="text/javascript" src="/public/back/javascripts/modernizr.custom.46884.js"></script>
+<div class="tit"><span></span><i data-role="close" onclick="hiddenPicture()">关闭</i></div>
+<div class="wrappers">
+	<ul id="sb-sliders" class="sb-sliders" style="max-width: 740px;">
+		#{if riskCount!=1}
+		#{list items:riskPics,as:'riskPics'}
+			<li>
+				<a><img src="${riskPics.pic_path}" style="width: 700px; height: 525px; margin-left: 20px;" title="" alt=""></a>
+				
+			</li>
+		#{/list}
+		#{/if}
+		#{else}
+		#{list items:riskPics,as:'riskPics'}
+			<li>
+				<a><img src="${riskPics.pic_path}" style="width: 700px; height: 525px; margin-left: 20px;" title="" alt=""></a>
+				
+			</li>
+		#{/list}
+		#{list items:riskPics,as:'riskPics'}
+			<li>
+				<a><img src="${riskPics.pic_path}" style="width: 700px; height: 525px; margin-left: 20px;" title="" alt=""></a>
+			</li>
+		#{/list}
+		#{/else}
+	</ul>
+
+	<div id="shadow" class="shadow" style="display: block;"></div>
+
+	<div id="nav-arrows" class="nav-arrows" style="display: block;">
+		<a href="#">Next</a>
+		<a href="#">Previous</a>
+	</div>
+</div>
+ <script type="text/javascript">
+$(function() {
+	var Page = (function() {
+		var $navArrows = $( '#nav-arrows' ).hide(),
+			$shadow = $( '#shadow' ).hide(), 
+			 slicebox = $( '#sb-sliders' ).slicebox( {
+				onReady : function() {
+
+					$navArrows.show();
+					$shadow.show();
+				},
+				orientation : 'r',
+				cuboidsRandom : true
+			} ), 
+			
+			init = function() {
+
+				initEvents();
+				
+			},
+			initEvents = function() {
+
+				// add navigation events
+				$navArrows.children( ':first' ).on( 'click', function() {
+
+					slicebox.next();
+					return false;
+
+				} );
+
+				$navArrows.children( ':last' ).on( 'click', function() {
+					
+					slicebox.previous();
+					return false;
+
+				} );
+
+			};
+			return { init : init };
+	})();
+	Page.init();
+});
+</script> 

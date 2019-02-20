@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <link rel="stylesheet" type="text/css" href="/public/front/stylesheets/photoAlbum.css"/>
+    <script src="/public/front/javascripts/js/jquery-1.8.3.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/public/front/javascripts/js/rem.js" type="text/javascript" charset="utf-8"></script>
+    <title>${selectTheme?.name}</title>
+    
+</head>
+<body>
+	<input id="themeId" name="themeId" value="${themeId}" type="hidden"/>
+		<div class="homePage">
+			
+			 <img src="${selectTheme?.image_url}" height="80"/>
+		</div>
+		<div class="warp">
+			<strong class="a">3</strong>秒之后自动进入相册
+		</div>
+    <script type="text/javascript">
+		
+    $(document).ready(function() {
+			var times = 3 // 60秒
+			var themeId = $("#themeId").val()
+			countTime = setInterval(function() {
+				times--;
+				if(times == 0) {
+					clearInterval(countTime)
+					window.location.href="@{front.ActivityCtrl.SharingPhotoPre(themeId)}";
+				}
+				// 获取分钟、毫秒数
+				$(".a").html(times);
+			}, 1000);
+		});
+	</script>
+</body>
+
+</html>

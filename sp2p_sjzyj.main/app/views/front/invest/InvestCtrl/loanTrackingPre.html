@@ -1,0 +1,48 @@
+#{if currUser}
+	#{if loanTracks?.page == null}
+	<div class="norecord-box c9">
+	暂无记录
+	</div>
+	#{/if}
+	#{else}
+	<table width="100%" class="detail-record" style="table-layout: fixed;">
+		<input type="hidden" id="loanTrackCurrpage" value="${loanTracks?.currPage}"/>
+		<input type="hidden" id="loanTrackPagesize" value="${loanTracks?.pageSize}"/>
+		<input type="hidden" id="loanTrackTotalSize" value="${loanTracks?.totalCount}"/>
+		<tr height="40" class="treven">
+			<td width="20%">标题</td>
+			<td width="60%" align="center">内容</td>
+			<td width="20%" align="center">记录时间</td>
+		</tr>
+		#{list items:loanTracks?.page,as:'pagea'}
+		<tr height="40">
+			<td >${pagea?.title}</td>
+			<td align="center" title="${pagea?.content}" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" >${pagea?.content}</td>
+			<td align="center">${pagea?.time?.format(common.constants.Constants.DATE_FORMATE)}</td>
+		</tr>
+		#{/list}
+	</table>
+	<p class="loadmore">
+		<a href="javascript:void(0);" onclick="loadMoreRepayment()">点击加载更多</a>
+	</p>
+	#{/else}
+#{/if}
+#{else}
+	<div class="tab-cont">
+		<p class="detail-unlogin">请<a href="@{front.LoginAndRegisteCtrl.loginPre()}" class="major">登录</a>或<a href="@{front.LoginAndRegisteCtrl.registerPre()}" class="major">注册</a>后查看</p>
+	</div>
+#{/else}
+<script type="text/javascript">
+function loadMoreRepayment(){
+	var nowSize = $("#loanTrackPagesize").val();
+	var totalSize = $("#loanTrackTotalSize").val();
+	$("#loanTrackPagesize").val(parseInt(nowSize)+5);
+	loanTrackingPre(function(data){
+		$("#Track").html(data);
+		if(parseInt(nowSize)+5 >= parseInt(totalSize)){
+			$(".loadmore").html("<span>没有更多了</span>");
+			return;
+		}
+	});
+}
+</script>

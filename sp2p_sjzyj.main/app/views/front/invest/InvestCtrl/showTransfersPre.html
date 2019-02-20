@@ -1,0 +1,50 @@
+
+<div class="invent_list ">
+					
+					<ul class="fix cl">
+						#{list items:page?.page,as:'debtTransfer'}
+						<li onclick="javascript:location.href='@{front.invest.InvestCtrl.transferPre(debtTransfer?.id)}'">
+							<div class="animate-up">
+								<p class="title ">
+									<a href="@{front.invest.InvestCtrl.transferPre(debtTransfer?.id)}" class="f18">${debtTransfer?.debt_transfer_no} ${debtTransfer?.title}</a>
+								</p>
+								<div class="invent-data">
+									<div class="per-box i-b-d">
+										<div class="mb10"><span class="f40 g-orange2 fa rel">${debtTransfer?.debt_amount?.format(common.constants.Constants.FINANCE_FORMATE_NORMAL)}</span><span class="g-orange2 f14 rel">元</span>
+											<!-- 年化利率风险提示 -->
+											<span class="g9 rel showtips-box f12">
+                                        <span class="lv-we-showtips-box left-75">
+                                            <span class="lv-we-showtips lv-showtips-prom" style="display: none;">
+                                                本平台所有项目预期年化利率是在参考同类型项目历史数据得出，并不代表实际收益，市场有风险，借贷需谨慎。
+                                                <i class="lv-arrow-tip"></i>
+                                            </span>
+											</span>
+											</span>
+											<!-- 年化利率风险提示 -->
+
+										</div>
+										<span class="g9 ml5  f12 ">最转让价格：#{formatIntMoney money:debtTransfer?.transfer_price /}元</span>
+									</div>
+									<div class="date i-b-d ">
+										<div class="mb10  mb15"><span class=" f26 g6 rel t2">${debtTransfer?.period}</span> <span class="g9 f12">期 </span></div>
+									</div>
+									<div class="submit i-b-d">
+										#{if models.core.entity.t_debt_transfer.Status.AUCTING.equals(debtTransfer?.status) && sysNowTime?.compareTo(debtTransfer?.end_time) == -1}
+										<a class="join td-btn-1   td-btn-1-or jiek_action" href="javascript:void(0);" >立即购买</a>
+										#{/if}
+										#{else}
+										<a class="join td-btn-1   td-btn-1-gar jiek_action" href="javascript:void(0);">已结束</a>
+										#{/else}
+									</div>
+								</div>
+							</div>
+							<a href="" target="_blank" style="display: none"><span></span></a>
+						</li>
+						#{/list}
+					</ul>
+				</div>
+#{if page?.page}
+	#{frontPageTag page:page,showPage:"showTransfer"/}
+#{/if}
+
+

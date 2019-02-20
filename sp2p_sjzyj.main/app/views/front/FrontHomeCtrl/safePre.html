@@ -1,0 +1,21 @@
+#{extends 'common/front/frontFootMain.html' /}
+#{set title:'平台优势' /}
+#{set AItem:4 /}
+#{set smallclass:1 /}
+<!-- main -->
+<div class="inner-banner">
+	#{img data_original:profile?.image_url, class:"lazy", width:"1920", height:"400" /}
+	
+</div>
+<div class="container mt30">
+	<div class="detail-box aboutus-box">
+		#{verbatim}${profile.content}#{/verbatim}
+	</div>
+</div>
+<!-- main end-->
+
+	
+<script type="text/javascript">
+	require(['front']);
+</script>
+<!-- main end-->

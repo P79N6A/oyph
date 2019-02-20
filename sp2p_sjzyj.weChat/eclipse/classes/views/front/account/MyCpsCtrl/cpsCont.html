@@ -1,0 +1,42 @@
+*{
+	被包含页面:(*Cont.html页面都是被包含页面)
+	主页面在:/com.shovesoft.sp2p.main/app/views/front/account/MyRewardCtrl/awardPre.html
+}*
+
+<!-- CPS模块的展示位置 -->
+<div class="tab-cont none clearfix account-manange" id="extTabCps">
+</div>
+
+<script type="text/javascript">
+	require(['front'],function(front){
+		$(".tab-menu").children("a[id='extCps']").click(function(){
+			var tab = $("#extTabCps");
+			var flag = tab.children("div").length == 0;
+			if(flag  || $(".account-main").is(":hidden")){
+				showMyCps(1,5);
+			}
+		});
+	});
+	
+	function showMyCps(currPage){
+		$.ajax({
+			url : "@{front.account.MyCpsCtrl.showMyCpsPre()}",
+			type : "GET",
+			data : {
+				"currPage" : currPage
+			},
+			success : function(data) {
+				var flag = interceptorCheck(data);
+				if(!flag){
+					return;
+				}
+				$("#extTabCps").html(data);
+				// 表格隔行换色
+				$('.account-table').each(function(){
+					$(this).children('tbody').children('tr:not(.account-bill):even').addClass('even');
+				});
+			}
+	    });
+	}
+
+</script>

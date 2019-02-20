@@ -1,0 +1,2195 @@
+#{extends 'common/back/riskMain.html' /}
+	#{set title:'风控 | 理财项目' /}
+	#{set smallclass:0 /}
+	#{set crumbs:'风控>理财项目'/}
+<style>
+ 	.tabtext{
+ 		text-align: right;
+ 		padding-left: 20px;
+ 	}
+ 	.tabinput{
+ 		padding-left:10px; 
+ 	}
+ 	.tabcheckbox{
+ 		vertical-align: middle;
+ 		margin-left: 30px;
+ 	}
+ 	
+ 	.tabnumber{
+ 		width: 160px;
+ 	}
+ 	
+ 	.trheight{
+ 		height: 50px;
+ 	}
+ 	.tdwidth{
+ 		width: 120px;
+ 	}
+</style>
+
+<div class="back-main">
+	<!-- 头部筛选条件 -->
+	<div class="back-usertop">
+		<div class="left back-usermenu">
+			<a href="@{back.risk.LoanMngCtrl.showBidPre(0)}" #{if showType==0} class="selected"#{/if}>所有</a>
+			<a href="@{back.risk.LoanMngCtrl.showBidPre(1)}" #{if showType==1} class="selected"#{/if}>添加风控报告</a>
+			<a href="@{back.risk.LoanMngCtrl.showBidPre(2)}" #{if showType==2} class="selected"#{/if}>待审核报告</a>
+			<a href="@{back.risk.LoanMngCtrl.showBidPre(3)}" #{if showType==3} class="selected"#{/if}>审核通过报告</a>
+			<a href="@{back.risk.LoanMngCtrl.showBidPre(4)}" #{if showType==4} class="selected"#{/if}>未通过报告</a>
+			<a href="@{back.risk.LoanMngCtrl.showBidPre(5)}" #{if showType==5} class="selected"#{/if}>初审中</a>
+			<a href="@{back.risk.LoanMngCtrl.showBidPre(6)}" #{if showType==6} class="selected"#{/if}>借款中</a>
+			<a href="@{back.risk.LoanMngCtrl.showBidPre(7)}" #{if showType==7} class="selected"#{/if}>满标审核</a>
+			<a href="@{back.risk.LoanMngCtrl.showBidPre(8)}" #{if showType==8} class="selected"#{/if}>还款中</a>
+			<a href="@{back.risk.LoanMngCtrl.showBidPre(9)}" #{if showType==9} class="selected"#{/if}>已结束</a>
+			<a href="@{back.risk.LoanMngCtrl.showBidPre(10)}" #{if showType==10} class="selected"#{/if}>失败</a>
+		</div>
+		
+		<!-- 搜索按钮，控制搜索条件的显示隐藏 -->
+		<div class="back-search left #{if numNo || projectName || userName}selected#{/if}">
+			<i class="iconfont searchicon">&#xe60a;</i>搜索<i class="iconfont arrowicon">&#xe603;</i>
+		</div>
+		
+		<!-- 右侧功能按钮 -->
+		<div class="right back-rightbtns">
+			#{if showType!=1}
+				<a href="javascript:exportList(1)"><i class="iconfont">&#xe612;</i>导出</a>
+			#{/if}
+			#{rightMng rightId:401002}
+			<a href="@{back.risk.LoanMngCtrl.createBidPre()}"><b class="iconfont">&#xe631;</b>发布</a>
+			#{/rightMng}
+		</div>
+	</div>
+	<!-- 搜索条件，默认隐藏 -->
+	<div class="back-search-option" #{if numNo || projectName || userName || cYear || cMonth || cDay }style="display: block;"#{/if}>
+		<form action="@{back.risk.LoanMngCtrl.showBidPre()}" method="GET" id="showBidPre">
+			<input type="hidden" id="orderType" name="orderType" value="${orderType}" /><!-- 排序的类型 -->
+			<input type="hidden" id="orderValue" name="orderValue" value="${orderValue}" /><!-- 排序的值(0:降序，1:升序) -->
+			<input type="hidden" id="currPage" name="currPage"/>
+	  		<input type="hidden" id="pageSize" name="pageSize" value="${pageBean?.pageSize}"/>
+	  		<input type="hidden" id="showType" name="showType" value="${showType}"/>
+	  		<input type="hidden" id="exports" name="exports"/>
+	  		
+	  		 #{if showType==0||showType==5||showType==6||showType==7||showType==8||showType==9||showType==10}
+	  		<input type="text" class="iffocus" placeholder="编号" name="numNo" value="${numNo}" oninput="$(this).ndigitInteger(11)" onpropertychange="$(this).ndigitInteger(11)" data-title="输入字母后的数字编号"/>
+	  		<input type="text" class="iffocus" placeholder="项目" name="projectName" value="${projectName}" maxlength="15"/>
+	  		<input type="text" class="iffocus" placeholder="借款人" name="userName" value="${userName}" maxlength="13"/>
+	  		<input type="submit" class="bgbtn" value="搜索" />
+	  		#{/if}
+	  		 #{if showType==2||showType==3||showType==4}
+	  		 <select name="year" style="width: 80px;">
+	  		 	<option>请选择</option> 
+	  		 	#{list items:arrYear,as:'year'}
+					<option #{if cYear==year} selected="selected"#{/if} value="${year}">${year}</option>
+				#{/list}
+	  		 </select>
+	  		 <input type="text" value="年" style="border: 0;width: 25px; margin-left: -6px; font-size: 14px; margin-right: 0px;">
+	  		 <select name="month" style="width: 80px;">
+	  		 <option>请选择</option>
+	  		 	#{list items:arrMonth,as:'month'}
+					<option #{if cMonth==month} selected="selected"#{/if} value="${month}">${month}</option>
+				#{/list}
+	  		 </select>
+	  		 <input type="text" value="月" style="border: 0;width: 25px; margin-left: -6px; font-size: 14px; margin-right: 0px;">
+	  		 <select name="day" style="width: 80px;">
+	  		 <option>请选择</option>
+	  		 	#{list items:arrDay,as:'day'}
+					<option #{if cDay==day} selected="selected"#{/if} value="${day}">${day}</option>
+				#{/list}
+	  		 </select>
+	  		 <input type="text" value="日" style="border: 0;width: 25px; margin-left: -6px; font-size: 14px; margin-right: 0px;">
+	  		<input type="submit" class="bgbtn" value="搜索" />
+	  		 #{/if}		
+			
+		</form>
+	</div>
+	<div class="back-cont">
+		<div class="back-box">
+			#{if showType!=1 && showType!=2 && showType!=3 && showType!=4}
+			<table width="100%" class="back-table table-fixed">
+				<tr height="40">
+					<th width="70" class="align-left">
+						<span class="back-order">
+							编号
+							#{backPageColumTag orderType:orderType,currOrderType:0,orderValue:orderValue,orderBy:'orderBy' /}
+						</span>
+					</th>
+					<th>项目</th>
+					<th>借款人</th>
+					<th>姓名</th>
+					<th>
+						<span class="back-order">
+							借款金额
+							#{backPageColumTag orderType:orderType,currOrderType:3,orderValue:orderValue,orderBy:'orderBy' /}
+						</span>
+					</th>
+					<th>
+						<span class="back-order">
+							年利率
+							#{backPageColumTag orderType:orderType,currOrderType:4,orderValue:orderValue,orderBy:'orderBy' /}
+						</span>
+					</th>
+					<th>
+						<span class="back-order">
+							期限
+							#{backPageColumTag orderType:orderType,currOrderType:5,orderValue:orderValue,orderBy:'orderBy' /}
+						</span>
+					</th>
+					<th>
+						<span class="back-order">
+							筹款进度
+							#{backPageColumTag orderType:orderType,currOrderType:6,orderValue:orderValue,orderBy:'orderBy' /}
+						</span>
+					</th>
+					<th>
+						<span class="back-order">
+							发售时间
+							#{backPageColumTag orderType:orderType,currOrderType:7,orderValue:orderValue,orderBy:'orderBy' /}
+						</span>
+					</th>
+					<th width="80">状态</th>
+					<th width="140">操作</th>
+				</tr>
+				#{if pageBean?.page}
+					#{list pageBean?.page}
+					<tr height="40">
+						<td class="align-left">
+							<input type="hidden" id="bidId" value="${_?.id}" name="bidId"/>
+							<label><input type="checkbox" class="back-tdcheck" />${_?.bid_no}</label>
+						</td>
+						<td>
+							<a #{rightMng rightId:401005} href="@{back.risk.LoanMngCtrl.showBidDetailPre(_?.id)}" #{/rightMng} class="back-table-title" data-title="${_?.title}" target="" >${_?.title}</a>
+						</td>
+						<td>
+							${_?.name}
+						</td>
+						<td>
+							${_?.reality_name}
+						</td>
+						<td>
+							${_?.amount?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}
+						</td>
+						<td>
+							${_?.apr}%
+						</td>
+						<td>
+							${_?.period}${_?.period_unit?.getShowValue()}
+						</td>
+						<td>
+							${_?.loan_schedule}%
+						</td>
+						<td>
+							#{if _?.pre_release_time==null}----#{/if}
+							#{else}
+							${_?.pre_release_time?.format(common.constants.Constants.DATE_TIME_FORMATE)}
+							#{/else}
+						</td>
+						<td>
+							${_?.getStatus()?.value}
+						</td>
+						<td class="back-handle">
+						#{rightMng rightId:401003}
+							#{if models.core.entity.t_bid.Status.PREAUDITING.code==_?.status?.code}
+							<a href="@{back.risk.LoanMngCtrl.toPreAuditBidPre(_?.id)}" data-title="初审" class="iconfont" id="pre_audit_href">&#xe61c;</a>
+							#{/if}
+							#{else}
+							<a class="iconfont unable" id="pre_audit_href">&#xe61c;</a>
+							#{/else}
+						#{/rightMng}
+						#{rightMng rightId:401004}
+							#{if models.core.entity.t_bid.Status.FUNDRAISING.code==_?.status?.code||models.core.entity.t_bid.Status.AUDITING.code==_?.status?.code}
+							<a href="@{back.risk.LoanMngCtrl.toAuditBidPre(_?.id)}" data-title="复审" class="iconfont" id="audit_href">&#xe62d;</a>
+							#{/if}
+							#{else}
+							<a class="iconfont unable" id="audit_href">&#xe62d;</a>
+							#{/else}
+						#{/rightMng}
+						#{rightMng rightId:401006}		
+							<a href="@{back.risk.LoanMngCtrl.toAuditBidPre(_?.id)}" data-title="台账" class="iconfont" id="audit_href1">&#xe62d;</a>
+						#{/rightMng}
+						#{rightMng rightId:401007}
+							#{if _?.getStatus()?.code == 1}
+								<a href="javascript:projectPush('${_?.sign}')" data-title="发送移动端通知" class="iconfont"><img width="15" height="15" src="/public/images/img/push(checked).png"></a>
+							#{/if}
+							#{else}
+								<img width="15" height="15" class="iconfont unable" src="/public/images/img/push(unchecked).png">
+							#{/else}
+						#{/rightMng}
+						</td>
+					</tr>
+					#{/list}
+					表格数据统计
+					<tr height="40">
+						<td colspan="11" class="back-lasttd">
+							<span class="back-choose left">
+								<input type="button" id="chooseAll" value="全选" />
+								<input type="button" id="chooseReverse" value="反选" />
+							</span>
+							<p class="back-table-totle left">
+								合计&nbsp;借款金额&nbsp;<span>${totalAmt?.format(common.constants.Constants.FINANCE_FORMATE_NORMAL)}元</span>
+							</p>
+						#{backPageTag page:pageBean,showPage:"showBidPre"/}
+						</td>
+					</tr>
+				#{/if}
+				#{else}
+					<tr height="58">
+						<td colspan="11" class="back-nodata"><i class="iconfont">&#xe613;</i>暂无记录</td>
+					</tr>
+				#{/else}
+			</table>
+			#{/if}
+			#{if showType==1}
+			<div class="controls">
+				<form action="@{back.risk.LoanMngCtrl.saveRiskReport()}" method="POST" id="saveRisk">
+				<input type="hidden" id="imageUrl" name="filename" value="" >
+				<input type="hidden" id="imageUrls" name="filenames" value="" >
+				<input type="hidden" id="simageUrl" name="sfilename" value="" >
+				<input type="hidden" id="simageUrls" name="sfilenames" value="" >
+				<input type="hidden" id="cardImage" name="cardImages" value="" >
+				<input type="hidden" id="permitImage" name="permitImages" value="" >
+				<input type="hidden" id="driveImage" name="driveImages" value="" >
+				<input type="hidden" id="creditImage" name="creditImages" value="">
+				<input type="hidden" id="flag" name="flag" value="" >
+					<table border="1" style="border: 1px dashed #ddd; width: 100%;">
+						<tr class="trheight">
+							<th style="text-align: center; font-size: 20px;" colspan="10">风控报告</th>
+						</tr>
+						<tr class="trheight">
+							<td colspan="10" style="font-weight: bold; padding-left: 20px;">借款人身份信息</td>
+						</tr>
+						<tr class="trheight">
+							<td class="tabtext"><span class="spans-color">* </span>申请人姓名：</td>
+							<td class="tabinput">
+							<input type="hidden" value="${bid?.user_id}" name="userId" id="user_id"/>
+							<input type="text" autofocus="autofocus" class="width01 iffocus" value="${flash?.userName}" readonly="readonly" name="appName" id="appName" />
+							<a href="javascript:void(0);" onclick="showPage(1,5)" data-title="选择" class="iconfont back-chooseone" >&#xe609;</a>
+							</td>
+							<td class="tabtext"><span class="spans-color">* </span>身份证号： </td>
+							<td class="tabinput">
+								<input type="text" name="appCreditNo" id="appCreditNo" onblur="checkCreditNo()" readonly="readonly"><br>
+								<span style="color: red" id="acn"></span>
+							</td>
+							<td class="tabtext"><span class="spans-color">* </span>申请人性别： </td>
+							<td class="tabinput">
+								<select name="appSex">
+									<option value="1" >男</option>
+									<option value="2" >女</option>
+								</select>
+							</td>
+							<td class="tabtext">申请人年龄： </td>
+							<td class="tabinput"><input type="number" name="appAge" onblur="checkAge()" id="appAge" class="tabnumber"></td>
+							<td class="tabtext"><span class="spans-color">* </span>婚姻状况： </td>
+							<td class="tabinput">
+								<select name="appMarriage">
+									<option value="10" >未婚</option>
+									<option value="20" selected="selected" >已婚</option>
+									<option value="30" >丧偶</option>
+									<option value="40" >离婚</option>
+									<option value="90" >保密</option>
+								</select>
+							</td>
+						</tr>
+						<tr class="trheight">
+							<td class="tabtext"><span class="spans-color">* </span>最高学历： </td>
+							<td class="tabinput">
+								<select name="applicate">
+									<option value="10" >研究生</option>
+									<option value="20" selected="selected" >本科</option>
+									<option value="30" >大专</option>
+									<option value="40" >中专</option>
+									<option value="50" >技校</option>
+									<option value="60" >高中</option>
+									<option value="70" >初中</option>
+									<option value="80" >小学</option>
+									<option value="90" >文盲</option>
+									<option value="99" >未知</option>
+								</select>
+							</td>
+							<td class="tabtext"><span class="spans-color">* </span>最高学位： </td>
+							<td class="tabinput">
+								<select name="appDegree">
+									<option value="0" selected="selected" >其他</option>
+									<option value="1" >名誉博士</option>
+									<option value="2" >博士</option>
+									<option value="3" >硕士</option>
+									<option value="4" >学士</option>
+									<option value="9" >未知</option>
+								</select>
+							</td>
+							<td class="tabtext">手机号码： </td>
+							<td class="tabinput"><input type="number" name="appPhone" ></td>
+							<td class="tabtext">住宅电话： </td>
+							<td class="tabinput"><input type="text" name="appHomePhone" ></td>
+							<td class="tabtext">单位电话： </td>
+							<td class="tabinput"><input type="text" name="companyTel" ></td>
+						</tr>
+						<tr class="trheight">
+							<td class="tabtext"><span class="spans-color">* </span>通讯地址： </td>
+							<td class="tabinput"><input type="text" name="appCommunicationAddress" id="appCommunicationAddress" onblur="checkCommunicationAddress()" ><br><span style="color: red" id="ca"></span></td>
+							<td class="tabtext"><span class="spans-color">* </span>通讯地址邮编： </td>
+							<td class="tabinput"><input type="text" name="appPostalCode" id="appPostalCode" onblur="checkPostalCode()" ><br><span style="color: red" id="cpc"></span></td>
+							<td class="tabtext">户籍地址： </td>
+							<td class="tabinput"><input type="text" name="appCensusAddress" ></td>
+							<td class="tabtext">电子邮箱： </td>
+							<td class="tabinput"><input type="text" name="appEmail" ></td>
+							<td class="tabtext">配偶姓名： </td>
+							<td class="tabinput"><input type="text" name="pairName" ></td>
+						</tr>
+						<tr class="trheight">
+							<td class="tabtext">配偶证件号码： </td>
+							<td class="tabinput"><input type="text" id="appMateIdNumber" name="appMateIdNumber" onblur="checkAppMateIdNumber()" ><br><span style="color: red" id="camin"></span></td>
+							<td class="tabtext">配偶工作单位： </td>
+							<td class="tabinput"><input type="text" name="appMateWorkUnit" ></td>
+							<td class="tabtext">配偶联系电话： </td>
+							<td class="tabinput"><input type="text" name="pairContactWay" ></td>
+							<td class="tabtext"><span class="spans-color">* </span>第一联系人姓名： </td>
+							<td class="tabinput"><input type="text" name="appFirstName" id="appFirstName" onblur="checkFirstName()" ><br><span style="color: red" id="cfn"></span></td>
+							<td class="tabtext"><span class="spans-color">* </span>第一联系人关系： </td>
+							<td class="tabinput">
+								<select name="appFirstRelation">
+									<option value="0" selected="selected" >父子(女)</option>
+									<option value="1" >母子(女)</option>
+									<option value="2" >配偶</option>
+									<option value="3" >子女</option>
+									<option value="4" >亲属</option>
+									<option value="5" >同事</option>
+									<option value="6" >朋友</option>
+									<option value="7" >兄弟姐妹</option>
+									<option value="8" >其他</option>
+								</select>
+							</td>
+						</tr>
+						<tr class="trheight">
+							<td class="tabtext"><span class="spans-color">* </span>第一联系人电话： </td>
+							<td class="tabinput"><input type="number" name="appFirstPhone" id="appFirstPhone" onblur="checkFirstPhone()"><br><span style="color: red" id="cfp"></span></td>
+							<td class="tabtext">第二联系人姓名： </td>
+							<td class="tabinput"><input type="text" name="appSecondName" ></td>
+							<td class="tabtext">第二联系人关系： </td>
+							<td class="tabinput">
+								<select name="appSecondRelation">
+									<option value="0" selected="selected" >父子(女)</option>
+									<option value="1" >母子(女)</option>
+									<option value="2" >配偶</option>
+									<option value="3" >子女</option>
+									<option value="4" >亲属</option>
+									<option value="5" >同事</option>
+									<option value="6" >朋友</option>
+									<option value="7" >兄弟姐妹</option>
+									<option value="8" >其他</option>
+								</select>
+							</td>
+							<td class="tabtext">第二联系人电话： </td>
+							<td class="tabinput"><input type="number" name="appSecondPhone" ></td>
+							<td class="tabtext"><span class="spans-color">* </span>是否本月开户</td>
+							<td class="tabinput">
+								<select name="appAccount">
+									<option value="0" >否</option>
+									<option value="1" selected="selected" >是</option>
+								</select>
+							</td>
+						</tr>
+						</table>
+						<table border="1" style="border: 1px dashed #ddd; width: 100%;">
+						<tr class="trheight">
+							<td colspan="10" style="font-weight: bold; padding-left: 20px;">借款人职业信息</td>
+						</tr>
+						<tr class="trheight">
+							<td class="tabtext"><span class="spans-color">* </span>从事职业： </td>
+							<td class="tabinput">
+								<select name="appGuild">
+									<option value="0">国家机关、企业、事业单位</option>
+									<option value="1">专业技术人员</option>
+									<option value="3">办事人员和有关人员</option>
+									<option value="4">商业、服务业人员</option>
+									<option value="5" selected="selected">农、林、牧、渔、水利业</option>
+									<option value="6">生产、运输设备操作人员</option>
+									<option value="X">军人</option>
+									<option value="Y">其他从业人员</option>
+									<option value="Z">未知</option>
+								</select>
+							</td>
+							<td class="tabtext"><span class="spans-color">* </span>单位名称： </td>
+							<td class="tabinput"><input type="text" name="appCompany" id="appCompany" onblur="checkCompany()"><br><span style="color: red" id="ccp"></span></td>
+							<td class="tabtext"><span class="spans-color">* </span>单位所属行业： </td>
+							<td class="tabinput">
+								<select name="appCompanyTrade">
+									<option value="A">农、林、牧、渔业</option>
+									<option value="B">采掘业</option>
+									<option value="C">制造业</option>
+									<option value="D">电力、燃气及水的生产和供应业</option>
+									<option value="E" selected="selected">建筑业</option>
+									<option value="F">交通运输、仓储和邮政业</option>
+									<option value="G">信息传输、计算机服务和软件业</option>
+									<option value="H">批发和零售业</option>
+									<option value="I">住宿和餐饮业</option>
+									<option value="J">金融业</option>
+									<option value="K">房地产业</option>
+									<option value="L">租赁和商务服务业</option>
+									<option value="M">科学研究、技术服务业和地质勘察业</option>
+									<option value="N">水利、环境和公共设施管理业</option>
+									<option value="O">居民服务和其他服务业</option>
+									<option value="P">教育</option>
+									<option value="Q">卫生、社会保障和社会福利业</option>
+									<option value="R">文化、体育和娱乐业</option>
+									<option value="S">公共管理和社会组织</option>
+									<option value="T">国际组织</option>
+									<option value="Z">未知</option>
+								</select>
+							</td>
+							<td class="tabtext">单位地址： </td>
+							<td class="tabinput"><input type="text" name="companyAddress" ></td>
+							<td class="tabtext">单位地址邮编： </td>
+							<td class="tabinput"><input type="text" name="companyPostalCode" ></td>
+						</tr >
+						<tr class="trheight">
+							<td class="tabtext">单位工作起始年份： </td>
+							<td class="tabinput">
+							<select name="startWorkTime">
+								<option value="2018" selected="selected">2018</option>
+								<option value="2017">2017</option>
+								<option value="2016">2016</option>
+								<option value="2015">2015</option>
+								<option value="2014">2014</option>
+								<option value="2013">2013</option>
+								<option value="2012">2012</option>
+								<option value="2011">2011</option>
+								<option value="2010">2010</option>
+								<option value="2009">2009</option>
+								<option value="2008">2008</option>
+								<option value="2007">2007</option>
+								<option value="2006">2006</option>
+								<option value="2005">2005</option>
+								<option value="2004">2004</option>
+								<option value="2003">2003</option>
+								<option value="2002">2002</option>
+								<option value="2001">2001</option>
+								<option value="2000">2000</option>
+							</select>
+							</td>
+							<td class="tabtext"><span class="spans-color">* </span>职务： </td>
+							<td class="tabinput">
+								<select name="duty">
+									<option value="1">高级领导</option>
+									<option value="2">中级领导</option>
+									<option value="3" selected="selected">一般员工</option>
+									<option value="4">其他</option>
+									<option value="9">未知</option>
+								</select>
+							</td>
+							<td class="tabtext"><span class="spans-color">* </span>职称： </td>
+							<td class="tabinput">
+								<select name="professional">
+									<option value="0">无</option>
+									<option value="1">高级</option>
+									<option value="2" selected="selected">中级</option>
+									<option value="3">初级</option>
+									<option value="9">未知</option>
+								</select>
+							</td>
+							<td class="tabtext">年收入： </td>
+							<td class="tabinput"><input type="number" name="homeAnnualIncome" ></td>
+							<td class="tabtext"><span class="spans-color">* </span>服务费费率： </td>
+							<td class="tabinput">
+								<input type="text" name="serviceCharge" id="serviceCharge" onkeyup="num(this)" onblur="checkserviceCharge()" ><br>
+								<span style="color: red" id="serviceCharges"></span>
+							</td>
+							
+						</tr>
+						</table>
+						<table border="1" style="border: 1px dashed #ddd; width: 100%;">
+						<tr class="trheight">
+							<td colspan="10" style="font-weight: bold; padding-left: 20px;">借款人居住信息</td>
+						</tr>
+						<tr class="trheight">
+							<td class="tabtext"><span class="spans-color">* </span>居住地址： </td>
+							<td class="tabinput"><input type="text" name="residentialAddress" id="residentialAddress" onblur="checkResidentialAddress()" ><br><span style="color: red" id="cra"></span></td>
+							<td class="tabtext"><span class="spans-color">* </span>居住地址邮编： </td>
+							<td class="tabinput"><input type="text" name="residentialPostalCode" id="residentialPostalCode" onblur="checkResidentialPostalCode()" ><br><span style="color: red" id="crp"></span></td>
+							<td class="tabtext"><span class="spans-color">* </span>居住状况： </td>
+							<td class="tabinput">
+								<select name="residentialCondition">
+									<option value="1">自置</option>
+									<option value="2">按揭</option>
+									<option value="3">亲属楼宇</option>
+									<option value="4">集体宿舍</option>
+									<option value="5">租房</option>
+									<option value="6">共有住宅</option>
+									<option value="7">其他</option>
+									<option value="9">未知</option>
+								</select>
+							</td>
+							<td class="tabtext"><span class="spans-color">* </span>居住年限： </td>
+							<td class="tabinput"><input type="text" name="residentYear" id="residentYear" onblur="checkResidentYear()" ><br><span style="color: red" id="cry"></span></td>
+							<td class="tabtext" width="7%"></td>
+							<td class="tabinput" width="12%"></td>
+						</tr>
+						</table>
+						<table border="1" style="border: 1px dashed #ddd; width: 100%;">
+						<tr class="trheight">
+							<td colspan="10" style="font-weight: bold; padding-left: 20px;">合作机构</td>
+						</tr>
+						<tr class="trheight">
+							<td class="tabtext" width="7%"><span class="spans-color"></span>担保机构： </td>
+							<td class="tabinput" width="14%">
+								<select name="guarantee_user" id='GuarantyAgency' >	
+									<option value="0">--请选择--</option>
+									#{list items:guarantees,as:"guarantee"}
+									<option value="${guarantee?.user_id}">${guarantee?.name}</option>
+									#{/list}
+								</select>
+								<br/>
+								<span style="color: red" id="ga"></span>
+							</td>
+							<td class="tabtext" width="7%"><span class="spans-color">* </span>代偿账户： </td>
+							<td class="tabinput" width="14%">
+								<select name="" disabled="disabled">
+									<option value="1">--请选择--</option>
+								</select>
+							</td>
+							<td class="tabtext" width="8%"></td>
+							<td class="tabinput" width="8%"></td>
+							<td class="tabtext" width="7%"></td>
+							<td class="tabinput" width="14%"></td>
+							<td class="tabtext" width="7%"></td>
+							<td class="tabinput" width="12%"></td>
+						</tr>
+						</table>
+						<table border="1" style="border: 1px dashed #ddd; width: 100%;">
+						<tr class="trheight">
+							<td colspan="10" style="font-weight: bold; padding-left: 20px;">借款人业务信息</td>
+						</tr>
+						<tr class="trheight">
+							<td class="tabtext tdwidth">面谈时间： </td>
+							<td class="tabinput">
+					      		<input type="text" class="easyui-datetimeboxs" id="seeTime" name="seeTime"  />
+							</td>
+							<td class="tabtext">面谈地点： </td>
+							<td class="tabinput"><input type="text" name="seeAddress" ></td>
+							<td class="tabtext"><span class="spans-color">* </span>借款用途： </td>
+							<td class="tabinput"><input type="text" name="loanPurpose" id="loanPurpose" value="${report?.loan_purpose}" onblur="checkPurpose()">
+							<br><span style="color:red;" id="lp"></span></td>
+							<td class="tabtext"><span class="spans-color">* </span>借款数额： </td>
+							<td class="tabinput"><input type="number" name="loanAmount" id="loanAmount" onblur="checkAmount()" class="tabnumber">
+							<br><span style="color:red;" id="la"></span></td>
+							<td class="tabtext">借款品种： </td>
+							<td class="tabinput">
+								<select name="loanKind">
+									<option >房贷</option>
+									<option >车贷</option>
+									<option >物资贷</option>
+									<option >信贷</option>
+									<option >其他</option>
+								</select>
+							</td>
+						</tr>
+						<tr class="trheight">
+							<td class="tabtext">请注明借款品种 &nbsp;<br>（类型为其它的）：   </td>
+							<td class="tabinput"><input type="text" name="loanClearKind" ></td>
+							
+							<td class="tabtext">劳动力报酬： </td>
+							<td class="tabinput"><input type="number" name="laborReward" ></td>
+							
+							<td class="tabtext">筹款时间： </td>
+							<td class="tabinput">
+								<select name="loanTime">
+									<option value="1">1天</option>
+									<option value="2">2天</option>
+									<option value="3">3天</option>
+									<option value="4">4天</option>
+									<option value="5">5天</option>
+									<option value="6">6天</option>
+									<option value="7">7天</option>
+									<option value="8">8天</option>
+									<option value="9">9天</option>
+									<option value="10">10天</option>
+								</select>
+							</td>
+		
+							<td class="tabtext">收入来源 &nbsp;<br>（几处）： </td>
+							<td class="tabinput">
+								<select name="incomeKinds">
+									<option value="1" >1处</option>
+									<option value="2" >2处</option>
+									<option value="3" >3处及以上</option>
+								</select>
+							</td>
+							<td class="tabtext">还款来源：</td>
+							<td  class="tabinput" >
+								<input type="text" name="backResource" >
+							</td>
+						</tr>
+						<tr class="trheight">
+							<td class="tabtext">房产情况：</td>
+							<td class="tabinput"> <input type="text" name="houseCondition" ></td>
+							<td class="tabtext">车产情况：</td>
+							<td class="tabinput"> <input type="text" name="vehicleCondition" ></td>
+							<td class="tabtext">其他固定资产：</td>
+							<td class="tabinput"> <input type="text" name="otherfixedCondition" ></td>
+							
+							<td class="tabtext">担保方式： </td>
+							<td class="tabinput">
+								<select name="guarantyKind">
+									<option value="抵押" >抵押</option>
+									<option value="保证" >保证</option>
+									<option value="质押" >质押</option>
+									<option value="借用" >借用</option>
+								</select>
+							</td>
+							<td class="tabtext">征信报告： </td>
+							<td class="tabinput"><input type="checkbox" style="vertical-align: middle;" name="creditCondition" value="良好"> 良好</td>
+						</tr>
+						<tr class="trheight">
+							<td class="tabtext">保证人姓名： </td>
+							<td class="tabinput"><input type="text" name="guarantorName" ></td>
+							<td class="tabtext">保证金额： </td>
+							<td class="tabinput"><input type="number" name="guaranteeAmount" class="tabnumber"></td>
+							<td class="tabtext">抵押方式： </td>
+							<td class="tabinput">
+								<select name="pledgeKind">
+									<option value="房产一抵">房产一抵</option>
+									<option value="房产二抵">房产二抵</option>
+									<option value="车辆质押">车辆质押</option>
+									<option value="车辆抵押">车辆抵押</option>
+								</select> 
+							</td>
+							<td class="tabtext">是否属于本人： </td>
+							<td class="tabinput">
+								<select name="pledgeOwnership">
+									<option value="1">是</option>
+									<option value="0">否</option>
+								</select>
+							</td>
+							
+							<td class="tabtext">评估价格： </td>
+							<td class="tabinput"><input type="number" name="evaluatePrice" class="tabnumber"></td>
+						</tr>
+						<tr class="trheight">
+							<td class="tabtext">借款期限： </td>
+							<td class="tabinput">
+								<select name="loanTimeLimit">
+									<option value="15">15天</option> 
+									<option value="1">1个月</option>
+									<option value="2">2个月</option>
+									<option value="3">3个月</option>
+									<option value="4">4个月</option>
+									<option value="5">5个月</option>
+									<option value="6">6个月</option>
+									<option value="7">7个月</option>
+									<option value="8">8个月</option>
+									<option value="9">9个月</option>
+									<option value="10">10个月</option>
+									<option value="11">11个月</option>
+									<option value="12">12个月</option>
+									<option value="13">13个月</option>
+									<option value="14">14个月</option>
+									<option value="15">15个月</option>
+									<option value="16">16个月</option>
+									<option value="17">17个月</option>
+									<option value="18">18个月</option>
+									<option value="19">19个月</option>
+									<option value="20">20个月</option>
+									<option value="21">21个月</option>
+									<option value="22">22个月</option>
+									<option value="23">23个月</option>
+									<option value="24">24个月</option>
+									<option value="25">25个月</option>
+									<option value="26">26个月</option>
+									<option value="27">27个月</option>
+									<option value="28">28个月</option>
+									<option value="29">29个月</option>
+									<option value="30">30个月</option>
+									<option value="31">31个月</option>
+									<option value="32">32个月</option>
+									<option value="33">33个月</option>
+									<option value="34">34个月</option>
+									<option value="35">35个月</option>
+									<option value="36">36个月</option>
+								</select>
+							</td>
+							<td class="tabtext">贷款年利率：</td>
+							<td class="tabinput">
+							<input type="number" name="annualRate" class="tabnumber"/>
+							<i class="unit">%</i>
+							</td>
+							<td class="tabtext">是否贷过款： </td>
+							<td class="tabinput">
+								<select name="isLoanPass">
+									<option value="1">是</option>
+									<option value="0">否</option>
+								</select>
+							</td>
+							<td class="tabtext">履约还款如何： </td>
+							<td class="tabinput"><input type="text" name="backloanCondition"></td>
+							<td class="tabtext">请选择分公司：</td>
+							<td class="tabinput">
+								<select name="branchCompany">
+									#{list items:branchs, as: 'branch' }
+										<option value="${branch.id}">${branch.branch_name}</option>
+									#{/list}
+								</select>
+							</td>
+						</tr>
+						<tr class="trheight">
+							<td class="tabtext">接待人员： </td>
+							<td class="tabinput">
+								<select name="receptionPerson">
+									<option value="0">请选择</option>
+									#{list items:riskList,as:'risk'}
+										<option value="${risk.id}">${risk.reception_name}</option>
+									#{/list}
+								</select>
+							</td>
+							<td class="tabtext">申请人现住址： </td>
+							<td class="tabinput"><input type="text" name="appAddress"></td>
+							<td class="tabtext">申请人学历： </td>
+							<td class="tabinput">
+								<select name="applicate">
+									<option value="小学">小学</option>
+									<option value="初中">初中</option>
+									<option value="高中">高中</option>
+									<option value="中技">中技</option>
+									<option value="大专">大专</option>
+									<option value="本科">本科</option>
+									<option value="硕士">硕士</option>
+									<option value="博士">博士</option>
+								</select>
+							</td>
+							<td class="tabtext">信用卡总额度： </td>
+							<td class="tabinput"><input type="number" name="creditCardLimit" class="tabnumber"></td>
+							<td class="tabtext">银行负债情况： </td>
+							<td class="tabinput"><input type="text" name="bankDebt"></td>
+						</tr>
+						<tr class="trheight">
+							<td class="tabtext">民间负债情况： </td>
+							<td class="tabinput"><input type="text" name="folkDebt"></td>
+							<td class="tabtext">贷款记录： </td>
+							<td class="tabinput"><input type="text" name="debtRecord"></td>
+							<td class="tabtext">家庭地址： </td>
+							<td class="tabinput"><input type="text" name="appHomeAddress" ></td>
+							<td class="tabtext">申请人月收入： </td>
+							<td class="tabinput"><input type="number" name="appMonthlyIncome" class="tabnumber" ></td>
+							<td class="tabtext">配偶月收入： </td>
+							<td class="tabinput"><input type="number" name="pairMonthlyIncome" class="tabnumber"></td>
+						</tr>
+						<tr>
+							<td class="tabtext" >添加身份信息图片：</td>
+							<td colspan="9" style=" padding-right: 20px;" >
+								<p style="height: 30px; text-align: right;"><input type="file" multiple="multiple" style="width: 70px;" id="CardImage" name="CardImage" value="添加图片" onchange="javascript:uploadCardImage()" /></p>
+								
+								<div id="CardImag"></div>
+							</td>
+						</tr>
+						<tr>
+							<td class="tabtext" >房本或车本图片：</td>
+							<td colspan="9" style=" padding-right: 20px;" >
+								<p style="height: 30px; text-align: right;"><input type="file" multiple="multiple" style="width: 70px;" id="PermitImage" name="PermitImage" value="添加图片" onchange="javascript:uploadPermitImage()" /></p>
+								
+								<div id="PermitImag"></div>
+							</td>
+						</tr>
+						<tr>
+							<td class="tabtext" >添加信用图片：</td>
+							<td colspan="9" style=" padding-right: 20px;" >
+								<p style="height: 30px; text-align: right;"><input type="file" multiple="multiple" style="width: 70px;" id="imgFile" name="imgFile" value="添加图片" onchange="javascript:upload()" /></p>
+								
+								<div id="img"></div>
+							</td>
+						</tr>
+						
+						<tr >
+							<td class="tabtext" >添加实物图片：</td>
+							<td colspan="9" style=" padding-right: 20px;" >
+								<p style="height: 30px; text-align: right;"><input type="file" multiple="multiple" style="width: 70px;" id="imgFiles" name="imgFiles" value="添加图片" onchange="javascript:uploads()" /></p>
+								
+								<div id="imgs"></div>
+							</td>
+						</tr>
+						<tr >
+							<td class="tabtext" >添加经营状况图片：</td>
+							<td colspan="9" style=" padding-right: 20px;" >
+								<p style="height: 30px; text-align: right;"><input type="file" multiple="multiple" style="width: 70px;" id="simgFile" name="simgFile" value="添加图片" onchange="javascript:supload()" /></p>
+								
+								<div id="simg"></div>
+							</td>
+						</tr>
+						<tr >
+							<td class="tabtext" >现住址居住图片：</td>
+							<td colspan="9" style=" padding-right: 20px;" >
+								<p style="height: 30px; text-align: right;"><input type="file" multiple="multiple" style="width: 70px;" id="simgFiles" name="simgFiles" value="添加图片" onchange="javascript:suploads()" /></p>
+								
+								<div id="simgs"></div>
+							</td>
+						</tr>
+						<tr >
+							<td class="tabtext" >添加行驶证图片：</td>
+							<td colspan="9" style=" padding-right: 20px;" >
+								<p style="height: 30px; text-align: right;"><input type="file" multiple="multiple" style="width: 70px;" id="DriveImage" name="DriveImage" value="添加图片" onchange="javascript:suploadDriveImage()" /></p>
+								
+								<div id="DriveImag"></div>
+							</td>
+						</tr>
+						<tr >
+							<td class="tabtext" >添加借款人征信报告：</td>
+							<td colspan="9" style=" padding-right: 20px;" >
+								<p style="height: 30px; text-align: right;"><input type="file" multiple="multiple" style="width: 70px;" id="CreditImage" name="CreditImage" value="添加图片" onchange="javascript:addCreditImage()" /></p>
+								
+								<div id="CreditImag"></div>
+							</td>
+						</tr>
+						<tr >
+							<td class="tabtext" ><span class="spans-color">* </span>借款说明：</td>
+							<td colspan="9" style="padding-left:10px;">
+								<textarea  rows="5" cols="200" style="resize:none;margin: 10px 0px 0px 0px;" name="loanState" onblur="checkState()" id="loanState"></textarea><br>						
+								20~2000个字符，例如：公司职员，现居吉林省吉林市，从事批发和零售业行业，工作收入稳定，贷款用于资金周转 &nbsp;&nbsp;&nbsp;<span style="color: red;" id="ls"></span>
+							</td>
+						</tr>
+						<tr>
+							<td class="tabtext" >勘察师意见：</td>
+							<td colspan="9" style="padding-left:10px;">
+								<textarea rows="5" cols="200" style="resize:none; margin: 10px 0px;" name="techOpinion"></textarea>
+							</td>
+						</tr>
+						<tr>
+							<td class="tabtext" >添加风控意见：</td>
+							<td colspan="9" style="padding-left:10px;">
+								<textarea rows="5" cols="200" style="resize:none;margin: 10px 0px;" name="riskOpinion"></textarea>
+							</td>
+						</tr>
+					</table>
+					<p class="back-audit-btns" style="padding-bottom: 20px;">
+						<input type="button" id="page" value="保存" class="bbtn" onclick="saveRisk()"/>
+						<input type="button" id="pageSave" value="提交" class="bgbtn" onclick="submitRisk()">
+						<input type="button" value="取消" class="bdbtn" onclick="backAndRefresh('@{back.risk.LoanMngCtrl.showBidPre}');">
+				    </p>
+				</form>
+			</div>
+			#{/if}
+			#{if showType==2 || showType==3 || showType==4 }
+				<table width="100%" class="back-table table-fixed">
+				<tr height="40">
+					<th width="70" class="align-left">
+						<span class="back-order">
+							编号	
+						</span>
+					</th>
+					<th>申请人</th>
+					<th>联系电话</th>
+					<th>
+						<span class="back-order">
+							借款金额
+						</span>
+					</th>
+					<th>
+						<span class="back-order">
+							借款期限
+						</span>
+					</th>
+					<th>
+						<span class="back-order">
+							借款利率
+						</span>
+					</th>
+					<th>
+						<span class="back-order">
+							贷款类型
+						</span>
+					</th>
+					<th>
+						<span class="back-order">
+							发布时间
+							#{backPageColumTag orderType:orderType,currOrderType:7,orderValue:orderValue,orderBy:'orderBy' /}
+						</span>
+					</th>
+					<th width="80">状态</th>
+					<th width="140">操作</th>
+				</tr>
+				#{if pageBean?.page}
+					#{list pageBean?.page}
+					<tr height="40">
+						<td class="align-left">
+							<label><input type="checkbox" class="back-tdcheck" /><span id = "reportId">${_?.id}</span></label>
+						</td>
+						<td>
+							${_?.app_name}
+						</td>
+						<td>
+							${_?.app_phone}
+						</td>
+						<td>
+							${_?.loan_amount?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}
+						</td>
+						<td>
+							#{if _?.loan_time_limit=='0.5'}15天 #{/if}
+							#{else}${_?.loan_time_limit}个月#{/else}
+								
+						</td>
+						<td>
+							${_?.annual_rate}%
+						</td>
+						<td>
+							${_?.loan_kind}
+						</td>
+						<td>
+							${_?.time?.format('yyyy-MM-dd HH:mm:ss')}
+						</td>
+						<td>
+							#{if _?.status?.code==1 || _?.status?.code==4 || _?.status?.code==5 }
+								<span style="color:green" class = "sta${_?.id}">${_?.status?.value}</span>
+							#{/if}
+							#{if _?.status?.code==2}
+								<span style="color:red">${_?.status?.value}</span>
+							#{/if}
+							#{if _?.status?.code==3 || _?.status?.code==-1}
+								<span style="color:blue">${_?.status?.value}</span>
+							#{/if}
+							#{if _?.status?.code==0}
+								${_?.status?.value}
+							#{/if}
+						</td>
+						<td class="back-handle">
+							#{if _?.status?.code==3 || _?.status?.code==-1} 
+							<a href="@{back.risk.LoanMngCtrl.toEditRiskReportPre(_?.id)}" data-title="编辑" class="iconfont">&#xe602;</a>
+							#{/if}
+							
+							#{if _?.status?.code!=-1}
+								<a href="@{back.risk.LoanMngCtrl.toPreAuditRiskReportPre(_?.id)}" data-title="查看" class="iconfont" id="pre_audit_href">&#xe61c;</a>
+							#{/if}
+							#{if _?.status?.code == 1}
+								<a data-title="作废" class = "invalid${_?.id} iconfont" onclick = "invalid(${_?.id})" >&#xe601;</a>
+							#{/if}
+						</td>
+					</tr>
+					#{/list}
+					表格数据统计
+					<tr height="40">
+						<td colspan="10" class="back-lasttd">
+							<span class="back-choose left">
+								<input type="button" id="chooseAll" value="全选" />
+								<input type="button" id="chooseReverse" value="反选" />
+							</span>
+							
+						
+						#{backPageTag page:pageBean,showPage:"showBidPre"/}
+						</td>
+					</tr>
+				#{/if}
+				#{else}
+					<tr height="58">
+						<td colspan="10" class="back-nodata"><i class="iconfont">&#xe613;</i>暂无记录</td>
+					</tr>
+				#{/else}
+			</table>
+			#{/if}
+		</div>
+	</div>
+	<!-- 选择关联借款人弹窗 -->
+	<div class="chooseone-dialog dialog lib-dialog">
+	</div>
+</div>
+
+
+<!-- 页面js -->
+<script type="text/javascript">
+
+	require(["back"],function(back){
+		// 搜索 排序 选中
+		require(["search","linechecked","datatime"],function(){
+		});
+	});
+	
+	function showBidPre (currPage, pageSize) {
+		$("#currPage").val(currPage);
+		$("#pageSize").val(pageSize);
+		
+		$("#showBidPre").submit();
+	}
+	
+	function orderBy(orderType,orderValue){
+		$("#showBidPre input[name='orderType']").val(orderType);
+		$("#showBidPre input[name='orderValue']").val(orderValue);
+		
+		$("#showBidPre input[name='currPage']").val(1);
+		
+		$("#showBidPre").submit();
+	}
+	
+	function exportList(expor){
+		$("#exports").val(expor);
+		
+		$("#showBidPre").submit();
+		$("#exports").val(0);
+	}
+</script>
+
+<!--上传图片  -->
+<script type="text/javascript">
+
+//借款人弹窗，以及分页方法
+function showPage(currPage,pageSize,key){
+	$.ajax({
+		url : "@{back.risk.LoanMngCtrl.queryRefUser()}",
+		type : "POST",
+		data : {
+			"currPage": currPage,
+			"pageSize": pageSize,
+			"key": key
+		},
+		success : function(data){
+			var flag = interceptorCheck(data);
+			if(!flag){
+				return;
+			}
+			
+			$(".chooseone-dialog").html(data);
+			$(".chooseone-dialog").dialog();
+		},
+		error : function(){
+			$("#user_id").val('');
+			$("#user_name").val('');
+			alert("糟糕，系统出现错误!");
+		}
+	});
+	
+}
+
+function showBidRefUser(){
+	var $che = $(".back-tdcheck:checked");
+	$("#user_id").val($che.val());
+	$("#appName").val($che.parent().parent().next().next().next().html());
+	$("#appCreditNo").val($che.parent().parent().next().next().next().next().html());
+	$("#appName").focus();
+	$('#check_ref_user').siblings('.dialog-console').trigger('click');
+}
+
+
+//身份信息图片添加
+var imgCountCardImage= 0;
+var imgUrlCardImage= $('#cardImage').val();
+function uploadCardImage(){
+	
+	var obj = document.getElementById("CardImage");
+	var len=obj.files.length;
+	var paths = obj.files;  
+	if(paths.length==0)  
+	{  
+	    alert("请选择文件");  
+	    return;  
+	}  
+	          
+	var formData = new FormData();  
+	//alert(paths.length);  
+	    //我们遍历每一个文件对象  
+	for (var i = 0; i < paths.length; i++) {  
+	    var file = paths[i];  
+	    //alert(file.type);  
+	           //用正则表达式判断文件的类型是否是图片，这里大家可以自由发挥  
+	    if (!new RegExp("image/*").test(file.type)) {  
+	        alert("请注意，上传的文件一定要是图片文件");  
+	                return;  
+	    }   
+	}  
+	//alert("开始上传");  
+	   //我们可以预先定义一个FormData对象  
+	var formData=new FormData();  
+	          
+	for(var i=0;i<paths.length;i++)  
+	{  
+	            //将每个文件设置一个string类型的名字，放入到formData中，这里类似于setAttribute("",Object)  
+	    formData.append(paths[i].name,paths[i]);  
+	}  
+	          
+	          
+	$.ajax({  
+	              
+	     url: '@{back.webOperation.AdvertisementMngCtrl.uploadAdsImages()}',
+	     type: 'POST',  
+	     cache: false,  
+	     data:formData,  
+	             //这个参数是jquery特有的，不进行序列化，因为我们不是json格式的字符串，而是要传文件  
+	     processData: false,  
+	           //注意这里一定要设置contentType:false，不然会默认为传的是字符串，这样文件就传不过去了  
+	     contentType: false,  
+	     success:function(result)  
+	     {   
+	    	 if(result.code == 1){
+	    		 
+					var data = result.objs;
+					for(var j=0;j<data.length;j++){
+						if(imgCountCardImage == 0){
+							$("#CardImag").html("") ;
+							imgUrlCardImage = data[j].staticFileName ;
+						}else{
+							imgUrlCardImage = imgUrlCardImage+"+"+ data[j].staticFileName ;
+						}
+						$("#CardImag").append("<img src='"+data[j].staticFileName+"' class='backupimg' height='50' width='100' style='margin:10px;cursor:pointer' id='"+data[j].staticFileName+"'/>").append("<a href=\"javascript:deleteCardImage('"+data[j].staticFileName+"','"+data[j].staticFileName+"')\" id='"+data[j].staticFileName+"'>删除</a>").append("\t"); 
+						$("#cardImage").val(imgUrlCardImage);
+						imgCountCardImage = imgCountCardImage+1 ;
+						//$("#imageUrl").val(imgUrl);
+						
+					}
+				} else {
+					alert(result.msg);
+				}   
+	    }  
+	});  
+}
+
+//房本或车本图片添加
+var imgCountPermitImage= 0;
+var imgUrlPermitImage= $('#permitImage').val();
+function uploadPermitImage(){
+	
+	var obj = document.getElementById("PermitImage");
+	var len=obj.files.length;
+	var paths = obj.files;  
+	if(paths.length==0)  
+	{  
+	    alert("请选择文件");  
+	    return;  
+	}  
+	          
+	var formData = new FormData();  
+	//alert(paths.length);  
+	    //我们遍历每一个文件对象  
+	for (var i = 0; i < paths.length; i++) {  
+	    var file = paths[i];  
+	    //alert(file.type);  
+	           //用正则表达式判断文件的类型是否是图片，这里大家可以自由发挥  
+	    if (!new RegExp("image/*").test(file.type)) {  
+	        alert("请注意，上传的文件一定要是图片文件");  
+	                return;  
+	    }   
+	}  
+	//alert("开始上传");  
+	   //我们可以预先定义一个FormData对象  
+	var formData=new FormData();  
+	          
+	for(var i=0;i<paths.length;i++)  
+	{  
+	            //将每个文件设置一个string类型的名字，放入到formData中，这里类似于setAttribute("",Object)  
+	    formData.append(paths[i].name,paths[i]);  
+	}  
+	          
+	          
+	$.ajax({  
+	              
+	     url: '@{back.webOperation.AdvertisementMngCtrl.uploadAdsImages()}',
+	     type: 'POST',  
+	     cache: false,  
+	     data:formData,  
+	             //这个参数是jquery特有的，不进行序列化，因为我们不是json格式的字符串，而是要传文件  
+	     processData: false,  
+	           //注意这里一定要设置contentType:false，不然会默认为传的是字符串，这样文件就传不过去了  
+	     contentType: false,  
+	     success:function(result)  
+	     {   
+	    	 if(result.code == 1){
+	    		 
+					var data = result.objs;
+					for(var j=0;j<data.length;j++){
+						if(imgCountPermitImage == 0){
+							$("#PermitImag").html("") ;
+							imgUrlPermitImage = data[j].staticFileName ;
+						}else{
+							imgUrlPermitImage = imgUrlPermitImage+"+"+ data[j].staticFileName ;
+						}
+						$("#PermitImag").append("<img src='"+data[j].staticFileName+"' class='backupimg' height='50' width='100' style='margin:10px;cursor:pointer' id='"+data[j].staticFileName+"'/>").append("<a href=\"javascript:deletePermitImage('"+data[j].staticFileName+"','"+data[j].staticFileName+"')\" id='"+data[j].staticFileName+"'>删除</a>").append("\t"); 
+						$("#permitImage").val(imgUrlPermitImage);
+						imgCountPermitImage = imgCountPermitImage+1 ;
+						//$("#imageUrl").val(imgUrl);
+						
+					}
+				} else {
+					alert(result.msg);
+				}   
+	    }  
+	});  
+}
+
+//行驶证图片添加
+var imgCountDriveImage= 0;
+var imgUrlDriveImage= $('#driveImage').val();
+function suploadDriveImage() {
+	var obj = document.getElementById("DriveImage");
+	var len=obj.files.length;
+	var paths = obj.files;  
+	if(paths.length==0)  
+	{  
+	    alert("请选择文件");  
+	    return;  
+	}  
+	          
+	var formData = new FormData();  
+	//alert(paths.length);  
+	    //我们遍历每一个文件对象  
+	for (var i = 0; i < paths.length; i++) {  
+	    var file = paths[i];  
+	    //alert(file.type);  
+	           //用正则表达式判断文件的类型是否是图片，这里大家可以自由发挥  
+	    if (!new RegExp("image/*").test(file.type)) {  
+	        alert("请注意，上传的文件一定要是图片文件");  
+	                return;  
+	    }   
+	}  
+	//alert("开始上传");  
+	   //我们可以预先定义一个FormData对象  
+	var formData=new FormData();  
+	          
+	for(var i=0;i<paths.length;i++)  
+	{  
+	            //将每个文件设置一个string类型的名字，放入到formData中，这里类似于setAttribute("",Object)  
+	    formData.append(paths[i].name,paths[i]);  
+	}  
+	          
+	          
+	$.ajax({  
+	              
+	     url: '@{back.webOperation.AdvertisementMngCtrl.uploadAdsImages()}',
+	     type: 'POST',  
+	     cache: false,  
+	     data:formData,  
+	             //这个参数是jquery特有的，不进行序列化，因为我们不是json格式的字符串，而是要传文件  
+	     processData: false,  
+	           //注意这里一定要设置contentType:false，不然会默认为传的是字符串，这样文件就传不过去了  
+	     contentType: false,  
+	     success:function(result)  
+	     {   
+	    	 if(result.code == 1){
+	    		 
+					var data = result.objs;
+					for(var j=0;j<data.length;j++){
+						if(imgCountDriveImage == 0){
+							$("#DriveImag").html("") ;
+							imgUrlDriveImage = data[j].staticFileName ;
+						}else{
+							imgUrlDriveImage = imgUrlDriveImage+"+"+ data[j].staticFileName ;
+						}
+						$("#DriveImag").append("<img src='"+data[j].staticFileName+"' class='backupimg' height='50' width='100' style='margin:10px;cursor:pointer' id='"+data[j].staticFileName+"'/>").append("<a href=\"javascript:deleteDriveImage('"+data[j].staticFileName+"','"+data[j].staticFileName+"')\" id='"+data[j].staticFileName+"'>删除</a>").append("\t"); 
+						$("#driveImage").val(imgUrlDriveImage);
+						imgCountDriveImage = imgCountDriveImage+1 ;
+						//$("#imageUrl").val(imgUrl);
+						
+					}
+				} else {
+					alert(result.msg);
+				}   
+	    }  
+	});	
+}
+//添加借款人征信报告
+var imgCountCreditImage= 0;
+var imgUrlCreditImag= $('#creditImage').val();
+function addCreditImage() {
+	var obj = document.getElementById("CreditImage");
+	var len=obj.files.length;
+	var paths = obj.files;  
+	if(paths.length==0)  
+	{  
+	    alert("请选择文件");  
+	    return;  
+	}  
+	          
+	var formData = new FormData();  
+	//alert(paths.length);  
+	    //我们遍历每一个文件对象  
+	for (var i = 0; i < paths.length; i++) {  
+	    var file = paths[i];  
+	    //alert(file.type);  
+	           //用正则表达式判断文件的类型是否是图片，这里大家可以自由发挥  
+	    if (!new RegExp("image/*").test(file.type)) {  
+	        alert("请注意，上传的文件一定要是图片文件");  
+	                return;  
+	    }   
+	}  
+	//alert("开始上传");  
+	   //我们可以预先定义一个FormData对象  
+	var formData=new FormData();  
+	          
+	for(var i=0;i<paths.length;i++)  
+	{  
+	            //将每个文件设置一个string类型的名字，放入到formData中，这里类似于setAttribute("",Object)  
+	    formData.append(paths[i].name,paths[i]);  
+	}  
+	          
+	          
+	$.ajax({  
+	              
+	     url: '@{back.webOperation.AdvertisementMngCtrl.upWatermarkImages()}',
+	     type: 'POST',  
+	     cache: false,  
+	     data:formData,  
+	             //这个参数是jquery特有的，不进行序列化，因为我们不是json格式的字符串，而是要传文件  
+	     processData: false,  
+	           //注意这里一定要设置contentType:false，不然会默认为传的是字符串，这样文件就传不过去了  
+	     contentType: false,  
+	     success:function(result)  
+	     {   
+	    	 if(result.code == 1){
+	    		 
+					var data = result.objs;
+					for(var j=0;j<data.length;j++){
+						if(imgCountCreditImage == 0){
+							$("#CreditImag").html("") ;
+							imgUrlCreditImag = data[j].staticFileName ;
+						}else{
+							imgUrlCreditImag = imgUrlCreditImag+"+"+ data[j].staticFileName ;
+						}
+						$("#CreditImag").append("<img src='"+data[j].staticFileName+"' class='backupimg' height='50' width='100' style='margin:10px;cursor:pointer' id='"+data[j].staticFileName+"'/>").append("<a href=\"javascript:deleteCreditImage('"+data[j].staticFileName+"','"+data[j].staticFileName+"')\" id='"+data[j].staticFileName+"'>删除</a>").append("\t"); 
+						$("#creditImage").val(imgUrlCreditImag);
+						imgCountCreditImage = imgCountCreditImage+1 ;
+						//$("#imageUrl").val(imgUrl);
+						
+					}
+				} else {
+					alert(result.msg);
+				}   
+	    }  
+	});	
+}
+//var imgCount= ${picCount} ;
+var imgCount= 0;
+var imgUrl= $('#imageUrl').val();
+
+function upload(){
+	
+var obj = document.getElementById("imgFile");
+var len=obj.files.length;
+	var paths = obj.files;  
+	if(paths.length==0)  
+	{  
+	    alert("请选择文件");  
+	    return;  
+	}  
+	          
+	var formData = new FormData();  
+	//alert(paths.length);  
+	    //我们遍历每一个文件对象  
+	for (var i = 0; i < paths.length; i++) {  
+	    var file = paths[i];  
+	    //alert(file.type);  
+	           //用正则表达式判断文件的类型是否是图片，这里大家可以自由发挥  
+	    if (!new RegExp("image/*").test(file.type)) {  
+	        alert("请注意，上传的文件一定要是图片文件");  
+	                return;  
+	    }   
+	}  
+	//alert("开始上传");  
+	   //我们可以预先定义一个FormData对象  
+	var formData=new FormData();  
+	          
+	for(var i=0;i<paths.length;i++)  
+	{  
+	            //将每个文件设置一个string类型的名字，放入到formData中，这里类似于setAttribute("",Object)  
+	    formData.append(paths[i].name,paths[i]);  
+	}  
+	          
+	          
+	$.ajax({  
+	              
+	     url: '@{back.webOperation.AdvertisementMngCtrl.uploadAdsImages()}',
+	     type: 'POST',  
+	     cache: false,  
+	     data:formData,  
+	             //这个参数是jquery特有的，不进行序列化，因为我们不是json格式的字符串，而是要传文件  
+	     processData: false,  
+	           //注意这里一定要设置contentType:false，不然会默认为传的是字符串，这样文件就传不过去了  
+	     contentType: false,  
+	     success:function(result)  
+	     {   
+	    	 if(result.code == 1){
+	    		 
+					var data = result.objs;
+					for(var j=0;j<data.length;j++){
+						if(imgCount == 0){
+							$("#img").html("") ;
+							imgUrl = data[j].staticFileName ;
+						}else{
+							imgUrl = imgUrl+"+"+ data[j].staticFileName ;
+						}
+						$("#img").append("<img src='"+data[j].staticFileName+"' class='backupimg' height='50' width='100' style='margin:10px;cursor:pointer' id='"+data[j].staticFileName+"'/>").append("<a href=\"javascript:deleteImg('"+data[j].staticFileName+"','"+data[j].staticFileName+"')\" id='"+data[j].staticFileName+"'>删除</a>").append("\t"); 
+						$("#url").html("<a href='javascript:pic();'><span>"+imgUrl+"</span></a><br><br>");
+						$("#imageUrl").val(imgUrl);
+						imgCount = imgCount+1 ;
+						//$("#imageUrl").val(imgUrl);
+						
+					}
+				} else {
+					alert(result.msg);
+				}   
+	    }  
+	});  
+}
+
+var imgCounts= 0;
+var imgUrls= $('#imageUrls').val();
+
+function uploads(){
+	
+	var obj = document.getElementById("imgFiles");
+	var len=obj.files.length;
+		var paths = obj.files;  
+		if(paths.length==0)  
+		{  
+		    alert("请选择文件");  
+		    return;  
+		}  
+		          
+		var formData = new FormData();  
+		//alert(paths.length);  
+		    //我们遍历每一个文件对象  
+		for (var i = 0; i < paths.length; i++) {  
+		    var file = paths[i];  
+		    //alert(file.type);  
+		           //用正则表达式判断文件的类型是否是图片，这里大家可以自由发挥  
+		    if (!new RegExp("image/*").test(file.type)) {  
+		        alert("请注意，上传的文件一定要是图片文件");  
+		                return;  
+		    }   
+		}  
+		//alert("开始上传");  
+		   //我们可以预先定义一个FormData对象  
+		var formData=new FormData();  
+		          
+		for(var i=0;i<paths.length;i++)  
+		{  
+		            //将每个文件设置一个string类型的名字，放入到formData中，这里类似于setAttribute("",Object)  
+		    formData.append(paths[i].name,paths[i]);  
+		}  
+		          
+		          
+		$.ajax({  
+		              
+		     url: '@{back.webOperation.AdvertisementMngCtrl.uploadAdsImages()}',
+		     type: 'POST',  
+		     cache: false,  
+		     data:formData,  
+		             //这个参数是jquery特有的，不进行序列化，因为我们不是json格式的字符串，而是要传文件  
+		     processData: false,  
+		           //注意这里一定要设置contentType:false，不然会默认为传的是字符串，这样文件就传不过去了  
+		     contentType: false,  
+		     success:function(result)  
+		     {   
+		    	 if(result.code == 1){
+		    		 
+						var data = result.objs;
+						for(var j=0;j<data.length;j++){
+							if(imgCounts == 0){
+								$("#imgs").html("") ;
+								imgUrls = data[j].staticFileName ;
+							}else{
+								imgUrls = imgUrls+"+"+ data[j].staticFileName ;
+							}
+							$("#imgs").append("<img src='"+data[j].staticFileName+"' class='backupimg' height='50' width='100' style='margin:10px;cursor:pointer' id='"+data[j].staticFileName+"'/>").append("<a href=\"javascript:deleteImgs('"+data[j].staticFileName+"','"+data[j].staticFileName+"')\" id='"+data[j].staticFileName+"'>删除</a>").append("\t"); 
+							
+							$("#imageUrls").val(imgUrls);
+							imgCounts = imgCounts+1 ;
+							
+							
+						}
+					} else {
+						alert(result.msg);
+					}   
+		    }  
+		});  
+	}
+
+var simgCount= 0;
+var simgUrl= $('#simageUrl').val();
+
+function supload(){
+	
+var obj = document.getElementById("simgFile");
+var len=obj.files.length;
+	var paths = obj.files;  
+	if(paths.length==0)  
+	{  
+	    alert("请选择文件");  
+	    return;  
+	}  
+	          
+	var formData = new FormData();  
+	//alert(paths.length);  
+	    //我们遍历每一个文件对象  
+	for (var i = 0; i < paths.length; i++) {  
+	    var file = paths[i];  
+	    //alert(file.type);  
+	           //用正则表达式判断文件的类型是否是图片，这里大家可以自由发挥  
+	    if (!new RegExp("image/*").test(file.type)) {  
+	        alert("请注意，上传的文件一定要是图片文件");  
+	                return;  
+	    }   
+	}  
+	//alert("开始上传");  
+	   //我们可以预先定义一个FormData对象  
+	var formData=new FormData();  
+	          
+	for(var i=0;i<paths.length;i++)  
+	{  
+	            //将每个文件设置一个string类型的名字，放入到formData中，这里类似于setAttribute("",Object)  
+	    formData.append(paths[i].name,paths[i]);  
+	}  
+	          
+	          
+	$.ajax({  
+	              
+	     url: '@{back.webOperation.AdvertisementMngCtrl.uploadAdsImages()}',
+	     type: 'POST',  
+	     cache: false,  
+	     data:formData,  
+	             //这个参数是jquery特有的，不进行序列化，因为我们不是json格式的字符串，而是要传文件  
+	     processData: false,  
+	           //注意这里一定要设置contentType:false，不然会默认为传的是字符串，这样文件就传不过去了  
+	     contentType: false,  
+	     success:function(result)  
+	     {   
+	    	 if(result.code == 1){
+	    		 
+					var data = result.objs;
+					for(var j=0;j<data.length;j++){
+						if(simgCount == 0){
+							$("#simg").html("") ;
+							simgUrl = data[j].staticFileName ;
+						}else{
+							simgUrl = simgUrl+"+"+ data[j].staticFileName ;
+						}
+						$("#simg").append("<img src='"+data[j].staticFileName+"' class='backupimg' height='50' width='100' style='margin:10px;cursor:pointer' id='"+data[j].staticFileName+"'/>").append("<a href=\"javascript:sdeleteImg('"+data[j].staticFileName+"','"+data[j].staticFileName+"')\" id='"+data[j].staticFileName+"'>删除</a>").append("\t"); 
+						$("#simageUrl").val(simgUrl);
+						simgCount = simgCount+1;
+					}
+				} else {
+					alert(result.msg);
+				}   
+	    }  
+	});  
+}
+
+var simgCounts= 0;
+var simgUrls= $('#simageUrl').val();
+
+function suploads(){
+
+var obj = document.getElementById("simgFiles");
+var len=obj.files.length;
+	var paths = obj.files;  
+	if(paths.length==0)  
+	{  
+	    alert("请选择文件");  
+	    return;  
+	}  
+	          
+	var formData = new FormData();  
+	//alert(paths.length);  
+	    //我们遍历每一个文件对象  
+	for (var i = 0; i < paths.length; i++) {  
+	    var file = paths[i];  
+	    //alert(file.type);  
+	           //用正则表达式判断文件的类型是否是图片，这里大家可以自由发挥  
+	    if (!new RegExp("image/*").test(file.type)) {  
+	        alert("请注意，上传的文件一定要是图片文件");  
+	                return;  
+	    }   
+	}  
+	//alert("开始上传");  
+	   //我们可以预先定义一个FormData对象  
+	var formData=new FormData();  
+	          
+	for(var i=0;i<paths.length;i++)  
+	{  
+	            //将每个文件设置一个string类型的名字，放入到formData中，这里类似于setAttribute("",Object)  
+	    formData.append(paths[i].name,paths[i]);  
+	}  
+	          
+	          
+	$.ajax({  
+	              
+	     url: '@{back.webOperation.AdvertisementMngCtrl.uploadAdsImages()}',
+	     type: 'POST',  
+	     cache: false,  
+	     data:formData,  
+	             //这个参数是jquery特有的，不进行序列化，因为我们不是json格式的字符串，而是要传文件  
+	     processData: false,  
+	           //注意这里一定要设置contentType:false，不然会默认为传的是字符串，这样文件就传不过去了  
+	     contentType: false,  
+	     success:function(result)  
+	     {   
+	    	 if(result.code == 1){
+	    		 
+					var data = result.objs;
+					for(var j=0;j<data.length;j++){
+						if(simgCounts == 0){
+							$("#simgs").html("") ;
+							simgUrls = data[j].staticFileName ;
+						}else{
+							simgUrls = simgUrls+"+"+ data[j].staticFileName ;
+						}
+						$("#simgs").append("<img src='"+data[j].staticFileName+"' class='backupimg' height='50' width='100' style='margin:10px;cursor:pointer' id='"+data[j].staticFileName+"'/>").append("<a href=\"javascript:sdeleteImgs('"+data[j].staticFileName+"','"+data[j].staticFileName+"')\" id='"+data[j].staticFileName+"'>删除</a>").append("\t"); 
+						$("#simageUrls").val(simgUrls);
+						simgCounts = simgCounts+1;
+					}
+				} else {
+					alert(result.msg);
+				}   
+	    }  
+	});  
+}
+
+function reduce(id,type){
+var num = $("#"+id).val() ;
+if(type == 0 ){
+	if(num > 1 ){
+		num = num -1 ;
+		$("#"+id).val(num) ;
+	}
+}
+
+if( type == 1 ){
+	num = num-1+2 ;
+	$("#"+id).val(num) ;
+}
+}
+
+//图片裁剪成功，回调函数 
+var cropImgSuccess = function(data) {
+$("#image").attr("src", data.staticFileName);
+$("#imageUrl").val(data.staticFileName);
+$("#imageSize").val(data.size+"kb");
+$("#imageResolution").val(data.imageResolution);
+$("#resolutionshow").html(data.imageResolution);
+$("#sizeshow").html(data.size+"kb");
+}
+
+//身份证图片删除
+function deleteCardImage(idd,id){
+	
+	var lengths=idd.indexOf('Signature=')
+	var route=idd.slice(0,lengths+10)+encodeURIComponent(idd.slice(lengths+10));
+	var lengthss=id.indexOf('Signature=')
+	var path=id.slice(0,lengthss+10)+encodeURIComponent(id.slice(lengthss+10));
+	console.log(lengths)
+	console.log(route)
+	console.log(path)
+	$("img[id='"+route+"']").attr("checked", true).remove();
+	$("a[id='"+route+"']").attr("checked", true).remove();
+	var ids=imgUrlCardImage;
+	var strs=new Array();
+	strs=ids.split("+");
+	for(i=0;i<strs.length;i++){
+		if(strs.length==1){
+		 ids=ids.replace(path,"");
+		 imgUrlCardImage=imgUrlCardImage.replace(path,"");
+		}
+		if(strs.length>1){
+			if(strs[0]==path){
+				ids=ids.replace((path+"+"),"");
+				imgUrlCardImage=imgUrlCardImage.replace((path+"+"),"");
+			}else{
+				ids=ids.replace(("+"+path),"");
+				imgUrlCardImage=imgUrlCardImage.replace(("+"+path),"");
+			}
+		}
+	}
+	imgCountCardImage = imgCountCardImage-1;
+	$("#cardImage").val(imgUrlCardImage);
+}
+
+//房本或车本图片删除
+function deletePermitImage(idd,id){
+	
+	var lengths=idd.indexOf('Signature=')
+	var route=idd.slice(0,lengths+10)+encodeURIComponent(idd.slice(lengths+10));
+	var lengthss=id.indexOf('Signature=')
+	var path=id.slice(0,lengthss+10)+encodeURIComponent(id.slice(lengthss+10));
+	console.log(lengths)
+	console.log(route)
+	console.log(path)
+	$("img[id='"+route+"']").attr("checked", true).remove();
+	$("a[id='"+route+"']").attr("checked", true).remove();
+	var ids=imgUrlPermitImage;
+	var strs=new Array();
+	strs=ids.split("+");
+	for(i=0;i<strs.length;i++){
+		if(strs.length==1){
+		 ids=ids.replace(path,"");
+		 imgUrlPermitImage=imgUrlPermitImage.replace(path,"");
+		}
+		if(strs.length>1){
+			if(strs[0]==path){
+				ids=ids.replace((path+"+"),"");
+				imgUrlPermitImage=imgUrlPermitImage.replace((path+"+"),"");
+			}else{
+				ids=ids.replace(("+"+path),"");
+				imgUrlPermitImage=imgUrlPermitImage.replace(("+"+path),"");
+			}
+		}
+	}
+	imgCountPermitImage = imgCountPermitImage-1;
+	$("#permitImage").val(imgUrlPermitImage);
+
+}
+
+//行驶证图片删除
+function deleteDriveImage(idd,id){
+	
+	var lengths=idd.indexOf('Signature=')
+	var route=idd.slice(0,lengths+10)+encodeURIComponent(idd.slice(lengths+10));
+	var lengthss=id.indexOf('Signature=')
+	var path=id.slice(0,lengthss+10)+encodeURIComponent(id.slice(lengthss+10));
+	console.log(lengths)
+	console.log(route)
+	console.log(path)
+	$("img[id='"+route+"']").attr("checked", true).remove();
+	$("a[id='"+route+"']").attr("checked", true).remove();
+	var ids=imgUrlDriveImage;
+	var strs=new Array();
+	strs=ids.split("+");
+	for(i=0;i<strs.length;i++){
+		if(strs.length==1){
+		 ids=ids.replace(path,"");
+		 imgUrlDriveImage=imgUrlDriveImage.replace(path,"");
+		}
+		if(strs.length>1){
+			if(strs[0]==path){
+				ids=ids.replace((path+"+"),"");
+				imgUrlDriveImage=imgUrlDriveImage.replace((path+"+"),"");
+			}else{
+				ids=ids.replace(("+"+path),"");
+				imgUrlDriveImage=imgUrlDriveImage.replace(("+"+path),"");
+			}
+		}
+	}
+	imgCountDriveImage = imgCountDriveImage-1;
+	$("#driveImage").val(imgUrlDriveImage);
+
+}
+//借款人征信报告删除
+function deleteCreditImage(idd,id){
+	
+	var lengths=idd.indexOf('Signature=')
+	var route=idd.slice(0,lengths+10)+encodeURIComponent(idd.slice(lengths+10));
+	var lengthss=id.indexOf('Signature=')
+	var path=id.slice(0,lengthss+10)+encodeURIComponent(id.slice(lengthss+10));
+	console.log(lengths)
+	console.log(route)
+	console.log(path)
+	$("img[id='"+route+"']").attr("checked", true).remove();
+	$("a[id='"+route+"']").attr("checked", true).remove();
+	var ids=imgUrlCreditImag;
+	var strs=new Array();
+	strs=ids.split("+");
+	for(i=0;i<strs.length;i++){
+		if(strs.length==1){
+		 ids=ids.replace(path,"");
+		 imgUrlCreditImag=imgUrlCreditImag.replace(path,"");
+		}
+		if(strs.length>1){
+			if(strs[0]==path){
+				ids=ids.replace((path+"+"),"");
+				imgUrlCreditImag=imgUrlCreditImag.replace((path+"+"),"");
+			}else{
+				ids=ids.replace(("+"+path),"");
+				imgUrlCreditImag=imgUrlCreditImag.replace(("+"+path),"");
+			}
+		}
+	}
+	imgCountCreditImage = imgCountCreditImage-1;
+	$("#creditImage").val(imgUrlCreditImag);
+
+}
+function deleteImg(idd,id){
+	
+	var lengths=idd.indexOf('Signature=')
+	var route=idd.slice(0,lengths+10)+encodeURIComponent(idd.slice(lengths+10));
+	var lengthss=id.indexOf('Signature=')
+	var path=id.slice(0,lengthss+10)+encodeURIComponent(id.slice(lengthss+10));
+	console.log(lengths)
+	console.log(route)
+	console.log(path)
+	$("img[id='"+route+"']").attr("checked", true).remove();
+	$("a[id='"+route+"']").attr("checked", true).remove();
+	var ids=imgUrl;
+	var strs=new Array();
+	strs=ids.split("+");
+	for(i=0;i<strs.length;i++){
+		if(strs.length==1){
+		 ids=ids.replace(path,"");
+		 imgUrl=imgUrl.replace(path,"");
+		}
+		if(strs.length>1){
+			if(strs[0]==path){
+				ids=ids.replace((path+"+"),"");
+				imgUrl=imgUrl.replace((path+"+"),"");
+			}else{
+				ids=ids.replace(("+"+path),"");
+				imgUrl=imgUrl.replace(("+"+path),"");
+			}
+		}
+	}
+	imgCount = imgCount-1;
+	$("#url").html(ids);
+	$("#imageUrl").val(imgUrl);
+
+}
+
+
+function deleteImgs(idd,id){
+	
+	var lengths=idd.indexOf('Signature=')
+	var route=idd.slice(0,lengths+10)+encodeURIComponent(idd.slice(lengths+10));
+	var lengthss=id.indexOf('Signature=')
+	var path=id.slice(0,lengthss+10)+encodeURIComponent(id.slice(lengthss+10));
+	console.log(lengths)
+	console.log(route)
+	console.log(path)
+	$("img[id='"+route+"']").attr("checked", true).remove();
+	$("a[id='"+route+"']").attr("checked", true).remove();
+	var ids=imgUrls;
+	var strs=new Array();
+	strs=ids.split("+");
+	for(i=0;i<strs.length;i++){
+		if(strs.length==1){
+		 ids=ids.replace(path,"");
+		 imgUrls=imgUrls.replace(path,"");
+		}
+		if(strs.length>1){
+			if(strs[0]==path){
+				ids=ids.replace((path+"+"),"");
+				imgUrls=imgUrls.replace((path+"+"),"");
+			}else{
+				ids=ids.replace(("+"+path),"");
+				imgUrls=imgUrls.replace(("+"+path),"");
+			}
+		}
+	}
+	imgCounts = imgCounts-1;
+	$("#imageUrls").val(imgUrls);
+}
+
+function sdeleteImg(idd,id){
+	var lengths=idd.indexOf('Signature=')
+	var route=idd.slice(0,lengths+10)+encodeURIComponent(idd.slice(lengths+10));
+	var lengthss=id.indexOf('Signature=')
+	var path=id.slice(0,lengthss+10)+encodeURIComponent(id.slice(lengthss+10));
+	console.log(lengths)
+	console.log(route)
+	console.log(path)
+	$("img[id='"+route+"']").attr("checked", true).remove();
+	$("a[id='"+route+"']").attr("checked", true).remove();
+	var ids=simgUrl;
+	var strs=new Array();
+	strs=ids.split("+");
+	for(i=0;i<strs.length;i++){
+		if(strs.length==1){
+		 ids=ids.replace(path,"");
+		 simgUrl=simgUrl.replace(path,"");
+		}
+		if(strs.length>1){
+			if(strs[0]==path){
+				ids=ids.replace((path+"+"),"");
+				simgUrl=simgUrl.replace((path+"+"),"");
+			}else{
+				ids=ids.replace(("+"+path),"");
+				simgUrl=simgUrl.replace(("+"+path),"");
+			}
+		}
+	}
+	simgCount = simgCount-1;
+	$("#simageUrl").val(simgUrl);
+}
+
+function sdeleteImgs(idd,id){
+	var lengths=idd.indexOf('Signature=')
+	var route=idd.slice(0,lengths+10)+encodeURIComponent(idd.slice(lengths+10));
+	var lengthss=id.indexOf('Signature=')
+	var path=id.slice(0,lengthss+10)+encodeURIComponent(id.slice(lengthss+10));
+	console.log(lengths)
+	console.log(route)
+	console.log(path)
+	$("img[id='"+route+"']").attr("checked", true).remove();
+	$("a[id='"+route+"']").attr("checked", true).remove();
+	var ids=simgUrls;
+	var strs=new Array();
+	strs=ids.split("+");
+	for(i=0;i<strs.length;i++){
+		if(strs.length==1){
+		 ids=ids.replace(path,"");
+		 simgUrls=simgUrls.replace(path,"");
+		}
+		if(strs.length>1){
+			if(strs[0]==path){
+				ids=ids.replace((path+"+"),"");
+				simgUrls=simgUrls.replace((path+"+"),"");
+			}else{
+				ids=ids.replace(("+"+path),"");
+				simgUrls=simgUrls.replace(("+"+path),"");
+			}
+		}
+	}
+	simgCounts = simgCounts-1;
+	$("#simageUrls").val(simgUrls);
+}
+
+
+function clearImg(){
+	var id=$("#imageUrl").val();
+	$("#img").children().remove(); 
+	$("#imageUrl").val("");
+	$("#url").html("");
+	imgUrl="";
+	ids="";
+	imgCount=0;
+}
+
+function reloadPage(){
+  location.reload();
+}
+
+/*表单检验   身份证*/
+function checkCreditNo(){
+	var acn=$("#appCreditNo").val();
+	if(!acn){
+		$("#acn").html("身份证号码不能为空");
+		return false;
+	}
+	var reg=/^(\d{15}$|^\d{18}$|^\d{17}(\d|X|x))$/;
+	if(!reg.test(acn)){
+		 $("#acn").html("身份证号格式不正确！");
+		 return false;
+	 }
+	 $("#acn").html("");
+	 return true;
+}
+
+function checkAppMateIdNumber() {
+	var acn = $("#appMateIdNumber").val();
+	var reg=/^(\d{15}$|^\d{18}$|^\d{17}(\d|X|x))$/;
+	if(!reg.test(acn)){
+		 $("#camin").html("身份证号格式不正确！");
+	 }
+	$("#camin").html("");
+}
+
+function checkAmount(){
+	var amount=$("#loanAmount").val();
+	if(!amount){
+		$("#la").html("借款金额不能为空！");
+		return false;
+	}
+	var reg=/^[1-9]+[0-9]*]*$/;
+	if(!(reg.test(amount)&& amount%1000==0)){
+		$("#la").html("必须为1000的整数倍！");
+		return false;
+	}
+	$("#la").html("");
+	return true;
+}
+
+function checkPurpose(){
+	var pur=$("#loanPurpose").val();
+	if(pur.length<3||pur.length>15){
+		$("#lp").html("3~15个字符！");
+		return false;
+	}
+	$("#lp").html("");
+	return true;
+}
+
+function checkState(){
+	var loanState=$("#loanState").val();
+	loanState=$.trim(loanState);
+	if(loanState.length<20||loanState.length>2000){
+		$("#ls").html("请按提示正确输入！");
+		return false;
+	}
+	$("#ls").html("");
+	return true;
+}
+
+//验证通讯地址
+function checkCommunicationAddress() {
+	var appCommunicationAddress = $("#appCommunicationAddress").val();
+	if(!appCommunicationAddress) {
+		$("#ca").html("通讯地址不能为空");
+		return false;
+	}else {
+		$("#ca").html("");
+		return true;
+	}
+}
+
+//验证通讯地址邮编
+function checkPostalCode() {
+	var appPostalCode = $("#appPostalCode").val();
+	if(!appPostalCode) {
+		$("#cpc").html("通讯地址邮编不能为空");
+		return false;
+	}else {
+		$("#cpc").html("");
+		return true;
+	}
+}
+
+//验证第一联系人姓名
+function checkFirstName() {
+	var appFirstName = $("#appFirstName").val();
+	if(!appFirstName) {
+		$("#cfn").html("第一联系人姓名不能为空");
+		return false;
+	}else {
+		$("#cfn").html("");
+		return true;
+	}
+}
+
+//验证第一联系人电话
+function checkFirstPhone() {
+	var appFirstPhone = $("#appFirstPhone").val();
+	if(!appFirstPhone) {
+		$("#cfp").html("第一联系人电话不能为空");
+		return false;
+	}else {
+		$("#cfp").html("");
+		return true;
+	}
+}
+
+//验证单位名称
+function checkCompany() {
+	var appCompany = $("#appCompany").val();
+	if(!appCompany) {
+		$("#ccp").html("单位名称不能为空");
+		return false;
+	}else {
+		$("#ccp").html("");
+		return true;
+	}
+}
+
+//验证居住地址
+function checkResidentialAddress() {
+	var residentialAddress = $("#residentialAddress").val();
+	if(!residentialAddress) {
+		$("#cra").html("居住地址不能为空");
+		return false;
+	}else {
+		$("#cra").html("");
+		return true;
+	}
+}
+
+//验证居住地址邮编
+function checkResidentialPostalCode() {
+	var residentialPostalCode = $("#residentialPostalCode").val();
+	if(!residentialPostalCode) {
+		$("#crp").html("居住地址邮编不能为空");
+		return false;
+	}else {
+		$("#crp").html("");
+		return true;
+	}
+}
+
+//验证居住年限
+function checkResidentYear() {
+	var residentYear = $("#residentYear").val();
+	if(!residentYear) {
+		$("#cry").html("居住年限不能为空");
+		return false;
+	}else {
+		$("#cry").html("");
+		return true;
+	}
+}
+//验证担保机构
+function GuarantyAgencys() {
+	var GuarantyAgency=$("#GuarantyAgency").find("option:selected").text();
+	console.log(GuarantyAgency)
+	if(GuarantyAgency=='--请选择--' || GuarantyAgency=='' ){
+		$("#ga").html("请选择担保机构");
+		return false;
+	}else{
+		$("#ga").html("");
+		return true;
+	}
+}
+
+//验证服务费
+function checkserviceCharge() {
+	var serviceCharge = $("#serviceCharge").val();
+	if(!serviceCharge) {
+		$("#serviceCharges").html("服务费用不能为空");
+		return false;
+	}else {
+		$("#serviceCharges").html("");
+		return true;
+	}
+}
+
+function submitRisk(){
+	var creditNoFlag=checkCreditNo();
+	var loanAmountFlag=checkAmount();
+    var purposeFlag=checkPurpose();
+    var stateFlag=checkState();
+    var addressFlag = checkCommunicationAddress();
+    var postalFlag = checkPostalCode();
+    var firstNameFlag = checkFirstName();
+    var firstPhoneFlag = checkFirstPhone();
+    var companyFlag = checkCompany();
+    var residentialAddressFlag = checkResidentialAddress();
+    var residentialPostalCodeFlag = checkResidentialPostalCode();
+    var residentYearFlag = checkResidentYear();
+	//var GuarantyAgency = GuarantyAgencys();
+    var serviceChargeFlag = checkserviceCharge();
+	if(creditNoFlag && loanAmountFlag && purposeFlag && stateFlag && addressFlag && postalFlag && checkFirstName && checkFirstPhone && companyFlag && residentialAddressFlag && residentialPostalCodeFlag && residentYearFlag && serviceChargeFlag){
+		$("#saveRisk").submit();
+	}
+}
+
+function saveRisk(){
+	var creditNoFlag=checkCreditNo();
+	if(creditNoFlag) {
+		$("#flag").val("1");
+		$("#saveRisk").submit();
+	}
+}
+
+//项目消息推送
+function projectPush(sign) {
+	$.post('@{back.risk.LoanMngCtrl.projectPush()}',{sign:sign},function(data) {
+		var flag = interceptorCheck(data);
+		if(!flag){
+			return;
+		}
+		
+		weakDialog(data.msg);
+		
+	})
+}
+
+//判断服务费率是不是数字和小数点
+function num(obj){
+	obj.value = obj.value.replace(/[^\d.]/g,""); //清除"数字"和"."以外的字符
+	obj.value = obj.value.replace(/^\./g,""); //验证第一个字符是数字
+	obj.value = obj.value.replace(/\.{2,}/g,"."); //只保留第一个, 清除多余的
+	obj.value = obj.value.replace(".","$#$").replace(/\./g,"").replace("$#$",".");
+	obj.value = obj.value.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3'); //只能输入两个小数
+}
+
+function invalid (reportId) {
+	confirm("是否作废此风控报告",function () {
+		$.ajax({
+			url : '@{back.risk.LoanMngCtrl.invalid()}',
+			type : 'POST',
+			data : {"reportId" : reportId},
+			dataType : 'json',
+			success : function (data) {
+				if (data.code == 1) {
+					$(".invalid"+reportId).hide();
+					$(".sta"+reportId).text("已作废");
+				}
+				alert(data.msg);
+			}
+		});
+		
+	});
+}
+</script>

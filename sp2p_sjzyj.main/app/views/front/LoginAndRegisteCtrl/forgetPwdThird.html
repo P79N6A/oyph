@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>忘记密码${' | '+settings?.get(common.constants.SettingKey.SEO_TITLE)+' | '+settings?.get(common.constants.SettingKey.PLATFORM_NAME)}</title>
+		<meta name="keywords" content="${settings?.get(common.constants.SettingKey.PLATFORM_NAME)}" />
+		<meta name="description" content="${settings?.get(common.constants.SettingKey.PLATFORM_NAME)}" />
+		<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+		<link rel="shortcut icon" type="image/png" href="${settings?.get(common.constants.SettingKey.PLATFORM_ICON_FILENAME)}" />
+		<link rel="stylesheet" type="text/css" href="@{'/public/front/stylesheets/front.css'}" />
+		<!-- 皮肤背景、颜色 -->
+		<link rel="stylesheet" type="text/css" href="@{'/public/front/themes/'+settings?.get(common.constants.SettingKey.THEME_NAME)+'/background.css'}" />
+		#{if settings?.get(common.constants.SettingKey.THEME_CUSTOMIZE).equals('0')}
+			<link rel="stylesheet" type="text/css" href="@{'/public/front/themes/'+settings?.get(common.constants.SettingKey.THEME_NAME)+'/color.css'}" />
+		#{/if}
+		#{else}
+			
+			#{set mainColor:'#'+settings?.get(common.constants.SettingKey.THEME_MAIN_COLOR) /}
+			#{set auxColor:'#'+settings?.get(common.constants.SettingKey.THEME_AUX_COLOR) /}
+			#{set thdColor:'#'+common.utils.StrUtil.colorByAlpha(settings?.get(common.constants.SettingKey.THEME_MAIN_COLOR)) /}
+			#{include 'common/front/colorCont.html' /}
+		#{/else}
+	</head>
+	<body>
+		<div class="login-body">
+
+			 <div class="login">
+	    	<div class="login1" style="background-image: url(/public/front/images/denglu-bg.jpg);"></div>
+	    	<div class="login-logo">
+	    		<a href="@{front.FrontHomeCtrl.frontHomePre()}">
+	    			<img src="/public/front/images/logo.png"/>
+	    		</a>
+	    	</div>	
+			<div class="container1 register-box">
+				<ul class="findpassword-step clearfix">
+					<li class="done">
+						<span class="step-circle">1</span>
+						<p class="step-name">身份验证</p>
+						<div class="step-split"></div>
+					</li>
+					<li class="done">
+						<span class="step-circle">2</span>
+						<p class="step-name">重置密码</p>
+						<div class="step-split"></div>
+					</li>
+					<li class="selected">
+						<span class="step-circle">✔</span>
+						<p class="step-name">成功</p>
+					</li>
+				</ul>
+				<p class="findepassword-success">
+					<span class="timeout-note major"><i class="icon success-icon"></i>密码修改成功！<a href="@{front.LoginAndRegisteCtrl.loginPre()}" class="assistant">去登录</a>。</span>
+				</p>
+				<p class="timeout-return"><a href="@{front.LoginAndRegisteCtrl.loginPre()}" class="backpage"><i class="icon return-icon"></i>返回</a></p>
+			</div>
+
+			<div class="footer-msg">
+				©2016&nbsp;${settings?.get(common.constants.SettingKey.PLATFORM_NAME)}&nbsp;All&nbsp;rights&nbsp;resered<i class="footer-split">|</i>${settings?.get(common.constants.SettingKey.COMPANY_NAME)}<i class="footer-split">|</i>${settings?.get(common.constants.SettingKey.SITE_ICP_NUMBER)}
+			</div>
+		</div>
+	</body>
+</html>

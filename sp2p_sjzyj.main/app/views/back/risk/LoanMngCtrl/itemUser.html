@@ -1,0 +1,77 @@
+<div class="back-infor">
+	<h2 class="back-infor-head">科目审核</h2>
+	<ul class="back-audit">
+		#{list userLoop, as:'userUpload'}
+		<li>
+			<h3 class="slide-menu">
+				<span class="back-audit-name left"><i class="iconfont slide-arrow">&#xe603;</i>${userUpload?.bid_audit_subject?.name}</span>
+				<span class="back-audit-note left">${userUpload?.bid_audit_subject?.description}</span>
+			</h3>
+			<div class="back-audit-tab slide-cont">
+				<table width="100%">
+					#{list userUpload?.bid_item_user, as:'tbiu'}
+					<tr height="40">
+						<input type="hidden" id="bid_item_user_${tbiu?.id}"/>
+						<td width="16%">${tbiu_index}</td>
+						<td width="28%">${tbiu?.name}</td>
+						<td width="28%">${tbiu?.getStatus()?.value}</td>
+						<td width="28%">
+							<a href="javascript:void(0);" data-url="${tbiu?.url}" data-alt="预览" onclick="javascript:$(this).preview('${tbiu?.url}')" class="iconfont preview-btn" data-title="预览" >&#xe618;</a>
+							#{if tbiu?.getStatus()==models.core.entity.t_bid_item_user.BidItemAuditStatus.WAIT_AUDIT && !closeAudit}
+							<a href="javascript:void(0);" class="iconfont" data-title="通过" onclick="passItemUser(${tbiu?.id}, ${models.core.entity.t_bid_item_user.BidItemAuditStatus.PASS.code})">&#xe61d;</a>
+							<a href="javascript:void(0);" class="iconfont" data-title="不通过" onclick="noPassItemUser(${tbiu?.id}, ${models.core.entity.t_bid_item_user.BidItemAuditStatus.NO_PASS.code})">&#xe60e;</a>
+							#{/if}
+							#{else}
+							<a href="javascript:void(0);" class="iconfont unable" data-title="">&#xe61d;</a>
+							<a href="javascript:void(0);" class="iconfont unable" data-title="">&#xe60e;</a>
+							#{/else}
+							<a href="@{common.ImagesController.downLoadImages(tbiu?.url, tbiu?.name)}" class="iconfont" data-title="下载" target="_self">&#xe639;</a>
+						</td>
+					</tr>
+					#{/list}
+				</table>
+			</div>
+		</li>
+		#{/list}
+	</ul>
+</div>
+<script type="text/javascript">
+	function passItemUser(itemUserId, status){
+		setItemUserStatus(itemUserId, status, function(){
+			$("#bid_item_user_"+itemUserId).siblings("td").eq(2).html('已通过');
+			$("#bid_item_user_"+itemUserId).siblings("td").eq(3).children("a").eq(1).removeAttr('onclick').css("color", "#999");
+			$("#bid_item_user_"+itemUserId).siblings("td").eq(3).children("a").eq(2).removeAttr('onclick').css("color", "#999");
+		});
+	}
+	function noPassItemUser(itemUserId, status){
+		setItemUserStatus(itemUserId, status, function(){
+			$("#bid_item_user_"+itemUserId).siblings("td").eq(2).html('未通过');
+			$("#bid_item_user_"+itemUserId).siblings("td").eq(3).children("a").eq(1).removeAttr('onclick').css("color", "#999");
+			$("#bid_item_user_"+itemUserId).siblings("td").eq(3).children("a").eq(2).removeAttr('onclick').css("color", "#999");
+		});
+	}
+	function setItemUserStatus(itemUserId, status, callback){
+		$.ajax({
+			url : "@{back.risk.LoanMngCtrl.auditBidItemUser()}",
+			type : "POST",
+			data : {
+				"itemId" : itemUserId,
+				"status" : status
+			},
+			success : function(data){
+				var flag = interceptorCheck(data);
+				if(!flag){
+					return;
+				}
+				if(data.code < 1){
+					alert(data.msg);
+					return;
+				}
+				weakDialog('审核完成!');
+				if(callback){
+					callback();
+				}
+			}
+		});
+	}
+</script>

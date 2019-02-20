@@ -1,0 +1,67 @@
+#{extends 'common/back/riskMain.html' /}
+	#{set title:'风控 | 合同模板' /}
+	#{set smallclass:4 /}
+	#{set crumbs:'风控>合同模板'/}
+	
+	
+<div class="back-main">
+	
+	<!-- 搜索条件，默认隐藏 -->
+	<!-- 左侧菜单 -->
+	<div class="back-cont">
+		<div class="back-box">
+			<table width="100%" class="back-table table-fixed">
+				<tr height="39">
+					<th class="align-left" width="70">编号</th>
+					<th>名称</th>
+					<th>合同类型</th>
+					<th width="200">操作</th>
+				</tr>
+				#{if pacts}
+					#{list items:pacts,as:'pact'}
+						<tr height="39">
+							<td class="align-left">
+								<label><input type="checkbox" class="back-tdcheck" />${pact?.id}</label>
+							</td>
+							<td>${pact?.name}</td>
+							<td>${pact?.type?.value}</td>
+							<td class="back-handle">
+								#{rightMng rightId:406002}
+								<a href="@{back.risk.PactMngCtrl.toEditPactPre(pact?.sign)}" data-title="编辑" class="iconfont">&#xe602;</a>
+								#{/rightMng}
+							</td>
+						</tr>
+					#{/list}
+					
+					<!-- 表格数据统计 -->
+					<tr height="39">
+						<td colspan="4" class="back-lasttd">
+							<span class="back-choose left">
+								<input type="button" id="chooseAll" value="全选" />
+								<input type="button" id="chooseReverse" value="反选" />
+							</span>
+						</td>
+					</tr>
+				#{/if}
+				#{else}
+					<!-- 暂无记录 -->
+					<tr height="58">
+						<td colspan="4" class="back-nodata"><i class="iconfont">&#xe613;</i>暂无记录</td>
+					</tr>
+				#{/else}
+
+			</table>
+		</div>
+	</div>
+</div>
+
+
+
+<!-- 页面js -->
+<script type="text/javascript">
+	require(["back"],function(back){
+		// 搜索 排序 选中
+		require(["search","linechecked"],function(){
+		});
+	});
+</script>	

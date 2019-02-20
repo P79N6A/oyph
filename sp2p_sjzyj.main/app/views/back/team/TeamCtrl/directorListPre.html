@@ -1,0 +1,292 @@
+#{extends 'common/back/teamMain.html' /}
+	#{set title:'团队长 | 部门经理' /}
+	#{set smallclass:1 /}
+	#{set crumbs:'团队长 >部门经理'/}
+	
+%{
+	java.lang.Integer type = controllers.common.BackBaseController.getCurrentSupervisorType();
+}%	
+<style type="text/css">
+	#bumen{float:left;height: 51px;margin: 0;padding: 0;}
+	#qieMonth{float:left;}
+</style>
+<div class="back-main">
+	<!-- 头部筛选条件 -->
+	<div class="back-usertop">
+		<!-- 搜索按钮，控制搜索条件的显示隐藏 -->
+		<div class="left back-usermenu">
+		<div id="bumen"><a href="@{back.team.TeamCtrl.directorListPre()}"  class="selected" >部门经理</a></div>
+				
+		#{if type==1}
+		<a href="@{back.team.TeamCtrl.directorInfoPre()}" >个人中心</a>
+		#{/if}
+		</div>
+		<form action="@{back.team.TeamCtrl.directorListPre()}" method="GET" id="qieMonth">
+			<input type="hidden" id="currPage" name="currPage"/>
+			<input type="hidden" id="pageSize" name="pageSize" value="${pageBean?.pageSize}"/>
+	  		<input type="hidden" id="exports" name="exports"/><!--是否导出  -->
+	  		<input type="hidden" id="zhis" name="zhis"/>
+	  		<select id="selMonth" name="selMonth" onchange="selSubmit()">
+	  			<option #{if page.selMonth==0} selected="selected"#{/if} id="op0" value="0"></option>
+	  			<option #{if page.selMonth==1} selected="selected"#{/if} id="op1" value="1"></option>
+	  			<option #{if page.selMonth==2} selected="selected"#{/if} id="op2" value="2"></option>
+	  			<option #{if page.selMonth==3} selected="selected"#{/if} id="op3" value="3"></option>
+	  		</select>
+		</form>
+		<!-- 右侧功能按钮 -->
+				<div class="right back-rightbtns">
+		<a href="javascript:exportList(1)"><i class="iconfont">&#xe612;</i>导出</a>
+		</div>
+	</div>
+	<!-- 搜索条件，默认隐藏 -->
+	<div class="back-search-option" #{if loanName}style="display: block;"#{/if}>
+		<form action="@{back.team.TeamCtrl.directorListPre()}" method="GET" id="showReleaseListPre">
+			<input type="hidden" id="currPage" name="currPage"/>
+			<input type="hidden" id="pageSize" name="pageSize" value="${pageBean?.pageSize}"/>
+	  		<input type="hidden" id="exports" name="exports"/><!--是否导出  -->
+			<input type="submit" class="bgbtn" value="搜索" />
+		</form>
+	</div>
+	<div class="back-cont">
+		<div class="back-box">
+			<table width="100%" class="back-table table-fixed">
+				<tr height="40" >
+					<th width="70" class="align-left">
+						<span class="back-order">
+							序号
+						</span>
+					</th>
+					<th>职位</th>
+					<th>真实姓名</th>
+					<th>团队人数</th>
+					<th>
+						<span class="back-order">
+						   团队推广会员人数
+						</span>
+					</th>
+					<th>团队理财会员人数</th>
+					<th>团队当月理财总金额</th>
+					<th>团队月折算金额</th>
+					<th>团队本月佣金</th>
+					<th>团队理财总金额</th>
+					<th>团队佣金</th>
+					<th >操作</th>
+				</tr>
+			#{if page?.page}
+				#{list page?.page}
+				<tr height="40">
+					<td class="align-left">
+						<label><input type="checkbox" class="back-tdcheck" />${_index}</label>
+					</td>
+					<td data-title="">
+					#{if _?.type==0}
+					业务员
+					#{/if}
+						#{if _?.type==1}
+					部门经理
+					#{/if}
+						#{if _?.type==2}
+					业务部经理
+					#{/if}
+					</td>
+					
+					<td>
+						${_?.realName}
+					</td>
+					<td>
+						${_?.count}
+					</td>
+					<td>
+						${_?.userCode}
+					</td>
+					<td>
+						${_?.investCount}
+					</td>
+					<td>
+					#{if selMonth==0}
+						${_?.total_month_invest?.format("#0.00")}
+					#{/if}
+					#{else}
+						${_?.teamSta?.month_money?.format("#0.00")}
+					#{/else}
+					</td>
+					<td>
+					#{if selMonth==0}
+						${_?.total_month_money?.format("#0.00")}
+					#{/if}
+					#{else}
+						${_?.teamSta?.year_convert?.format("#0.00")}
+					#{/else}
+					</td>
+					<td>
+					#{if selMonth == 0}
+						${_?.total_actual_month_commission?.format("#0.00")}
+					#{/if}
+					#{else}
+						${_?.teamSta?.actual_month_commission?.format("#0.00")}
+					#{/else}
+					</td>
+					<td>
+					#{if selMonth==0}
+						${_?.total_money?.format("#0.00")}
+					#{/if}
+					#{else}
+						${_?.teamSta?.total_money?.format("#0.00")}
+					#{/else}
+					</td>
+					<td>
+					${_?.total_commission?.format("#0.00")}
+					</td>
+					<td>
+					<a href="javascript:directorDetails('${_?.realName}', '${_?.code}','${_?.mobile}','${_?.total_commission}')" class="">主任详情</a> 
+					</td>
+				</tr>
+				#{/list}
+				<!-- 表格数据统计 -->
+							<tr height="40">
+						<td colspan="12" class="back-lasttd">
+							<!-- 分页组件--pageTag -->
+							#{backPageTag page:page,showPage:"showReleaseListPre"/}
+						</td>
+					</tr>
+			#{/if}
+			#{else}	
+					<!-- 暂无记录 -->
+					<tr height="58">
+						<td colspan="11" class="back-nodata"><i class="iconfont">&#xe613;</i>暂无记录</td>
+					</tr>
+				</table>
+			#{/else}
+		</div>
+	</div>
+</div>
+<div class="dialog qd-dialog" id="tg" >
+		<div class="dialog-bg"></div>
+		<div class="qd-dialogbox dialog-cont" style="left: 589px; opacity: 1; margin-top: 0px; top: 110px;">
+		<ul>
+		<li><span>姓名:</span><span id="name"></span></li>
+		<li><span>手机号码:</span><span id="mobile"></span></li>
+		</ul>
+		</div>
+	</div>
+
+<!-- 页面js -->
+<script type="text/javascript">
+	require(["back"],function(back){
+		// 搜索 排序 选中
+		require(["search","linechecked"],function(){
+		});
+	});
+	
+	function release(bidNo) {
+		confirm("编号"+bidNo+"，执行放款", function(){
+			waitingDialog();
+			$("#form_"+bidNo).submit();
+		});
+	}
+	
+	function showReleaseListPre(currPage, pageSize) {
+		$("#currPage").val(currPage);
+		$("#pageSize").val(pageSize);
+		
+		$("#qieMonth").submit();
+	}
+	
+	//导出
+	function exportList(expor){
+		$("#exports").val(expor);
+		
+		$("#qieMonth").submit();
+		$("#exports").val(0);
+	}
+	
+	//排序
+	function orderBy(orderType,orderValue){
+		$("#showReleaseListPre input[name='orderType']").val(orderType);
+		$("#showReleaseListPre input[name='orderValue']").val(orderValue);
+		
+		$("#showReleaseListPre input[name='currPage']").val(1);
+		
+		$("#showReleaseListPre").submit();
+	}
+	
+	function directorDetails(name,code,mobile,amount){
+		
+		alert("<ul><li><span>姓名:</span><span >"+name+"</span></li><li><span>手机号码:</span><span >"+mobile+"</span></li><li><span>总佣金:</span><span>"+amount+"</span></li></ul>")
+		
+	}
+	
+	 window.onload=function(){
+			document.getElementById("op0").innerHTML=dateYear()+'年'+dateMonth()+"月";
+			if(dateMonth()>1){
+				document.getElementById("op1").innerHTML=dateYear()+'年'+dateMonth(1)+"月";
+			}else{
+				document.getElementById("op1").innerHTML=(dateYear()-1)+'年'+dateMonth(1)+"月";
+			}
+			if(dateMonth()>2){
+				document.getElementById("op2").innerHTML=dateYear()+'年'+dateMonth(2)+"月";
+			}else{
+				document.getElementById("op2").innerHTML=(dateYear()-1)+'年'+dateMonth(2)+"月";
+			}
+			if(dateMonth()>3){
+				document.getElementById("op3").innerHTML=dateYear()+'年'+dateMonth(3)+"月";
+			}else{
+				document.getElementById("op3").innerHTML=(dateYear()-1)+'年'+dateMonth(3)+"月";
+			}
+			
+		} 	
+
+		//获取月份
+		function dateMonth(flag){
+			 var date=new Date;
+			 var year=date.getFullYear();
+			 var month=date.getMonth()+1;
+			 month =(month<10 ? "0"+month:month); 
+			 var mydate = (year.toString()+month.toString());
+			 if(flag==1){
+				 if(month>1)
+				 	 month=month-1;
+				 else{
+					 month='12';
+				 }
+			}
+			 else if(flag==2){
+			     if(month==1){
+			    	 month="11";
+			     }else if(month==2){
+			    	 month="12";
+			     }else{
+			    	 month=month-2; 
+			     } 
+			}
+			 else if(flag==3){
+				 if(month==1){
+			    	 month="10";
+			     }else if(month==2){
+			    	 month="11";
+			     }else if(month==3){
+			    	 month="12"; 
+			     } else{
+			    	 month=month-3;
+			     }
+			 }
+			 else {
+				 month=month;
+			 }
+			 return month
+		}
+		//获取年份
+		function dateYear(){
+			 var date=new Date;
+			 var year=date.getFullYear();
+			 return year;
+		}
+	
+	function selSubmit(){
+		var month = $("#selMonth").val();
+		var zhi = document.getElementById("op"+month).innerHTML;
+		$("#zhis").val(zhi+"1日");
+		var form=$("#qieMonth");
+		form.submit();
+	}
+</script>

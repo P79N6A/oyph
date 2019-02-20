@@ -1,0 +1,48 @@
+<div class="products-description">
+					<h3 class="products-tit">全部商品</h3>
+					<ul class="products-list">
+						#{list items:page.page, as:'goods'}
+						<li class="merchandise-list"  >
+							<div class="pic-exhibition" >
+								<a href="@{front.MallCtrl.goodsDetailPre(goods?.id)}" >
+								<img style="width: 215px;height: 200px;" src="${goods?.pic_path}" />
+								</a>
+							</div>
+							<div class="convertibility-list">
+								
+								<p class="convertibility-col"><span>${goods.name}</span></p>
+								<p class="ranking-col"><span>库存量：</span><span>#{if goods?.total == -1}无数量限制#{/if} #{else}${goods?.surplus}#{/else}</span></p>
+								<p class="ranking-col"><span>积分价：</span><span class="size-place" id="exchange_scroe">${goods?.exchange_scroe}万</span></p>
+								 #{if goods?.surplus > 0 && goods?.total >= 0 }
+								  <input type="hidden" name="exchangeNum" id="exchangeNum" value="1" size="1"/>
+								<i class="convertibility" onclick="exchange(${goods?.exchange_scroe},${goods.id},${goods?.type_id})">兑换商品</i>
+								<input type="hidden" name="goods_id" id="goods_id" value="${goods?.id}"/>
+								#{/if}
+								#{else}
+									#{if goods?.total == -1}
+										<input type="hidden" name="exchangeNum" id="exchangeNum" value="1" size="1"/>
+										<i class="convertibility" onclick="exchangeVirtualGoods(${goods?.exchange_scroe},${goods?.id},${goods?.type_id},1)">兑换商品</i>
+										<input type="hidden" name="goods_id" id="goods_id" value="${goods?.id}"/>
+									#{/if}
+									#{else}
+										<i class=" y-jfbtosBtn" >兑换商品</i>
+									#{/else}
+								#{/else}
+							</div>
+						</li>
+						#{/list}
+					</ul>
+					<form action="@{front.MallCtrl.home2Pre()}" method="GET" id="toInvestPre">
+				<input type="hidden" id="currPage" name="currPage"/>
+				<input type="hidden" id="pageSize" name="pageSize"/>
+				<input type="hidden" id="typeId" name="typeId" value="${typeId}"/>
+				</form>
+				#{if typeId}
+					#{if page?.page}
+						#{frontPageTag page:page,showPage:"showPage"/}
+					#{/if}
+				#{/if}
+				</div>
+<script>
+
+</script>

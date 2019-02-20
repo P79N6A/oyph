@@ -1,0 +1,236 @@
+#{extends 'back/spread/ExperienceBidCtrl/experienceBidMain.html' /}
+	#{set title:'推广 | 体验标 | 体验标规则' /}
+	#{set smallclass:1 /}
+	#{set crumbs:'推广>体验标>体验标规则'/}
+	
+<div class="back-main">
+	<div class="back-cont">
+		<div class="back-infor">
+			<h2 class="back-infor-head"><span class="left">体验标说明</span></h2>
+			<div class="back-infor-lcset back-infor-getset">
+				<p>1、体验标是由平台发起吸引用户注册的推广活动标，体验金为活动用虚拟货币，平台保留最终解释权</p>
+				<p>2、体验标无投资上限，平台发布体验项目放款后，期限到期时系统自动进行还款结算。</p>
+				<p>3、用户使用体验金投资体验项目获得利息收益，期间不会产生任何合同和账单，收益到期时可向平台申请兑换，兑换成功收益方可用于提现或投资。</p>
+			</div>
+		</div>
+		<div class="back-infor">
+			<h2 class="back-infor-head"><span class="left">体验金发放规则</span>
+			#{rightMng rightId:702002}
+			<a href="javascript:void(0);" id="editExperienceGold" class="right iconfont finance-edit" data-title="编辑" >&#xe602;</a>
+			#{/rightMng}
+			</h2>
+			<div class="back-infor-lcset back-infor-getset" id="editExperienceGoldDiv">
+				<p>注册并开户成功会员有机会获得平台赠送的体验金，体验金可投体验标，体验标收益可直接与平台进行兑换。</p>
+				<p class="back-experience-set">
+					<span class="lileft">领取次数</span>
+					<label class="back-unitinput">
+					<input type="text" disabled="disabled" value='${map?.opportunityCount}' class="width01 iffocus" id="opportunityCount" maxlength="2" oninput="$(this).zeroToTen()" onpropertychange="$(this).zeroToTen()"/><i class="unit">次</i>
+					</label>
+					<span class="back-text-limit">不超过10次</span>
+				</p>
+				<p class="back-experience-set">
+					<span class="lileft">每次发放</span>
+					<label class="back-unitinput">
+					<input type="text" disabled="disabled" value='#{formatIntMoney money:map?.everyGrant}#{/formatIntMoney}' class="width01 iffocus" id="everyGrant" maxlength="9" oninput="$(this).ndigitInteger(9)"  onpropertychange="$(this).ndigitInteger(9)"/><i class="unit">元</i>
+					</label>
+					<span class="back-text-limit">1000~1亿，必须是1000的正整数倍</span>
+				</p>
+				<input type="hidden" id="other"/>
+			</div>
+		</div>
+		<div class="back-infor">
+			<h2 class="back-infor-head"><span class="left">体验项目发布规则</span>
+			#{rightMng rightId:702003}
+			<a href="javascript:void(0);" id="editExperienceBid" class="right iconfont finance-edit" data-title="编辑" >&#xe602;</a>
+			#{/rightMng}
+			</h2>
+			<div class="back-infor-lcset back-infor-getset" id="editExperienceBidDiv">
+				<p class="back-experience-set">
+					<span class="lileft">筹款时间</span>
+						<select class="unitselect" name="raiseTime" disabled="disabled" id="raise_time">
+							<option id='0' value='0'>请选择</option>
+							#{list 1..10, as:'i'}
+							<option id='${i}' value='${i}'>${i}</option>
+							#{/list}
+						</select>
+						<span class="selectunit">天</span>
+					<span class="back-text-limit">不超过10天</span>
+				</p>
+				<p class="back-experience-set">
+					<span class="lileft">期限</span>
+					<label class="back-unitinput">
+					<input type="text" disabled="disabled" value='${map?.period}' class="width01 iffocus" id="period" maxlength="2" oninput="$(this).ndigitInteger(2)"  onpropertychange="$(this).ndigitInteger(2)"/><i class="unit">天</i>
+					</label>
+					<span class="back-text-limit">不超过30天</span>
+				</p>
+				<p class="back-experience-set">
+					<span class="lileft">年利率</span>
+					<label class="back-unitinput">
+					<input type="text" disabled="disabled" value='${map?.apr}' class="width01 iffocus" id="apr" oninput="$(this).proportionRange()" onpropertychange="$(this).proportionRange()"/><i class="unit">%</i>
+					</label>
+					<span class="back-text-limit">不超过100%</span>
+				</p>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- 页面js -->
+<script type="text/javascript">
+require(["back"],function(back){
+	var raiseTime = '${map?.raiseTime?:0}';
+	$("#raise_time").children().each(function(){
+		if($(this).val()==raiseTime){
+			$(this).attr("selected", true);
+		}
+	});
+	$("#editExperienceGold").click(function(){
+		editExperienceGoldRule();
+	});
+	
+	$("#editExperienceBid").click(function(){
+		editExperienceBidRule();
+	});
+});
+
+function editExperienceGoldRule() {
+	var $input = $("#editExperienceGoldDiv").find("input");
+	var disable = $input.prop("disabled");
+	if (disable) {
+		$("#editExperienceGold").html("&#xe630;");
+		$('.titlebox').text("保存");
+		$input.prop("disabled", !disable);
+	} else {
+		var opportunityCount = $("#opportunityCount").val();
+		var everyGrant = $("#everyGrant").val();
+		if (opportunityCount==null || opportunityCount=='' || opportunityCount==undefined) {
+			weakDialog("请输入领取次数");
+			return;
+		}
+		if (parseInt(opportunityCount)<0 || parseInt(opportunityCount)>10) {
+			weakDialog("领取次数在0~10之间");
+			return;
+		}
+		if (everyGrant==null || everyGrant=='' || everyGrant==undefined) {
+			weakDialog("请输入每次发放");
+			return;
+		}
+		if (parseInt(everyGrant)<1000 || parseInt(everyGrant)>100000000) {
+			weakDialog("每次发放在1000~1亿之间!");
+			return;
+		}
+		if (parseInt(everyGrant)%1000 != 0) {
+			weakDialog("每次发放必须是1000的正整数倍!");
+			return;
+		}
+		$input.prop("disabled", !disable);
+		editExperienceGoldAction(function(data){
+			if(data.code < 1){
+				alert(data.msg);
+				$input.prop("disabled", disable);
+				return;
+			}else{
+				weakDialog('修改成功!');
+			}
+		});
+		$("#editExperienceGold").html("&#xe602;");
+		$('.titlebox').text("编辑");
+	}
+}
+function editExperienceBidRule() {
+	var $input = $("#editExperienceBidDiv").find("input");
+	var $select = $("#editExperienceBidDiv").find("select");
+	var disable = $input.prop("disabled");
+	if (disable) {
+		$("#editExperienceBid").html("&#xe630;");
+		$('.titlebox').text("保存");
+		$input.prop("disabled", !disable);
+		$select.prop("disabled", !disable);
+	} else {
+		var raiseTime = $("#raise_time").val();
+		var period = $("#period").val();
+		var apr = $("#apr").val();
+		if (parseInt(raiseTime)<1 || parseInt(raiseTime)>10) {
+			weakDialog("筹款时间在1~10之间!");
+			return;
+		}
+		if (period==null || period=='' || period==undefined) {
+			weakDialog("请输入期限!");
+			return;
+		}
+		if (parseInt(period)<0 || parseInt(period)>30) {
+			weakDialog("期限在0~30之间!");
+			return;
+		}
+		if (apr==null || apr=='' || apr==undefined) {
+			weakDialog("请输入年利率!");
+			return;
+		}
+		if (parseFloat(apr)<0 || parseFloat(apr)>100) {
+			weakDialog("年利率在0~100之间!");
+			return;
+		}
+		$input.prop("disabled", !disable);
+		$select.prop("disabled", !disable);
+		editExperienceBidAction(function(data){
+			if(data.code < 1){
+				alert(data.msg);
+				$input.prop("disabled", disable);
+				$select.prop("disabled", disable);
+				return;
+			}else{
+				weakDialog('修改成功!');
+			}
+		});
+		$("#editExperienceBid").html("&#xe602;");
+		$('.titlebox').text("编辑");
+	}
+}
+
+function editExperienceGoldAction(callback){
+	$.ajax({
+		url : '@{back.spread.ExperienceBidCtrl.saveExperienceGold()}',
+		type : "POST",
+		data : {
+			'opportunityCount': $("#opportunityCount").val(),
+			'everyGrant': $("#everyGrant").val()
+		},
+		success : function(data){
+			var flag = interceptorCheck(data);
+			if(!flag){
+				return;
+			}
+			if (callback) {
+				callback(data);
+			}
+		},
+		error : function(){
+			alert('糟糕!出错啦，请重新刷新页面');
+		}
+	});
+}
+
+function editExperienceBidAction(callback){
+	$.ajax({
+		url : '@{back.spread.ExperienceBidCtrl.saveExperienceBid()}',
+		type : "POST",
+		data : {
+			'raiseTime': $("#raise_time").val(),
+			'period': $("#period").val(),
+			'apr': $("#apr").val()
+		},
+		success : function(data){
+			var flag = interceptorCheck(data);
+			if(!flag){
+				return;
+			}
+			if(callback){
+				callback(data);
+			}
+		},
+		error : function(){
+			alert('糟糕!出错啦，请重新刷新页面');
+		}
+	});
+}
+</script>

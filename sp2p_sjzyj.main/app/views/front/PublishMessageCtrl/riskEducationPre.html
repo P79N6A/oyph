@@ -1,0 +1,36 @@
+#{extends 'common/frontMain.html' /}
+#{set title: '首页|风险教育'/}
+<link rel="stylesheet" type="text/css" href="/public/front/stylesheets/publishIndex.css"/>
+
+<div class="manageBox publishBox">
+    <h1 class="lineStrip">风险教育  <a href="@{front.PublishMessageCtrl.publishIndexPre()}" style="float: right;margin-right: 50px;"><img src="/public/front/images/return-img.png" /></a> </h1>
+    <div class="publishSynopsis">
+    	#{if information}
+    		#{list items:information, as:'_'}
+	       <h4>${_?.title}</h4>
+	       <span class="paragraph">
+	       		#{verbatim}${_?.content}#{/verbatim}
+			</span>
+			#{/list}
+			<div class="loadingMore" style="text-align: center;font-size: 22px;">
+				#{if information.size()< size }<a>点击加载更多</a>#{/if}
+				#{else }没有更多了#{/else}
+			</div>
+		#{/if}
+    </div>
+</div>
+<script>
+	$('.publishSynopsis h4').click(function(){
+		var paragraph = $(this).next();
+		if(paragraph.is(':hidden')){
+			paragraph.stop(true,true).slideDown(800);
+		}else{
+			paragraph.stop(true,true).slideUp(800);
+		}
+	});
+	$(".loadingMore").click(function() {
+		var limit = $(".publishSynopsis .paragraph").length + 2;
+		window.location.href="@{front.PublishMessageCtrl.riskEducationPre()}?limit="+limit;
+
+	});
+</script>   

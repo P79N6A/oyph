@@ -1,0 +1,185 @@
+.bank-name-box{
+	margin: auto;
+	width: 1200px;
+}
+.navigation-bars{
+	width: 1200px;
+	height: 50px;
+	margin-top: 20px;
+	font-weight: 600;
+}
+.navigation-btn-lf{
+	width: 600px;
+	height: 65px;
+	float: left;
+	cursor: pointer;
+	line-height: 50px;
+	text-align: center;
+	border-radius: 8px;
+}
+.navigation-btn-lf-bg{
+	background: url(/public/images/img/sfsdf_03.png) no-repeat;
+	color: #FFF;
+}
+.navigation-btn-rg{
+	width: 600px;
+	height:65px;
+	float: left;
+	cursor: pointer;
+	line-height: 50px;	
+	text-align: center;
+	border-radius: 8px;
+}
+.center-message-box{
+	width: 100%;
+	margin-top: 20px;
+	background: #FFF;
+}
+.center-title{
+	padding: 15px 0;
+	font-weight: 400;
+	color: #50befe;
+	border-bottom: 1px solid #50befe;
+}
+.center-title-lf{
+	margin-left: 30px;
+	font-size: 22px;
+}
+.center-title-rg{
+	margin-left: 30px;
+	font-size: 14px;
+}
+.register{
+	width: 100%;
+}
+.register>p{
+	width: 384px;
+	margin: auto;
+	position: relative;
+	line-height: 40px;
+	margin-top: 40px;
+}
+.asterisk{
+	font-style: normal;
+	color: red;
+}
+.register-message{
+	width: 237px;
+	height: 40px;
+	border: 1px solid #ccc;
+	padding: 0 15px;
+	font-size: 14px;
+	outline: none;
+}
+.register1{
+	width: 136px;
+	height: 40px;
+	border: 1px solid #ccc;
+	padding: 0 15px;
+}
+/*.clird123{
+	padding: 8px;
+	border-radius: 6px;
+	border: 1px solid #ccc;
+}*/
+.selProvince{
+	/*width: 250px;*/
+	/*height: 36px;*/
+	/*border: none;*/
+	color: #444;
+	margin-left:8px;
+	/*padding-left: 10px;*/
+	outline-style: none;
+	/* appearance:none; */
+	cursor: pointer;
+	-moz-appearance:none;
+	-webkit-appearance:none;
+	/*background: url("http://ourjs.github.io/static/2015/arrow.png") no-repeat scroll right center transparent;*/
+}
+
+select::-ms-expand { display: none; }
+.selProvince option{
+	border: none;
+}
+.dfg{
+	margin-top: 80px;
+}
+.profession{
+	/* margin-left: 10px; */
+}
+.enroll{
+	width: 140px;
+	height: 50px;
+	background: #54bffc;
+	font-weight: 600;
+	color: #FFF;
+	outline: none;
+	margin: 50px 560px;
+}
+.enroll:hover{
+	background: #95d5f9;
+}
+.register12{
+	outline: none;
+	margin-left: 5px;
+}
+.multi-1{
+	outline: none;
+	margin: 0px 10px 0 87px;
+}
+.cols{
+	color: #52c0fe;
+}
+.siae{
+	font-size: 14px;
+}
+/*第一块结束*/
+.center-message-box1{
+	width: 1200px;
+	/*height: 800px;*/
+	display: none;
+	margin-top: 20px;
+	background: #FFF;
+}
+.personage-message{
+	width: 1000px;
+	height: 45px;
+	border-bottom: 1px dashed  #6dd1ff;
+	padding: 20px 0;
+	margin: auto;
+}
+.garden{
+	width: 40px;
+	height: 40px;
+	text-align: center;
+	line-height: 40px;
+	font-size: 22px;
+	font-weight: 400;
+	color: #0099ff;
+	float: left;
+	border-radius:50px ;
+	box-shadow: 0px 0px 30px #0099ff;
+}
+.garden-message{
+	float: left;
+	line-height: 40px;
+	margin-left: 30px;
+	color: #6dd1ff;
+}
+.firm-message{
+	width: 530px;
+	margin: auto;
+	position: relative;
+	line-height: 40px;
+	margin-top: 40px;
+	overflow: hidden;
+}
+.bvvf{
+	margin-left: 60px;
+}
+.bvvf1{
+	margin-left: 30px;
+}
+.bvvf2{
+	margin-left: 15px;
+}

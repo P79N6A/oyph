@@ -1,0 +1,200 @@
+#{extends 'common/back/settingMain.html' /}
+	#{set title:'设置 | 接口设置' /}
+	#{set smallclass:1 /}
+	#{set crumbs:'设置>接口设置'/}
+
+
+<div class="back-main">
+	<div class="back-cont">
+		
+		<div class="back-infor">
+			<form action="@{back.setting.InterfaceSettingCtrl.editSMSProvider()}" method="POST" id="sms">
+			#{authenticityToken /}
+				<h2 class="back-infor-head">
+					<span class="left">短信通道设置</span>
+					#{rightMng rightId:802002}
+					<a href="javascript:void(0);" class="right iconfont finance-edit" data-title="编辑" >&#xe602;</a>
+					#{/rightMng}
+				</h2>
+				<ul class="back-infor-set">
+					<li>
+						<span class="lileft">短信通道商</span>
+						<div class="liright">
+							<select class="width01 " class="" id="columnKey" disabled="disabled" name="service_sms_provider" autofocus="autofocus">
+								<!-- <option #{if service_sms_provider.equals('创蓝')}selected="selected"#{/if} value="创蓝">创蓝</option> -->
+								<option selected = "selected" value= "焦云">焦云</option>
+							</select>
+							<span class="back-text-limit"></span>
+						</div>
+					</li>
+					<li>
+						<span class="lileft"><!-- 短信账号 -->appId</span>
+						<div class="liright">
+							<input type="text" class="width01 iffocus" maxlength="64" name="service_sms_account" value="${service_sms_account}" />
+							<span class="back-text-limit"></span>
+						</div>
+					</li>
+					<li>
+						<span class="lileft"><!-- 密码 -->appKey</span>
+						<div class="liright">
+							<input type="text" class="width01 iffocus" maxlength="64" name="service_sms_password" value="${service_sms_password}" />
+							<span class="back-text-limit"></span>
+						</div>
+					</li>
+				</ul>
+			</form>
+		</div>
+		<div class="back-infor">
+			<form action="@{back.setting.InterfaceSettingCtrl.editEmailProvider()}" method="POST" id="email">
+				#{authenticityToken /}
+				<h2 class="back-infor-head">
+					<span class="left">邮件通道设置</span>
+					#{rightMng rightId:802003}
+					<a href="javascript:void(0);" class="right iconfont finance-edit" data-title="编辑" >&#xe602;</a>
+					#{/rightMng}
+				</h2>
+				<ul class="back-infor-set">
+					<li>
+						<span class="lileft">邮箱登录网址</span>
+						<div class="liright">
+							<input type="text" class="width01 iffocus" maxlength="64" name="email_website" value="${email_website}" />
+							<span class="back-text-limit"></span>
+						</div>
+					</li>
+					<li>
+						<span class="lileft">邮箱账号</span>
+						<div class="liright">
+							<input type="text" class="width01 iffocus" maxlength="64" name="service_mail_account" value="${service_mail_account}" />
+							<span class="back-text-limit"></span>
+						</div>
+					</li>
+					<li>
+						<span class="lileft">密码</span>
+						<div class="liright">
+							<input type="text" class="width01 iffocus" maxlength="64" name="service_mail_password" value="${service_mail_password}" />
+							<span class="back-text-limit"></span>
+						</div>
+					</li>
+					<li>
+						<span class="lileft">pop3服务器</span>
+						<div class="liright">
+							<input type="text" class="width01 iffocus" maxlength="64" name="pop3_server" value="${pop3_server}" />
+							<span class="back-text-limit"></span>
+						</div>
+					</li>
+					<li>
+						<span class="lileft">smtp服务器</span>
+						<div class="liright">
+							<input type="text" class="width01 iffocus" maxlength="64" name="stmp_server" value="${stmp_server}" />
+							<span class="back-text-limit"></span>
+						</div>
+					</li>
+				</ul>
+			</form>
+		</div>
+	</div>
+</div>
+
+
+<!-- 页面js -->
+<script type="text/javascript">
+	require(["back"],function(back){
+		//扩展的v
+		require(["validation/validateExt"]);
+		
+		$(".back-infor").each(function() {
+			var that = this, 
+				editBtn = $(this).find(".finance-edit"), 
+				editText = $(this).find("select,input:not(.easyui-datetimebox),textarea");
+			editText.prop("disabled", true);
+			editBtn.click(function() {
+				disable = editText.prop("disabled");
+				if (disable) {
+					editBtn.html("&#xe630;").data("title", "保存");
+					
+					$(".titlebox").text(editBtn.data('title'));
+					editText.prop("disabled",!disable);
+					editText.eq(0).focus();
+				} else {
+					var smsForm = $(that) .children( "form[id='sms']");
+					if (smsForm.eq(0).length != 0) {
+						smsForm.submit();
+					}
+
+					var emailForm = $(that) .children( "form[id='email']");
+					if (emailForm.eq(0).length != 0) {
+						emailForm.submit();
+					}
+				}
+			});
+		});
+		
+
+		$("form[id='sms']").validate({
+			errorPlacement: function(error, element) {
+				error.addClass('back-notice').insertAfter(element);
+			},
+			rules:{
+				"service_sms_account":{
+					required:true
+				},
+				"service_sms_password":{
+					required:true
+				}
+			},
+			messages:{
+				"service_sms_provider":{
+					required:"请输入短信通道运营商名称"
+				},
+				"service_sms_account":{
+					required:"请输入短信通道账号!"
+				},
+				"service_sms_password":{
+					required:"请输入短信通道密码!"
+				}
+			}
+		});
+		
+		
+		$("form[id='email']").validate({
+			errorPlacement: function(error, element) {
+				error.addClass('back-notice').insertAfter(element);
+			},
+			rules:{
+				"email_website":{
+					required:true
+				},
+				"service_mail_account":{
+					required:true,
+					email:true
+				},
+				"service_mail_password":{
+					required:true
+				},
+				"pop3_server":{
+					required:true
+				},
+				"stmp_server":{
+					required:true
+				}
+			},
+			messages:{
+				"email_website":{
+					required:"请输入邮件登录地址"
+				},
+				"service_mail_account":{
+					required:"请输入邮箱账号"
+				},
+				"service_mail_password":{
+					required:"请输入邮箱账号密码"
+				},
+				"pop3_server":{
+					required:"请输入POP3服务器地址"
+				},
+				"stmp_server":{
+					required:"请输入STMP服务器地址"
+				}
+			}
+		});
+	});
+</script>

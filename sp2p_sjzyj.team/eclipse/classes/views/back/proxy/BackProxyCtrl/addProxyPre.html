@@ -1,0 +1,71 @@
+#{extends 'common/back/proxyMain.html' /}
+	#{set title:'代理商 | 代理商首页' /}
+	#{set smallclass:0 /}
+	#{set crumbs:'代理商>代理商首页'/}
+	
+<!-- 以下代码区 -->	
+	<link rel="stylesheet" href="/public/back/stylesheets/style.css" type="text/css" media="all" />
+<div class="back-main">
+	<!-- 头部筛选条件 -->
+	<div class="back-usertop">
+		<div class="left back-usermenu">
+			<a href="javascript:void(0)" class="selected">代理商 -> 添加代理商</a>
+			
+		</div>
+		<a  title="返回" style="float: right;" id="disp" href="@{back.proxy.BackProxyCtrl.backProxyHomePre()}"><i class="iconfont">&#xe607;</i> &nbsp;返回</a>
+	</div>
+	
+	<div class="back-cont">
+		<div class="back-box">
+			<div class="addAgentTitle">
+		    	<p><b>代理商</b></p><span><a href="" target="" data-title="编辑" class="iconfont">&#xe602;</a></span>
+			</div>
+			<div class="addAgentContent">
+				<form class="addAgentTable registerform" action="@{back.proxy.BackProxyCtrl.addProxy()}" method="post">
+		            <table class="addAgentTableList" width="100%" style="table-layout:fixed;">
+		                <tr>
+		                    <td class="need" style="width:20px;"></td>
+		                    <td style="width:70px;text-align: right;padding-right: 10px;">手机号：</td>
+		                    <td style="width:180px;"><input class="bgcol" type="text" value="" name="proxyMobile" onkeyup="value=value.replace(/[^\d]/g,'')" maxlength="11" class="inputxt"   datatype="n" nullmsg="请输入手机号！" errormsg="手机号格式不对！" /></td>
+		                    <td><div class="Validform_checktip"></div></td>
+		                </tr>
+		                <tr>
+		                    <td class="need" style="width:20px;"></td>
+		                    <td style="width:70px;text-align: right;padding-right: 10px;">姓名：</td>
+		                    <td style="width:180px;"><input class="bgcol" type="text" value="" name="proxyName" class="inputxt"  datatype="s2-15" nullmsg="请输入姓名！" errormsg="用户名至少2个字符,最多15个字符！" /></td>
+		                    <td><div class="Validform_checktip"></div></td>
+		                </tr>
+		                <tr>
+		                    <td class="need"></td>
+		                    <td style="width:70px;text-align: right;padding-right: 10px;">密码：</td>
+		                    <td><input class="bgcol" type="password" value="" name="userpassword" class="inputxt" datatype="*6-16" maxlength="16" nullmsg="请设置密码！" errormsg="密码范围在6~16位之间！" /></td>
+		                    <td><div class="Validform_checktip">6-16位字符,含空格</div></td>
+		                </tr>
+		                <tr>
+		                    <td class="need"></td>
+		                    <td style="width:70px;text-align: right;padding-right: 10px;">确认密码：</td>
+		                    <td><input class="bgcol" type="password" value="" name="proxyPwd" class="inputxt" maxlength="12" datatype="*" recheck="userpassword" nullmsg="请再输入一次密码！" errormsg="您两次输入的账号密码不一致！" /></td>
+		                    <td><div class="Validform_checktip"></div></td>
+		                </tr>
+		                <tr>
+		                    <td>
+		                        <input class="addAgentBtn" type="submit" value="添加"/>
+		                    </td>
+		                </tr>
+		            </table>
+		        </form>
+			</div>
+		</div>
+	</div>
+</div>	
+<script type="text/javascript" src="/public/back/javascripts/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="/public/back/javascripts/Validform_v5.3.1.js"></script>
+<script type="text/javascript">
+$(function(){
+	//$(".registerform").Validform();  //就这一行代码！;
+		
+	$(".registerform").Validform({
+		tiptype:2
+	});
+})
+</script>

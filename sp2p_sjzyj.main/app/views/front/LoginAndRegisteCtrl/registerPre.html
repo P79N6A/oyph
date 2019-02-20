@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>注册${' | '+settings?.get(common.constants.SettingKey.SEO_TITLE)+' | '+settings?.get(common.constants.SettingKey.PLATFORM_NAME)}</title>
+		<meta name="keywords" content="${settings?.get(common.constants.SettingKey.PLATFORM_NAME)}" />
+		<meta name="description" content="${settings?.get(common.constants.SettingKey.PLATFORM_NAME)}" />
+		<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+		<link rel="shortcut icon" type="image/png" href="${settings?.get(common.constants.SettingKey.PLATFORM_ICON_FILENAME)}" />
+		<link rel="stylesheet" type="text/css" href="@{'/public/front/stylesheets/front.css'}" />
+		
+		<!-- 皮肤背景、颜色 -->
+		<link rel="stylesheet" type="text/css" href="@{'/public/front/themes/'+settings?.get(common.constants.SettingKey.THEME_NAME)+'/background.css'}" />
+		#{if settings?.get(common.constants.SettingKey.THEME_CUSTOMIZE).equals('0')}
+			<link rel="stylesheet" type="text/css" href="@{'/public/front/themes/'+settings?.get(common.constants.SettingKey.THEME_NAME)+'/color.css'}" />
+		#{/if}
+		#{else}
+			
+			#{set mainColor:'#'+settings?.get(common.constants.SettingKey.THEME_MAIN_COLOR) /}
+			#{set auxColor:'#'+settings?.get(common.constants.SettingKey.THEME_AUX_COLOR) /}
+			#{set thdColor:'#'+common.utils.StrUtil.colorByAlpha(settings?.get(common.constants.SettingKey.THEME_MAIN_COLOR)) /}
+			#{include 'common/front/colorCont.html' /}
+		#{/else}
+		
+	</head>
+	<body>
+		<div class="login-body">
+			<!-- 微信分享 缩略图 -->
+             <div class="login1" style="background-image: url(/public/front/images/denglu-bg.jpg);"></div>
+			<!-- 登录注册head start -->
+			<div class="login-header">
+				<div class="container clearfix">
+					<a href="@{front.FrontHomeCtrl.frontHomePre()}" title="" class="left">
+						<img src="/public/front/images/logo.png"  height="77" />
+					</a>
+					<h1 class="left major">欢迎注册</h1>
+					
+				</div>
+			</div>
+			<!-- 登录注册head end -->
+			<form action="@{front.LoginAndRegisteCtrl.registering()}" method="post" id="registerFrom">
+				<div class="container1 register-box">
+					<ul class="register-list">
+						<li class="clearfix mb30">
+							<span class="register-left left">
+								<i class="important-point">*</i>手机号
+							</span>
+							<div class="register-wrap left">
+								<input type="text" class="text" value="${flash?.mobile}" id="mobile" name="mobile" autofocus="" maxlength="11" placeholder="填写本人手机号" oninput="$(this).ndigitInteger(11)" onpropertychange="$(this).ndigitInteger(11)"/>
+							</div>
+						</li>
+						<li class="clearfix mb30">
+							<span class="register-left left">
+								<i class="important-point">*</i>图文验证码
+							</span>
+							<div class="register-wrap left">
+								<div class="codetext left">
+									<input type="text" class="text" id="code" name="code" value="${flash?.code}" placeholder="计算结果" maxlength="2"/>
+								</div>
+								<!-- 按钮点击后添加disabled属性 -->
+								<input id="randomId" name="randomId" value="${randomId}" type="hidden"/>
+								<img src="@{common.CaptchaController.createCaptcha(randomId)}" id="captchaImage" onclick="refreshCaptcha(true);" class="codeimg right" height="46" alt="" title="换一张" />
+							</div>
+						</li>
+						<li class="clearfix mb30">
+							<span class="register-left left">
+								<i class="important-point">*</i>短信验证码
+							</span>
+							<div class="register-wrap left">
+								<div class="codetext left">
+									<input type="text" class="text" id="smsCode" name="smsCode" value="${flash?.smsCode}" placeholder="6位随机数" maxlength="6"/>
+									<input type="hidden" id="flag" value="1">
+									<input type="hidden" id="scene" name="scene" value="${common.enums.JYSMSModel.MODEL_SEND_CODE.tplId}">
+								</div>
+								<!-- 按钮点击后添加disabled属性 -->
+								<input type="button" value="获取验证码" onclick="sendCode();" id="getsmscode" class="getcode-btn right" />
+								<div class="code-note" id="code-note">
+									验证码已发送至你手机<br/>
+									1~3分钟内收到短信<br/>部分地区通讯会有延迟<br/>
+									如长时间未接收到短信<br/>请再次获取验证码
+								</div>
+							</div>
+						</li>
+						<li class="clearfix mb30">
+							<span class="register-left left">
+								<i class="important-point">*</i>登录密码
+							</span>
+							<div class="register-wrap left">
+								<input type="text" id="password" name="password"  class="text" value="" placeholder="8~15位字母或数字组合区分大小写" maxlength="16" onpaste="return false" oncontextmenu="return false" oncopy="return false" oncut="return false"/>
+								<i class="password-show" id="passwordShow"></i>
+								<div class="password-level" id="passwordLevel">
+									<span>弱</span>
+									<span>中</span>
+									<span>强</span>
+								</div>
+							</div>
+						</li>
+						<li class="clearfix mb30">
+							<span class="register-left left">
+								邀请码
+							</span>
+							<div class="register-wrap left">
+								<input type="text" class="text" id="recommendCode" name="recommendCode" value="${flash?.recommendCode ? flash?.recommendCode : recommendCode}" placeholder="无邀请码可忽略此项" maxlength="12"  #{if recommendCode} readonly#{/if}/>
+							</div>
+						</li>
+						<li class="clearfix">
+							<span class="register-left left">
+							  业务邀请码
+							</span>
+							<div class="register-wrap left">
+								<input type="text" class="text" id="extensionCode" name="extensionCode" value="${flash?.extensionCode ? flash?.extensionCode : extensionCode}" placeholder="无邀请码可忽略此项" maxlength="12"  #{if extensionCode} readonly#{/if}/>
+							</div>
+						</li>
+						<li class="clearfix">
+							<span class="register-left left">
+								&nbsp;
+							</span>
+							<div class="left register-agree-wrap">
+								<label class="register-agree"><input type="checkbox" name="readandagree" checked="checked" id="readandagree"/>我已阅读并同意<a href="@{front.LoginAndRegisteCtrl.registerDealPre()}" target="_blank" title="" href="" class="major" >《${platformRegister?.title}》</a></label>
+							</div>
+						</li>
+						<li class="clearfix">
+							<span class="register-left left">
+								&nbsp;
+							</span>
+							<input type="submit" value="注  册" class="condition-btn btn left" />
+						</li>
+					</ul>
+				</div>
+			</form>
+		</div>
+	</body>
+
+	<!-- 页面js -->
+	<script type="text/javascript" data-main="/public/front/javascripts/front.js" src="@{'public/front/javascripts/require.js'}" ></script>
+	<script type="text/javascript">
+		require(['front'],function(){
+			#{if flash?.error}
+				alert('${flash?.error}');
+			#{/if}
+			//判断密码强度、引入validate验证框架
+			require(['passwordLevel','validation/validateExt']);
+			//密码显示隐藏
+			//密码显示隐藏
+			if('placeholder' in document.createElement('input')){
+				$('#password').on('input',function(){
+					if($(this).val() != ''){
+						$('#passwordShow').show();
+					}else{
+						$('#passwordShow').hide();
+					}
+				}).trigger('input');
+				$('#passwordShow').click(function(){
+					if($(this).hasClass('showpw')){
+						$(this).removeClass('showpw');
+						$('#password').attr('type','password');
+					}else{
+						$(this).addClass('showpw');
+						$('#password').attr('type','text');
+					}
+				});
+				//密码框类型改变
+				$("#password").focus(function(){
+					if($(this).attr("type") != "password"){
+						$(this).attr("type","password");
+						$('#passwordShow').removeClass('showpw');
+					}
+				})
+			}else{
+				$('#passwordShow').hide();
+			}
+			//取消获取验证码按钮禁用效果
+			$(".getcode-btn").removeAttr("disabled");
+			
+			$("#registerFrom").validate({
+				errorPlacement: function(error, element) {
+					if(element.is("#mobile")){
+						$("p[id='mobile-error']").remove();
+						$("input[id='mobile']").removeClass("focus").addClass("text-error");
+						error.addClass('error register-error').appendTo(element.parent());
+					}else if(element.is("#code")){
+						$("p[id='code-error']").remove();
+						$("input[id='code']").removeClass("focus").addClass("text-error");
+						error.addClass('register-error').appendTo(element.parent());
+					}else if(element.is("#smsCode")){
+						$("p[id='smsCode-error']").remove();
+						$("input[id='smsCode']").removeClass("focus").addClass("text-error");
+						error.addClass('register-error').appendTo(element.parent());
+					}else if(element.is("#password")){
+						$("p[id='password-error']").remove();
+						$("input[id='password']").removeClass("focus").addClass("text-error");
+						error.addClass('register-error').appendTo(element.parent());
+					}else if(element.is("#confirmPassword")){
+						$("p[id='confirmPassword-error']").remove();
+						$("input[id='confirmPassword']").removeClass("focus").addClass("text-error");
+						error.addClass('register-error').appendTo(element.parent());
+					}else if(element.is("#readandagree")){
+						$("p[id='readandagree-error']").remove();
+						error.addClass('register-error').appendTo(element.parent());
+					}else if(element.is("#recommendCode")){
+						$("p[id='recommendCode-error']").remove();
+						error.addClass('register-error').appendTo(element.parent());
+					}
+					else if(element.is("#extensionCode")){
+						$("p[id='extensionCode-error']").remove();
+						error.addClass('register-error').appendTo(element.parent());
+					}
+				},
+				success:function(label){
+					label.removeClass('error register-error');
+					$(label).parent().children("input").eq(0).addClass("focus");
+				},
+				errorElement:'p',
+				rules:{
+				    "mobile":{
+						required:true,
+						isMobile:true,
+						remote:{
+							 url: "@{front.FrontAjaxValideCtrl.checkUserMobile()}",
+							 type: "post",
+							 dataType: "json",
+							 data: {
+								 mobile: function() {
+									return $("input[id='mobile']").val();
+								}
+							}
+						}
+					},
+					"code":{
+						required:true,
+						digits:true
+					},
+					"smsCode":{
+						required:true,
+						digits:true,
+						minlength:6
+					},
+					"password":{
+						required:true,
+						isPassWord:true,
+						rangelength:[8,16]
+						
+					},
+					"readandagree":{
+						required:true
+					},
+					"recommendCode":{
+						rangelength:[11,12],
+						remote:{
+							 url: "@{front.FrontAjaxValideCtrl.checkRecommendCode()}",
+							 type: "post",
+							 dataType: "json",
+							 data: {
+								 recommendCode: function() {
+									return $("input[id='recommendCode']").val();
+								}
+							}
+						}
+					},
+					"extensionCode":{
+						rangelength:[1,12],
+						remote:{
+							 url: "@{front.FrontAjaxValideCtrl.checkeExtensionCode()}",
+							 type: "post",
+							 dataType: "json",
+							 data: {
+								 recommendCode: function() {
+									return $("input[id='extensionCode']").val();
+								}
+							}
+						}
+					},
+				},
+				messages:{
+					"mobile":{
+						required:"手机号不能为空",
+						isMobile:"手机号格式不正确",
+						remote:"该手机号已被占用"
+					},
+					"code":{
+						required:"验证码不能为空",
+						digits:"验证码不正确"
+					},
+					"smsCode":{
+						required:"短信验证码不能为空",
+						digits:"短信验证码不正确",
+						minlength:"短信验证码不正确"
+					},
+					"password":{
+						required:"密码不能为空",
+						isPassWord:"密码格式不正确",
+						rangelength:"密码格式不正确"
+					},
+					"readandagree":{
+						required:"协议未勾选"
+					},
+					"recommendCode":{
+						rangelength:"请输入11位CPS推广码",
+						remote:"推广码不存在"
+					},
+					"extensionCode":{
+						rangelength:"请输入业务邀请码",
+						remote:"业务邀请码不存在"
+					},
+				},
+				submitHandler:function(form){
+					$.ajax({
+						url : "@{front.LoginAndRegisteCtrl.checkSmsCode()}",
+						type : "POST",
+						data : {
+							"mobile": $("#mobile").val(),
+							"randomId": $("#randomId").val(),
+							"code": $("#code").val(),
+							"smsCode": $("#smsCode").val(),
+							"type" : 2,
+							"scene": "${common.enums.JYSMSModel.MODEL_SEND_CODE.tplId}"
+						},
+						success : function(data){
+							if (data.code < 1) {
+								if($("#smsCode-error").length == 0){
+									$("#smsCode").after("<p style='display: block;' class='error register-error' id='smsCode-error'>"+data.msg+"</p>");
+								}else{
+									$("#smsCode-error").addClass("error register-error").css("display","block");
+									$("#smsCode-error").html(data.msg);
+								}
+							} else {
+								$("#smscode-error").css("display","none");
+								$("#smscode-error").html('');
+								form.submit();
+							}
+						}
+					});
+				}
+			})
+		});
+
+		/* 验证码刷新 */
+		function refreshCaptcha(isRefresh){
+			$.post("@{common.CaptchaController.flushCaptcha()}",function(data){
+				var arr=eval(data);
+				var randomid = arr.randomID;
+				$("#captchaImage").attr("src","@{common.CaptchaController.createCaptcha()}?uuid="+randomid);	
+				$("#randomId").val(randomid);
+			});
+			if(isRefresh){
+				$("#code").next("p").remove();
+				$("#code").removeClass("text-error focus");
+			}
+			$("#code").removeClass("focus");
+			$("#code").val("");
+		}
+		
+		var flag = true;
+		/* 发送手机验证码  */
+		function sendCode(){
+			
+			if($("#flag").val() == 2){
+				$("#code").val('');
+				$("#getsmscode").val("获取验证码");
+				$("#flag").val("1");
+				$("#code-note").css("display","none");
+				refreshCaptcha(false);
+				$("#code-error").addClass("error register-error").css("display","block").html("请重新输入图文验证码");
+			}
+			
+			var mobile = $("#mobile").val().trim();
+			var randomId = $("#randomId").val().trim();
+			var code = 	$("#code").val().trim();
+			
+		    if(mobile == ''){
+		    	if($("#mobile-error").length == 0){
+					$("#mobile").after("<p style='display: block;' class='error register-error' id='mobile-error'>手机号不能为空</p>");
+		    	}else{
+		    		$("#mobile-error").html('手机号不能为空')
+		    	}
+				
+				return;
+		    }else if (!mobile.isMobileNum()) {
+		    	if($("#mobile-error").length == 0){
+			    	$("#mobile").after("<p style='display: block;' class='error register-error' id='mobile-error'>手机号格式不正确</p>");
+		    	}else{
+		    		$("#mobile-error").html('手机号格式不正确')
+		    	}
+		    	
+		    	return;
+			}
+		     
+			if(code == ''){
+				if($("#code-error").length == 0){
+					$("#code").after("<p style='display: block;' class='error register-error' id='code-error'>验证码不能为空</p>");
+				}else{
+		    		$("#code-error").html('验证码不能为空')
+		    	}
+				
+				return;
+			}
+		     
+			 $.ajax({
+					 url:"@{front.FrontAjaxValideCtrl.checkUserMobile()}",
+					 type: "POST",
+					 async:false,
+					 data:{
+						 'mobile':mobile
+					 },
+					 success:function(data){
+				 		if(!data){
+							flag = true;
+						}else{
+							flag = false;
+						}
+					}
+			 });
+			 //根据手机号码和验证码判断是否应该发送短信验证码
+		    if(flag){
+		    	
+		    	return;
+		    }
+
+			 $.ajax({
+				url : "@{front.LoginAndRegisteCtrl.sendCodeOfRegister()}",
+				type : "POST",
+				data : {
+					"mobile" : mobile,
+					"randomId" : randomId,
+					"code" : code,
+					"scene" : "${common.enums.JYSMSModel.MODEL_SEND_CODE.tplId}"
+				},
+				dataType:"json",
+				success : function(data) {
+					/* 判断短信验证码发送是否成功 */
+					if(data.code < 1){
+						if(data.code == -2){
+							//手机号码错误提示
+							if($("#mobile-error").length == 0){
+								$("#mobile").after("<p style='display: block;' class='error register-error' id='mobile-error'>"+data.msg+"</p>");
+							}else{
+								$("#mobile-error").addClass("error register-error").css("display","block");
+								$("#mobile-error").html(data.msg);
+							}
+							refreshCaptcha(false); //刷新验证码
+						}else if(data.code == -3){
+							//验证码错误提示
+							if($("#code-error").length == 0){
+								$("#captchaImage").after("<p style='display: block;' class='error register-error' id='code-error'>"+data.msg+"</p>");
+							}else{
+								$("#code-error").addClass("error register-error").css("display","block");
+								$("#code-error").html(data.msg);
+							}
+							refreshCaptcha(false); //刷新验证码
+						}else if(data.code == -4){
+							//短信提示
+							if($("#smsCode-error").length == 0){
+								$("#code-note").after("<p style='display: block;' class='error register-error' id='smsCode-error'>"+data.msg+"</p>");
+							}else{
+								$("#smsCode-error").addClass("error register-error").css("display","block");
+								$("#smsCode-error").html(data.msg);
+							}
+						}
+						$("#flag").val("1");
+					} else {
+						/* 短信发送成功，清除页面错误提示 */
+						$("#mobile-error").css("display","none");
+						$("#mobile-error").html('');
+						$("#code-error").css("display","none");
+						$("#code-error").html('');
+						$("#smsCode-error").css("display","none");
+						$("#smsCode-error").html('');
+						
+						if(!$(".getcode-btn").prop("disabled")){
+							$(".getcode-btn").prop("disabled",true).next(".code-note").show();
+							var getCode = $(".getcode-btn"),
+								timeid,
+								i = 60;//再次获取验证码等待时间
+							getCode.val(i+'s');
+							timeid = setInterval(function(){
+								if(i > 1){
+									i--;
+									getCode.val(i+'s');
+								}else{
+									getCode.removeAttr("disabled");
+									getCode.val('再次获取');
+									clearInterval(timeid);
+									$("#flag").val("2");
+								}
+							},1000);
+						}
+					}
+				}
+			});
+		}
+	</script>
+</html>

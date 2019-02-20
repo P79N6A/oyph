@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html>
+	<head>	
+		<meta charset="UTF-8">
+			<link rel="stylesheet" type="text/css" href="/public/stylesheets/yibin/commonality.css"/>
+			<link rel="stylesheet" type="text/css" href="/public/stylesheets/yibin/BankName.css"/>
+			<link rel="stylesheet" type="text/css" href="/public/javascripts/laydate/skins/default/laydate.css"/>
+			<link rel="stylesheet" type="text/css" href="/public/stylesheets/yibin/yanzheng-css/style.css"/>
+		<title></title>	
+	</head>
+	<body>
+		<!--导航-->
+		<div style="min-width: 1200px;" id="head-wrap">
+			<div class="head-center">
+				<div class="head-soild">
+					
+				<div class="head-center-top">
+					<div class="head-center-top-lf">
+						<p><span class="rexian"><img style="margin-top: -10px;" src="/public/images/img/icon.png"/></span>客服热线：400-901-8889</p>
+					</div>
+					<ul class="head-center-top-rg">
+						
+					#{if currUser == null}
+						<li><a href="@{front.LoginAndRegisteCtrl.loginPre()}" target="" title="">登录<em>|</em></a></li>	
+						<li><a c href="@{front.LoginAndRegisteCtrl.registerPre()}" target="" title="">注册<em>|</em></a></li>
+					#{/if}
+					#{else}
+							<li><a  href="@{front.account.MyAccountCtrl.homePre()}" target="" title="">${currUser?.name}<em>|</em></a></li>
+							
+							<li><a  href="@{front.LoginAndRegisteCtrl.loginOutPre()}" target="" title="">退出<em>|</em></a></li>
+					#{/else}
+						<li class="head-size"><a href="@{front.FrontHomeCtrl.enterStylePre()}">企业风貌<em>|</em></a></li>
+						<li class="head-size"><a href="@{front.FrontHomeCtrl.helpPre(models.common.entity.t_help_center.Column.FINANCIAL_KNOWLEDGE.code,1)}">帮助<em>|</em></a></li>
+						<li class="head-size"><a href="@{front.FrontHomeCtrl.aboutUsPre()}">关于我们<em>|</em></a></li>
+						<li class="ewm-wrap" id="sj-app"><p class="shouji">手机APP</p>
+							<div id="ewm-weixin">
+								<img src="/public/images/img/phoneClient.png" />
+								<p class="ewm-text">扫描下载app</p>
+							</div>
+						</li>
+					</ul>
+				</div>
+				</div>
+				<div class="head-center-bottom">
+					<h1><a href="@{front.FrontHomeCtrl.frontHomePre()}"><img src="/public/images/img/logo.png" /></a></h1>
+					<ul class="head-center-bottom-rg">
+						<li><a href="@{front.FrontHomeCtrl.frontHomePre()}">首页</a></li>
+						<li><a href="@{front.invest.InvestCtrl.toInvestPre()}">项目</a></li>
+						<li><a href="@{front.LoanCtrl.toLoanPre()}">借款</a></li>
+						<li><a href="@{front.FrontHomeCtrl.aboutUsPre()}">公司介绍</a></li>
+						<li><a href="@{front.MallCtrl.mallHomePre()}">积分商城</a></li>
+						<li><a href="@{front.account.MyAccountCtrl.homePre()}"><span><img style="margin-top: -26px;" src="/public/images/img/myMoney.png" /></span><p style="color: #F77B0F;" >个人中心</p></a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<!--导航-->
+		<div class="bank-name-box">
+			<div class="navigation-bars">
+				<p class="navigation-btn-lf navigation-btn-lf-bg" >个人开户</p>
+				<p class="navigation-btn-rg" onclick="koko()">企业开户</p>
+			</div>
+			<div class="center-message-box">
+				<h2 class="center-title">
+					<span class="center-title-lf">填写基本资料</span><span class="center-title-rg">请您仔细仔细核对下列资料是否正确</span>
+				</h2>
+				<form action="@{front.account.MySecurityCtrl.ybRegist()}" method="post" id="ouvrir">
+					<div class="register">
+						<p>
+							<i class="asterisk">*</i> <span>真实姓名：</span>
+								<input class="register-message" type="text" name="userName" id="userName" placeholder="请填写真实姓名" datatype="*" nullmsg="请填写真实姓名" errormsg="请填写真实姓名"/>
+								<span class="Validform_checktip" id="certification"></span>	
+						</p>
+						
+						<p >
+							<i class="asterisk">*</i>
+							<span>身份证号：</span>
+							<input class="register-message" type="text" name="idCard" id="idCard" placeholder="请填写18位的身份证号" datatype="*" nullmsg="请填18位的身份证号" errormsg="请填18位的身份证号"/>
+							<span class="Validform_checktip" id="certification"></span>	
+						</p>
+						
+						<div class="tim-box">
+							<i class="asterisk">*</i>
+							<span>身份证号起始日期：</span>
+						    <div class="case db1">
+								<div class="calendarWarp" style="">
+									<div style="width:200px;">
+                                       <input class="laydate-icon" id="demo"  name="startTime" class="startTime"  >
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="tim-box">
+							<i class="asterisk">*</i>
+							<span>身份证号截止日期：</span>
+						    <div class="case db1">
+								<div class="calendarWarp" style="">
+									<div style="width:200px;">
+                                       <input class="laydate-icon" id="demo1"  name="endTime" class="endTime"  >
+									</div>
+								</div>
+							</div>
+							<div class="valid">
+								<input class="valid-ckb" type="checkbox" name="AllendTime"  value="1" /><span class="valid-1">永久有效</span>
+							</div>
+						</div>
+						<p>
+							<i class="asterisk">*</i> <span>职业类型：</span>
+							<span class="clird123">
+					    		<select style=" width:240px; font-size: 14px;" class="selProvince"  id="occupation" name="jobType" >
+									<option value="0">政府机关</option>
+									<option value="1">邮政</option>
+									<option value="3">电信</option>
+									<option value="4">IT</option>
+									<option value="5">商业/贸易</option>
+									<option value="6">金融</option>
+									<option value="7">旅游/饭店</option>
+									<option value="8">医疗卫生</option>
+									<option value="9">房地产</option>
+									<option value="10">运输选择</option>
+									<option value="11">法律司法</option>
+									<option value="12">文化娱乐</option>
+									<option value="13">媒体广告</option>
+									<option value="14">科研/教育</option>				
+									<option value="16">农林牧渔</option>
+									<option value="17">矿业/制造</option>
+									<option value="18">自由职业</option>
+									<option value="X">其他</option>
+								</select>
+							</span>
+						</p>
+						<p style="margin-top: 60px; ">
+							<span class="profession">职业描述：</span>
+							<input class="register-message" type="text" name="job" id="profession"   disabled="disabled"/>
+							
+						</p>
+						
+						<p >
+							<i class="asterisk">*</i>
+							<span>邮政编码：</span>
+							<input class="register-message" type="text" name="postcode" id="postalcode" value="" placeholder="请您填写邮政编码" datatype="p" nullmsg="请您填写邮政编码" errormsg="请您填写邮政编码"/>
+							<span class="Validform_checktip" id="certification"></span>	
+						</p>
+						
+						<p >
+							<i class="asterisk">*</i>
+							<span>联系地址：</span>
+							<input class="register-message" type="text" name="address" id="Address" value="" placeholder="请您填写联系地址" datatype="*" nullmsg="请您填写联系地址" errormsg="请您填写联系地址">
+							<span class="Validform_checktip" id="certification"></span>	
+						</p>
+						
+						<p>
+							<i class="asterisk">*</i> <span>民 &nbsp;  &nbsp; &nbsp; 族：</span>
+							<span class="clird123">
+					    		<select style=" width:240px; font-size: 14px;"  class="selProvince" name ="national">
+									<option value="10">汉族</option>
+									<option value="20">少数民族</option>
+									<option value="2002">蒙古族</option>
+									<option value="2003">回族</option>
+									<option value="2004">维吾尔族</option>
+									<option value="2005">藏族</option>
+									<option value="2006">苗族</option>
+									<option value="2007">彝族</option>
+									<option value="2008">壮族</option>
+									<option value="2009">布依族</option>
+									<option value="2010">朝鲜族</option>
+									<option value="2011">满族</option>
+									<option value="2012">侗族</option>
+									<option value="2013">瑶族</option>
+									<option value="2014">白族</option>
+									<option value="2015">土家族</option>
+									<option value="2016">哈尼族</option>
+									<option value="2017">哈萨克族</option>
+									<option value="2018">傣族</option>
+									<option value="2019">黎族</option>
+									<option value="2020">僳僳族</option>
+									<option value="2021">佤族</option>
+									<option value="2022">畲族</option>
+									<option value="2023">高山族</option>
+									<option value="2024">拉祜族</option>
+									<option value="2025">水族</option>
+									<option value="2026">东乡族</option>
+									<option value="2027">纳西族</option>
+									<option value="2028">景颇族</option>
+									<option value="2029">柯尔克孜族</option>
+									<option value="2030">土族</option>
+									<option value="2031">达斡尔族</option>
+									<option value="2032">仫佬族</option>
+									<option value="2033">羌族</option>
+									<option value="2034">布朗族</option>
+									<option value="2035">撒拉族</option>
+									<option value="2036">毛难族</option>
+									<option value="2037">仡佬族</option>
+									<option value="2038">锡伯族</option>
+									<option value="2039">阿昌族</option>
+									<option value="2040">普米族</option>
+									<option value="2041">塔吉克斯坦族</option>
+									<option value="2042">怒族</option>
+									<option value="2043">乌孜别克族</option>
+									<option value="2044">俄罗斯族</option>
+									<option value="2045">鄂温克族</option>
+									<option value="2046">崩龙族</option>
+									<option value="2047">保安族</option>
+									<option value="2048">裕固族</option>
+									<option value="2049">京族</option>
+									<option value="2050">塔塔尔族</option>
+									<option value="2051">独龙族</option>
+									<option value="2052">鄂伦春族</option>
+									<option value="2053">赫哲族</option>
+									<option value="2054">门巴族</option>
+									<option value="2055">珞巴族</option>
+									<option value="2056">基诺族</option>
+									<option value="97">其他</option>
+									<option value="98">外国血统</option>
+								</select>
+							</span>
+						</p>
+						
+					</div>
+					<input class="enroll" type="submit" id="genroll" value="注册"/>
+				</form>
+			</div>
+			
+		</div>
+		<!--底部-->
+		<div class="foot-location">
+			<p class="foot-location1">2014-2017 &nbsp; 版权所有 &nbsp; ©2016 讴业普惠 All rights resered &nbsp; <span>冀ICP备17012676号</span> &nbsp; 地址：石家庄市新华区名族路华强中心A座1605室</p>
+			<p class="foot-location2">石家庄菲尔德投资咨询有限公司</p>
+		</div>
+		
+	<script src="/public/javascripts/jquery-1.6.4.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="/public/javascripts/laydate/laydate.js"></script>
+	<script src="/public/javascripts/yanzheng-js/Validform_v5.3.1.js"></script>
+	<script src="/public/javascripts/yanzheng-js/Validform_v5.3.1_min.js"></script>
+	<script src="/public/javascripts/cang.js"></script>
+	<script type="text/javascript">
+			$(function(){
+				$("#ouvrir").Validform({
+					tiptype:3
+					
+				});
+			})
+		</script>
+	
+	<script>
+	;!function(){
+	laydate({
+	   elem: '#demo'
+	})
+	}();
+	;!function(){
+		laydate({
+		   elem: '#demo1'
+		})
+		}();
+	
+	</script>
+	<script type="text/javascript">
+	      $(function(){
+	              $(".selProvince").focus(function(){
+	                     $(this).addClass("focus");
+	              }).blur(function(){
+	                     $(this).removeClass("focus");
+	                     $(".pass").removeAttr("disabled"); 
+//	                     $(".profession").CSS("color":"red")
+	                     $(".profession").css({color:"black"})
+	              });
+	       });
+	</script>
+	
+	</body>
+		
+</html>

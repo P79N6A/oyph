@@ -1,0 +1,558 @@
+#{extends 'common/frontMain.html' /} 
+#{set title: '首页'/} #{set AItem:0/}
+
+<!-- bannner start -->
+#{if banners}
+<style>
+	.black-bg{
+		position: fixed;
+		left: 0;
+		top:0;
+		background: rgba(0,0,0,.5);
+		z-index: 99999;
+		width: 100%;
+		height: 100%;
+		display: none;
+	}
+	#turntable{
+		width: 594px;
+	    height: 693px;
+	    position: relative;
+	    top: 50%;
+	    left: 50%;
+	    margin-top: -346px;
+	    margin-left: -292px;
+	    color: black;
+	    background: #fff;
+   		border-radius: 20px;
+   		text-align: center;
+	}
+	#turntable .sbg{
+		width: 100%;
+	}
+	#turntable p{
+		padding: 0 40px;
+    	text-indent: 34px;
+    	line-height: 25px;
+    	text-align: left;
+	}
+	#turntable .close{
+		width: 200px;
+		height: 43px;
+		background: #2693e7;
+		border-radius:20px;
+		color: #fff;
+		margin-top: 20px;
+	}  
+</style>
+<div class="black-bg">
+	<div id="turntable">
+		<img src="/public/front/images/sbg.png" class="sbg">
+		<p>您在使用讴业普惠贷平台提供的服务时，通过我平台进行借贷交易，可能会存在如下风险：</p>
+		<p>1.交易对手违约，不能按约定期限归还您的出借款项； </p>
+		<p>2.因为网络服务运营商、网站设备供应商、平台第三方合作机构等外部因素的故意或过失，影响您在平台的正常体验和使用； </p>
+		<p>3.因法律法规变化或其他因素，您的理财收益可能无法得到预期保障；</p>
+		<p>4.因网络故障、系统升级维护、计算机病毒或他方恶意攻击平台等因素，或其他不可抗力因素，而引起的交易中断和/或交易错误的风险等； </p>
+		<p>5.您在讴业普惠平台账户的用户名、登录验证信息被窃取或泄露而导致您个人财产损失的风险；</p>
+		<p>6.您的个人信息和资料被不法分子窃取、泄露的风险以及由此带来的您个人隐私、生活受到干扰、侵犯的风险；</p>
+		<p>7.其他风险。 </p>
+		<p>8.您须保证并承诺：您在讴业普惠平台所用于出借的资金来源合法，属于您的自有合法款项；禁止通过金融机构进行转贷并出借给借款人；禁止将任何犯罪或者其他任何非法活动所得或其产生的收益用于我平台的投资；禁止您使用有资金所有权异议的款项；由此给借款人或讴业普惠平台造成损失的，您应当承担各方因此造成的各项法律责任和经济损失；</p>
+		<input type="button" value="确定" class="close">
+	</div>
+</div>
+<script>
+window.onload = function () {
+    //================
+    var s = document.cookie;
+    if (s.indexOf('myad=1') != -1) return; //存在cookie退出下面代码的执行
+    var d = new Date();
+    d.setHours(d.getHours() + 24); //有效期24小时
+    document.cookie = 'myad=1;expires='+d.toGMTString();//设置cookie
+    //================
+    /*自己弹窗代码*/
+    $('.black-bg').show();
+    $('.close').click(function(){
+		$('.black-bg').hide();
+	})
+}
+</script>
+<div class="banner">
+	<!-- zhangzhixin begin 2017-9-20----------------------------- -->
+	<div class="bannerRight">
+		<div class="banner-inner">
+			<div class="title">
+				
+				<div id="yingbingBox">
+				<img class="yinbingiocn" style="width: 140px;height: 35px;"  src="/public/front/images/yibinimgbg.png">
+				<p class="tishiyu"><span>资金存管</span><br><span>安全可靠</span></p>
+				
+				</div>
+			</div>
+			<div class="content">
+				<p>
+				<strong> 6.5<em> % </em>-14<em> % </em></strong>
+				</p>
+			</div>
+	        <h3>预期年化收益</h3>
+			<div class="slogan1">把控风险，谨慎操作</div>
+
+			<a href="@{front.LoginAndRegisteCtrl.registerPre()}" class="ms-zq">立即注册
+			</a>
+			<div class="slogan1-zhuce">
+				<p>
+					<span>已有账号，</span><a href="@{front.LoginAndRegisteCtrl.loginPre()}">立即登录</a>
+				</p>
+			</div>
+
+		</div>
+
+		<!--  zhangzhixin begin 2017-9-20------------------------------- -->
+		<div class="box_skitter">
+			<ul>
+				#{list items:banners,as:'banner'} 
+				#{if banner.url}
+				<li><a href="${banner.url}"
+					target="${banner.target?.value?:'_blank'}"><img
+						src="${banner.image_url}"
+						onerror="this.src='/public/common/default.jpg'"
+						class="${banner.getRandmonClass()}" /></a></li> 
+				#{/if} 
+				#{else}
+				<li><a href="javascript:void(0)"><img
+						src="${banner.image_url}"
+						onerror="this.src='/public/common/default.jpg'"
+						class="${banner.getRandmonClass()}" /></a></li> 
+				#{/else} 
+				#{/list}
+			</ul>
+		</div>
+	</div>
+	#{/if}
+	
+	
+</div>
+</div>
+<!--安全运营天数-->
+<div class="operationBox">
+<div class="coefficient ">
+    <div id="Bulletin-Board">
+		<a href="@{front.InformationCtrl.informationDetailPre(informations?.get(0)?.id)}" targte=""> <span><img
+				src="/public/front/images/notice.png" /></span>
+							
+			#{if informations}
+			<p>${informations?.get(0)?.title}</p>
+			#{/if}
+		</a>
+	</div>
+    <div id="operation-wrap">
+		<div id="operation-title">
+			<h3>
+				<span class="color-text">讴业普惠安全运营${jobs.IndexStatisticsJob.serviceTime}天</span>
+			</h3>
+			<ul class="list-warp clearfix">
+				<li class="list-num1">
+					<p>累计用户数</p>
+					<div class="list-num">
+						<big>${jobs.IndexStatisticsJob.userCount}</big> <span>人</span>
+					</div>
+				</li>
+				<li class="list-num1">
+					<p>累计交易额</p>
+					<div class="list-num">
+						<big>${jobs.IndexStatisticsJob.totalBorrowAmount}</big> <span>元</span>
+					</div>
+				</li>
+				<li class="list-num1">
+					<p>累计为用户赚取收益</p>
+					<div class="list-num">
+						<big>${jobs.IndexStatisticsJob.income}</big> <span>元</span>
+					</div>
+				</li>
+				<li>
+					<p>到期还款率</p>
+					<div class="list-num">
+						<big>${jobs.IndexStatisticsJob.expireRepaymentRate.format('0.0')}</big>
+						<span>%</span>
+					</div>
+				</li>
+			</ul>
+		
+			<div class="operation-ioc">
+				<ul>
+					<li><a href="@{front.FrontHomeCtrl.sainPre()}"> <img
+							src="/public/front/images/account-safety.png" />
+
+							<div class="operation-ioc1">
+								<p id="operation-size">账户安全</p>
+								<p>银行加密机制</p>
+							</div>
+					</a></li>
+					<li><a href="@{front.FrontHomeCtrl.sainPre()}"> <img src="/public/front/images/team.png" />
+
+							<div class="operation-ioc1">
+								<p id="operation-size">专业团队</p>
+								<p>严控把握风险</p>
+							</div>
+					</a></li>
+					<li><a href="@{front.FrontHomeCtrl.sainPre()}"> <img
+							src="/public/front/images/capital-pic.png" />
+
+							<div class="operation-ioc1">
+								<p id="operation-size">资金安全</p>
+								<p>银行资金存管</p>
+							</div>
+					</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+</div>
+<!--安全运营天数-->
+<!--新手专区-->
+#{if common.constants.ModuleConst.EXT_EXPERIENCEBID}
+	#{if experience}
+		<div id="hands-wrap">
+			<div class="new-hand-lf">
+				<div class="new-hand-top">
+					<a href=""><h1>
+						新手专区<i>></i>
+					</h1></a>
+			<p>教你如何合理借贷，让钱生钱变得更加容易！</p>
+			<img src="public/front/images/chart.png" />
+			</div>
+		</div>
+		<div class="new-hand-rg"  onclick="javascript:window.location.href='@{front.spread.ExperienceBidFrontCtrl.experienceBidDetailPre(experienceBid?.id)}'">
+			<h1>
+				新手专享<span>限未成功投标的用户</span>
+			</h1>
+			<div class="new-hand-center">
+				<p class="hand-size2">
+					<em>${experienceBid?.period}</em>天
+				</p>
+				<p class="hand-size2">
+					<em>${experienceBid?.apr}%</em>预期年利率
+				</p>
+			</div>
+			<input class="new-anniu" type="button" name="" id="" value="立即申购" />
+		</div>
+</div>
+	#{/if}
+#{/if}
+<!--新手专区-->
+<!--投资专区-->
+<div id="invest-wrap">
+	<div class="invest-lf">
+		<div class="new-hand-top new-kuang">
+			<a href="@{front.invest.InvestCtrl.toInvestPre()}">
+			   <h1>讴业公告<i>></i></h1>	
+			</a>
+			<p>优质标的，任你自由 选择！</p>
+			<img src="public/front/images/chart.png" />
+		</div>
+	</div>
+	<div class="invest-rg">
+       #{if bids} #{list items:bids,as:'bid'}
+		<div id="spt-box">
+			<div class="invest-rg-data" onclick="javascript:location.href='@{front.invest.InvestCtrl.investPre(bid?.id)}'">
+				<div class="invest-rg-data-top">
+					<a href="@{front.invest.InvestCtrl.investPre(bid?.id)}"> 
+						<p>${bid?.getBid_no()}&nbsp;&nbsp;${bid?.title}</p></a>
+					<div class="numb">
+						进度<em>${bid?.loan_schedule}</em>%
+					</div>
+				</div>
+				<div class="invest-rg-data-top">
+					<div class="year-rate">
+						<div class="year-rate-top">
+							<p>${bid?.apr}%</p>
+							<p class="year-rate-size">预期年利率</p>
+						</div>
+						<div class="year-rate-top1">
+							<div class="year-time-wrap">
+								<p>
+									${bid?.period}<em>个月</em>
+								</p>
+							</div>
+							<p class="year-rate-size">期限</p>
+						</div>
+					</div>
+					#{if bid?.status == models.core.entity.t_bid.Status.FUNDRAISING}
+					#{if sysNowTime.compareTo(bid?.pre_release_time) == 1}
+					<div class="year-rate">
+						<input class="year-anniu" type="button" name="" id="" value="立即申购" />
+					</div>
+					#{/if} 
+					#{else}
+					<div class="year-rate">
+						<input class="year-anniu" type="button" name="" id="" value="预发售" />
+					</div>
+					#{/else} 
+					#{/if}
+				    #{else}
+					<div class="year-rate">
+						<input class="year-anniu anniu-bg1 " type="button" name="" id=""
+							value="已告罄" />
+					</div>
+					#{/else}
+				</div>
+			</div>
+		</div>
+		#{/list} #{/if}
+ 	 </div>
+  </div>
+	<!--投资专区-->
+	<!--转让专区-->
+	<div id="transfer-wrap">
+		<div class="transfer-lf new-hand-lf">
+			<div class="new-hand-top">
+				<a href="@{front.invest.InvestCtrl.toInvestPre()}"><h1>
+						转让专区<i>></i>
+					</h1></a>
+				<img src="public/front/images/chart.png" />
+			</div>
+		</div>
+		<div class="transfer-rg">
+		#{list items:debts,as:'debtTransfer'}
+			<div id="anima-box">
+				
+				<div class="transfer-rg-top" onclick="javascript:location.href='@{front.invest.InvestCtrl.transferPre(debtTransfer?.id)}'">
+					#{if models.core.entity.t_debt_transfer.Status.AUCTING.equals(debtTransfer?.status) && sysNowTime?.compareTo(debtTransfer?.end_time) == -1}
+						<input class="transfer-anniu" type="button" name="" id=""
+						value="立即购买" />
+					#{/if}
+					#{else}
+						<input class="year-anniu anniu-bg"  type="button" name="" id="" value="已结束" />
+					#{/else}	
+					<div class="transfer-rg-top-1">
+						
+							<ul class="transfer-list">
+								<li>${debtTransfer?.debt_transfer_no} ${debtTransfer?.title}</li>
+								<li><img src="public/front/images/money.png" /></li>
+							</ul>
+							<table class="table-num" border="0" >
+								<tr>
+									<th>
+										<p>
+											<span>${debtTransfer?.debt_amount?.format(common.constants.Constants.FINANCE_FORMATE_NORMAL)}</span>元
+										</p>
+									</th>
+									<th>${debtTransfer?.period}期</th>
+									<th>
+										<p>
+											<span>#{formatIntMoney money:debtTransfer?.transfer_price /}</span>元
+										</p>
+									</th>
+								</tr>
+								<tr>
+									<td>债权总额</td>
+									<td>转让期数</td>
+									<td>转让价格</td>
+								</tr>
+							</table>
+					</div>
+				</div>	
+			</div>
+		#{/list}
+			
+		</div>
+	</div>
+	<!--转让专区-->
+	<!--新闻报道-->
+	<div id="Press-box">
+		<div class="press-lf-box">
+			<h1 class="press-title">
+				<p>媒体报道</p>
+				<a href="@{front.FrontHomeCtrl.developPre(4)}"><span>更多></span></a>
+			</h1>
+			<div class="press-center-box">
+				<div class="press-center-lf"  onclick="javascript:window.location.href='@{front.InformationCtrl.informationDetailPre(inforeFirst?.id)}'">
+					<!-- <embed height="151" width="268" quality="high"
+						allowfullscreen="true" loop="loop"
+						type="application/x-shockwave-flash"
+						src="//static.hdslb.com/miniloader.swf"
+						flashvars="aid=13660449&page=1"
+						pluginspage="//www.adobe.com/shockwave/download/download.cgi?P1_Prod_Version=ShockwaveFlash">
+						</embed> -->
+												
+					<div><img src="${inforeFirst?.image_url}" style="width: 268px; height: 151px;"></div>	
+					<div class="vid-text-box">
+						<p class="ouye-title" limit="10">${inforeFirst?.title}</p>
+						<div  limit="100"  style="padding-top: 10px;font-size:12px">&nbsp;&nbsp;&nbsp;&nbsp;${inforeFirst?.content.raw()}</div>
+					</div>
+				</div>
+				#{if inforeports}
+				<div class="press-center-rg">
+					#{list items:inforeports,as:'inforeport'}
+					<div class="press-center-rg-top">
+						<a href="@{front.InformationCtrl.informationDetailPre(inforeport?.id)}"><h1>
+								<p>${inforeport?.title}</p>
+								<span>${common.utils.DateUtil.getTimeLines(inforeport?.show_time)}</span>
+							</h1></a>
+						<div class="press-center-rg-center">
+							<img src="${inforeport?.image_url}" style="width: 95px; height: 95px;">
+							<div   limit="80" style="padding-left: 114px; padding-top: 10px; font-size:12px">${inforeport?.content.raw()}</div>
+							<b></b>
+						</div>
+					</div>
+					#{/list}
+				</div>	
+				#{/if}
+			</div>
+		</div>
+		
+		<div class="press-rg-box">
+			<h1 class="rg-title">
+				<p>网站公告</p>
+				<a href="@{front.FrontHomeCtrl.developPre(3)}"><span>更多></span></a>
+			</h1>
+			#{if informations}
+			<div class="inform-wrap">
+				<img src="public/front/images/3r.png" />
+				<div class="inform-rg">
+					<a href="@{front.InformationCtrl.informationDetailPre(informationFirst?.id)}"><h2 title=${informationFirst?.title}>
+								<p>${informationFirst?.title}</p>
+								<span>${common.utils.DateUtil.getTimeLines(informationFirst?.show_time)}</span>
+						      </h2>
+					</a>
+					<div class="inform-language" limit="60">${informationFirst?.content.raw()}</div>
+				</div>
+				
+				<ul class="notice-board">
+					#{if informations}
+							#{list items:informations,as:"information"}
+							<li>
+								<i class="recticon"> </i>
+								<a href="@{front.InformationCtrl.informationDetailPre(information?.id)}" title="${information?.title}" target="_blank">
+									<em>${information?.title}</em>
+									<span>${common.utils.DateUtil.getTimeLine(information?.show_time)}</span>
+								</a>
+							</li>
+							#{/list}
+					#{/if}
+				</ul>
+			</div>
+			#{/if}
+		</div>
+	</div>
+	<!--新闻报道-->
+	<!--我们为财富护航-->
+	<div class="index-btm">
+		#{if consultants}
+		<h2>我们为你护航</h2>
+		<div class="slide-left">
+			<ul class="index-services">
+				#{list items:consultants,as:'consultant'}
+				<li><img class="service-img" src="${consultant?.image_url}" onerror="this.src='/public/common/default.jpg'"
+					width="180" height="180" />
+					<div class="services-ewm">
+						<img src="${consultant?.code_url}" width="120"
+							height="120" />
+					</div>
+					<p >${consultant?.name}</p>
+				</li>
+				#{/list}
+			</ul>
+		</div>
+		#{/if}
+	</div>
+	
+	<!--我们为财富护航--标识-->
+	#{if partners}
+		<ul class="index-friends">
+			#{list items:partners,as:'partner'}
+			<li>
+     			<a target="_blank" href="${partner?.url}" title="${partner?.name}" width="195" height="62">
+     				<img src="${partner?.image_url}" width="195" height="62"/>
+     				<span>${partner?.name}</span>
+     			</a>
+     		</li>
+			#{/list}
+		</ul>	
+	#{/if}
+	<!--我们为财富护航--标识-->
+	<!--我们为财富护航-->
+	
+
+	
+	
+	<!-- 页面js -->
+	<script type="text/javascript">
+		function openwin(){
+
+		  	$("#comment_mask").show();
+			$("#comment_layer").show();
+		　　} 
+	
+
+		　　function get_cookie(Name) {
+
+		　　var search = Name + "="
+
+		　　var returnvalue = "";
+
+		　　if (document.cookie.length > 0) {
+
+		　　offset = document.cookie.indexOf(search)
+
+		　　if (offset != -1) {
+
+		　　offset += search.length
+
+		　　end = document.cookie.indexOf(";", offset);
+
+		　　if (end == -1)
+
+		　　end = document.cookie.length;
+
+		　　returnvalue=unescape(document.cookie.substring(offset, end))
+
+		　　}
+
+		　　}
+
+		　　return returnvalue;
+
+		　　} 　
+
+		　　function loadpopup(){
+
+		　　if (get_cookie('popped')==''){
+
+		　　openwin()
+
+		　　document.cookie="popped=yes"
+
+		　　}
+
+		　　}  
+		
+		require(['front'],function(front){
+			require(['slideleft','banner','share'])
+		});
+		
+		jQuery(function($) {  
+			$(".top").addClass("tops");
+			$(".navbox").addClass("navboxs");
+			$(".header").addClass("headers");
+			$(".navbox-innerbox").addClass("navbox-innerboxs");
+		});
+		
+		function changColor() {
+			$(".top").removeClass("tops");
+			$(".navbox").removeClass("navboxs");
+			$(".navbox-innerbox").removeClass("navbox-innerboxs");
+		}
+		
+		function changColors() {
+			$(".top").addClass("tops");
+			$(".navbox").addClass("navboxs");
+			$(".navbox-innerbox").addClass("navbox-innerboxs");
+		}
+		
+		//关闭活动窗口
+		function hiddenComment() {
+			$("#comment_mask").hide();
+			$("#comment_layer").hide();
+		}
+	</script>

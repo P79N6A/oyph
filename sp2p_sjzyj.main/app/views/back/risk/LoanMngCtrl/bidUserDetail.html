@@ -1,0 +1,24 @@
+<dd>
+	<p>
+		<span class="infor-cell width01">姓名&nbsp;&nbsp;#{if tui?.reality_name==null}----#{/if}#{else}${tui?.reality_name}#{/else}</span>
+		<span class="infor-cell width02">信用评分&nbsp;&nbsp;#{if tui?.credit_level_id==null}----#{/if}#{else}${tui?.credit_level_id}分#{/else}</span>
+		<span class="infor-cell width03">性别&nbsp;&nbsp;#{if tui?.getSex()?.name==null}----#{/if}#{else}${tui?.getSex()?.name}#{/else}</span>
+	</p>
+	<p>
+		<span class="infor-cell width01">年龄&nbsp;&nbsp;#{if tui?.getAge()==null}----#{/if}#{else}${tui?.getAge()}#{/else}岁</span>
+		<span class="infor-cell width02">学历&nbsp;&nbsp;#{if tui?.getEducation()?.value==null}----#{/if}#{else}${tui?.getEducation()?.value}#{/else}</span>
+		<span class="infor-cell width03">婚姻&nbsp;&nbsp;#{if tui?.getMarital()?.value==null}----#{/if}#{else}${tui?.getMarital()?.value}#{/else}</span>
+	</p>
+</dd>
+<dt>资产情况</dt>
+<dd>
+	<p>
+		<span class="infor-cell width01">工作年限&nbsp;&nbsp;#{if tui?.getWork_experience()?.value==null}----#{/if}#{else}${tui?.getWork_experience()?.value}#{/else}</span>
+		<span class="infor-cell width02">房产&nbsp;&nbsp;#{if tui?.getHouse()?.value==null}----#{/if}#{else}${tui?.getHouse()?.value}#{/else}</span>
+		<span class="infor-cell width03">车产&nbsp;&nbsp;#{if tui?.getCar()?.value==null}----#{/if}#{else}${tui?.getCar()?.value}#{/else}</span>
+	</p>
+	<p>
+		<span class="infor-cell width01">年收入&nbsp;&nbsp;#{if tui?.getAnnual_income()?.value==null}----#{/if}#{else}${tui?.getAnnual_income()?.value}#{/else}</span>
+		<span class="infor-cell width02">资产估值&nbsp;&nbsp;#{if tui?.getNet_asset()?.value==null}----#{/if}#{else}${tui?.getNet_asset()?.value}#{/else}</span>
+	</p>
+</dd>

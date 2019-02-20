@@ -1,0 +1,37 @@
+#{extends 'common/back/weChatMain.html' /}
+	#{set title:'微信 | 多图文回复' /}
+	#{set smallclass:3 /}
+	#{set crumbs:'微信>多图文回复'/}
+<div class="back-main">	
+	<div class="back-usertop">
+		<b class="left font14">编辑文本自定义内容</b>
+		<!-- 右侧功能按钮 -->
+		<div class="right back-rightbtns">
+			<a href=""><i class="iconfont">&#xe60b;</i>返回</a>
+		</div>
+	</div>
+	<form action="" method="post" id="" class="WeChatContent">
+			<ul class="back-ul">
+				<li>
+					<span class="lileft">关键词</span>
+					<div class="liright">
+						<input type="text" name="keywords" class="required" value="${flash?.keywords}">
+					</div>
+				</li>
+				<li>
+					<span class="lileft">跳转链接</span>
+					<div class="liright">
+						<button class='back-but' style="width: 100px;margin-left: 0;margin-right: 20px;">添加图文消息</button>清空选择
+					</div>
+				</li>
+				
+				<li>
+					<span class="lileft"></span>
+					<div class="liright">
+						<input type="submit" class="WeChatbut" value="保存">
+						<input type="reset" value="取消" class="WeChatbut addWeChatbut">
+					</div>
+				</li>
+			</ul>
+	</form>
+</div>

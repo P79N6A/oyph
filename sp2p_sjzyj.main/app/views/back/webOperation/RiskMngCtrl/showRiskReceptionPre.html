@@ -1,0 +1,160 @@
+#{extends 'common/back/webOperationMain.html' /}
+#{set title:'运维 | 风控专员管理 ' /}
+#{set smallclass:11 /}
+#{set crumbs:'运维>风控专员管理' /}
+%{
+	java.lang.Integer type = controllers.common.BackBaseController.getCurrentSupervisorType();
+}%
+
+<style>
+	.ff{
+		float: left;
+	}
+	
+</style>
+<div class="back-main">
+	<!-- 头部筛选条件 -->
+	<div class="back-usertop">
+		<!-- 搜索按钮，控制搜索条件的显示隐藏 -->
+		<div class="left back-usermenu">
+		<a href="#"  class="selected">风控专员管理</a>		
+		</div>
+		
+	</div>
+	
+	<div class="back-cont">
+		<form onsubmit="return jianyan();" action="@{back.webOperation.RiskMngCtrl.addRiskMember()}" method="POST" id="form_addDiff">		 
+			<div class="back-infor">
+				<h2 class="back-infor-head">
+					<span class="left">添加通知人</span>
+				</h2>				
+				<ul class="back-infor-set">	
+					<li >			   				 	
+						<span class="lileft">接待人姓名：</span>
+						<div class="liright">							
+							<input id="riskName" name="riskName" type="text">							
+						</div>
+					</li>
+					 <li >			   				 	
+						<span class="lileft">接待人手机号：</span>
+						<div class="liright">							
+							<input id="riskMobile" name="riskMobile" type="text">							
+						</div>
+					</li>
+					 <li >			   				 	
+						<span class="lileft">接待人所属分公司：</span>
+						<div class="liright">							
+							<select name="riskBranch">
+								#{list items:branchs, as: 'branch' }
+									<option value="${branch.id}">${branch.branch_name}</option>
+								#{/list}
+							</select>						
+						</div>
+					</li>
+					 <li >			   				 	
+						<span class="lileft">接待人类型：</span>
+						<div class="liright">							
+								<select name="riskType">
+									<option value="1">专员</option>
+									<option value="2">经理</option>
+									<option value="3">总监</option>
+								</select>
+												
+						</div>
+					</li>						
+					<li >
+						<p class="back-audit-btns">
+							<input type="submit" id="pageSave" value="添加" class="bgbtn">
+							<input type="reset" value="取消" class="bdbtn dialog-console">
+						</p>
+					</li>				
+				</ul>
+			</div>						
+		</form>
+	</div>	
+	
+	<div class="back-cont">
+		<div class="back-box">
+			<table width="100%" class="back-table table-fixed">
+				<tr height="40">
+					<th width="70" class="align-left">
+						<span class="back-order">
+							序号
+						</span>
+					</th>
+					<th>姓名</th>
+					<th>电话</th>
+					<th>所属分公司</th>
+					<th>级别</th>
+					<th>操作</th>					
+				</tr>
+			#{if trList!=null}
+				#{set count=1}#{/set}
+				#{list trList,as:'trls'}
+				<tr height="40">
+					<td class="align-left">
+						<label>${count}</label>
+					</td>
+					<td data-title="">
+					${trls?.reception_name}
+					</td>
+					<td>${trls?.phone}</td>
+					<td>${trls?.branch_company}</td>
+					<td>${trls?.type?.value}</td>
+					<td>
+						<a href="@{back.webOperation.RiskMngCtrl.toEditRiskReceptionPre(trls?.id)}">编辑</a>
+						<a href="javascript:deleteMem(${trls?.id})">删除</a> 
+					</td>
+				</tr>
+				#{set count=count+1}#{/set}
+				#{/list}
+			#{/if}
+				<!-- 表格数据统计 -->
+
+			#{else}	
+					<!-- 暂无记录 -->
+					<tr height="58">
+						<td colspan="6" class="back-nodata"><i class="iconfont">&#xe613;</i>暂无记录</td>
+					</tr>
+				</table>
+			#{/else}
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript" >
+
+	function jianyan(){
+		var mobile=$("#riskMobile").val().trim();
+		var name=$("#riskName").val();
+		if(mobile == '' || name == ''){
+			alert("姓名或手机号不能为空");
+			return false;
+		}else if(!mobile.isMobileNum()){
+			alert("手机号格式不正确");
+			return false;
+		}else{
+			return true;
+		}
+	}
+	
+	/*删除分控专员   */
+	function deleteMem(receptionId){
+		
+		if(confirm("你确定删除吗？ ",function(){
+			$.ajax({
+				url : "@{back.webOperation.RiskMngCtrl.deleteRiskReceptionPre()}",
+				type : "GET",
+				data : {
+					"riskReceptionId" : receptionId
+				},
+				success : function(){
+					window.location.reload();
+				}
+			});
+			
+			}));
+		
+	}
+	
+</script>

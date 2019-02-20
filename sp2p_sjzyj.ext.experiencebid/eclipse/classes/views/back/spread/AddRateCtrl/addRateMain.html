@@ -1,0 +1,30 @@
+#{extends 'common/supervisorMain.html' /}
+#{set AItem:7/}
+	
+<!-- 二级导航 -->
+<ul class="back-secnav">
+	<li class="promotion-select">
+		<select id="spreadMenu">
+			#{list items:common.enums.SpreadMenu.values(),as:'menu'}
+			<option value=${menu.url} #{if menu==common.enums.SpreadMenu.ADDRATE}selected="selected"#{/if}>${menu.value}</option>
+			#{/list}
+  		</select>
+	</li>
+	<li><a href="@{back.spread.AddRateCtrl.addRateActPre()}">加息券活动</a></li>
+	<li><a href="@{back.spread.AddRateCtrl.addRateRulePre()}">加息券规则</a></li>
+	<li><a href="@{back.spread.AddRateCtrl.batchSendratePre()}">批量发放</a></li>
+	<li><a href="@{back.spread.AddRateCtrl.showInvsetsendratePre()}">投资发放</a></li>
+	<li><a href="@{back.spread.AddRateCtrl.showRateRecordPre()}">发放记录</a></li>
+	<li><a href="@{back.spread.ExperienceBidCtrl.showExperienceBidListPre()}">加息券获取人</a></li>
+</ul>	
+
+#{doLayout /}
+<!-- 页面js -->
+<script type="text/javascript">
+	require(["back"],function(back){
+		//二级菜单切换的
+		$("#spreadMenu").change(function(){
+			window.location.href=$(this).children('option:selected').val();
+		});
+	});
+</script>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link rel="stylesheet" href="/public/app/css/front.css" type="text/css"/>
+		<link rel="stylesheet" href="/public/app/css/publishIndex.css" type="text/css"/>
+		<title>经营信息</title>
+	</head>
+	<body>
+		<div class="content">
+			<h1>经营信息</h1>
+			<div class="main">
+				<span class="inTitle">经营信息</span>
+				<p>
+					（数据截止至${dates?.format(common.constants.Constants.DATE_FORMATESS)}，来源于讴业普惠内部统计）<br>
+					自成立以来的累计借贷金额：${dis?.total_amount}元<br>
+					自成立以来的累计借贷笔数：${dis?.total_count}个<br>
+					借贷余额：${dis?.total_balance}元<br>
+					累计出借人数量：${dis?.lender_total_count}人<br>
+					累计借款人数量：${dis?.borrower_total_count}人<br>
+					当前出借人数量：${dis?.lender_count}人<br>
+					当前借款人数量：${dis?.borrower_count}人<br>
+					前十大借款人待还金额占比：${dis?.ten_proportion}%<br>
+					最大单一借款人待还金额占比：${dis?.one_proportion}%<br>
+					关联关系借款余额及笔数：0个<br>
+					逾期金额：0元<br>
+					逾期笔数：0个<br>
+					逾期90天（不含）以上金额：0元<br>
+					逾期90天（不含）以上笔数：0个<br>
+					累计代偿金额：336266.65元<br>
+					累计代偿笔数：6个<br>
+					项目逾期率：0%<br>
+					金额逾期率：0%<br>
+				</p>
+				<span class="inTitle">收费标准</span>
+				<p>
+					充值免手续费<br>
+					提现手续费：单笔提现手续费为（2+0.05%X）元。<br>
+					收费标准：<br>
+					惠房贷8%-14%<br>
+					惠车贷6.5%-14%
+				</p>
+				<p>
+					法人签字：
+					<img src="/public/front/images/name1.png" class="sign"/>
+				</p>
+			</div>
+		</div>
+	</body>
+</html>

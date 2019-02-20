@@ -1,0 +1,82 @@
+ #{extends 'common/frontMain.html' /} #{set title: '首页'/} #{set AItem:3/}
+ <link rel="stylesheet" type="text/css" href="/public/front/stylesheets/guide.css" >
+<div class="topimg">
+</div>
+<div class = "xin"></div>
+<div class="topmain">
+    <div class="title oupu">在那里可以体验讴业普惠</div>
+    <div class="website">
+        <div class="left">
+            <img src="/public/front/images/newhand/PC.jpg" class="lmt">
+            <p>打开浏览器访问</p>
+            <p>www.ouyepuhui.com</p>
+        </div>
+        <div class="right">
+            <img src="/public/front/images/newhand/television.gif">
+        </div>
+    </div>
+    <div class="app">
+        <div class="left">
+            <img src="/public/front/images/newhand/yingyong.jpg" class="lmt">
+            <p>扫码下载讴业普惠</p>
+            <p>APP</p>
+        </div>
+        <div class="right">
+            <img src="/public/front/images/newhand/WeChat.jpg">
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div class="WeChat">
+        <div class="left">
+            <img src="/public/front/images/newhand/weixin-2.jpg" class="lmt">
+            <p>打开微信搜索并关注</p>
+            <p>公众号</p>
+        </div>
+        <div class="right">
+            <img src= "/public/front/images/newhand/shouji.jpg">
+        </div>
+    </div>
+</div>
+<div class="Middleimg">
+    <div class="process">
+        <img src="/public/front/images/newhand/ioc-c.png">
+        <span>1、手机号注册&nbsp;</span>
+        <span>2、开通存款账户</span>
+        <span>3、银行卡绑定&nbsp;</span>
+        <span>4、资金充值&nbsp;&nbsp;</span>
+        <span class="clearr">&nbsp;&nbsp;5、资金出借</span>
+    </div>
+</div>
+<div class="bottomMain">
+    <div class="title ouroom">讴业普惠小讲堂</div>
+    <div class="lcontent">
+    <img src="/public/front/images/newhand/coverage-2.png" class="lhead"><img src="/public/front/images/newhand/duihua1.png" class="left ldialogue">
+    </div>
+    <div class="rcontent">
+        <img src="https://image.ouyepuhui.com/images/logo512.png" class="rhead"><img src="https://image.ouyepuhui.com/images/duihua3.jpg" class="right rdialogue">
+    </div>
+    <div class="clear"></div>
+    <div class="lcontent">
+        <img src="/public/front/images/newhand/coverage-2.png" class="lhead"><img src="/public/front/images/newhand/duihua2.jpg" class="left ldialogue">
+    </div>
+    <div class="rcontent">
+        <img src="https://image.ouyepuhui.com/images/logo512.png" class="rhead"><img src="/public/front/images/newhand/duihua4.jpg" class="right rdialogue">
+    </div>
+    <div class="clear"></div>
+    <div class="lcontent">
+        <img src="/public/front/images/newhand/coverage-2.png" class="lhead"><img src="/public/front/images/newhand/duihua5.jpg" class="left ldialogue">
+    </div>
+    <div class="rcontent">
+        <img src="https://image.ouyepuhui.com/images/logo512.png" class="rhead"><img src="/public/front/images/newhand/duihua6.jpg" class="right rdialogue">
+    </div>
+</div>
+<div style="width: 100%;height: 30px;background: #f3f3f3;">
+</div>
+<script type="text/javascript">
+    $(".ouroom").click(function(){
+    	window.location.href=("@{front.FrontHomeCtrl.lecturePre()}")
+    });
+    $(".oupu").click(function(){
+    	window.location.href=("@{front.FrontHomeCtrl.frontHomePre()}")
+    });
+</script>

@@ -1,0 +1,130 @@
+.form-list input::-webkit-input-placeholder {
+	    color: #c8c8c8;
+	}
+.cps-main input{
+		outline: none;
+		border: none;
+		-webkit-appearance: none;
+	}
+.cps-bg{
+	position: absolute;
+    width: 100%;
+    min-width: 1200px;
+    height: 3495px;
+    background: url(/public/front/images/toInvite.jpg) no-repeat center;
+}
+.cps-img-bg{
+	display: none;
+}
+.cps-main{
+	width: 640px;
+	height: 540px;
+	margin: 1840px auto 0;
+	text-align: center;
+}
+.cps-form p{
+	font-size: 20px;
+	color: #fdcf3c;
+}
+.form-list{
+	width: 640px;
+	height: 80px;
+	margin-top: 20px;
+}
+.form-list input{
+	box-sizing: border-box;
+	padding-left: 30px;
+	color: #c8c8c8;
+	font-weight: bold;
+	font-size: 22px;
+}
+.shouji,.suo{
+	display: inline-block;
+	width: 93px;
+	height: 80px;
+	border-radius:3px 0 0 3px ;
+	float: left;
+}
+.shouji{
+	background: url(/public/front/images/MP.png) no-repeat center center #4cc6ff;
+}
+.suo{
+	background: url(/public/front/images/LOCK.png) no-repeat center center #4cc6ff;
+}
+.cps-sr{
+	width: 547px;
+	height: 80px;
+	border-radius:0 3px 3px 0;
+	float: left;
+}
+.cps-yz{
+	width: 320px;
+	height: 80px;
+	border-radius:3px;
+	float: left;  
+}
+.ident{
+	width: 215px;
+	height: 80px;
+	float: left;
+	margin-left: 100px;
+	cursor: pointer;
+}
+#vCode{
+	width: 235px;
+	height: 80px;
+	float: left;
+	margin-left: 80px;
+	color: #fff;
+	background: #4CC6FF;
+	border: none;
+	border-radius:3px;
+	padding: 0;
+}
+.cps-sub{
+	width: 310px;
+	height: 62px;
+	border-radius: 31px;
+	background: #4CC6FF;
+	color: #FFFFFF;
+	margin: 60px auto 0;
+	font-size: 22px;
+}
+/*注册成功的样式*/
+.cps-success{
+	width: 550px;
+	height: 510px;
+	margin: 0 auto;
+	text-align: center;
+}
+.cps-success p{
+	font-size: 48px;
+	color: #fff;
+}
+.cps-erweima{
+	display:block;
+	margin: 35px auto 5px;
+}
+.cps-xiazai{
+	width: 240px;
+    height: 37px;
+    background: #fff;
+    color: #333;
+    font-size: 21px;
+    border-radius: 9px;
+    margin-top: 10px;
+}
+/**/
+.zi{
+	color: #fff;
+    font-size: 27px;
+}
+.Explain{
+	color: #fff;
+    width: 1200px;
+    margin: 295px auto;
+    font-size: 31px;
+}
+.Explain p{
+	margin-bottom:40px; 
+}

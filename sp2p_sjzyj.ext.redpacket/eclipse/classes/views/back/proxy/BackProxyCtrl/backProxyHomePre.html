@@ -1,0 +1,153 @@
+#{extends 'common/back/proxyMain.html' /}
+	#{set title:'代理商 | 代理商首页' /}
+	#{set smallclass:0 /}
+	#{set crumbs:'代理商>代理商首页'/}
+	
+<!-- 以下代码区 -->	
+	
+<div class="back-main">
+	<!-- 头部筛选条件 -->
+	<div class="back-usertop">
+		<div class="left back-usermenu">
+			<a href="javascript:void(0)" class="selected">所有</a>
+		</div>
+		
+		<!-- 右侧功能按钮 -->
+		<div class="right back-rightbtns">
+			#{rightMng rightId:1401001}
+			<a href="@{back.proxy.BackProxyCtrl.addProxyPre()}"><i class="iconfont">&#xe60f;</i>添加</a>
+			#{/rightMng}
+		</div>
+	</div>
+	<div class="back-search-option" style="display: block;">
+		<form action="@{back.proxy.BackProxyCtrl.backProxyHomePre()}" method="GET" id="showProxy">
+			<input type="hidden" id="currPage" name="currPage" value="${pageBean?.currPage}" />
+	  		<input type="hidden" id="pageSize" name="pageSize" value="${pageBean?.pageSize}"/>
+	  		
+	  		<input type="text" class="iffocus" name="proxyName" value="${proxyName}" placeholder="按姓名查找" maxlength="15"/>
+	  		<input type="text" class="iffocus" name="proxyMobile" value="${proxyMobile}" placeholder="按手机号查找" maxlength="11"/>
+	  		<select name="proxyStatus">
+	  			#{if proxyStatus == 0}
+	  				<option value="0">全部代理商</option>
+	  			#{/if}
+	  			#{if proxyStatus == 1}
+	  				<option value="1">正常代理商</option>
+	  			#{/if}
+	  			#{if proxyStatus == 2}
+	  				<option value="2">锁定代理商</option>
+	  			#{/if}
+	  			<option value="0">全部代理商</option>
+	  			<option value="1">正常代理商</option>
+	  			<option value="2">锁定代理商</option>
+	  		</select>
+	  		<input type="submit" class="bgbtn" value="搜索" />
+		 </form>
+	</div>
+	<div class="back-cont">
+		<div class="back-box">
+			<table class="agentTable back-table table-fixed" border="0" >
+				<tr height="40">
+					<th>编号</th>
+					<th>姓名</th>
+					<th>手机号</th>
+					<th>创建时间</th>
+					<th>状态</th>
+					<th>操作</th>
+					</tr>
+				#{if page?.page}
+					#{list page?.page}
+						<tr>
+							<td>${_?.id}</td>
+							<td>${_?.sale_name}</td>
+							<td>${_?.sale_mobile}</td>
+							<td>${_?.time.format(common.constants.Constants.DATE_TIME_FORMATE)}</td>
+							<td>
+								#{if _?.sale_status == 1}
+									正常
+								#{/if}
+								#{else}
+									锁定
+								#{/else}
+							</td>
+							<td>
+								<table style="margin-left:85px;">
+									<tr>
+										<td class="borderTop"><a href="@{back.proxy.BackProxyCtrl.updateProxyPre(_?.id, _?.sale_mobile, _?.sale_name)}" target="" data-title="编辑" class="iconfont">&#xe602;</a></td>
+										<td class="borderTop"><a onclick="lockuser('${_?.id}', '${_?.sale_status}',this);" data-title="${_?.sale_status == 1 ? '锁定' : '解锁'}" class="iconfont"> #{if _?.sale_status == 1}&#xe627;#{/if}#{else}&#xe63c;#{/else}</a></td>
+										<td class="borderTop"><a href="@{back.proxy.BackProxyCtrl.proxySimulatedLoginPre(_?.id)}" target="_blank" data-title="用户" class="iconfont">&#xe609;</a></td>
+										<td class="borderTop"><a href="@{back.proxy.BackProxyCtrl.salesManRulePre(_?.proxy_id)}" data-title="业务员收益规则"><img class="amendimg"  src="/public/back/images/salesman.png" /></a></td>
+										<td class="borderTop">
+											#{if _?.type == 2}
+											<a href="@{back.proxy.BackProxyCtrl.proxyProfitRulePre(_?.proxy_id)}" data-title="代理商收益规则" class=""><img class="amendimg"  src="/public/back/images/amend.png"/></a>
+											#{/if}
+										</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+					#{/list}
+					<tr height="40">
+						<td colspan="6" class="back-lasttd">
+							<!-- 分页组件--pageTag -->
+							#{backPageTag page:page,showPage:"showProxy"/}
+						</td>
+					</tr>
+				#{/if}
+				#{else}	
+					<!-- 暂无记录 -->
+					<tr height="58">
+						<td colspan="6" class="back-nodata"><i class="iconfont">&#xe613;</i>暂无记录</td>
+					</tr>
+				#{/else}
+			</table>
+		</div>
+	</div>
+</div>	
+<!-- 页面js -->
+<script type="text/javascript">
+	/* 分页组建 */
+	function showProxy(currPage, pageSize) {
+		$("#currPage").val(currPage);
+		$("#pageSize").val(pageSize);
+		
+		$("#showProxy").submit();
+	}
+	
+	//代理商锁定，解锁
+	function lockuser(id, proxyStatus,obj){
+		$.ajax({
+			url : "@{back.proxy.BackProxyCtrl.lockOrUnlockProxy()}",
+			type : "post",
+			data : {
+				"proxyId" : id
+			},
+			dataType : "json",
+			success : function (data) {
+				var flag = interceptorCheck(data);
+				if(!flag){
+					return;
+				}
+			
+				if(data.code < 1){
+					weakDialog(data.msg);
+				}else{
+					if(data.obj){
+						console.log($(obj))
+						$(obj).parent().parent().parent().parent().parent().prev("td").html("锁定");
+						$(obj).data("title",'解锁');
+						$('.titlebox').text('解锁');
+						$(obj).html("&#xe63c;");
+						weakDialog(data.msg);
+					}else{
+						console.log($(obj))
+						$(obj).parent().parent().parent().parent().parent().prev("td").html("正常");
+						$(obj).data("title",'锁定');
+						$('.titlebox').text('锁定'); 
+						$(obj).html("&#xe627;");
+						weakDialog(data.msg);
+					}
+				}
+			}
+		})
+	}
+</script>	

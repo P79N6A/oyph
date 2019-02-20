@@ -1,0 +1,375 @@
+#{extends 'common/back/queryMain.html' /}
+	#{set title:'查询 | 客户信息' /}
+	#{set smallclass:1 /}
+	#{set crumbs:'查询>客户信息' /}
+	
+<div class="back-main">
+	<div class="back-cont">
+		<div class="back-box">
+		<form action="@{back.query.CustomerInfoAysnCtrl.custInfoSync()}" method="post">
+			<table style="width: 500px; margin: 50px auto;">
+				<tr>
+					<td class="one">会员编号</td>
+					<td class="two">:</td>
+					<td class="tre"><input name="customerId" value="" /></td>
+					<td class="for">*</td>
+				</tr>
+				<tr>
+					<td class="one">业务操作类型</td>
+					<td class="two">:</td>
+					<td class="tre">
+						<select name="busiTradeType">
+							<option value="U01">个人客户注册</option>
+							<option value="U02">客户信息修改</option>
+							<option value="U03">客户注销</option>
+							<option value="U04">企业客户注册</option>
+							<option value="B02">客户解绑</option>
+							<option value="T11">取消交易(冲正)</option> 
+						</select>
+					</td>
+					<td class="for">*</td>
+				</tr>
+				<tr>
+					<td class="one">会员类型</td>
+					<td class="two">:</td>
+					<td class="tre">
+						<select name="ctype">
+							<option value="">请选择</option>
+							<option value="00">个人</option>
+							<option value="01">企业</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td class="one">会员角色</td>
+					<td class="two">:</td>
+					<td class="tre">
+						<select name="crole">
+							<option value="">请选择</option>
+							<option value="00">投资方</option>
+							<option value="01">融资方</option>
+							<option value="02">担保方</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td class="one">企业名称</td>
+					<td class="two">:</td>
+					<td class="tre"><input name="companyName" value="" /></td>
+				</tr>
+				<tr>
+					<td class="one">用户名</td>
+					<td class="two">:</td>
+					<td class="tre"><input name="username" value="" /></td>
+				</tr>
+				<tr>
+					<td class="one">证件类型</td>
+					<td class="two">:</td>
+					<td class="tre">
+						<select name="certType">
+							<option value="00">身份证</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td class="one">证件号码</td>
+					<td class="two">:</td>
+					<td class="tre"><input name="certNo" value="" /></td>
+				</tr>
+				<tr>
+					<td class="one">身份证正面影像</td>
+					<td class="two">:</td>
+					<td class="tre"><input name="certFImage" value="" /></td>
+				</tr>
+				<tr>
+					<td class="one">身份证反面影像 </td>
+					<td class="two">:</td>
+					<td class="tre"><input name="certBImage" value="" /></td>
+				</tr>
+				<tr>
+					<td class="one">身份证详情</td>
+					<td class="two">:</td>
+					<td class="tre"><input name="certInfo" value="" /></td>
+				</tr>
+				<tr>
+					<td class="one">身份证有效起始日期</td>
+					<td class="two">:</td>
+					<td class="tre"><input name="idvalidDate" value="" /></td>
+				</tr>
+				<tr>
+					<td class="one">身份证有效截至日期</td>
+					<td class="two">:</td>
+					<td class="tre"><input name="idexpiryDate" value="" /></td>
+				</tr>
+				<tr>
+					<td class="one">职业类型</td>
+					<td class="two">:</td>
+					<td class="tre">
+						<select name="jobType">
+							<option value=""  >请选择</option>
+							<option value="0" >政府机关</option>
+							<option value="1" >邮政</option>
+							<option value="3" >电信</option>
+							<option value="4" >IT</option>
+							<option value="5" >商业/贸易</option>
+							<option value="6" >金融</option>
+							<option value="7" >旅游/饭店</option>
+							<option value="8" >医疗卫生</option>
+							<option value="9" >房地产</option>
+							<option value="10">交通运输</option>
+							<option value="11">法律司法</option>
+							<option value="12">文化娱乐</option>
+							<option value="13">媒体广告</option>
+							<option value="14">科研/教育</option>
+							<option value="15">学生</option>
+							<option value="16">农林牧渔</option>
+							<option value="17">矿业/制造</option>
+							<option value="18">自由职业</option>
+							<option value="X" >其他</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td class="one">职业描述</td>
+					<td class="two">:</td>
+					<td class="tre"><input name="job" value="" /></td>
+				</tr>
+				<tr>
+					<td class="one">邮编</td>
+					<td class="two">:</td>
+					<td class="tre"><input name="postcode" value="" /></td>
+				</tr>
+				<tr>
+					<td class="one">联系地址</td>
+					<td class="two">:</td>
+					<td class="tre"><input name="address" value="" /></td>
+				</tr>
+				<tr>
+					<td class="one">民族</td>
+					<td class="two">:</td>
+					<td class="tre">
+						<select name="national">
+							<option value=""  >请选择</option>
+							<option value="10">汉族</option>
+							<option value="20">少数民族</option>
+							<option value="2002">蒙古族</option>
+							<option value="2003">回族</option>
+							<option value="2004">维吾尔族</option>
+							<option value="2005">藏族</option>
+							<option value="2006">苗族</option>
+							<option value="2007">彝族</option>
+							<option value="2008">壮族</option>
+							<option value="2009">布依族</option>
+							<option value="2010">朝鲜族</option>
+							<option value="2011">满族</option>
+							<option value="2012">侗族</option>
+							<option value="2013">瑶族</option>
+							<option value="2014">白族</option>
+							<option value="2015">土家族</option>
+							<option value="2016">哈尼族</option>
+							<option value="2017">哈萨克族</option>
+							<option value="2018">傣族</option>
+							<option value="2019">黎族</option>
+							<option value="2020">僳僳族</option>
+							<option value="2021">佤族</option>
+							<option value="2022">畲族</option>
+							<option value="2023">高山族</option>
+							<option value="2024">拉祜族</option>
+							<option value="2025">水族</option>
+							<option value="2026">东乡族</option>
+							<option value="2027">纳西族</option>
+							<option value="2028">景颇族</option>
+							<option value="2029">柯尔克孜族</option>
+							<option value="2030">土族</option>
+							<option value="2031">达斡尔族</option>
+							<option value="2032">仫佬族</option>
+							<option value="2033">羌族</option>
+							<option value="2034">布朗族</option>
+							<option value="2035">撒拉族</option>
+							<option value="2036">毛难族</option>
+							<option value="2037">仡佬族</option>
+							<option value="2038">锡伯族</option>
+							<option value="2039">阿昌族</option>
+							<option value="2040">普米族</option>
+							<option value="2041">塔吉克斯坦族</option>
+							<option value="2042">怒族</option>
+							<option value="2043">乌孜别克族</option>
+							<option value="2044">俄罗斯族</option>
+							<option value="2045">鄂温克族</option>
+							<option value="2046">崩龙族</option>
+							<option value="2047">保安族</option>
+							<option value="2048">裕固族</option>
+							<option value="2049">京族</option>
+							<option value="2050">塔塔尔族</option>
+							<option value="2051">独龙族</option>
+							<option value="2052">鄂伦春族</option>
+							<option value="2053">赫哲族</option>
+							<option value="2054">门巴族</option>
+							<option value="2055">珞巴族</option>
+							<option value="2056">基诺族</option>
+							<option value="97">其他</option>
+							<option value="98">外国血统</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td class="one">身份证信息完整标识</td>
+					<td class="two">:</td>
+					<td class="tre">
+						<select name="completeFlag">
+							<option value="">请选择</option>
+							<option value="0">完整</option>
+							<option value="1">不完整</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td class="one">手机号</td>
+					<td class="two">:</td>
+					<td class="tre"><input name="phoneNo" value="" /></td>
+					<td class="for">*</td>
+				</tr>
+				<tr>
+					<td class="one">统一社会信用代码</td>
+					<td class="two">:</td>
+					<td class="tre"><input name="uniSocCreCode" value="" /></td>
+				</tr>
+				<tr>
+					<td class="one">统一社会信用地址</td>
+					<td class="two">:</td>
+					<td class="tre"><input name="uniSocCreDir" value="" /></td>
+				</tr>
+				<tr>
+					<td class="one">营业执照住所</td>
+					<td class="two">:</td>
+					<td class="tre"><input name="bizLicDomicile" value="" /></td>
+				</tr>
+				<tr>
+					<td class="one">主体类型</td>
+					<td class="two">:</td>
+					<td class="tre"><input name="entType" value="" /></td>
+				</tr>
+				<tr>
+					<td class="one">成立日期</td>
+					<td class="two">:</td>
+					<td class="tre"><input name="dateOfEst" value="" /></td>
+				</tr>
+				<tr>
+					<td class="one">对公户账户</td>
+					<td class="two">:</td>
+					<td class="tre"><input name="corpacc" value="" /></td>
+				</tr>
+				<tr>
+					<td class="one">对公户开户行行号</td>
+					<td class="two">:</td>
+					<td class="tre"><input name="corpAccBankNo" value="" /></td>
+				</tr>
+				<tr>
+					<td class="one">对公户开户行名称</td>
+					<td class="two">:</td>
+					<td class="tre"><input name="corpAccBankNm" value="" /></td>
+				</tr>
+				<tr>
+					<td class="one">绑卡标识</td>
+					<td class="two">:</td>
+					<td class="tre">
+						<select name="bindFlag">
+							<option value="">请选择</option>
+							<option value="00">绑卡</option>
+							<option value="01">不绑卡</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td class="one">绑定类型</td>
+					<td class="two">:</td>
+					<td class="tre">
+						<select name="bindType">
+							<option value="">请选择</option>
+							<option value="00">充值</option>
+							<option value="01">体现</option>
+							<option value="99">全部</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td class="one">卡帐标识</td>
+					<td class="two">:</td>
+					<td class="tre">
+						<select name="acctype">
+							<option value="">请选择</option>
+							<option value="00">银行卡</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td class="one">原绑定银行卡号</td>
+					<td class="two">:</td>
+					<td class="tre"><input name="oldbankAccountNo" value="" /></td>
+				</tr>
+				<tr>
+					<td class="one">银行卡号</td>
+					<td class="two">:</td>
+					<td class="tre"><input name="bankAccountNo" value="" /></td>
+				</tr>
+				<tr>
+					<td class="one">银行账户名称</td>
+					<td class="two">:</td>
+					<td class="tre"><input name="bankAccountName" value="" /></td>
+				</tr>
+				<tr>
+					<td class="one">银行手机号</td>
+					<td class="two">:</td>
+					<td class="tre"><input name="bankAccountTelNo" value="" /></td>
+				</tr>
+				<tr>
+					<td class="one">借方台账号（得钱）</td>
+					<td class="two">:</td>
+					<td class="tre"><input name="debitNo" value="" /></td>
+				</tr>
+				<tr>
+					<td class="one">贷方台账号（出钱）</td>
+					<td class="two">:</td>
+					<td class="tre"><input name="creditNo" value="" /></td>
+				</tr>
+				<tr>
+					<td class="one">标Id</td>
+					<td class="two">:</td>
+					<td class="tre"><input name="bidId" value="" /></td>
+				</tr>
+				<tr>
+					<td class="one">冲正金额</td>
+					<td class="two">:</td>
+					<td class="tre"><input name="amount" value="" /></td>
+				</tr>
+				<tr>
+					<td class="one">冲正流水号</td>
+					<td class="two">:</td>
+					<td class="tre"><input name="oldbusinessSeqNo" value="" /></td>
+				</tr>
+				<tr>
+					<td class="one">备注</td>
+					<td class="two">:</td>
+					<td class="tre"><input name="note" value="" /></td>
+				</tr>
+				<tr>
+					<td class="one"></td>
+					<td class="two"></td>
+					<td class="tre"><input type="submit" value="提交" id="sbmt" /></td>
+				</tr>
+			</table>
+		</form>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	$("tr").css({"width":"500px","height":"38px"});
+	$(".one").css({"text-align":"right","width":"150px"});
+	$(".two").css({"width":"15px","text-align":"center"});
+	$(".tre").css({"text-align":"left","width":"250px"});
+	$("input").css({"width":"250px", "height":"26px"});
+	$("select").css({"width":"254px"});
+	$("#sbmt").css({"width":"254px", "height":"31px"});
+	$(".for").css({"width":"75px","text-align":"left", "padding-left":"10px", "color":"red"});
+</script>

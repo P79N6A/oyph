@@ -1,0 +1,224 @@
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+hr,
+p,
+blockquote,
+dl,
+dt,
+dd,
+ul,
+ol,
+li,
+pre,
+form,
+fieldset,
+legend,
+button,
+input,
+textarea,
+th,
+td {
+	margin: 0;
+	padding: 0;
+}
+
+body,
+button,
+input,
+select,
+textarea {
+	font: 12px/1.5tahoma, arial, \5b8b\4f53;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-size: 100%;
+}
+
+address,
+cite,
+dfn,
+em,
+var {
+	font-style: normal;
+}
+
+code,
+kbd,
+pre,
+samp {
+	font-family: couriernew, courier, monospace;
+}
+
+small {
+	font-size: 12px;
+}
+
+ul,
+li,
+ol {
+	list-style: none;
+}
+
+a {
+	text-decoration: none;
+	color: #333;
+}
+
+a:hover {
+	text-decoration: none;
+}
+
+fieldset,
+img {
+	border: 0;
+}
+
+button,
+input,
+select,
+textarea {
+	font-size: 100%;
+}
+
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+body {
+	font-family: "Microsoft Yahei", 'STHeiti Light', Arial;
+	background: #f3f3f3;
+}
+
+button {
+	outline: none;
+	border: 0;
+}
+
+button:hover {
+	cursor: pointer;
+}
+
+#leftmenu {
+	width: 170px;
+	border: 1px solid #e3e3e3;
+	background-color: #f3f3f3;
+	float: left;
+}
+
+.menu-title {
+	line-height: 50px;
+	border-bottom: 1px solid #e3e3e3;
+	border-top: 1px solid #E5E5E5;
+	background: #fff;
+	padding-left: 41px;
+	margin-top: -1px;
+}
+
+.menu-title>a:hover {
+	color: #F77B0F;
+}
+
+.menu-title>a {
+	font-size: 16px;
+	display: block;
+	margin-left: 20px;
+	height: 100%;
+}
+
+.menu-title>img {
+	position: absolute;
+	margin-top: 10px;
+	margin-left: -20px;
+}
+
+#leftmenu .button a:hover {
+	color: #F77B0F;
+}
+
+#leftmenu .button>img {
+	position: absolute;
+	margin-top: 12px;
+	margin-left: 20px;
+	z-index: 99;
+}
+
+#leftmenu .button>a>img {
+	margin-left: 15px;
+	margin-top: 24px;
+}
+
+#leftmenu .button a {
+	margin-top: -1px;
+	display: block;
+	height: 50px;
+	line-height: 50px;
+	position: relative;
+	border-bottom: 1px solid #E5E5E5;
+	border-top: 1px solid #E5E5E5;
+	background: #fff;
+	padding-left: 60px;
+	font-size: 16px;
+}
+
+#leftmenu .button a span {
+	display: block;
+	width: 22px;
+	height: 22px;
+	position: absolute;
+	left: 20px;
+	top: 6px;
+}
+
+#leftmenu .dropdown {
+	display: none;
+	width: 100%;
+}
+
+#leftmenu .dropdown li {
+	margin-top: -1px;
+	background: #fff;
+	padding-left: 8px;
+	height: 40px;
+	line-height: 40px;
+	font-size: 14px;
+}
+
+#leftmenu .dropdown .ison {
+	color: #F00;
+	font-weight: bold;
+}
+
+#leftmenu .dropdown li a {
+	padding-left: 52px;
+	display: block;
+	font-size: 16px;
+}
+
+#leftmenu .dropdown li a:hover {
+	color: #F77B0F;
+}
+
+.index-mian {
+	width: 1200px;
+	height: auto;
+	margin: 0 auto;
+}
+
+.addred>a {
+	color: #F77B0F;
+}
+.borrow-list{
+	width:600px;
+	margin-left: 175px;
+}

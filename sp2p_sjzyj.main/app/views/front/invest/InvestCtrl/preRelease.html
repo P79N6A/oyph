@@ -1,0 +1,25 @@
+<!-- 预发售 -->
+<ul class="c3 detail-buylist">
+	<li class="detail-progress">
+		<span class="left lileft">筹款进度</span>
+		<span class="progress left">
+			<span class="progress-bar" style="width: ${bid?.loan_schedule}%;"></span>
+		</span>
+		<span class="progress-value right">${bid?.loan_schedule}%</span>
+	</li>
+	<li class="detail-buyover">
+		预发售
+	</li>
+	<li class="detail-begintime">
+		<span class="c9">距开始时间</span>
+		<span class="c3" id="preReleaseTimeCount"></span>
+	</li>
+</ul>
+<script type="text/javascript">
+require(['front'],function(front){
+	var EndTime = new Date('${bid?.pre_release_time?.format(common.constants.Constants.DATE_PLUGIN)}').getTime();
+	var NowTime = ${sysNowTime?:0};
+	GetRTime(EndTime, NowTime, "preReleaseTimeCount");
+});
+
+</script>

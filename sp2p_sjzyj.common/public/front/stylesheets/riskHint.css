@@ -1,0 +1,154 @@
+/* 风险提示css */
+.topBox{
+	width: 890px;
+	height: 60px;
+	border: 1px solid #c9c9c9;
+	margin:20px auto;
+	line-height: 60px;
+	padding: 0 30px;
+	background: #fff;
+}
+.iscontent{
+	width: 910px;
+	line-height: 48px;
+    margin:0px auto 30px auto;
+    overflow: hidden;
+    white-space: normal;
+    font-size: 16px;
+    color: #707070;
+    text-indent: 2em;
+    border: 1px solid #c9c9c9;
+    min-height: 500px;
+    padding: 0px 20px;
+    background: #fff;
+}
+.iscontent h1 {
+    font-size: 30px;
+    color: #423B3B;
+    word-wrap: break-word;
+    line-height: 40px;
+    padding: 20px 0px 0px 0px;
+    margin: 0px auto;
+    text-align: center;
+    font-weight: normal;
+}
+/* 风险政策css */
+.regulationsBox{
+	width: 910px;
+	height: 60px;
+	border: 1px solid #c9c9c9;
+	margin:20px auto;
+	line-height: 60px;
+	padding: 0 30px;
+	background: #fff;
+}
+.policyBox{
+	width: 910px;
+	margin:20px auto;
+	border: 1px solid #c9c9c9;
+	padding: 0 30px;
+	background: #fff;
+	min-height: 500px;
+}
+.islist {
+    margin: 10px auto;
+    clear: both;
+    font-size: 16px;
+}
+.islist li {
+    background: url(/public/front/images/liicon.gif) no-repeat 5px center;
+    height: 40px;
+    line-height: 40px;
+    text-indent: 30px;
+    border-bottom: 1px dotted #555;
+    margin: 0 20px;
+}
+/* 宪法Css */
+.navigation1{
+	width: 910px;
+	height: 60px;
+	border: 1px solid #c9c9c9;
+	margin:20px auto;
+	line-height: 60px;
+	padding: 0 30px;
+	background: #fff;
+}
+.center1{
+	width: 910px;
+	border: 1px solid #c9c9c9;
+	margin:20px auto;
+	line-height: 60px;
+	padding: 0 30px;
+	background: #fff;
+}
+.iscontent1{
+	line-height: 48px;
+    overflow: hidden;
+    white-space: normal;
+    font-size: 16px;
+    color: #707070;
+    text-indent: 2em;
+    min-height: 500px;
+    background: #fff;
+}
+.iscontent1 h1 {
+    font-size: 30px;
+    color: #423B3B;
+    word-wrap: break-word;
+    line-height: 40px;
+    width: 700px;
+    padding: 20px 0px 0px 0px;
+    margin: 0px auto;
+    text-align: center;
+    font-weight: normal;
+}
+.book {
+	width: 910px;
+    height: 300px;
+    margin:auto;
+    padding: 20px 30px;
+    border: 1px solid #c9c9c9;
+    margin-bottom: 25px;
+    background: #fff;
+}
+.yuedu {
+    width: 800px;
+    border-bottom: 1px solid #c9c9c9;
+    height: 45px;
+    line-height: 45px;
+    font-size: 18px;
+    color: #666;
+    background: url(/public/front/images/gunzis.png) no-repeat 10px center;
+    padding-left: 30px;
+}
+.banquan {
+	width: 910px;
+    height: 68px;
+    border: 1px solid #c9c9c9;
+    text-align: center;
+    line-height: 68px;
+    color: #686867;
+    margin:auto;
+    padding: 10px 30px;
+    background: #f8f8f8;
+    font-size: 13px;
+}
+.book ul li {
+    width: 790px;
+    border-top: 1px dashed #c9c9c9;
+    height: 58px;
+    line-height: 58px;
+    font-size: 14px;
+    color: #999;
+    margin: 0 20px;
+}
+.iscontent .conte {
+    margin-top: 30px;
+}
+.iscontent h2 {
+    width: 60px text-align:center;
+    padding-top: -10px;
+    float: left;
+    color: #3399FF;
+    font-size: 16px;
+}

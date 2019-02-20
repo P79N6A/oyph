@@ -1,0 +1,10 @@
+#{extends 'common/supervisorMain.html' /}
+#{set AItem:5 /}
+<!-- 二级导航 -->
+<ul class="back-secnav">
+	<li><a href="@{back.team.TeamCtrl.accountManagerListPre()}">客户经理</a></li>
+	<li><a href="@{back.team.TeamCtrl.directorListPre()}">业务室主任</a></li>
+	<li><a href="@{back.team.TeamCtrl.directorManagerListPre()}">业务部经理</a></li>
+	<li><a href="@{back.team.TeamCtrl.teamRulePre()}">收益规则</a></li>
+</ul>
+#{doLayout /}

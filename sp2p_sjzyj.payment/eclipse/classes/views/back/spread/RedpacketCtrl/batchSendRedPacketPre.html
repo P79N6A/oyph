@@ -1,0 +1,208 @@
+#{extends 'back/spread/RedpacketCtrl/redpacketsMain.html' /}
+	#{set title:'推广 | 红包 | 批量发放' /}
+	#{set smallclass:2 /}
+	#{set crumbs:'推广>红包>批量发放'/}
+<div class="back-main">
+	<div class="back-cont">
+		<div class="back-infor">
+			<h2 class="back-infor-head"><span class="left">批量发放</span>
+			
+			 <a href="javascript:void(0);" class="right iconfont finance-edit" data-title="编辑"></a>
+			 
+			</h2>
+			<div class="back-infor-lcset back-infor-getset">
+				<p>当红包金额设置为0时，该场景的红包将不会被触发，前台红包栏目也不会显示该红包类型。</p>
+				<form action="@{back.spread.RedpacketCtrl.batchSendRedPacket()}" method="POST" id="form_redpacket" novalidate="">
+				
+					<p class="back-experience-set">
+						<label>
+							<span class="lileft">发放对象</span>
+							<label id="send_input">
+								<input type="radio" name="sendType" value="0" checked="checked" disabled="">所有平台会员&nbsp;&nbsp;
+								<input type="radio" name="sendType" value="1" disabled="">自选&nbsp;&nbsp;
+							</label>
+						</label>
+						<ul class="y-show-user-ul y-show-user-ul2" id="showUsers">
+							<li>
+								<textarea class="y-back-textarea" id="users" name="users" readonly="readonly"></textarea>
+							</li>
+							<li>
+								<a class="iconfont" onclick="showUsers(1,10);">选择用户</a>
+							</li>
+						</ul>
+						</p>
+					<p class="back-experience-set">
+						<label>
+							<span class="lileft">红包金额</span>
+							<label class="back-unitinput">
+								<input type="text" name="amount" disabled="" oninput="$(this).ndigitInteger(4)" onpropertychange="$(this).ndigitInteger(4)" value="" class="width01 iffocus"><i class="unit">元</i>
+							</label>
+						</label>
+					</p>
+					<p class="back-experience-set">
+						<label>
+							<span class="lileft">最低投资</span>
+							<label class="back-unitinput">
+								<input type="text" name="useRule" disabled="" oninput="$(this).ndigitInteger(6)" onpropertychange="$(this).ndigitInteger(6)" value="" class="width01 iffocus"><i class="unit">元</i>
+							</label>
+						</label>
+					</p>
+					<p class="back-experience-set">
+						<label>
+							<span class="lileft">标的期限</span>
+							<label class="back-unitinput">
+								<input type="text" name="bidPeriod" disabled="" oninput="$(this).ndigitInteger(2)" onpropertychange="$(this).ndigitInteger(2)" value="" class="width01 iffocus"><i class="unit">月</i>
+							</label>
+						</label>
+					</p>
+					<p class="back-experience-set">
+						<label>
+							<span class="lileft">有效期限</span>
+							<label class="back-unitinput">
+								<input type="text" name="endTime" disabled="" oninput="$(this).ndigitInteger(3)" onpropertychange="$(this).ndigitInteger(3)" value="" class="width01 iffocus"><i class="unit">天</i>
+							</label>
+						</label>
+					</p>
+					<p class="back-experience-set">
+							<span class="lileft">通知渠道</span>
+							<label >
+								<input type="checkbox" name="letter" id="letter" value="true" disabled="">站内信&nbsp;&nbsp;
+							</label>
+							<label>
+								<input type="checkbox" name="sms" id="sms" value="true" disabled="">手机短信
+							</label>
+					</p>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="chooseone-dialog dialog lib-dialog"></div>
+<script type="text/javascript">
+	require(["back"],function(back){
+		// 搜索 排序 选中
+		require(["search","order","linechecked"]);
+		require(["validation/validateExt"]);
+
+		$(".back-infor").each( function() {
+			var that = this, 
+			editBtn = $(this).find( ".finance-edit"),
+			editText = $(this).find("input:not(.easyui-datetimebox)");
+			editText.prop("disabled", true);
+			editBtn.click(function() {
+				disable = editText.prop("disabled");
+				if (disable) {
+					editBtn.html("&#xe630;").data("title","保存");
+					
+					$(".titlebox").text( editBtn.data('title'));
+					editText.prop("disabled", !disable);
+					editText.eq(0).focus();
+				} else {
+					$("#form_redpacket").submit();
+				}
+			});
+		});
+		
+		$("#form_redpacket").validate({
+			errorPlacement: function(error, element) {
+				error.addClass('back-notice').insertAfter(element.parent());
+			},
+			rules:{
+				"amount":{
+					required:true,
+					digits:true,
+					range: [1, 1000]
+				},
+				"useRule":{
+					required:true,
+					digits:true,
+					range: [1, 999999]
+				},
+				"bidPeriod":{
+					required:true,
+					digits:true,
+					range: [0, 12]
+				},	
+				"endTime":{
+					required:true,
+					digits:true,
+					range: [1, 365]
+				},	
+			},
+			messages:{
+				"amount":{
+					required:"请填写红包金额",
+					digits:"红包金额不正确",
+					range: "范围是1~1000"
+				},
+				"useRule":{
+					required:"请填写最低投资金额",
+					digits:"最低投资金额不正确",
+					range: "范围是1~999999"
+				},
+				"bidPeriod":{
+					required:"请填写标的期限",
+					digits:"标的期限不正确",
+					range: "范围是0~12"
+				},	
+				"endTime":{
+					required:"请填写有效期限",
+					digits:"有效期限不正确",
+					range: "范围是1~365"
+				},	
+			}
+		});
+		
+		$("input[name='sendType']").change(function(){
+			var val = $(this).val();
+			if(val == "1"){
+				$("#showUsers").removeClass("y-show-user-ul");
+			}else if(val == "0"){
+				$("#showUsers").addClass("y-show-user-ul");
+			}
+		});
+	});
+	
+	//用户列表弹窗
+	function showUsers(currPage, pageSize, key) {
+		var users = $("#users").val().trim();
+		
+		if ("" == users) {
+			g_receiverNames = new Array();
+			g_selectedNames = new Array();
+		} else {
+	       	g_receiverNames = users.split(",");
+	       	g_selectedNames = users.split(",");
+	    }
+
+		$.ajax({
+			url : "@{back.spread.RedpacketCtrl.queryUser()}",
+			type : "POST",
+			data : {
+				"currPage" : currPage,
+				"pageSize" : pageSize,
+				"key" : key
+			},
+			success : function(data) {
+				if (data.code < 1) {
+					alert(data.msg);
+					
+					return;
+				}
+				
+				$(".chooseone-dialog").html(data);
+				$(".chooseone-dialog").dialog();
+			},
+			error : function() {
+				alert("对不起，出现错误");
+			}
+		});
+	}
+	
+	//选择用户弹窗已提交
+	function usersDidSelect(userNames) {
+	    g_receiverNames = clone(userNames);
+	    var names = g_receiverNames.join(",");
+	    $("#users").val(names);
+	}
+</script>

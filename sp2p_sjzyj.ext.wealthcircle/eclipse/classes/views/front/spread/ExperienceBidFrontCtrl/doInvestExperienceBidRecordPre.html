@@ -1,0 +1,51 @@
+#{if currUser}
+	#{if pageBean?.page == null}
+	<div class="norecord-box c9">
+	暂无记录
+	</div>
+	#{/if}
+	#{else}
+	<table width="100%" class="detail-record">
+		<input type="hidden" id="investCurrpage" value="${pageBean?.currPage}"/>
+		<input type="hidden" id="investPagesize" value="${pageBean?.pageSize}"/>
+		<input type="hidden" id="investTotalsize" value="${pageBean?.totalCount}"/>
+		<tr height="40">
+			<td width="20%">投标人</td>
+			<td width="30%" align="center">投标金额</td>
+			<td width="30%" align="center">投标方式</td>
+			<td width="20%" align="right">投标时间</td>
+		</tr>
+		#{list pageBean.page}
+		<tr height="40">
+			<td>#{asterisk str:_?.user_name, start:2, end:2, count:4/}</td>
+			<td align="center">#{formatIntMoney money:_?.invest_amount}#{/formatIntMoney}元</td>
+			<td align="center">${_?.getClient()?.value}</td>
+			<td align="right">${common.utils.DateUtil.getTimeLine(_?.invest_time)}</td>
+		</tr>
+		#{/list}
+	</table>
+	<p class="loadmore">
+		<a href="javascript:void(0);" onclick="loadMore()">点击加载更多</a>
+	</p>
+	#{/else}
+#{/if}
+<!--未登录--> 
+#{else}
+<p class="detail-unlogin">请<a href="@{front.LoginAndRegisteCtrl.loginPre()}" class="major">登录</a>或<a href="@{front.LoginAndRegisteCtrl.registerPre()}" class="major">注册</a>后查看</p>
+#{/else}
+
+<script type="text/javascript">
+function loadMore(){
+	var nowSize = $("#investPagesize").val();
+	var totalSize = ${pageBean?.totalCount};
+	$("#investPagesize").val(parseInt(nowSize)+5);
+	loadInvestExperienceBidRecord(function(data){
+		$("#experienceBidInvestRecord").html(data);
+		trevenRows();
+		if(parseInt(nowSize)+5 >= parseInt(totalSize)){
+			$(".loadmore").html("<span>没有更多了</span>");
+			return;
+		}
+	});
+}
+</script>

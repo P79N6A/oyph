@@ -1,0 +1,111 @@
+#{extends 'common/back/proxyMain.html' /}
+	#{set title:'代理商 | 代理商首页' /}
+	#{set smallclass:0 /}
+	#{set crumbs:'代理商>代理商首页'/}
+	
+<!-- 以下代码区 -->	
+	<link rel="stylesheet" href="/public/back/stylesheets/style.css" type="text/css" media="all" />
+<div class="back-main">
+	<!-- 头部筛选条件 -->
+	<div class="back-usertop">
+		<div class="left back-usermenu">
+			<a href="javascript:void(0)" class="selected">15526846825 -> 编辑</a>
+			
+		</div>
+		<a  title="返回" style="float: right;" id="disp" href="@{back.proxy.BackProxyCtrl.backProxyHomePre()}"><i class="iconfont">&#xe607;</i> &nbsp;返回</a>
+	</div>
+	
+	<div class="back-cont">
+		<div class="back-box">
+			<!-- <div class="addAgentTitle">
+		    	<p><b>管理员</b></p><span><a href="" target="" data-title="编辑" class="iconfont">&#xe602;</a></span>
+			</div> -->
+			<div class="back-infor">
+				<form action="" method="POST" id="iosSetting">
+				
+					<h2 class="back-infor-head">
+						<span class="left">管理员</span>
+					
+						<a href="javascript:void(0);" class="right iconfont finance-edit" data-title="编辑" >&#xe602;</a>
+					
+					</h2>
+					<ul class="back-infor-set">
+						<li>
+							<span class="lileft">手机号码</span>
+							<div class="liright">
+								<input type="text" class="width01 iffocus" maxlength="8" name="" value="" />
+								<span class="back-text-limit"></span>
+							</div>
+						</li>
+						<li>
+							<span class="lileft">姓名</span>
+							<div class="liright">
+								<span class="">张三</span>
+							</div>
+						</li>
+					</ul>
+				</form>
+			</div>
+			<div class="back-infor">
+				<form action="" method="POST" id="androidSetting">
+					
+					<h2 class="back-infor-head">
+						<span class="left">登录密码</span>
+						
+						<a href="javascript:void(0);" class="right iconfont finance-edit" data-title="编辑" >&#xe602;</a>
+						
+					</h2>
+					<ul class="back-infor-set">
+						<li>
+							<span class="lileft">密码</span>
+							<div class="liright">
+								<input type="text" class="width01 iffocus" maxlength="8" name="" value="" />
+								<span class="back-text-limit">6-16位字符，含空格</span>
+							</div>
+						</li>
+						<li>
+							<span class="lileft">确认密码</span>
+							<div class="liright">
+								<input type="text" class="width01 iffocus" maxlength="8" name="" value="" />
+								<span class="back-text-limit"></span>
+							</div>
+						</li>
+					</ul>
+				</form>
+			</div>
+			
+		</div>
+	</div>
+</div>	
+<!-- 页面js -->
+<script type="text/javascript">
+	require(["back"],function(back){
+		//扩展的v
+		require(["validation/validateExt"]);
+		
+		$(".back-infor").each(function() {
+			var that = this, 
+				editBtn = $(this).find(".finance-edit"), 
+				editText = $(this).find("select,input:not(.easyui-datetimebox),textarea");
+			editText.prop("disabled", true);
+			editBtn.click(function() {
+				disable = editText.prop("disabled");
+				if (disable) {
+					editBtn.html("&#xe630;").data("title", "保存");
+					
+					$(".titlebox").text(editBtn.data('title'));
+					editText.prop("disabled",!disable);
+					editText.eq(0).focus();
+				} else {
+					
+				}
+			});
+		});
+		
+
+		
+		
+		
+		
+	});
+</script>

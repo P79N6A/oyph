@@ -1,0 +1,106 @@
+#{extends 'front/proxy/proxyMainPre.html' /}
+<!-- 业务员管理 -->
+<div class="search-bar">
+	<span>业务员搜索</span>
+	<!-- 分页表单 -->
+		<form action="@{front.proxy.ProxyCtrl.salesManProfitPre()}" method="GET" id="showProfit" class="search-query">
+			<input type="hidden" id="currPage" name="currPage" value="${page?.currPage}" />
+	  		<input type="hidden" id="pageSize" name="pageSize" value="${page?.pageSize}"/>
+	  		
+			<input type="text" name="userName" value="${flash?.userName}" placeholder="按姓名查找"/>
+  			<input type="text" name="userMobile" value="${flash?.userMobile}"  placeholder="按手机号查找"/>
+  			<select name="profitTime" class="profitTime">
+  				<option value="">全部</option>
+  			</select>
+	  		<button>查询</button>
+	 	</form>
+</div>
+<div class="search-main">
+	<div class="search-main-title">
+		<span>业务员提成查看</span>
+		<div class="ioc-query"></div>
+	</div>
+	<div class="search-main-table">
+		<table width="100%">
+			<tr height="45">
+				<th width="40" style="font-weight: bold;">序号</th>
+				<th width="50" style="font-weight: bold;">时间</th>
+				<th width="60" style="font-weight: bold;">真实姓名</th>
+				<th width="70" style="font-weight: bold;">当月推广理财金额</th>
+				<th width="70" style="font-weight: bold;">当月年化折算</th>
+				<th width="70" style="font-weight: bold;">推广理财总金额</th>
+				<th width="50" style="font-weight: bold;">本月业绩提成</th>
+			</tr>
+			
+			<!-- 业务员列表 -->
+			#{if page?.page}
+				#{list page?.page}
+				<tr height="45" class="table-main">
+					<th width="40">${_?.id}</th>
+					<th width="40">${_?.profitTime}</th>
+					<th width="70">${_?.realName}</th>
+					<th width="60">${_?.investAmount}</th>
+					<th width="60">${_?.yearConvert}</th>
+					<th width="60">${_?.totalAmount}</th>
+					<th width="50">${_?.monthProfit}</th>
+				</tr>
+				#{/list}		
+			#{/if}
+			#{else}	
+				<!-- 暂无记录 -->
+				<!-- <tr height="58">
+					<td colspan="10" class="table-main"><i class="iconfont">&#xe613;</i>暂无记录</td>
+				</tr> -->
+			#{/else}
+		</table>
+		
+		
+	</div>
+	<div class="table-bottom">
+			<span>共${page?.totalCount}个业务员</span>
+			#{backPageTag page:page,showPage:"showProfit"/}
+	</div>
+	
+</div>
+<script type="text/javascript">	
+	$('.ManProfit').addClass('text-color').siblings().removeClass("text-color");
+	/* 分页组建 */
+	function showProfit(currPage, pageSize) {
+		$("#currPage").val(currPage);
+		$("#pageSize").val(pageSize);
+		$("#showProfit").submit();
+	}
+	/*时间转化*/
+	var date = new Date();//时间戳为10位需*1000，时间戳为13位的话不需乘1000
+	var Y = date.getFullYear();
+	var M = date.getMonth()+1;
+	var Y1,Y2,Y3;
+	var M1 = M-1;
+	var M2 = M-2;
+	var M3 = M-3;
+	if(M1<1){
+		M1 = 12+M1;
+		Y1 = Y-1;
+	}else{
+		Y1 = Y;
+		M1 = M1 < 10 ? '0'+M1 : M1;
+	}
+	if(M2<1){
+		Y2 = Y-1;
+		M2 = 12+M2;
+	}else{
+		Y2 = Y;
+		M2 = M2 < 10 ? '0'+M2 : M2;
+	}
+	if(M3<1){
+		Y3 = Y-1;
+		M3 = 12+M3;
+	}else{
+		Y3 = Y;
+		M3 = M3 < 10 ? '0'+M3 : M3;
+	}
+	$('.profitTime').append("<option value='"+Y3+"-"+M3+"'>"+Y3+"-"+M3+"</option><option value='"+Y2+"-"+M2+"'>"+Y2+"-"+M2+"</option><option value='"+Y1+"-"+M1+"'>"+Y1+"-"+M1+"</option>")
+	var key="${flash?.profitTime}";
+    //根据值让option选中 
+    $(".profitTime option[value='"+key+"']").attr("selected","selected");
+</script>

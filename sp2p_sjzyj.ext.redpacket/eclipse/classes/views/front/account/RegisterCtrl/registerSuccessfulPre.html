@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>周年庆</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link rel="stylesheet" href="/public/front/stylesheets/index.css" />
+		<link rel="stylesheet" href="/public/front/stylesheets/cps-register.css" />
+		<link rel="stylesheet" type="text/css" href="@{'/public/front/stylesheets/front.css'}" />
+	</head>
+	<body>
+		<div class="cps-bg">
+			<img src="/public/front/images/cps-register1.jpg" class='cps-img-bg'>
+			<div class="cps-main">
+				<div class="cps-success">
+					<p>恭喜您注册成功</p>
+					<p>赶紧下载APP领取礼物吧</p>
+					<img src="/public/front/images/cps-erweima.png" class="cps-erweima"><br />
+					<input type="button" value="点此下载APP" class="cps-xiazai"/>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="/public/front/javascripts/jquery.min.js"></script>
+	<script type="text/javascript">
+	$(".cps-xiazai").click(function () {
+		window.location.href = "https://www.ouyepuhui.com/app/download";
+	});
+	</script>
+</html>

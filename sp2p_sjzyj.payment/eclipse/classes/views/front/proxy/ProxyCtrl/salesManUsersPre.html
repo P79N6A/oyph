@@ -1,0 +1,74 @@
+#{extends 'front/proxy/proxyMainPre.html' /}
+<!-- 业务员管理 -->
+<div class="search-bar">
+	<span>业务员搜索</span>
+	<!-- 分页表单 -->
+	<form action="@{front.proxy.ProxyCtrl.salesManUsersPre()}" method="GET" id="showUser" class="search-query">
+		<input type="hidden" id="currPage" name="currPage" value="${page?.currPage}" />
+  		<input type="hidden" id="pageSize" name="pageSize" value="${page?.pageSize}"/>
+  		
+  		<input type="text" name="userName" value="${flash?.userName}" placeholder="按姓名查找"/>
+  		<input type="text" name="userMobile" value="${flash?.userMobile}"  placeholder="按手机号查找"/>
+  		
+  		<input type="hidden" name="salesManId" value="${salesManId}" />
+  		<button>查询</button>
+ 	</form>
+</div>
+<div class="search-main">
+	<div class="search-main-title">
+		<span>名下会员查看</span>
+		<div class="ioc-query"></div>
+	</div>
+	<div class="search-main-table">
+		<table width="100%">
+			<tr height="45">
+				<th width="40" style="font-weight: bold;">序号</th>
+				<th width="60" style="font-weight: bold;">职位</th>
+				<th width="70" style="font-weight: bold;">会员名</th>
+				<th width="70" style="font-weight: bold;">真实姓名</th>
+				<th width="70" style="font-weight: bold;">余额查看</th>
+				<th width="50" style="font-weight: bold;">推广时间</th>
+				<th width="50" style="font-weight: bold;">手机号码</th>
+				<th width="50" style="font-weight: bold;">本月理财总额</th>
+				<th width="60" style="font-weight: bold;">推广理财总金额</th>
+			</tr>
+			#{if page?.page}
+				#{list page?.page}
+					<tr height="45" class="table-main">
+						<th width="40">${_?.id}</th>
+						<th width="60">理财会员</th>
+						<th width="70">${_?.userName}</th>
+						<th width="70">${_?.realName}</th>
+						<th width="70">${_?.balance}</th>
+						<th width="50">${_?.extTime}</th>
+						<th width="50">${_?.userMobile}</th>
+						<th width="50">${_?.monthAmount}</th>
+						<th width="60">${_?.totalAmount}</th>
+					</tr>
+				#{/list}		
+			#{/if}
+			#{else}	
+				<!-- 暂无记录 -->
+				<!-- <tr height="58">
+					<td colspan="10" class="table-main"><i class="iconfont">&#xe613;</i>暂无记录</td>
+				</tr> -->
+			#{/else}
+		</table>
+		
+		
+	</div>
+	<div class="table-bottom">
+			<span>共${page?.totalCount}个理财会员</span>
+			#{backPageTag page:page,showPage:"showUser"/}
+	</div>
+</div>
+<script type="text/javascript">	
+	$('.ManManage').addClass('text-color').siblings().removeClass("text-color");
+	/* 分页组建 */
+	function showUser(currPage, pageSize) {
+		$("#currPage").val(currPage);
+		$("#pageSize").val(pageSize);
+		
+		$("#showUser").submit();
+	}
+</script>

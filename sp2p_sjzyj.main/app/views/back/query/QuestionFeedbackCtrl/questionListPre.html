@@ -1,0 +1,97 @@
+#{extends 'common/back/queryMain.html' /}
+	#{set title:'查询 | 客户信息' /}
+	#{set smallclass:2 /}
+	#{set crumbs:'查询>客户信息' /}
+	
+<div class="back-main">
+	<div class="back-cont">
+		<div class="back-box">
+			<form action="@{back.query.QuestionFeedbackCtrl.questionListPre()}" method="GET" id="showQuestions">
+					<input type="hidden" id="currPage" name="currPage"/><!-- 当前页 -->
+	  				<input type="hidden" id="pageSize" name="pageSize" value="${page?.pageSize}"/> <!-- 每页条数 -->
+	  				<input type="hidden" id="questionStatus" name="status"/>
+			</form>
+			<table style="width: 1000px; margin: 50px auto;">
+				<tr>
+					<td class="one">问题编号</td>	
+					<td class="two">问题类型</td>
+					<td class="thr1">问题详情</td>
+					<td class="fou">
+						<select id="status" onchange="showQuestions()">
+							#{if status == 0}
+								<option selected="selected" value="0">请选择状态</option>
+							#{/if}
+							#{if status == 1}
+								<option selected="selected" value="1">已提交</option>
+							#{/if}
+							#{if status == 2}
+								<option selected="selected" value="2">已查看</option>
+							#{/if}
+							#{if status == 3}
+								<option selected="selected" value="3">已解决</option>
+							#{/if}
+							<option value="0">请选择状态</option>
+							<option value="1">已提交</option>
+							<option value="2">已查看</option>
+							<option value="3">已解决</option>
+						</select>
+					</td>		
+					<td class="fiv">操作       </td>			
+				</tr>
+				
+				#{if page?.page }
+					#{list items:page.page, as:"question"}
+					<tr>
+					<td class="one">${question?.questionId}</td>	
+					<td class="two">${question?.questionType}</td>
+					<td class="thr">${question?.questionDescription}</td>
+					
+					#{if question?.questionStatus.equals("已提交")}
+					<td class="fou" style="color: red;">${question?.questionStatus}</td>
+					#{/if}
+					#{if question?.questionStatus.equals("已查看")}
+					<td class="fou" style="color: black;">${question?.questionStatus}</td>
+					#{/if}
+					#{if question?.questionStatus.equals("已解决")}
+					<td class="fou" style="color: gray;">${question?.questionStatus}</td>
+					#{/if}
+
+					<td class="fiv"><a href="@{back.query.QuestionFeedbackCtrl.questionDetailsPre(question?.questionId)}">查看</a></td>			
+					</tr>
+					#{/list}
+					<tr>
+					<td colspan="5" class="pageCss">#{backPageTag page:page,showPage:"showQuestions"/}</td>
+					</tr>
+				#{/if}
+			</table>
+			
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	$("tr").css({"width":"1000px","height":"38px"});
+	
+	$(".one").css({"text-align":"center","width":"50px"});
+	$(".two").css({"text-align":"center","width":"150px"});
+	$(".thr").css({"text-align":"center"});
+	$(".thr1").css({"text-align":"center","width":"200px"});
+	$(".fou").css({"text-align":"center","width":"100px"});
+	$(".fiv").css({"text-align":"center","width":"100px"});
+	$(".pageCss").css({"padding-top":"20px","padding-right":"60px"});
+	function showQuestions(currPage, pageSize) {
+		$("#currPage").val(currPage);
+		$("#pageSize").val(pageSize);
+		
+		$("#questionStatus").val($("#status").val());
+		
+		$("#showQuestions").submit();
+	}
+	
+	var questions = $(".thr");
+	$.each(questions, function(index, item) {
+		var textOld = $(".thr").eq(index).text();
+		if(textOld.length > 24) {
+			$(".thr").eq(index).text(textOld.substring(0, 23) + " . . .");
+		}
+	});
+</script>

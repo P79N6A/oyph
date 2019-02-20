@@ -1,0 +1,30 @@
+*{
+	后台-积分商城的Main页面
+}*
+#{extends 'common/supervisorMain.html' /}
+#{set AItem:5 /}
+
+<!-- 二级导航 -->
+<ul class="back-secnav">
+	<li class="back-secnav-menu">
+	<a href="@{back.mall.GoodsCtrl.goodsListPre()}">兑换商品</a>
+	<img src="/public/back/images/menu.png" class="menu">
+	<div class="menu-frame">
+		<span>实物</span>
+		<span>虚拟</span>
+	</div>
+	</li>
+	<li><a href="@{back.mall.ScroeRecordCtrl.scroeRecordListPre()}">积分兑换记录</a></li>
+	<li><a href="@{back.mall.ScroeRecordCtrl.goodsDeliveryPre()}">商品发货</a></li>
+	<li><a href="@{back.mall.ScroeRuleCtrl.scroeRuleListPre()}">积分规则设置</a></li>
+	<li><a href="@{back.mall.TelRechargeCtrl.telRechargePre()}">话费充值管理</a></li>
+</ul>
+#{doLayout /}
+<script type="text/javascript">
+	$('.menu').click(function(){
+		$('.menu-frame').show();
+	})
+	$('.menu-frame span').click(function(){
+		$('.menu-frame').hide();
+	})
+</script>

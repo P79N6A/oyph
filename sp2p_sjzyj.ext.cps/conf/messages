@@ -1,0 +1,5 @@
+# Default com.shovesoft.sp2p.ext.cps messages
+# You can specialize this file for each language.
+# For exemple, for french create a messages.fr file
+
+#com.shovesoft.sp2p.ext.cps.name=com.shovesoft.sp2p.ext.cps

@@ -1,0 +1,278 @@
+#{extends 'back/spread/dataMain.html' /}
+	#{set title:'推广 | 数据统计 | 数据统计' /}
+	#{set smallclass:1 /}
+	#{set crumbs:'推广>数据统计>数据统计'/}
+<div class="back-main">
+	<div class="back-cont">
+		<div class="back-data-chart">
+		
+			<div class="chart-box left">
+				<div class="chart-menu" id="left-menu">
+					<a href="javascript:newMembers(1);" class="selected">昨天</a>
+					<a href="javascript:newMembers(2);">最近7天</a>
+					<a href="javascript:newMembers(3)">最近30天</a>
+				</div>
+				<div class="chart-area" id="memberDiv"></div>
+			</div>
+			
+			<div class="chart-box right" >
+				<div class="chart-menu" id="right-menu">
+					<a href="javascript:getMoney(1);" class="selected">昨天</a>
+					<a href="javascript:getMoney(2);">最近7天</a>
+					<a href="javascript:getMoney(3);">最近30天</a>
+				</div>
+				<div class="chart-area" id="moneyDiv"></div>
+			</div>
+		</div>
+	</div>
+</div>	
+
+<script type="text/javascript">
+	var myChart1 = null;
+	var myChart2 = null;
+	require(["back"],function(back){
+		require(['echarts.common.min','domReady!'],function(echarts){
+			myChart1 = echarts.init(document.getElementById('memberDiv'));
+			myChart2 = echarts.init(document.getElementById('moneyDiv'));
+			myChart1.setOption(option1);
+			myChart2.setOption(option2);
+			newMembers(1);
+	   		getMoney(1);
+		});
+	   		
+		require(["textedit"],function(textedit){
+			var btn = $(".edit-btn"),
+				text = $("span").find(".edit-text");
+			function fn(){
+				var ajaxPath = "@{back.BackHomeCtrl.updateProjectReleasesTrailer()}",
+					ajaxData = {"trailer" : text.children("input").val()};
+					textedit(btn, text, ajaxPath, ajaxData);
+			}
+			btn.click(fn);
+			text.on('keydown','.edit-input',function(event){
+				if(event.keyCode == "13"){
+					fn();
+				}
+			});
+		});
+		$(".chart-menu a").click(function(){
+			if(!$(this).hasClass("selected")){
+				$(this).addClass("selected").siblings().removeClass("selected");
+			}
+		});
+	});
+
+	function updateIsStatisticsShow(obj) {
+		var flag = false;
+		if(obj.is(':checked')){
+				 flag = true;
+		}
+		$.ajax({
+				url : "@{back.BackHomeCtrl.updateIsStatisticsShow()}",
+				type : "POST",
+				data : {
+					"flag" : flag
+				},
+				dataType:"json",
+				success : function(result) {
+					var flag = interceptorCheck(result);
+					if(!flag){
+						return;
+					}
+					if(result.code < 1){
+						alert(result.msg);
+					} else {
+						weakDialog(result.msg);
+					}
+				}
+		});
+	}
+</script>
+<script type="text/javascript">
+	// option1和option2分别是两个空的echart折线图，首次加载完成后，后面更新数据即可
+	var option1 = {
+		tooltip : {
+			trigger : 'axis'
+		},
+		toolbox:{
+			show:true,
+			feature:{
+				magicType:{
+					type: ['line', 'bar']
+				},
+				dataView:{},
+				restore:{},
+				saveAsImage:{
+					pixelRatio:2,
+					name:'新增会员统计图'
+				}
+			},
+			right:'5%',
+		},
+		legend : {
+			padding : 5,
+			itemGap : 15,
+			bottom : '-5',
+			data : [ "新增理财会员", "新增注册会员" ],
+			textStyle : {
+				fontSize : 14
+			}
+		},
+		grid : {
+			width : "85%",
+			height : "250px",
+			x : "9%",
+			y : "13%"
+		},
+		xAxis : {
+			type : 'category',
+			boundaryGap : false,
+			splitLine : {
+				show : false
+			},
+			data : []
+		},
+		yAxis : {
+			name : "（单位：人）",
+			type : 'value',
+			boundaryGap : [ 0, 0.1 ],
+			minInterval : 1
+		},
+		series : [ {
+			name : '新增理财会员',
+			type : 'line',
+			stack : '总量',
+			data : []
+		}, {
+			name : '新增注册会员',
+			type : 'line',
+			stack : '总量',
+			data : []
+		} ]
+	};
+	var option2 = {
+		tooltip : {
+			trigger : 'axis'
+		},
+		toolbox:{
+			show:true,
+			feature:{
+				magicType:{
+					type: ['line', 'bar']
+				},
+				dataView:{},
+				restore:{},
+				saveAsImage:{
+					pixelRatio:2,
+					name:'前台访问统计图'
+				}
+			},
+			right:'5%',
+		},
+		legend : {
+			padding : 5,
+			itemGap : 10,
+			bottom : '-5',
+			data : [ "前台访问量统计" ],
+			textStyle : {
+				fontSize : 14
+			}
+		},
+		grid : {
+			width : "85%",
+			height : "250px",
+			x : "9%",
+			y : "13%"
+		},
+		xAxis : {
+			type : 'category',
+			splitLine : {
+				show : false
+			},
+			data : [],
+			axisLabel : {
+				show : true,
+			}
+		},
+		yAxis : {
+			name : "（单位：次）",
+			boundaryGap : [ 0, 0.1 ],
+			type : 'value',
+			minInterval : 100,
+			axisLabel : {
+				formatter : function(value) {
+					if (value >= 10000 && value < 100000000) {
+						value = value / 10000;
+						value = value.toFixed(2);
+						return value + "万";
+					} else if (value >= 100000000 && value < 1000000000000.00) {
+						value = value / 100000000;
+						value = value.toFixed(2);
+						return value + "亿";
+					} else if (value >= 1000000000000.00) {
+						value = value / 1000000000000.00;
+						value = value.toFixed(2);
+						return value + "万亿";
+					} else {
+						return value;
+					}
+				}
+			}
+		},
+		series : [ {
+			name : '官网页面访问量',
+			type : 'line',
+			data : []
+		} ]
+	};
+	function newMembers(num){
+		myChart1.showLoading();
+		$.ajax({
+			url : "@{back.BackHomeCtrl.showEchartsDatasPre()}",
+			type : "get",
+			data : {
+				"type" : num,
+				"position" : 'left'
+			},
+			dataType : "json",
+			success:function(data){
+				myChart1.setOption({
+					xAxis:{
+						data:data.axis
+					},
+					series: [{
+						data : data.mapData.financia
+					},{
+						data : data.mapData.register
+					}
+					]
+				});
+				myChart1.hideLoading();
+			}
+		});
+	}
+	function getMoney(num){
+		myChart2.showLoading();
+		$.ajax({
+			url : "@{back.BackHomeCtrl.showEchartsDatasPre()}",
+			type : "get",
+			data : {
+				"type" : num,
+				"position" : 'right'
+			},
+			dataType : "json",
+			success:function(data){
+				myChart2.setOption({
+					xAxis:{
+						data:data.axis
+					},
+					series: [{
+						data : data.mapData.invest
+					}
+					]
+				});
+				myChart2.hideLoading();
+			}
+		});
+	}
+</script>

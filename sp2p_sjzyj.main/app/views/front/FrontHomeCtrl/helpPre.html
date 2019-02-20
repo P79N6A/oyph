@@ -1,0 +1,54 @@
+#{extends 'common/front/frontFootMain.html' /}
+#{set title:'帮助中心' /}
+#{set AItem:4 /}
+#{set smallclass:8 /}
+
+
+<div class="container mt30 help_height clearfix">
+	<!-- 左侧导航 -->
+	<div class="help-nav left">
+		
+		#{list items:models.common.entity.t_help_center.Column.values(),as:'col'}
+			<a href="@{front.FrontHomeCtrl.helpPre(col.code,1)}" #{if column == col} class="selected" #{/if} ><i class="icon financial-icon"></i>${col?.value}</a>
+		#{/list}
+	</div>
+	<!-- 左侧导航end -->
+	<!-- 帮助列表 -->
+	<div class="help-main right">
+		<ul class="help-list">
+			#{if page?.page}
+				#{list items:page.page,as:'help'}
+					<li>
+						<h3 class="help-question"><i class="askicon left">问</i><span class="left">${help?.title}</span><i class="right icon rightarrow-icon"></i></h3>
+						<div class="help-answer c9">
+							#{verbatim}${help?.content}#{/verbatim}
+						</div>
+					</li>
+				#{/list}
+			#{/if}
+		</ul>
+		#{if page?.page}
+			<form action="@{front.FrontHomeCtrl.helpPre()}" method="GET" id="helpCenter">
+				<input type="hidden" value="${column?.code}" name="columnNo" />
+				<input type="hidden" name="currPage" id="currPage" />
+			</form>
+			#{frontPageTag page:page,showPage:'showPage'/}
+		#{/if}
+	</div>
+	<!-- 帮助列表end -->
+</div>
+<!-- main end-->
+
+
+<script type="text/javascript">
+require(['front'],function(front){
+	$(".detail-record").each(function(){front.treven($(this))});
+	//帮助中心
+	require(['help']);
+});
+
+function showPage(currPage){
+	$("#helpCenter input[name='currPage']").val(currPage);
+	$("#helpCenter").submit();
+}
+</script>

@@ -1,0 +1,91 @@
+<div class="dialog-bg"></div>
+<div class="dialog-cont">
+	<div class="dialog-head"><span class="left">选择担保人</span></div>
+	<div class="chooseone-box">
+		<div class="chooseone-search">
+			<input type="text" class="iffocus" name="key" id="searchKey" placeholder="输入名称" value='${flash?.searchKey}' maxlength="13"/>
+			<input type="hidden" id="currPage" name="currPage"/>
+ 			<input type="hidden" id="pageSize" name="pageSize" value="${pageBean?.pageSize}"/>
+			<input type="button" class="bgbtn" value="搜索" onclick="searchRefUser()" id="searchButton"/>
+		</div>
+		<form action="@{back.finance.BillMngCtrl.guaranteeCheckPassword()}" method="POST">
+		<div class="overflow-auto">
+			<table width="100%" class="back-table table-fixed">
+				<tr height="39">
+					<th class="align-left" width="70">
+						<span class="back-order">
+							编号
+							<!-- <i class="iconfont ordericon">&#xe628;</i>
+							<i class="iconfont downicon">&#xe606;</i>
+							<i class="iconfont upicon">&#xe603;</i> -->
+						</span>
+					</th>
+					<th>公司名称</th>
+					<th>手机</th>
+					<th>可用金额</th>
+				</tr>
+				#{list pageBean?.page}
+				<tr height="39">
+					<td class="align-left">
+						<label><input type="radio" name="userId" class="back-tdcheck" value='${_?.user_id}'/>${_?.user_id}</label>
+					</td>
+					<td>${_?.name}</td>
+					<td>${_?.mobile}</td>
+					<td>${_?.amount}</td>
+				</tr>
+				#{/list}
+				<!-- 表格数据统计 -->
+				<tr height="39">
+					<td colspan="4" class="back-lasttd">
+						<span class="back-choose left">
+						</span>
+						<!-- 分页 -->
+						#{backPageTag page:pageBean,showPage:'showPage' /}
+					</td>
+				</tr>
+				<!-- 暂无记录 -->
+				#{if tuPage?.totalCount==''}
+				<tr height="58">
+					<td colspan="4" class="back-nodata"><i class="iconfont">&#xe613;</i>暂无记录</td>
+				</tr>
+				#{/if}
+			</table>
+		</div>
+		<p class="back-audit-btns">
+			<input type="hidden" value="${billSign}" name="billSign">
+			<input type="hidden" value="2" name="flags">
+			<input type="submit" value="确定" class="bgbtn">
+			<input type="reset" value="取消" class="bdbtn dialog-console">
+		</p>
+		</form>
+	</div>
+</div>
+<script type="text/javascript">
+	$(".back-tdcheck").click(function(){
+		if($(this).is(":checked")){
+			var id = $(this).val();
+			$(".back-table").find("input").each(function(){
+				if($(this).val()!=id){
+					$(this).attr("checked", false);
+				}
+			});
+		}else{
+			$(this).attr("checked", false);
+		}
+	});
+	
+	$("#searchKey").keydown(function(event){
+		if(event.which==13){
+			$("#searchButton").trigger('click');
+		}
+	});
+	
+	function searchRefUser(){
+		var key = $("#searchKey").val();
+		Bondsman(1, 5, key);
+	}
+	
+	function submitGuarantee() {
+		
+	}
+</script>

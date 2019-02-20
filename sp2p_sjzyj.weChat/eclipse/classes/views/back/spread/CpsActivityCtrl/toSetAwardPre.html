@@ -1,0 +1,402 @@
+#{extends 'back/spread/cpsMain.html' /}
+	#{set title:'推广 | CPS | CPS活动奖项设置' /}
+	#{set smallclass:3 /}
+	#{set crumbs:'推广>CPS>CPS活动奖项设置'/}
+<style>
+	.cps-table table{
+		width: 867px;
+		height: 50px;
+		margin: 0 auto;
+		font-weight: bold;
+	}
+	.cps-table table input{
+		width: 160px;
+		height: 25px;
+		padding-left: 15px;
+	}
+	#OldSetting h1{
+		margin: 20px 0 0 70px;
+	    font-weight: bold;
+	    font-size: 16px;
+	    color: red;
+	}
+	.cps-ul{
+		width: 1360px;
+		margin: 0 auto;
+		padding: 10px 0;
+		overflow: hidden;
+	} 
+	.cps-ul span{
+		width:100px;
+		font-weight: bold;
+		text-align:right;
+		display: inline-block;
+	}
+	.cps-ul input{
+		width: 160px;
+		height: 25px;
+		padding-left: 15px;
+	}
+	.cps-select{
+		margin: 0 7px;
+	}
+</style>
+<div class="back-main">
+	<div class="back-cont">
+		<div class="back-infor cps-table">
+			<form action="@{back.spread.CpsActivityCtrl.saveNewPacket()}" method="POST" id="NewSetting">
+				<h2 class="back-infor-head"><span class="left">新用户奖励设置</span>
+					<input name="cpsActivityId" value="${cps?.id}" type="hidden" />
+					<a href="javascript:void(0);" class="right iconfont finance-edit" data-title="编辑" >&#xe602;</a>
+				</h2>
+					#{if registerPackets}
+						#{list items:registerPackets,as:'redPacket'}
+						<div class="cps-ul">
+							<span style="margin-left: 90px;">红包金额：</span><input name="money" value="${redPacket?.money}" disabled="disabled"/> 元 
+							<span>有效时间：</span><input name="allotte_day" value="${redPacket?.allotte_day}" disabled="disabled"/> 天 
+							<span>锁定时间：</span><input name="lock_day" value="${redPacket?.lock_day}" disabled="disabled"/> 天 
+							<span>最低投资金额：</span><input name="condition" value="${redPacket?.condition_money}" disabled="disabled" /> 元 
+							<input type="button" onclick="deleteShakeSet(${redPacket?.id})" value="删除"  style="height: 28px;width: 50px;margin-bottom: 3px;padding: 0;"/>
+						</div>
+						#{/list}
+					#{/if}
+			</form>
+			<form action="@{back.spread.CpsActivityCtrl.addNewPacket()}" method="POST" >
+				<input name="cpsActivityId" value="${cps?.id}" type="hidden" />				
+				<div class="cps-ul">
+					<span style="margin-left: 90px;">红包金额：</span><input name="money"/> 元 
+					<span>有效时间：</span><input name="allotte_day"/> 天 
+					<span>锁定时间：</span><input name="lock_day"/> 天 
+					<span>最低投资金额：</span><input name="condition" /> 元 
+					<input type="submit" value="添加"  style="height: 28px;width: 50px;margin-bottom: 3px;padding: 0;"/>
+				</div>
+			</form>
+			<!-- 删除设置 -->
+			<form action="@{back.spread.CpsActivityCtrl.deleteRegisterPacket()}" id="shakeSetForm" method="post">
+				<input id="cpsActivityId" name="cpsActivityId" value="${cps?.id}" type="hidden" />
+				<input id="cpsPacketId" name="cpsPacketId" type="hidden" />
+			</form>
+		</div>
+	</div>
+	<div class="back-cont">
+		<div class="back-infor cps-table">
+			<form action="@{back.spread.CpsActivityCtrl.saveOldPacket()}" method="POST" id="OldSetting">
+				<h2 class="back-infor-head"><span class="left">老用户奖励设置</span>
+					<input name="cpsActivityId" value="${cps?.id}" type="hidden" />
+					<a href="javascript:void(0);" class="right iconfont finance-edit" data-title="编辑" >&#xe602;</a>
+				</h2>
+				<h1>注册</h1>
+				<div class="cps-ul">
+					<span style="margin-left: 90px;">红包金额：</span><input name="registerPacketMoney"  value="${registerPacket?.money}" disabled="disabled" /> 元 
+					<span>有效时间：</span><input name="registerPacketAllotte_day"  value="${registerPacket?.allotte_day}" disabled="disabled" /> 天 
+					<span>锁定时间：</span><input name="registerPacketLock_day"  value="${registerPacket?.lock_day}" disabled="disabled" /> 天 
+					<span>使用条件：</span><input name="registerPacketCondition_money" value="${registerPacket?.condition_money}" disabled="disabled" /> 元 
+				</div>
+				<h1>注册并实名</h1>
+				<div class="cps-ul">
+					<select class="cps-select left" name="register_type" id='cps-select1'>
+						<option #{if cps?.register_type == 1}selected="selected"#{/if} value="1">红包</option>
+						<option #{if cps?.register_type == 2}selected="selected"#{/if} value="2">加息券</option>
+						<option #{if cps?.register_type == 3}selected="selected"#{/if} value="3">积分</option>
+					</select>
+					#{if cps?.register_type == 1}
+						<div class='lfet' id='redPacket1'>
+							<span>红包金额：</span><input name="registerPacketOldMoney" value="${registerPacketOld?.money}" > 元 <span>有效时间：</span><input name="registerPacketOldAllotteDay" value="${registerPacketOld?.allotte_day}" > 天 <span>锁定时间：</span><input name="registerPacketOldLockDay" value="${registerPacketOld?.lock_day}" > 天 <span>使用条件：</span><input name="registerPacketOldCondition" value="${registerPacketOld?.condition_money}" > 元
+						</div>
+						<div class='lfet' id='voucher1'  style="display: none;">
+							<span>加息券大小：</span><input name="registerRateOldCount" value="${registerRateOld?.count}"  onkeyup="validateInput(event,this)"> % <span>有效时间：</span><input name="registerRateOldAllotteDay" value="${registerRateOld?.allotte_day}" > 天 <span>锁定时间：</span><input name="registerRateOldLockDay" value="${registerRateOld?.lock_day}" > 天<span>使用条件：</span><input name="registerRateOldCondition" value="${registerRateOld?.condition_money}" > 元
+						</div>
+						<div class='lfet' id='integral1'  style="display: none;">
+							<span>积分大小：</span><input name="registerIntegralOldIntegral" value="${registerIntegralOld?.integral}" >
+						</div>
+					#{/if}
+					#{if cps?.register_type == 2}
+						<div class='lfet' id='redPacket1' style="display: none;">
+							<span>红包金额：</span><input name="registerPacketOldMoney" value="${registerPacketOld?.money}" > 元 <span>有效时间：</span><input name="registerPacketOldAllotteDay" value="${registerPacketOld?.allotte_day}" > 天 <span>锁定时间：</span><input name="registerPacketOldLockDay" value="${registerPacketOld?.lock_day}" > 天 <span>使用条件：</span><input name="registerPacketOldCondition" value="${registerPacketOld?.condition_money}" > 元
+						</div>
+						<div class='lfet' id='voucher1' >
+							<span>加息券大小：</span><input name="registerRateOldCount" value="${registerRateOld?.count}"  onkeyup="validateInput(event,this)"> % <span>有效时间：</span><input name="registerRateOldAllotteDay" value="${registerRateOld?.allotte_day}" > 天 <span>锁定时间：</span><input name="registerRateOldLockDay" value="${registerRateOld?.lock_day}" > 天<span>使用条件：</span><input name="registerRateOldCondition" value="${registerRateOld?.condition_money}" > 元
+						</div>
+						<div class='lfet' id='integral1'  style="display: none;">
+							<span>积分大小：</span><input name="registerIntegralOldIntegral" value="${registerIntegralOld?.integral}" >
+						</div>
+					#{/if}
+					#{if cps?.register_type == 3}
+						<div class='lfet' id='redPacket1' style="display: none;">
+							<span>红包金额：</span><input name="registerPacketOldMoney" value="${registerPacketOld?.money}" > 元 <span>有效时间：</span><input name="registerPacketOldAllotteDay" value="${registerPacketOld?.allotte_day}" > 天<span>锁定时间：</span><input name="registerPacketOldLockDay" value="${registerPacketOld?.lock_day}" > 天  <span>使用条件：</span><input name="registerPacketOldCondition" value="${registerPacketOld?.condition_money}" > 元
+						</div>
+						<div class='lfet' id='voucher1'  style="display: none;">
+							<span>加息券大小：</span><input name="registerRateOldCount" value="${registerRateOld?.count}"  onkeyup="validateInput(event,this)"> % <span>有效时间：</span><input name="registerRateOldAllotteDay" value="${registerRateOld?.allotte_day}" > 天 <span>锁定时间：</span><input name="registerRateOldLockDay" value="${registerRateOld?.lock_day}" > 天<span>使用条件：</span><input name="registerRateOldCondition" value="${registerRateOld?.condition_money}" > 元
+						</div>
+						<div class='lfet' id='integral1' >
+							<span>积分大小：</span><input name="registerIntegralOldIntegral" value="${registerIntegralOld?.integral}" >
+						</div>
+					#{/if}
+				</div>
+				<!-- <h1>首投</h1>
+				<div class="cps-ul">
+					<select class="cps-select left" name="first_type" id='cps-select2'>
+						<option #{if cps?.first_type == 1}selected="selected"#{/if} value="1">红包</option>
+						<option #{if cps?.first_type == 2}selected="selected"#{/if} value="2">加息券</option>
+						<option #{if cps?.first_type == 3}selected="selected"#{/if} value="3">积分</option>
+					</select>
+					#{if cps?.first_type == 1}
+						<div class='lfet' id='redPacket2'>
+							<span>红包金额：</span><input name="firstPacketOldMoney" value="${firstPacketOld?.money}" > 元 <span>有效时间：</span><input name="firstPacketOldAllotteDay" value="${firstPacketOld?.allotte_day}" > 天 <span>锁定时间：</span><input name="firstPacketOldLockDay" value="${firstPacketOld?.lock_day}" > 天 <span>使用条件：</span><input name="firstPacketOldCondition" value="${firstPacketOld?.condition_money}" > 元
+						</div>
+						<div class='lfet' id='voucher2'  style="display: none;">
+							<span>加息券大小：</span><input name="firstRateOldCount" value="${firstRateOld?.count}"  onkeyup="validateInput(event,this)"> % <span>有效时间：</span><input name="firstRateOldAllotteDay" value="${firstRateOld?.allotte_day}" > 天 <span>锁定时间：</span><input name="firstRateOldLockDay" value="${firstRateOld?.lock_day}" > 天<span>使用条件：</span><input name="firstRateOldCondition" value="${firstRateOld?.condition_money}" > 元
+						</div>
+						<div class='lfet' id='integral2'  style="display: none;">
+							<span>积分大小：</span><input name="firstIntegralOldIntegral" value="${firstIntegralOld?.integral}" >
+						</div>
+					#{/if}
+					#{if cps?.first_type == 2}
+						<div class='lfet' id='redPacket2' style="display: none;">
+							<span>红包金额：</span><input name="firstPacketOldMoney" value="${firstPacketOld?.money}" > 元 <span>有效时间：</span><input name="firstPacketOldAllotteDay" value="${firstPacketOld?.allotte_day}" > 天 <span>锁定时间：</span><input name="firstPacketOldLockDay" value="${firstPacketOld?.lock_day}" > 天<span>使用条件：</span><input name="firstPacketOldCondition" value="${firstPacketOld?.condition_money}" > 元
+						</div>
+						<div class='lfet' id='voucher2' >
+							<span>加息券大小：</span><input name="firstRateOldCount" value="${firstRateOld?.count}"  onkeyup="validateInput(event,this)"> % <span>有效时间：</span><input name="firstRateOldAllotteDay" value="${firstRateOld?.allotte_day}" > 天 <span>锁定时间：</span><input name="firstRateOldLockDay" value="${firstRateOld?.lock_day}" > 天 <span>使用条件：</span><input name="firstRateOldCondition" value="${firstRateOld?.condition_money}" > 元
+						</div>
+						<div class='lfet' id='integral2'  style="display: none;">
+							<span>积分大小：</span><input name="firstIntegralOldIntegral" value="${firstIntegralOld?.integral}" >
+						</div>
+					#{/if}
+					#{if cps?.first_type == 3}
+						<div class='lfet' id='redPacket2' style="display: none;">
+							<span>红包金额：</span><input name="firstPacketOldMoney" value="${firstPacketOld?.money}" > 元 <span>有效时间：</span><input name="firstPacketOldAllotteDay" value="${firstPacketOld?.allotte_day}" > 天 <span>锁定时间：</span><input name="firstPacketOldLockDay" value="${firstPacketOld?.lock_day}" > 天 <span>使用条件：</span><input name="firstPacketOldCondition" value="${firstPacketOld?.condition_money}" > 元
+						</div>
+						<div class='lfet' id='voucher2'  style="display: none;">
+							<span>加息券大小：</span><input name="firstRateOldCount" value="${firstRateOld?.count}"  onkeyup="validateInput(event,this)"> % <span>有效时间：</span><input name="firstRateOldAllotteDay" value="${firstRateOld?.allotte_day}" > 天 <span>锁定时间：</span><input name="firstRateOldLockDay" value="${firstRateOld?.lock_day}" > 天<span>使用条件：</span><input name="firstRateOldCondition" value="${firstRateOld?.condition_money}" > 元
+						</div>
+						<div class='lfet' id='integral2' >
+							<span>积分大小：</span><input name="firstIntegralOldIntegral" value="${firstIntegralOld?.integral}" >
+						</div>
+					#{/if}
+					
+				</div>	 -->
+				<h1>复投</h1>
+				<div class="cps-ul">
+					<span style="margin-left: 90px;">积分百分比：</span><input name="integral_ratio" value="${cps?.integral_ratio}"  onkeyup="validateInput(event,this)"> % 
+					<span>积分有效天数：</span><input name="cutoff_time" value="${cps?.cutoff_time}" > 天
+				</div>			
+			</form>
+		</div>
+	</div>
+	<div class="back-cont">
+		<div class="back-infor cps-table">
+			<form action="@{back.spread.CpsActivityCtrl.saveRegisterAndInvestPacket()}" method="POST" id="RegisterAndInvestSetting">
+				<h2 class="back-infor-head"><span class="left">老用户推广新用户注册并投资奖励设置</span>
+					<input name="cpsActivityId" value="${cps?.id}" type="hidden" />
+					<a href="javascript:void(0);" class="right iconfont finance-edit" data-title="编辑" >&#xe602;</a>
+				</h2>
+					#{if registerAndInvestPackets}
+						#{list items:registerAndInvestPackets,as:'redPacket'}
+						<div class="cps-ul">
+							<span style="margin-left: 90px;">红包金额：</span><input name="money" value="${redPacket?.money}" disabled="disabled"/> 元 
+							<span>有效时间：</span><input name="allotte_day" value="${redPacket?.allotte_day}" disabled="disabled"/> 天 
+							<span>锁定时间：</span><input name="lock_day" value="${redPacket?.lock_day}" disabled="disabled"/> 天 
+							<span>最低投资金额：</span><input name="condition" value="${redPacket?.condition_money}" disabled="disabled" /> 元 
+							<input type="button" onclick="deleteRegisterAndInvestSet(${redPacket?.id})" value="删除"  style="height: 28px;width: 50px;margin-bottom: 3px;padding: 0;"/>
+						</div>
+						#{/list}
+					#{/if}
+			</form>
+			<form action="@{back.spread.CpsActivityCtrl.addRegisterAndInvestPacket()}" method="POST" >
+				<input name="cpsActivityId" value="${cps?.id}" type="hidden" />				
+				<div class="cps-ul">
+					<span style="margin-left: 90px;">红包金额：</span><input name="money"/> 元 
+					<span>有效时间：</span><input name="allotte_day"/> 天 
+					<span>锁定时间：</span><input name="lock_day"/> 天 
+					<span>最低投资金额：</span><input name="condition" /> 元 
+					<input type="submit" value="添加"  style="height: 28px;width: 50px;margin-bottom: 3px;padding: 0;"/>
+				</div>
+			</form>
+			<!-- 删除设置 -->
+			<form action="@{back.spread.CpsActivityCtrl.deleteRegisterAndInvestPacket()}" id="registerAndInvestSetForm" method="post">
+				<input id="cpsActivityId" name="cpsActivityId" value="${cps?.id}" type="hidden" />
+				<input id="cpsRegisterAndInvestPacketId" name="cpsRegisterAndInvestPacketId" type="hidden" />
+			</form>
+		</div>
+	</div>
+	<div class="back-cont">
+		<div class="back-infor cps-table">
+			<form action="@{back.spread.CpsActivityCtrl.saveNewAward()}" method="POST" id="AwardSetting">
+				<h2 class="back-infor-head"><span class="left">奖项结算设置</span>
+					<input name="cpsActivityId" value="${cps?.id}" type="hidden" />
+					<a href="javascript:void(0);" class="right iconfont finance-edit" data-title="编辑" >&#xe602;</a>
+				</h2>
+					#{if awards}
+						#{list items:awards,as:'awards'}
+						<div class="cps-ul">
+							<span style="margin-left: 90px;">奖项名称：</span><input name="awardName" value="${awards?.name}" disabled="disabled"/> &nbsp; 
+							<span>推广人数：</span><input name="awardNum" value="${awards?.num}" disabled="disabled"/> 人 
+							<span>投资金额：</span><input name="awardAmount" value="${awards?.amount}" disabled="disabled"/> 元 
+							<span>奖品：</span><input name="awardPrize" value="${awards?.prize}" disabled="disabled" />  &nbsp; 
+							<input type="button" onclick="deleteAwardSet(${awards?.id})" value="删除"  style="height: 28px;width: 50px;margin-bottom: 3px;padding: 0;"/>
+						</div>
+						#{/list}
+					#{/if}
+			</form>
+			<form action="@{back.spread.CpsActivityCtrl.addNewAward()}" method="POST" >
+				<input name="cpsActivityId" value="${cps?.id}" type="hidden" />				
+				<div class="cps-ul">
+					<span style="margin-left: 90px;">奖项名称：</span><input name="awardName"/> &nbsp; 
+					<span>推广人数：</span><input name="awardNum"/> 人 
+					<span>投资金额：</span><input name="awardAmount"/> 元 
+					<span>奖品：</span><input name="awardPrize" /> &nbsp; 
+					<input type="submit" value="添加"  style="height: 28px;width: 50px;margin-bottom: 3px;padding: 0;"/>
+				</div>
+			</form>
+			<!-- 删除设置 -->
+			<form action="@{back.spread.CpsActivityCtrl.deleteAward()}" id="awardSetForm" method="post">
+				<input id="cpsActivityId" name="cpsActivityId" value="${cps?.id}" type="hidden" />
+				<input id="cpsAwardId" name="cpsAwardId" type="hidden" />
+			</form>
+		</div>
+	</div>
+</div>
+<script>
+/*编辑 保存*/
+$(".back-infor").each( function() {
+	var that = this, 
+	editBtn = $(this).find( ".finance-edit"),
+	editText = $(this).find("select,input:not(.easyui-datetimebox),textarea");
+	editText.prop("disabled", true);
+	editBtn.click(function() {
+		disable = editText.prop("disabled");
+		if (disable) {
+			editBtn.html("&#xe630;").data("title","保存");
+			
+			$(".titlebox").text( editBtn.data('title'));
+			editText.prop("disabled", !disable);
+			editText.eq(0).focus();
+		} else {
+			var infoForm = $(that).children("form[id='NewSetting']");
+			if(infoForm.eq(0).length != 0){
+				infoForm.submit();
+			}
+			var seoForm = $(that).children("form[id='OldSetting']");
+			if(seoForm.eq(0).length!= 0){
+				for(var i=0;i<$('#OldSetting input').length;i++){
+					var y=$('#OldSetting input')[i].value;
+					console.log(y);
+					if(y.trim()==''){
+						$('#OldSetting input')[i].value=0;
+					} 
+				}
+			seoForm.submit();
+			}
+			var awaForm = $(that).children("form[id='AwardSetting']");
+			if(awaForm.eq(0).length != 0){
+				awaForm.submit();
+			}
+		}
+	});
+});
+/*下拉菜单选择 */
+ $('#cps-select1').change(function(){
+	 var vae=$("#cps-select1 option:selected").text();
+	 if(vae=='红包'){
+		 $('#redPacket1').show();
+		 $('#voucher1').hide();
+		 $('#voucher1 input').val('')
+		 $('#integral1').hide();
+		 $('#integral1 input').val('')
+	 }
+	 if(vae=='加息券'){
+		 $('#redPacket1').hide();
+		 $('#redPacket1 input').val('')
+		 $('#voucher1').show();
+		 $('#integral1').hide();
+		 $('#integral1 input').val('')
+	 }
+	 if(vae=='积分'){
+		 $('#redPacket1').hide();
+		 $('#redPacket1 input').val('')
+		 $('#voucher1').hide();
+		 $('#voucher1 input').val('')
+		 $('#integral1').show();
+	 }
+ });
+  $('#cps-select2').change(function(){
+	 var vae=$("#cps-select2 option:selected").text();
+	 if(vae=='红包'){
+		 $('#redPacket2').show();
+		 $('#voucher2').hide();
+		 $('#voucher2 input').val('')
+		 $('#integral2').hide();
+		 $('#integral2 input').val('')
+	 }
+	 if(vae=='加息券'){
+		 $('#redPacket2').hide();
+		 $('#redPacket2 input').val('')
+		 $('#voucher2').show();
+		 $('#integral2').hide();
+		 $('#integral2 input').val('')
+	 }
+	 if(vae=='积分'){
+		 $('#redPacket2').hide();
+		 $('#redPacket2 input').val('')
+		 $('#voucher2').hide();
+		 $('#voucher2 input').val('')
+		 $('#integral2').show();
+	 }
+ })
+ 
+ //删除设置	
+function deleteShakeSet(cpsPacketId) {
+
+	$("#cpsPacketId").val(cpsPacketId); 
+	$("#shakeSetForm").submit();
+}
+  
+//老用户推广新用户注册并投资删除红包设置
+function deleteRegisterAndInvestSet(cpsPacketId) {
+
+	$("#cpsRegisterAndInvestPacketId").val(cpsPacketId); 
+	$("#registerAndInvestSetForm").submit();
+}
+  
+//删除奖项奖品设置	
+function deleteAwardSet(cpsAwardId) {
+
+	$("#cpsAwardId").val(cpsAwardId); 
+	$("#awardSetForm").submit();
+}
+ 
+/*输入框限制*/
+ $('.back-main input').on('keyup change',function(){
+	 var name = $(this).attr('name');
+	 var vall = $(this).val();
+	 if(name=='registerRateOldCount' || name=='firstRateOldCount' || name=='integral_ratio'){
+		 if(vall.indexOf('.',1)>0){
+			 var length=vall.indexOf('.');
+			 $(this).val(vall.substr(0,length+2))
+		 }
+	 }else if(name=='awardName' || name=='awardPrize'){
+		 return true;
+	 }else{
+		 this.value=this.value.replace(/[^\d]/g,'');
+	 }
+ })
+ function validateInput(event, obj) {  
+    //响应鼠标事件，允许左右方向键移动和backspace  
+    event = window.event || event;  
+  
+    if (event.keyCode == 37 | event.keyCode == 39 | event.keyCode == 8) {  
+        return;  
+    }  
+    if ((event.keyCode >= 48 && event.keyCode <= 57) | (event.keyCode >= 96 && event.keyCode <= 105)) {  
+        return;  
+    }  
+    //先把非数字的都替换掉，除了数字和.   
+    obj.value = obj.value.replace(/[^\d.]/g, "");  
+    //必须保证第一个为数字而不是.   
+    obj.value = obj.value.replace(/^\./g, "");  
+    //保证只有出现一个.而没有多个.   
+    obj.value = obj.value.replace(/\.{2,}/g, ".");  
+    //保证.只出现一次，而不能出现两次以上   
+    obj.value = obj.value.replace(".", "$#$").replace(/\./g, "").replace("$#$", ".");  
+	}  
+</script>

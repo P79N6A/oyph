@@ -1,0 +1,370 @@
+@CHARSET "UTF-8";
+.garantie{
+	width: 100%;
+	height: 550px;
+	background:url("https://image.ouyepuhui.com/images/garantie.png") no-repeat;
+	background-position: center center;
+}
+.simple{
+	width: 1200px;
+	height: 250px;
+	margin: auto;
+}
+.simple>span{
+	display:block;
+	padding-top:20px;
+	padding-bottom:20px;
+	width:340px;
+	height:81px;
+	margin: auto;
+}
+.simple>p{
+	width:890px;
+	height:129px;
+	font-size:12px;
+	line-height:35px;
+	text-align:center;
+	margin: auto;
+	color: #6a6a6a;
+}
+.dessin{
+	width: 1200px;
+	margin: auto;
+}
+/*我们为财富护航*/
+.index-btm1{
+	margin-top: 30px;
+	margin: auto;
+	
+	width: 1200px;
+}
+.index-btm h2{
+	text-align: center;
+	font-size: 16px;
+	color: #333;
+	line-height: 88px;
+	font-weight: bold;
+	margin-bottom: 5px;
+}
+.slide-left{
+	overflow: hidden;
+	width: 1150px;
+}
+.index-services1{
+	position: relative;
+	overflow: hidden;
+	width: 1200px;
+	
+}
+.index-services1 li{
+	float: left;
+	width: 352px;
+	height: 313px;
+	position: relative;
+	cursor: pointer;
+	margin: 10px 24px;
+	vertical-align: middle;
+}
+
+.index-services1 li>p{
+	text-align: center;
+	margin-top: 5px;
+}
+.service-img1{
+	
+	-webkit-backface-visibility: hidden;
+	-moz-backface-visibility: hidden;
+	-ms-backface-visibility: hidden;
+	 backface-visibility: hidden; 
+	-webkit-transition: all .8s;
+	-o-transition: all .8s;
+	transition: all .8s;
+}
+.index-services1 li:hover .service-img1{
+	-webkit-transform: rotateY(180deg);
+	-ms-transform: rotateY(180deg);
+	-o-transform: rotateY(180deg);
+	transform: rotateY(180deg);
+}
+.services-ewm1{
+	position: absolute;
+	width:352px;
+	height: 313px;
+	background: #F0F0F0;
+	left: 0;
+	top: 0;
+	
+	text-align: center;
+	-webkit-transform: rotateY(-180deg);
+	-ms-transform: rotateY(-180deg);
+	-o-transform: rotateY(-180deg);
+	transform: rotateY(-180deg);
+	-webkit-backface-visibility: hidden;
+	-moz-backface-visibility: hidden;
+	-ms-backface-visibility: hidden;
+	backface-visibility: hidden;
+	-webkit-transition: all .8s;
+	-o-transition: all .8s;
+	transition: all .8s;
+	visibility: hidden;
+	line-height: 180px;
+	font-size: 0;
+}
+
+.services-ewm1>img{
+	-webkit-backface-visibility: hidden;
+	-moz-backface-visibility: hidden;
+	-ms-backface-visibility: hidden;
+	backface-visibility: hidden;
+	-webkit-transition: all .8s;
+	-o-transition: all .8s;
+	transition: all .8s;
+	visibility: hidden;
+	line-height: 180px;
+	-webkit-transform: rotateY(180deg);
+	-ms-transform: rotateY(180deg);
+	-o-transform: rotateY(180deg);
+	transform: rotateY(180deg);
+	
+}
+.index-services1 li:hover .services-ewm1>img{
+	visibility: visible;
+	-webkit-transform: rotateY(0);
+	-ms-transform: rotateY(0);
+	-o-transform: rotateY(0);
+	transform: rotateY(0);
+}
+.index-services1 li:hover .services-ewm1{
+	visibility: visible;
+	-webkit-transform: rotateY(0);
+	-ms-transform: rotateY(0);
+	-o-transform: rotateY(0);
+	transform: rotateY(0);
+}
+/*我们为财富护航*/
+/*我们为财富护航--标识*/
+#staff{
+	width: 1200px;
+	height: 470px;
+	border: 1px solid #ddd;
+	margin: auto;
+}
+.staff-friends{
+	width: 1200px;
+	margin: auto;
+	margin-top: 35px;
+	border-top: 1px solid #EDEDED;
+	overflow: hidden;
+	padding: 30px 0;
+}
+.staff-friends li{
+	float: left;
+	width: 190px;
+	text-align: center;
+	font-size: 0;
+	padding: 0 3px;
+	vertical-align: middle;
+}
+.staff-friends a{
+	background: #FFF;
+	display: block;
+	overflow: hidden;
+	border: 1px solid transparent;
+	border-radius: 3px;
+	height: 60px;
+	line-height: 58px;
+	position: relative;
+}
+.staff-friends a:hover{
+	color: #333;
+}
+.staff-friends a span{
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	left: 0;
+	top: 0;
+	font-size: 16px;
+	text-align: center;
+	background: #F0F0F0;
+	-webkit-transform: rotateX(-180deg);
+	-ms-transform: rotateX(-180deg);
+	-o-transform: rotateX(-180deg);
+	transform: rotateX(-180deg);
+	-webkit-backface-visibility: hidden;
+	-moz-backface-visibility: hidden;
+	-ms-backface-visibility: hidden;
+	backface-visibility: hidden;
+	-webkit-transition: all .5s;
+	-o-transition: all .5s;
+	transition: all .5s;
+	visibility: hidden;
+}
+.staff-friends img{
+	vertical-align: middle;
+	max-height: 90%;
+	max-width: 90%;
+	-webkit-backface-visibility: hidden;
+	-moz-backface-visibility: hidden;
+	-ms-backface-visibility: hidden;
+	backface-visibility: hidden;
+	-webkit-transition: all .5s;
+	-o-transition: all .5s;
+	transition: all .5s;
+}
+.staff-friends a:hover{
+	background: #eee;
+}
+.staff-friends a:hover span{
+	visibility: visible;
+	-webkit-transform: rotateX(0);
+	-ms-transform: rotateX(0);
+	-o-transform: rotateX(0);
+	transform: rotateX(0);
+}
+.staff-friends a:hover img{
+	-webkit-transform: rotateX(180deg);
+	-ms-transform: rotateX(180deg);
+	-o-transform: rotateX(180deg);
+	transform: rotateX(180deg);
+}
+.capitaux{
+	width: 100%;
+	height: 504px;
+	margin-top:100px;
+	background:url("/public/front/images/xiaoxi/line.png") no-repeat;
+	background-position: center center;
+}
+.simple1{
+	width: 1200px;
+	height: 120px;
+	margin: auto;
+}
+.simple1>span{
+	display:block;
+	padding-top:30px;
+	padding-bottom:20px;
+	width:340px;
+	height:81px;
+	margin: auto;
+}
+.capitauxList{
+	width:1200px;
+	height:330px;
+	margin:auto;
+}
+.capitauxList>li{
+	width:192px;
+	height: 270px;
+	float:left;
+	cursor:pointer;
+	margin:30px 54px;
+}
+.exploiter{
+	background: url("/public/front/images/xiaoxi/biejingtu.png") no-repeat;
+	background-position: -14px -284px;
+}
+.exploiter:hover {
+	cursor:pointer;
+	background: url("/public/front/images/xiaoxi/biejingtu.png") no-repeat;
+	background-position: -14px -13px;
+}
+.niveau{
+	background: url("/public/front/images/xiaoxi/biejingtu.png") no-repeat;
+	background-position: -206px -284px;
+}
+.niveau:hover{
+	background: url("/public/front/images/xiaoxi/biejingtu.png") no-repeat;
+	background-position: -206px -13px;
+}
+.chiffrementChiffrement{
+	background: url("/public/front/images/xiaoxi/biejingtu.png") no-repeat;
+	background-position: -398px -284px;
+}
+.chiffrementChiffrement:hover{
+	background: url("/public/front/images/xiaoxi/biejingtu.png") no-repeat;
+	background-position: -398px -13px;
+}
+.controle{
+	background: url("/public/front/images/xiaoxi/biejingtu.png") no-repeat;
+	background-position: -594px -284px;
+}
+.controle:hover{
+	background: url("/public/front/images/xiaoxi/biejingtu.png") no-repeat;
+	background-position: -594px -13px;
+}
+.diriger{
+	width: 100%;
+	height:220px;
+	background:#fff;
+	margin-top:5px;
+	border-bottom: 1px solid #d6b689;
+}
+.diriger-top{
+	padding-top:18px; 
+}
+.reporting{
+	width: 100%;
+	height:430px;
+	background:#fff;
+	border-bottom: 1px solid #d6b689;
+}
+.reportingCenter{
+	width:1200px;
+	height:430px;
+	margin: auto;
+}
+.lien{
+	width: 100%;
+	height:0px;
+	margin-top:0px;
+	background:#fff;
+	border-bottom: 1px solid #fff;
+}
+.reportingBox{
+	width:142px;
+	height: 172px;
+	float:left;
+	margin: 130px 150px;
+}
+.reportingLeft{
+	float:left;
+	width: 527px;
+	height: 145px;
+	margin-top:145px;
+}
+.reportingLeft1{
+	margin-left:145px;
+}
+.reporting-pic{
+	text-align: center;
+}
+.reportingText{
+	text-align: center;
+	margin-top: 95px;
+	color:#4c4c4b;
+}
+.lien1{
+	height:430px;
+	border-bottom: 1px solid #fff;
+}
+.bgdi{
+	height:195px;
+	border-bottom: 1px solid #fff;
+	background: url(/public/front/images/guide3.jpg) no-repeat bottom;
+}
+.foot-location1{
+	text-align: center;
+    padding-top: 110px;
+    color: #999;
+    font-size: 12px;
+}
+.foot-location1>span {
+    color: #666;
+}
+.foot-location2 {
+    text-align: center;
+    padding-top: 20px;
+    color: #999;
+    font-size: 12px;
+}

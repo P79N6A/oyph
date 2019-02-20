@@ -1,0 +1,111 @@
+<h2 class="y-jfh3"><span>已兑换商品</span></h2>
+				
+					<ul class="exchange-list">
+					#{list items:page.page, as:'goods'}
+						<li>
+							<img class="exchange-iocn" src="${goods?.goodsPicPath}" />
+						</li>
+						<li>
+							<p>${goods?.goodsName}</p>
+						</li>
+						<li>
+							<p>${goods?.scroe/10000*(-1)}万积分</p>
+						</li>
+						<li>
+							<p>${goods?.time?.format("yy-MM-dd")}</p>
+						</li>
+						<li>
+							<p>已兑换 <span class="logistics">查看物流</span></p>
+							<div class="dfs" onclick="soso('${goods.logistics_number}')">
+							</div>
+						</li>
+						#{/list}
+					</ul>
+					<div class="page-wrap" style="padding: 5px 0 0;">
+						<form action="@{front.MallCtrl.exchangedGoodsPre()}" method="GET" id="toInvestPre">
+						<input type="hidden" id="currPage" name="currPage"/>
+						<input type="hidden" id="currPage" name="pageSize"/>
+						</form>
+						#{if page?.page}
+							#{frontPageTag page:page,showPage:"showPage"/}
+						#{/if}
+					</div> 
+   <script> 
+      function showPage(currPage){
+	  var pagesize=12;
+	  var typeid=$("#typeId").val();
+    $.post(
+    	"/MallCtrl/showExchangedGoodsPre",
+    	{currPage:currPage,pageSize:pagesize,typeId:typeid},
+    	function(data){
+    		$("#showExchangeGoods").html(data);
+    	}
+    )
+    //$("#submit").submit();
+  }
+  function detail(newsId,type) {
+	window.open("contentDetail?newsId=" + newsId + "&type=" + type);
+  }
+  function goodMail(id){
+	  if("${currUser}"==""){
+		  weakDialog("您还未登录");
+		  return;
+	  }
+	  location.href = "/MallCtrl/goodsDetailPre?goods_id="+id;
+  }
+  /* liuyang 2017-2-6 --------------begin---------------------- */
+  function overclasses(){
+	  $(".hiddens").css("display","block");
+  }
+  function outclasses(){
+	  $(".hiddens").css("display","none");
+  }
+  /* liuyang 2017-2-6 --------------end------------------------ */
+</script>
+
+ <script type="text/javascript">
+   
+     $(".logistics").mouseover(function(){
+	  $(".dfs").css("display","block");
+	});
+     $(".dfs").hover(function(){
+    
+    	 $(".dfs").css("display","block");
+     },function(){
+    	 $(".dfs").css("display","none");
+    	 
+     });
+     
+     function soso(nu){
+			//ajax请求数据
+				 $.ajax({
+					url : "@{front.MallCtrl.jsonpCallback()}",
+					type : "POST",
+					data : {
+						"nu" : nu
+					},
+					success : function(data1){
+						
+						if(data1.success==true){
+								$("#pop-up-box").show();
+								$("#dody-bg").show(); 
+								$('.freightBox').html('<img src="'+data1.ico+'" style="width:60px;height:45px;" class="LogisticsQuery">')
+								for(var i=0;i<data1.data.length;i++){
+									
+									$('.LogisticsQuery').after('<p class="textO1"><i class="radi"></i> <span class="radiText1" id="sex">'+data1.data[i].time+'</span> <span class="radiText2">'+data1.data[i].context+'</span></p>')
+								}
+						}else{
+							alert('暂无物流信息')
+						}
+						
+						
+					}
+				}); 
+		    
+     };
+		$("#stop").click(function() {
+			$("#pop-up-box").hide();
+			$("#dody-bg").hide();
+		});
+    </script> 
+					

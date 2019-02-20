@@ -1,0 +1,87 @@
+#{extends 'common/front/accountMain.html' /}
+#{set title:'个人中心 | 安全中心 | 实名认证' /}
+#{set smallclass:4 /}
+
+<!-- 账户主要表格 -->
+<div class="account-infor">
+	<!-- 实名认证 -->
+	<div class="account-setpassword">
+		<h2 class="account-title">
+			<span class="left bankcard-title c3"><i class="icon realname-icon"></i>实名认证</span>
+		</h2>
+		<form action="@{front.account.MySecurityCtrl.checkRealName()}" method="post" id="checkRealName">
+			#{authenticityToken /}
+			<ul class="register-list mt50">
+				<li class="clearfix mb30">
+					<span class="register-left left">
+						<i class="important-point">*</i>真实姓名
+					</span>
+					<div class="register-wrap left">
+						<input type="text" id="realName" name="realName" class="text" value="${flash?.realName}" placeholder="输入真实姓名"  maxlength="10" >
+					</div>
+				</li>
+				<li class="clearfix mb30">
+					<span class="register-left left">
+						<i class="important-point">*</i>身份证号
+					</span>
+					<div class="register-wrap left">
+						<input type="text" id="idNumber" name="idNumber" class="text" value="${flash?.idNumber}" placeholder="输入合法的身份证号" maxlength="18" 
+						value="${flash?.idNumber}" onKeyUp="value=value.replace(/[\W|^_]/g,'')" >
+					</div>
+				</li>
+				<li class="clearfix">
+					<span class="register-left left">
+						&nbsp;
+					</span>
+					<input type="submit" value="保存" class="condition-btn btn left">
+				</li>
+			</ul>
+		</form>
+		<p class="returnprev">
+			<a href="@{front.account.MySecurityCtrl.securityPre()}" class="backpage"><i class="icon return-icon"></i>返回</a>
+		</p>
+	</div>
+</div>
+
+
+<script type="text/javascript">
+require(['front'],function(front){
+	
+	require(["validation/validateExt"]);
+	$("#checkRealName").validate({
+		errorPlacement: function(error, element) {
+			if(element.is("#realName")){
+				$("p[id='realName-error']").remove();
+				error.addClass('register-error').appendTo(element.parent());
+				
+			}else if(element.is("#idNumber")){
+				$("p[id='idNumber-error']").remove();
+				error.addClass('register-error').appendTo(element.parent());
+				
+			}
+		},
+		success:function(label){
+			label.removeClass('error register-error');
+			$(label).parent().children("input").eq(0).addClass("focus");
+		},
+		errorElement:'p',
+		rules:{
+			"realName":{
+				required:true
+			},
+			"idNumber":{
+				required:true
+			}
+		},
+		messages:{
+			"realName":{
+				required:"真实姓名不能为空"
+			},
+			"idNumber":{
+				required:"身份证不能为空"
+			}
+		}
+	});
+});
+
+</script>

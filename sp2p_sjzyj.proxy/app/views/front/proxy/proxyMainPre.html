@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>业务员首页</title>
+		
+		<link rel="stylesheet" href="/public/front/stylesheets/Hmain.css" type="text/css"/>
+		<link rel="stylesheet" type="text/css" href="/public/front/stylesheets/Htotal.css"/>
+		<link rel="stylesheet" type="text/css" href="@{'/public/back/stylesheets/iconfont.css'}" />
+		<link rel="stylesheet" href="/public/front/stylesheets/iconfont1.css"/>
+		<script type="text/javascript" src="/public/front/javascripts/jquery1.11.3-jquery.min.js" ></script>
+		<script type="text/javascript" src="/public/front/javascripts/jquery.qrcode.js" ></script>
+	</head>
+	<body>
+		<div class="container">
+			<div class="selection-list">
+				<div class="selection-list-ioc">
+				</div>
+				<div class="selection-list-tab">
+				
+					<!-- 代理商导航 -->
+					#{if currSaleMan != null}
+						#{if currSaleMan?.type == 2}
+							
+							<div class="list  Home" onclick="window.location.href='@{front.proxy.ProxyCtrl.proxyHomePre()}'">
+								<div class="img">
+									<i class="iconfont icon-fangzi"></i>
+								</div>
+								<span>首页</span>
+							</div>
+							<div class="list ManManage"  onclick="window.location.href='@{front.proxy.ProxyCtrl.salesManManagePre()}'">
+								<div class="img">
+									<i class="iconfont icon-yewuyuan"></i>
+								</div>
+								<span>业务员管理</span>
+							</div>
+							<div class="list ManProfit" onclick="window.location.href='@{front.proxy.ProxyCtrl.salesManProfitPre()}'">
+								<div class="img">
+									<i class="iconfont icon-sousuo"></i>
+								</div>
+								<span>业务员提成查看</span>
+							</div>
+							<div class="list Rule" onclick="window.location.href='@{front.proxy.ProxyCtrl.proxyRulePre()}'">
+								<div class="img">
+									<i class="iconfont icon-shouyiguize"></i>
+								</div>
+								<span>收益规则</span>
+							</div>
+						#{/if}
+					#{/if}
+					
+					<!-- 业务员导航 -->
+					#{if currSaleMan != null}
+						#{if currSaleMan?.type == 1}
+							<div class="list  ManHome" onclick="window.location.href='@{front.proxy.SalesManCtrl.salesManHomePre()}'">
+								<div class="img">
+									<i class="iconfont icon-fangzi"></i>
+								</div>
+								<span>首页</span>
+							</div>
+							<div class="list ManUser" onclick="window.location.href='@{front.proxy.SalesManCtrl.salesManUserPre()}'">
+								<div class="img">
+									<i class="iconfont icon-sousuo"></i>
+								</div>
+								<span>查看名下会员</span>
+							</div>
+						#{/if}
+					#{/if}
+	
+					<!-- 公共导航 -->
+					<div class="list ManRule" onclick="window.location.href='@{front.proxy.SalesManCtrl.salesManRulePre(currSaleMan?.proxyId)}'">
+						<div class="img">
+							<i class="iconfont icon-jiebantubiao-"></i>
+						</div>
+						<span>业务员收益规则</span>
+					</div>
+					<div class="list updatePwd" onclick="window.location.href='@{front.proxy.LoginCtrl.updatePwdPre()}'">
+						<div class="img">
+							<i class="iconfont icon-suo"></i>
+						</div>
+						<span>更改密码</span>
+					</div>
+					
+				</div>
+			</div>
+			<div class="container-right">
+				<div class="user-top">
+					<div class="user-top-main">
+						<a href="@{front.proxy.LoginCtrl.loginOutPre(salesman?.id)}" title="退出">
+						<div class="return">
+						</div>
+						</a>
+						<span class="user-name">
+							#{if currSaleMan != null}
+								${currSaleMan?.name}
+							#{/if}						
+						</span>
+						<img src="/public/front/images/Head-portrait.png" />
+					</div>
+					<div class="erweima">
+						APP下载
+						<div class="shoujiewm">
+							    <img src="/public/front/images/1523172235.png" />
+						</div>
+					</div>
+				</div>
+				<div class="container-right-main">
+					<!-- main Content start -->
+						#{doLayout /}
+					<!-- main Content start -->
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript">
+
+	function copyUrl2(){
+		var Url2=document.getElementById("biao1");
+		Url2.select(); // 选择对象
+		document.execCommand("Copy"); // 执行浏览器复制命令
+		alert("已复制好，可贴粘。");
+	}
+    	
+		$('.list').click(function(){
+			$(this).addClass('text-color').siblings().removeClass("text-color");
+		})
+		
+	</script>
+</html>

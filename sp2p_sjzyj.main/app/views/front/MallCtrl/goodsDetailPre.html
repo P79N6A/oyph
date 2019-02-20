@@ -1,0 +1,387 @@
+#{extends 'common/frontMain.html' /}
+#{set title:'积分商城' /}
+#{set AItem:6 /}
+
+<link rel="stylesheet" type="text/css" href="/public/front/stylesheets/integral.css" />
+<link rel="stylesheet" type="text/css" href="/public/front/stylesheets/validationEngine.jquery.css" />
+
+<link rel="stylesheet" type="text/css" href="@{'/public/front/stylesheets/skitter.styles1.css'}" />
+<link rel="stylesheet" type="text/css" href="@{'/public/front/stylesheets/front1.css'}" />
+<link rel="stylesheet" type="text/css" href="@{'/public/front/stylesheets/background.css'}"/>
+	<!-- main -->
+		<div class="container clearfix mt30">
+			<!-- left -->
+			<div class="y-jfleff">
+				<div class="nav-box">
+					<div class="nav-tit">
+						<p class="inte-pic"></p>
+						<h2 class="inte-tit">
+							<a href="@{front.MallCtrl.mallHomePre()}">积分商城</a>
+						</h2>
+						<p class="inte-tit-bot">讴业积分可兑换各种好礼</p>
+					</div>
+                  
+					#{if currUser != null}
+					<div  class="storeBox">
+						<p class="inte-wl">欢迎来到积分商城</p>
+						<p class="inte-logout">
+							<a class="inte-name" href="javascript:;">
+								<i class="inte-icon"></i> ${currUser?.name}
+							</a>
+							<a class="inte-cancel inte-col" href="@{front.LoginAndRegisteCtrl.loginPre()}">【注销】</a>
+						</p>
+						<p class="inte-logout">
+							<i class="inte-icon1"></i> &nbsp;&nbsp;可用积分：
+							<span class="inte-col">${scroe}</span>
+						</p>
+						<p class="inte-logout">
+							<a href="@{front.MallCtrl.scroeRecordPre()}" class="inte-col" id="credits">积分记录</a>
+							<a href="@{front.MallCtrl.exchangedGoodsPre()}" class="inte-col inte-commodity" id="redemption">已兑换商品</a>
+						</p>
+						<div class="package">
+							<p class="check-box">
+								<i class="inte-icon2"></i>&nbsp;签到可得积分
+							</p>
+						</div>
+					</div>
+					#{/if}
+					  #{else}
+					<div  class="ssd">
+						<div class="enter">
+							<i class="inte-icon3"></i>
+							<a href="@{front.LoginAndRegisteCtrl.loginPre()}">登录</a>
+						</div>
+					</div>
+					#{/else}
+				</div>
+				
+				<div class="y-main mt25">
+					<h2 class="y-jfh2">兑换排行榜</h2>
+					<table width="100%" style="margin-top: 0px;" class="y-phtab">
+						<tbody><tr>
+							<th width="25%">排名</th>
+							<th width="50%">商品</th>
+							<th width="25%">剩余</th>
+						</tr>
+							#{list items:pageBean.page}
+						<tr>
+							<td><i class="y-phi1">${_index}</i></td>
+							<td>
+								<a href="@{front.MallCtrl.goodsDetailPre(_?.id)}" >
+								<img alt="" src="${_?.pic_path}" style="vertical-align: middle;" width="50px" height="50px">
+								</a>
+							</td>
+							<td>${_?.surplus}</td>
+						</tr>
+						#{/list}
+					</tbody></table>
+				</div>
+				<div class="y-main mt25">
+					<h2 class="y-jfh2">兑换状态</h2>
+					<ul class="y-jful y-jful2">
+						#{list newsList}
+						<li>会员<span class="major" limit="3">${_?.user_name}</span>， 刚兑换了${_?.name}</li>
+					#{/list}
+					</ul>
+				</div>
+				
+			</div>
+			#{form @front.MallCtrl.submitExchange(), id:'submit'}
+			<!-- right -->
+			<div class="y-jfrightt">
+				<div class="y-jfrgh">
+					<div class="yy-jfxq clearfix">
+						<div class="y-jfxqimg"><img alt="" title="" src="${goods?.pic_path}" width="540px" height="540px"></div>
+						<div class="yy-jftop">
+							<h3 class="yy-jftitle">${goods?.name}</h3>
+							<ul class="y-jfxqul">
+								<li>所需积分：<span class="major">${goods?.exchange_scroe}万积分 </span></li>
+								<li>库存数量：<span class="major">${goods?.surplus}个 </span></li>
+								<li>已兑换：<span class="major">${goods?.max_exchange_count - goods?.surplus}个 </span></li>
+							</ul>
+						   <input type="hidden" name="exchangeNum" id="exchangeNum" value="1" size="1"/>
+						   #{if goods?.surplus > 0}
+							<a href="javascript:exchange()" class="btn y-jfxqbto">兑<span style="margin-left:14px;">换</span></a>
+							#{/if}
+							#{else}
+							#{/else}
+						</div>
+					</div>
+					<h2 class="y-jfh3"><span>商品介绍</span></h2>
+					<div class="y-jfxqimgs">
+						${goods?.introduction?.raw()}
+					</div>
+				</div>
+			</div>
+		</div>
+	<!-- 确认收货地址弹窗 -->
+	<div class="dialog y-jftc1" id="addresses" >
+		<div class="dialog-bg"></div>
+		<div class=" dialog-cont  y-tcmain" style="margin-top: 10%;margin-left: 28%;">
+			<h2 class="dialog-head">
+				<span class="left">平台提示</span>
+				<i title="关闭" class="dialog-close right" onclick="colseDialog(1)">×</i>
+			</h2>
+			<input type="hidden" name="goods_id" id="goods_id" value="${goods?.id}"/>
+			<ul class="y-tcdhul" id="addressList">
+			</ul>
+			<a class="btn y-adddz" href="javascript:void(0);" onclick="addAddress()" ><i class="y-icobg"></i>新增收货地址</a>
+			<div class="y-addbz">添加备注：<input type="text" class="y-adretxt" name="remark" id="remark"></div>
+			<input class="y-qedzbto btn" onclick="submitExchange()" value="立即兑换" />
+		</div>
+	</div>
+	#{/form}
+	<!-- 新增地址 -->
+	<div class="m_mask4" style="display:none" ></div>
+	<div class="dialog y-jftc2"  id="addAddress">
+		<div class="dialog-bg"></div>
+		<div class=" dialog-cont  y-tcmain2" style="margin-top: 10%;margin-left:28%;" >
+			<h2 class="dialog-head">
+			<input type="hidden" id="address_id" name="address_id"/>
+				<span class="left" id="oprTitle">收货地址</span>
+				<i title="关闭" class="dialog-close right" onclick="colseDialog(2)">×</i>
+			</h2>
+			<div class="y-adrestab">
+				<table width="100%">
+					<tbody><tr>
+						<td width="22%" align="right">收货人姓名：</td>
+						<td><input type="text" id="receiver" name="receiver" class="y-adretxt txt1"></td>
+					</tr>
+					<tr>
+						<td width="20%" align="right">详细地址：</td>
+						<td><input type="text" id="address" name="address" class="y-adretxt txt2"></td>
+					</tr>
+					<tr>
+						<td width="20%" align="right">手机号码：</td>
+						<td><input type="text" class="y-adretxt txt1" id="tel" name="tel"></td>
+					</tr>
+					<tr>
+						<td width="20%" align="right">邮政编码：</td>
+						<td><input type="text" class="y-adretxt txt1"  id="postcode" name="postcode"></td>
+					</tr>
+					<tr>
+						<td width="20%" align="right"></td>
+						<td></td>
+					</tr>
+				</tbody></table>
+				<input class="y-qedzbto btn" onclick="submitAddress();" value="保存" />
+			</div>
+		</div>
+	</div>
+	<!-- end -->
+	<!-- main end-->
+<script>
+require(['front'],function(front){
+	if(getParam("lottery")==1){
+		exchange();
+	}
+});
+
+	function colseDialog(dialogType) {
+		if (dialogType == 1) {
+			$(".y-jftc1").css("display","none");
+		} else if (dialogType == 2) {
+			$(".y-jftc2").css("display","none");
+		}
+	}
+
+    function exchange(){
+    	if("${currUser}"==""){
+    		weakDialog("您还未登录");
+    		return;
+    	}
+    	if("${scroe}" * 1<"${goods?.exchange_scroe}" * 10000 * ("${vip}" == null ? 1 : "${vip?.use_discount_integral}"==null ? 1 : "${vip?.use_discount_integral}")){
+    		alert("您好，您积分不足，不能兑换此商品!");
+    		return;
+    	}
+    	
+    	var p = $("#addressList");
+   	    $.post("/MallCtrl/exchange",function(data){
+   	    	if(data == null || data == undefined)
+   	    		return;
+   	    	if(data.error != null){
+   	    		alert(data.error.msg);
+   	    		return;
+   	    	}
+   	    	if(data.length == 0){
+   	    	}
+   	    	p.html("");
+   	    	for(var i=0; i<data.length; i++){
+   	    		var detail = data[i].address + " " + data[i].receiver + " " + data[i].tel + " " + data[i].postcode;
+   	    		p.append("<li id='li"+i+"' ><span class='left' id='det_"+data[i].id+"'></i><input name='address'"+(i==0?" checked='checked'":"checked='false'")+" type='radio' id='add_"+data[i].id+"' style='margin-bottom:10px' value='"+detail+"'/>"+detail+"</span> <a class='major right y-address' href='javascript:modifyAddress("+data[i].id+")'> 修改地址</a></li>");
+   	    	}
+   	    	$("#addresses").show();
+   	    	$(".m_mask3").attr("style","display:block");
+   	    });
+    }
+    function closeAddress(){
+    	$("#addresses").hide();
+    	$(".m_mask3").attr("style","display:none");
+    }
+    function closeAddAddress(){
+    	$("#addAddress").hide();
+    	$(".m_mask4").attr("style","display:none");
+    }
+    //增加地址
+    function addAddress(){
+    	if($("input[name='address']").length>3){
+    		alert("收货地址不能大于三个");
+    		return;
+    	}
+    	$("#address_id").val(0);
+    	$("input[name='address']").length;
+    	$("#oprTitle").html("新增收货地址");
+    	$("#addAddress").show();
+    	$(".m_mask4").attr("style","display:block");
+    }
+    function modifyAddress(id){
+    	$.post("/MallCtrl/modifyAddress",{"address_id":id},function(data){
+    		var addr = data.address;
+    		$("#address_id").val(addr.id);
+    		$("#receiver").val(addr.receiver);
+    		$("#address").val(addr.address);
+    		$("#tel").val(addr.tel);
+    		$("#postcode").val(addr.postcode);
+    		
+    		$("#oprTitle").html("修改收货地址");
+    		$("#addAddress").show();
+    	});
+    }
+    //提交地址
+    function submitAddress(){
+    	var address_id = $("#address_id").val();
+    	var receiver = $.trim($("#receiver").val());
+    	var address = $.trim($("#address").val());
+    	var tel = $.trim($("#tel").val());
+    	var postcode = $.trim($("#postcode").val());
+    	if(receiver == ''){
+    		alert("请输入收货人姓名");
+    		return;
+    	}
+    	if(address == ''){
+    		alert("请输入收货人地址");
+    		return;
+    	}
+    	if(tel == ''){
+    		alert("请输入收货人手机号码");
+    		return;
+    	}
+    	if(postcode == ''){
+    		alert("请输入邮政编码");
+    		return;
+    	}
+    	var reg = /^[\u4E00-\u9FA5]{2,4}$/;
+    	if (!reg.test(receiver)) {
+    		alert("请输入正确的中文姓名");
+    		return;
+    	}
+    	reg = /^0?1[3|4|5|6|7|8][0-9]\d{8}$/;
+    	if (!reg.test(tel)) {
+    		alert("请输入正确的手机号码");
+    		return;
+    	}
+    	$.post("/MallCtrl/addAddress",{"address_id":address_id,"receiver":receiver,"address":address,"tel":tel,"postcode":postcode},function(data){
+   	    	if(data == null || data == undefined)
+   	    		return;
+   	    	if(data.error.code < 0){
+   	    		alert(data.error.msg);
+   	    		return;
+   	    	}
+   	 		if(data.error.code > 0){
+   	 			window.location.reload(); 
+	    		return;
+	    	}
+   	    	closeAddAddress();
+   	    	var detail = address + " " + receiver + " " + tel + " " + postcode;
+   	    	if(address_id == null || address_id == ''){//新增
+   	    		$("#addressList").append("<li id='li"+i+"' ><span class='left' id='det_"+data[i].id+"'></i><input name='address'"+(i==0?" checked='checked'":"checked='false'")+" type='radio' id='add_"+data[i].id+"' style='margin-bottom:10px' value='"+detail+"'/>"+detail+"</span> <a class='major right y-address' href='javascript:modifyAddress("+data[i].id+")'> 修改地址</a></li>");
+   	    	}else{//修改
+   	    		$("#add_"+address_id).val(detail);
+   	    		$("#det_"+address_id).html(detail);
+   	    	}
+   	    	
+   	    });
+    	
+    }
+    //立即兑换
+    function submitExchange(){
+    	var flag = false;
+    	if("${currUser}"==""){
+    		alert("请先进行登录");
+    		location.href = "/loginAndRegiste/login.html";
+    		return;
+    	}
+    	
+    	var num = $("#exchangeNum").val();
+    	//验证积分是否足够
+    	var exchange_scroe = parseInt($("#exchange_scroe").html());
+    	var checkedAddress = false;
+    	var address = $('input[name="address"]:checked').val(); 
+    	
+    	if(address==""){
+    		alert("收货地址不能为空");
+    		return;
+    	}
+    	
+    	var user_scroe = '${scroe}';
+    	if(user_scroe < exchange_scroe * num * ("${vip}" == null ? 1 : "${vip?.use_discount_integral}"==null ? 1 : "${vip?.use_discount_integral}")){
+    		alert("您的可用积分不足");
+    		return;
+    	}
+    	var goods_id = $("#goods_id").val();
+    	var exchangeNum = $("#exchangeNum").val();
+    	var remark = $("#remark").val();
+    	$.post(
+    		"/MallCtrl/submitExchange",
+    		{address:address,remark:remark,goods_id:goods_id,exchangeNum:exchangeNum},
+    		function(data){
+    			if(data.code<0){
+    			alert(data.msg);
+    			}else{
+    				weakDialog(data.msg);
+    			}
+    			colseDialog(1);
+    			location.reload();
+    		})
+    	
+    	//$("#submit").submit();
+    }
+    function add(){
+    	var intp = $("#exchangeNum");
+    	var max = parseInt($("#max").html());
+    	var val = intp.val();
+    	if(++val > max){
+    		return;
+    	}
+    	intp.val(val);
+    }
+    function minu(){
+    	var intp = $("#exchangeNum");
+    	var val = intp.val();
+    	if(--val == 0){
+    		return;
+    	}
+    	intp.val(val);
+    }
+    
+    
+    function getParam(paramName) {
+        paramValue = "";
+        isFound = false;
+        if (this.location.search.indexOf("?") == 0 && this.location.search.indexOf("=") > 1) {
+            arrSource = unescape(this.location.search).substring(1, this.location.search.length).split("&");
+            i = 0;
+            while (i < arrSource.length && !isFound) {
+                if (arrSource[i].indexOf("=") > 0) {
+                    if (arrSource[i].split("=")[0].toLowerCase() == paramName.toLowerCase()) {
+                        paramValue = arrSource[i].split("=")[1];
+                        isFound = true;
+                    }
+                }
+                i++;
+            }
+        }
+        return paramValue;
+    }
+    
+</script>

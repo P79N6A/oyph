@@ -1,0 +1,111 @@
+#{extends 'common/frontMain.html' /}
+#{set title:information?.title/}
+#{set AItem:3 /}
+
+<!-- main -->
+<div class="container mt30">
+	<div class="news-container news-detail-container">
+	<!-- 资讯标题信息 -->
+		<div class="news-detail-top">
+			<h1 class="news-detail-title">${information?.title}</h1>
+			<div class="index-newhandle clearfix">
+				<div class="left news-detail-infor">
+					<span class="c3">${information?.source_from}</span>
+					<i class="c3">·</i>
+					<span class="c9">${common.utils.DateUtil.getTimeLine(information?.show_time)}</span>
+				</div>
+				<span class="handle-btn left" title="浏览次数">
+					<i class="icon haveseen-icon"></i>
+					${information?.read_count}
+				</span>
+				<!-- 点赞前 -->
+				<a href="javascript: void(0);" class="handle-btn praise-btn left" title="赞一个">
+					<input type="hidden" value="${information?.id}" />
+					<i class="praise-icon icon"></i>
+					<i class="praise-count">${information?.support_count}</i>
+				</a>
+				<i class="handleplit left"></i>
+				<a href="javascript:sinaShare('@@{front.InformationCtrl.informationDetailPre}?id=${information?.id}','${information?.title}','${information?.image_url}');" title="分享到新浪微博" class="shareto-sina handle-share left">
+					<i class="icon sina-icon"></i>
+				</a>
+				<div class="shareto-wechat handle-share left" title="分享到朋友圈">
+					<i class="icon wechat-icon"></i>
+					<div class="shareto-wechat-upbox">
+						<i></i>
+						<i></i>
+						<div class="code-area"></div>
+						<input type="hidden" class="code-url" value="@@{front.InformationCtrl.informationDetailPre}?id=${information?.id}">
+					</div>
+				</div>
+				<a href="javascript:qqZoneShare('@@{front.InformationCtrl.informationDetailPre}?id=${information?.id}','${information?.title}','${information?.image_url}');" class="handle-share shareto-qqspace left" title="分享到QQ空间">
+					<i class="icon qqspace-icon"></i>
+				</a>
+			</div>
+		</div>
+	<!-- 资讯标题信息 end -->
+		<div class="clearfix">
+		<!-- 资讯左侧内容 -->
+			<div class="left news-detail-left">
+				<div class="news-artical c3">
+					#{if information?.image_url}
+						<img src="${information?.image_url}" onerror="this.src='/public/common/default.jpg'" width="820" height="377" />
+					#{/if}
+					<div class="news-keywords">
+						<span>[核心提示]</span><strong>${information?.keywords}</strong>
+					</div>
+					<div>
+						#{verbatim}${information?.content}#{/verbatim}
+					</div>
+				</div>
+				<div class="news-other">
+					#{if map?.idUp!= null}
+					<a href="@{front.InformationCtrl.informationDetailPre(map?.idUp)}" class="left">
+						<span class="c9">上一篇</span>
+						<i class="prearrow c9">&lt;</i>
+						<span>${map?.titleUp}</span>
+					</a>
+					#{/if}
+					#{if map?.idNext !=null}
+					<a href="@{front.InformationCtrl.informationDetailPre(map?.idNext)}" class="right">						
+						<i class="nextarrow c9">&gt;</i>
+						<span>${map?.titleNext}</span>
+						<span class="c9">下一篇</span>
+					</a>
+					#{/if}
+				</div>
+			</div>
+		<!-- 资讯左侧内容 end -->
+		<!-- 资讯右侧内容 -->
+			<div class="news-sidebar right">
+				<div class="fade-banner newsdetail-ad">
+					<div>
+				#{if banners}	
+					#{list items:banners,as:'banner'}
+						<a href="javascript:void(0);" #{if banner?.url}onclick="toHref('${banner?.url}','${banner?.target.value}')"#{/if} class="fade-img" title="" target=""><img src="${banner?.image_url}" onerror="this.src='/public/common/default.jpg'" width="265" height="530" /></a>
+					#{/list}
+				#{/if}
+					</div>
+				</div>
+				<div class="news-newest c3">
+					<h3 class="news-newesthead"><i class="icon news-icon"></i>最新资讯</h3>
+					<ul class="news-newestlist">
+				#{if informations}	
+					#{list items:informations,as:'information'}
+						<li><i class="rect"></i><a href="@{front.InformationCtrl.informationDetailPre(information?.id)}" title="${information?.title}">${information?.title}</a></li>
+					#{/list}
+				#{/if}
+					</ul>
+				</div>
+			</div>
+		<!-- 资讯右侧内容 end -->
+		</div>
+	</div>
+</div>
+<!-- main end-->
+<script type="text/javascript">
+require(['front'],function(front){
+	require(['share']);
+});
+
+</script>
+

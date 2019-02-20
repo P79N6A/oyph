@@ -1,0 +1,459 @@
+<h1 class="azamoney-nav">红包</h1>
+#{if userRedpacketMap}
+	<div class="account-main" id="redpacketMain">
+		<ul class="account-redlist clearfix">
+			#{if userRedpacketMap.get(common.constants.ext.RedpacketKey.ACCOUNT)}
+				#{if models.ext.redpacket.entity.t_red_packet_user.RedpacketStatus.INACTIVATED.equals(userRedpacketMap.get(common.constants.ext.RedpacketKey.ACCOUNT).status)}
+					<li class="account-redbox account-redwill" onclick="javascript:document.location.href='@{front.invest.InvestCtrl.toInvestPre()}'"><!-- 待激活 -->
+						<div class="account-rednum">
+							<p class="w-hongbao-money">${userRedpacketMap.get(common.constants.ext.RedpacketKey.ACCOUNT)?.amount?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}</p>
+							<p class="">有效时长:${userRedpacketMap.get(common.constants.ext.RedpacketKey.ACCOUNT)?.limit_day}天</p>
+				#{/if}
+				#{elseif models.ext.redpacket.entity.t_red_packet_user.RedpacketStatus.UNRECEIVED.equals(userRedpacketMap.get(common.constants.ext.RedpacketKey.ACCOUNT).status)}
+					<li class="account-redbox account-redcan" onclick="reciveRedpacket('${userRedpacketMap.get(common.constants.ext.RedpacketKey.ACCOUNT)?._key}')"><!-- 待领取 -->
+						<div class="account-rednum">
+							<p class="w-hongbao-money">${userRedpacketMap.get(common.constants.ext.RedpacketKey.ACCOUNT)?.amount?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}</p>
+							<p class="">有效时长:${userRedpacketMap.get(common.constants.ext.RedpacketKey.ACCOUNT)?.limit_time?.format(common.constants.Constants.DATE_PLUGIN)}</p>
+				#{/elseif}
+				#{elseif models.ext.redpacket.entity.t_red_packet_user.RedpacketStatus.EXPIRED.equals(userRedpacketMap.get(common.constants.ext.RedpacketKey.ACCOUNT).status) }
+					<li class="account-redbox account-expired"><!-- 已过期 -->
+						<div class="account-rednum">
+							<p class="w-hongbao-money">${userRedpacketMap.get(common.constants.ext.RedpacketKey.ACCOUNT)?.amount?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}</p>
+							<p class="">有效时长:${userRedpacketMap.get(common.constants.ext.RedpacketKey.ACCOUNT)?.limit_day}天</p>
+				#{/elseif}
+				#{elseif models.ext.redpacket.entity.t_red_packet_user.RedpacketStatus.ALREADY_USED.equals(userRedpacketMap.get(common.constants.ext.RedpacketKey.ACCOUNT).status) }
+					<li class="account-redbox account-already-used"><!-- 已使用 -->
+						<div class="account-rednum">
+							<p class="w-hongbao-money">${userRedpacketMap.get(common.constants.ext.RedpacketKey.ACCOUNT)?.amount?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}</p>
+							<p class="">有效时长:${userRedpacketMap.get(common.constants.ext.RedpacketKey.ACCOUNT)?.limit_day}</p>
+				#{/elseif}
+				#{elseif models.ext.redpacket.entity.t_red_packet_user.RedpacketStatus.IN_USED.equals(userRedpacketMap.get(common.constants.ext.RedpacketKey.ACCOUNT).status) }
+					<li class="account-redbox account-in-used"><!-- 使用中-->
+						<div class="account-rednum">
+							<p class="w-hongbao-money">${userRedpacketMap.get(common.constants.ext.RedpacketKey.ACCOUNT)?.amount?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}</p>
+							<p class="">有效时长:${userRedpacketMap.get(common.constants.ext.RedpacketKey.ACCOUNT)?.limit_time?.format(common.constants.Constants.DATE_PLUGIN)}</p>
+				#{/elseif}
+				#{else}
+					<li class="account-redbox account-reddone"><!-- 已领取 -->
+						<div class="account-rednum">
+							<p class="w-hongbao-money">${userRedpacketMap.get(common.constants.ext.RedpacketKey.ACCOUNT)?.amount?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}</p>
+							<p class="">有效时长$:{userRedpacketMap.get(common.constants.ext.RedpacketKey.ACCOUNT)?.limit_time?.format(common.constants.Constants.DATE_PLUGIN)}</p>
+				#{/else}
+							<p class="">使用条件:出借超过 ${userRedpacketMap.get(common.constants.ext.RedpacketKey.ACCOUNT)?.use_rule?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}元 </p>
+						</div>
+						<p class="account-redname">${userRedpacketMap.get(common.constants.ext.RedpacketKey.ACCOUNT)?.red_packet_name}</p>
+						<i class="account-redstatus icon"></i>
+					</li>
+			#{/if}
+			
+			#{if userRedpacketMap.get(common.constants.ext.RedpacketKey.REALNAME)}
+				#{if models.ext.redpacket.entity.t_red_packet_user.RedpacketStatus.INACTIVATED.equals(userRedpacketMap.get(common.constants.ext.RedpacketKey.REALNAME).status)}
+					<li class="account-redbox account-redwill" onclick="javascript:document.location.href='@{front.invest.InvestCtrl.toInvestPre()}'">
+						<div class="account-rednum">
+							<p class="w-hongbao-money">${userRedpacketMap.get(common.constants.ext.RedpacketKey.REALNAME)?.amount?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}</p>
+							<p class="">有效时长:${userRedpacketMap.get(common.constants.ext.RedpacketKey.REALNAME)?.limit_day}天</p>
+				#{/if}
+				#{elseif models.ext.redpacket.entity.t_red_packet_user.RedpacketStatus.UNRECEIVED.equals(userRedpacketMap.get(common.constants.ext.RedpacketKey.REALNAME).status)}
+					<li class="account-redbox account-redcan" onclick="reciveRedpacket('${userRedpacketMap.get(common.constants.ext.RedpacketKey.REALNAME)?._key}')">
+						<div class="account-rednum">
+							<p class="w-hongbao-money">${userRedpacketMap.get(common.constants.ext.RedpacketKey.REALNAME)?.amount?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}</p>
+							<p class="">有效时长:${userRedpacketMap.get(common.constants.ext.RedpacketKey.REALNAME)?.limit_time?.format(common.constants.Constants.DATE_PLUGIN)}</p>
+				#{/elseif}
+				
+				#{elseif models.ext.redpacket.entity.t_red_packet_user.RedpacketStatus.EXPIRED.equals(userRedpacketMap.get(common.constants.ext.RedpacketKey.REALNAME).status)}
+					<li class="account-redbox account-expired" onclick="reciveRedpacket('${userRedpacketMap.get(common.constants.ext.RedpacketKey.REALNAME)?._key}')">
+						<div class="account-rednum"><!-- 已过期 -->
+							<p class="w-hongbao-money">${userRedpacketMap.get(common.constants.ext.RedpacketKey.REALNAME)?.amount?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}</p>
+							<p class="">有效时长:${userRedpacketMap.get(common.constants.ext.RedpacketKey.REALNAME)?.limit_day}天</p>
+				#{/elseif}
+				#{elseif models.ext.redpacket.entity.t_red_packet_user.RedpacketStatus.ALREADY_USED.equals(userRedpacketMap.get(common.constants.ext.RedpacketKey.REALNAME).status)}
+					<li class="account-redbox account-already-used" onclick="reciveRedpacket('${userRedpacketMap.get(common.constants.ext.RedpacketKey.REALNAME)?._key}')">
+						<div class="account-rednum"><!-- 已使用 -->
+							<p class="w-hongbao-money">${userRedpacketMap.get(common.constants.ext.RedpacketKey.REALNAME)?.amount?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}</p>
+							<p class="">有效时长:${userRedpacketMap.get(common.constants.ext.RedpacketKey.ACCOUNT)?.limit_day}天</p>
+				#{/elseif}
+				#{elseif models.ext.redpacket.entity.t_red_packet_user.RedpacketStatus.IN_USED.equals(userRedpacketMap.get(common.constants.ext.RedpacketKey.REALNAME).status)}
+					<li class="account-redbox account-in-used" onclick="reciveRedpacket('${userRedpacketMap.get(common.constants.ext.RedpacketKey.REALNAME)?._key}')">
+						<div class="account-rednum"><!-- 使用中-->
+							<p class="w-hongbao-money">${userRedpacketMap.get(common.constants.ext.RedpacketKey.REALNAME)?.amount?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}</p>
+							<p class="">有效时长:${userRedpacketMap.get(common.constants.ext.RedpacketKey.REALNAME)?.limit_day}天</p>
+				#{/elseif}
+				#{else}
+					<li class="account-redbox account-reddone">
+						<div class="account-rednum"><!-- 已领取 -->
+							<p class="w-hongbao-money">${userRedpacketMap.get(common.constants.ext.RedpacketKey.REALNAME)?.amount?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}</p>
+							<p class="">有效时长:${userRedpacketMap.get(common.constants.ext.RedpacketKey.REALNAME)?.limit_time?.format(common.constants.Constants.DATE_PLUGIN)}</p>
+				#{/else}
+							<p>使用条件:出借超过 ${userRedpacketMap.get(common.constants.ext.RedpacketKey.REALNAME)?.use_rule?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}元 </p>
+						</div>
+						<p class="account-redname">${userRedpacketMap.get(common.constants.ext.RedpacketKey.REALNAME)?.red_packet_name}</p>
+						<i class="account-redstatus icon"></i>
+					</li>
+			#{/if}
+			
+			#{if userRedpacketMap.get(common.constants.ext.RedpacketKey.BIND_EMAIL)}
+				#{if models.ext.redpacket.entity.t_red_packet_user.RedpacketStatus.INACTIVATED.equals(userRedpacketMap.get(common.constants.ext.RedpacketKey.BIND_EMAIL).status)}
+					<li class="account-redbox account-redwill" onclick="javascript:document.location.href='@{front.invest.InvestCtrl.toInvestPre()}'">
+						<div class="account-rednum">
+							<p class="w-hongbao-money">${userRedpacketMap.get(common.constants.ext.RedpacketKey.BIND_EMAIL)?.amount?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}</p>
+							<p class="">有效时长:${userRedpacketMap.get(common.constants.ext.RedpacketKey.BIND_EMAIL)?.limit_day}天</p>
+				#{/if}
+				#{elseif models.ext.redpacket.entity.t_red_packet_user.RedpacketStatus.UNRECEIVED.equals(userRedpacketMap.get(common.constants.ext.RedpacketKey.BIND_EMAIL).status)}
+					<li class="account-redbox account-redcan" onclick="reciveRedpacket('${userRedpacketMap.get(common.constants.ext.RedpacketKey.BIND_EMAIL)?._key}')">
+						<div class="account-rednum">
+							<p class="w-hongbao-money">${userRedpacketMap.get(common.constants.ext.RedpacketKey.BIND_EMAIL)?.amount?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}</p>
+							<p class="">有效时长:${userRedpacketMap.get(common.constants.ext.RedpacketKey.BIND_EMAIL)?.limit_time?.format(common.constants.Constants.DATE_PLUGIN)}</p>
+				#{/elseif}
+				
+				#{elseif models.ext.redpacket.entity.t_red_packet_user.RedpacketStatus.EXPIRED.equals(userRedpacketMap.get(common.constants.ext.RedpacketKey.BIND_EMAIL).status)}
+					<li class="account-redbox account-expired" onclick="reciveRedpacket('${userRedpacketMap.get(common.constants.ext.RedpacketKey.BIND_EMAIL)?._key}')">
+						<div class="account-rednum"><!-- 已过期 -->
+							<p class="w-hongbao-money">${userRedpacketMap.get(common.constants.ext.RedpacketKey.BIND_EMAIL)?.amount?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}</p>
+							<p class="">有效时长:${userRedpacketMap.get(common.constants.ext.RedpacketKey.BIND_EMAIL)?.limit_day}天</p>
+				#{/elseif}
+				#{elseif models.ext.redpacket.entity.t_red_packet_user.RedpacketStatus.ALREADY_USED.equals(userRedpacketMap.get(common.constants.ext.RedpacketKey.BIND_EMAIL).status)}
+					<li class="account-redbox account-already-used" onclick="reciveRedpacket('${userRedpacketMap.get(common.constants.ext.RedpacketKey.BIND_EMAIL)?._key}')">
+						<div class="account-rednum"><!-- 已使用 -->
+							<p class="w-hongbao-money">${userRedpacketMap.get(common.constants.ext.RedpacketKey.BIND_EMAIL)?.amount?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}</p>
+							<p class="">有效时长:${userRedpacketMap.get(common.constants.ext.RedpacketKey.ACCOUNT)?.limit_day}天</p>
+				#{/elseif}
+				#{elseif models.ext.redpacket.entity.t_red_packet_user.RedpacketStatus.IN_USED.equals(userRedpacketMap.get(common.constants.ext.RedpacketKey.BIND_EMAIL).status)}
+					<li class="account-redbox account-in-used" onclick="reciveRedpacket('${userRedpacketMap.get(common.constants.ext.RedpacketKey.BIND_EMAIL)?._key}')">
+						<div class="account-rednum"><!-- 使用中-->
+							<p class="w-hongbao-money">${userRedpacketMap.get(common.constants.ext.RedpacketKey.BIND_EMAIL)?.amount?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}</p>
+							<p class="">有效时长:${userRedpacketMap.get(common.constants.ext.RedpacketKey.BIND_EMAIL)?.limit_day}天</p>
+				#{/elseif}
+				#{else}
+					<li class="account-redbox account-reddone">
+						<div class="account-rednum"><!-- 已领取 -->
+							<p class="w-hongbao-money">${userRedpacketMap.get(common.constants.ext.RedpacketKey.BIND_EMAIL)?.amount?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}</p>
+							<p class="">有效时长:${userRedpacketMap.get(common.constants.ext.RedpacketKey.BIND_EMAIL)?.limit_time?.format(common.constants.Constants.DATE_PLUGIN)}</p>
+				#{/else}
+							<p class="">使用条件:出借超过 ${userRedpacketMap.get(common.constants.ext.RedpacketKey.BIND_EMAIL)?.use_rule?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}元 </p>
+						</div>
+						<p class="account-redname">${userRedpacketMap.get(common.constants.ext.RedpacketKey.BIND_EMAIL)?.red_packet_name}</p>
+						<i class="account-redstatus icon"></i>
+					</li>
+			#{/if}
+			
+			#{if userRedpacketMap.get(common.constants.ext.RedpacketKey.BIND_CARD)}
+				#{if models.ext.redpacket.entity.t_red_packet_user.RedpacketStatus.INACTIVATED.equals(userRedpacketMap.get(common.constants.ext.RedpacketKey.BIND_CARD).status)}
+					<li class="account-redbox account-redwill" onclick="javascript:document.location.href='@{front.invest.InvestCtrl.toInvestPre()}'">
+						<div class="account-rednum">
+							<p class="w-hongbao-money">${userRedpacketMap.get(common.constants.ext.RedpacketKey.BIND_CARD)?.amount?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}</p>
+							<p class="">有效时长:${userRedpacketMap.get(common.constants.ext.RedpacketKey.BIND_CARD)?.limit_day}天</p>
+				#{/if}
+				#{elseif models.ext.redpacket.entity.t_red_packet_user.RedpacketStatus.UNRECEIVED.equals(userRedpacketMap.get(common.constants.ext.RedpacketKey.BIND_CARD).status)}
+					<li class="account-redbox account-redcan" onclick="reciveRedpacket('${userRedpacketMap.get(common.constants.ext.RedpacketKey.BIND_CARD)?._key}')">
+						<div class="account-rednum">
+							<p class="w-hongbao-money">${userRedpacketMap.get(common.constants.ext.RedpacketKey.BIND_CARD)?.amount?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}</p>
+							<p class="">有效时长:${userRedpacketMap.get(common.constants.ext.RedpacketKey.BIND_CARD)?.limit_time?.format(common.constants.Constants.DATE_PLUGIN)}天</p>
+				#{/elseif}
+				
+				#{elseif models.ext.redpacket.entity.t_red_packet_user.RedpacketStatus.EXPIRED.equals(userRedpacketMap.get(common.constants.ext.RedpacketKey.BIND_CARD).status)}
+					<li class="account-redbox account-expired" onclick="reciveRedpacket('${userRedpacketMap.get(common.constants.ext.RedpacketKey.BIND_CARD)?._key}')">
+						<div class="account-rednum"><!-- 已过期 -->
+							<p class="w-hongbao-money">${userRedpacketMap.get(common.constants.ext.RedpacketKey.BIND_CARD)?.amount?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}</p>
+							<p class="">有效时长:${userRedpacketMap.get(common.constants.ext.RedpacketKey.BIND_CARD)?.limit_day}天</p>
+				#{/elseif}
+				#{elseif models.ext.redpacket.entity.t_red_packet_user.RedpacketStatus.ALREADY_USED.equals(userRedpacketMap.get(common.constants.ext.RedpacketKey.BIND_CARD).status)}
+					<li class="account-redbox account-already-used" onclick="reciveRedpacket('${userRedpacketMap.get(common.constants.ext.RedpacketKey.BIND_CARD)?._key}')">
+						<div class="account-rednum"><!-- 已使用 -->
+							<p class="w-hongbao-money">${userRedpacketMap.get(common.constants.ext.RedpacketKey.BIND_CARD)?.amount?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}</p>
+							<p class="">有效时长:${userRedpacketMap.get(common.constants.ext.RedpacketKey.ACCOUNT)?.limit_day}天</p>
+				#{/elseif}
+				#{elseif models.ext.redpacket.entity.t_red_packet_user.RedpacketStatus.IN_USED.equals(userRedpacketMap.get(common.constants.ext.RedpacketKey.BIND_CARD).status)}
+					<li class="account-redbox account-in-used" onclick="reciveRedpacket('${userRedpacketMap.get(common.constants.ext.RedpacketKey.BIND_CARD)?._key}')">
+						<div class="account-rednum"><!-- 使用中-->
+							<p class="w-hongbao-money">${userRedpacketMap.get(common.constants.ext.RedpacketKey.BIND_CARD)?.amount?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}</p>
+							<p class="">有效时长:${userRedpacketMap.get(common.constants.ext.RedpacketKey.BIND_CARD)?.limit_day}天</p>
+				#{/elseif}
+				#{else}
+					<li class="account-redbox account-reddone" >
+						<div class="account-rednum"><!-- 已领取 -->
+							<p class="w-hongbao-money">${userRedpacketMap.get(common.constants.ext.RedpacketKey.BIND_CARD)?.amount?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}</p>
+							<p class="">有效时长:${userRedpacketMap.get(common.constants.ext.RedpacketKey.BIND_CARD)?.limit_time?.format(common.constants.Constants.DATE_PLUGIN)}</p>
+				#{/else}
+							<p class="">使用条件:出借超过 ${userRedpacketMap.get(common.constants.ext.RedpacketKey.BIND_CARD)?.use_rule?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}元 </p>
+						</div>
+						<p class="account-redname">${userRedpacketMap.get(common.constants.ext.RedpacketKey.BIND_CARD)?.red_packet_name}</p>
+						<i class="account-redstatus icon"></i>
+					</li>
+			#{/if}
+			
+			#{if userRedpacketMap.get(common.constants.ext.RedpacketKey.FIRST_RECHARGE)}
+				#{if models.ext.redpacket.entity.t_red_packet_user.RedpacketStatus.INACTIVATED.equals(userRedpacketMap.get(common.constants.ext.RedpacketKey.FIRST_RECHARGE).status)}
+					<li class="account-redbox account-redwill" onclick="javascript:document.location.href='@{front.invest.InvestCtrl.toInvestPre()}'">
+						<div class="account-rednum">
+							<p class="w-hongbao-money">${userRedpacketMap.get(common.constants.ext.RedpacketKey.FIRST_RECHARGE)?.amount?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}</p>
+							<p class="">有效时长:${userRedpacketMap.get(common.constants.ext.RedpacketKey.FIRST_RECHARGE)?.limit_day}天</p>
+				#{/if}
+				#{elseif models.ext.redpacket.entity.t_red_packet_user.RedpacketStatus.UNRECEIVED.equals(userRedpacketMap.get(common.constants.ext.RedpacketKey.FIRST_RECHARGE).status)}
+					<li class="account-redbox account-redcan" onclick="reciveRedpacket('${userRedpacketMap.get(common.constants.ext.RedpacketKey.FIRST_RECHARGE)?._key}')">
+						<div class="account-rednum">
+							<p class="w-hongbao-money">${userRedpacketMap.get(common.constants.ext.RedpacketKey.FIRST_RECHARGE)?.amount?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}</p>
+							<p class="">有效时长:${userRedpacketMap.get(common.constants.ext.RedpacketKey.FIRST_RECHARGE)?.limit_time?.format(common.constants.Constants.DATE_PLUGIN)}天</p>
+				#{/elseif}
+				
+				#{elseif models.ext.redpacket.entity.t_red_packet_user.RedpacketStatus.EXPIRED.equals(userRedpacketMap.get(common.constants.ext.RedpacketKey.FIRST_RECHARGE).status)}
+					<li class="account-redbox account-expired" onclick="reciveRedpacket('${userRedpacketMap.get(common.constants.ext.RedpacketKey.FIRST_RECHARGE)?._key}')">
+						<div class="account-rednum"><!-- 已过期 -->
+							<p class="w-hongbao-money">${userRedpacketMap.get(common.constants.ext.RedpacketKey.FIRST_RECHARGE)?.amount?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}</p>
+							<p class="">有效时长:${userRedpacketMap.get(common.constants.ext.RedpacketKey.FIRST_RECHARGE)?.limit_day}天</p>
+				#{/elseif}
+				#{elseif models.ext.redpacket.entity.t_red_packet_user.RedpacketStatus.ALREADY_USED.equals(userRedpacketMap.get(common.constants.ext.RedpacketKey.FIRST_RECHARGE).status)}
+					<li class="account-redbox account-already-used" onclick="reciveRedpacket('${userRedpacketMap.get(common.constants.ext.RedpacketKey.FIRST_RECHARGE)?._key}')">
+						<div class="account-rednum"><!-- 已使用 -->
+							<p class="w-hongbao-money">${userRedpacketMap.get(common.constants.ext.RedpacketKey.FIRST_RECHARGE)?.amount?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}</p>
+							<p class="">有效时长:${userRedpacketMap.get(common.constants.ext.RedpacketKey.ACCOUNT)?.limit_day}天</p>
+				#{/elseif}
+				#{elseif models.ext.redpacket.entity.t_red_packet_user.RedpacketStatus.IN_USED.equals(userRedpacketMap.get(common.constants.ext.RedpacketKey.FIRST_RECHARGE).status)}
+					<li class="account-redbox account-in-used" onclick="reciveRedpacket('${userRedpacketMap.get(common.constants.ext.RedpacketKey.FIRST_RECHARGE)?._key}')">
+						<div class="account-rednum"><!-- 使用中-->
+							<p class="w-hongbao-money">${userRedpacketMap.get(common.constants.ext.RedpacketKey.FIRST_RECHARGE)?.amount?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}</p>
+							<p class="">有效时长:${userRedpacketMap.get(common.constants.ext.RedpacketKey.FIRST_RECHARGE)?.limit_day}天</p>
+				#{/elseif}
+				#{else}
+					<li class="account-redbox account-reddone">
+						<div class="account-rednum"><!-- 已领取 -->
+							<p class="w-hongbao-money">${userRedpacketMap.get(common.constants.ext.RedpacketKey.FIRST_RECHARGE)?.amount?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}</p>
+							<p class="">有效时长:${userRedpacketMap.get(common.constants.ext.RedpacketKey.FIRST_RECHARGE)?.limit_time?.format(common.constants.Constants.DATE_PLUGIN)}</p>
+				#{/else}
+							<p class="">使用条件:出借超过 ${userRedpacketMap.get(common.constants.ext.RedpacketKey.FIRST_RECHARGE)?.use_rule?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}元 </p>
+						</div>
+						<p class="account-redname">${userRedpacketMap.get(common.constants.ext.RedpacketKey.FIRST_RECHARGE)?.red_packet_name}</p>
+						<i class="account-redstatus icon"></i>
+					</li>
+			#{/if}
+			
+			#{if userRedpacketMap.get(common.constants.ext.RedpacketKey.FIRST_INVEST)}
+				#{if models.ext.redpacket.entity.t_red_packet_user.RedpacketStatus.INACTIVATED.equals(userRedpacketMap.get(common.constants.ext.RedpacketKey.FIRST_INVEST).status)}
+					<li class="account-redbox account-redwill" onclick="javascript:document.location.href='@{front.invest.InvestCtrl.toInvestPre()}'">
+						<div class="account-rednum">
+							<p class="w-hongbao-money">${userRedpacketMap.get(common.constants.ext.RedpacketKey.FIRST_INVEST)?.amount?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}</p>
+							<p class="">有效时长:${userRedpacketMap.get(common.constants.ext.RedpacketKey.FIRST_INVEST)?.limit_day}天</p>
+				#{/if}
+				#{elseif models.ext.redpacket.entity.t_red_packet_user.RedpacketStatus.UNRECEIVED.equals(userRedpacketMap.get(common.constants.ext.RedpacketKey.FIRST_INVEST).status)}
+					<li class="account-redbox account-redcan" onclick="reciveRedpacket('${userRedpacketMap.get(common.constants.ext.RedpacketKey.FIRST_INVEST)?._key}')">
+						<div class="account-rednum">
+							<p class="w-hongbao-money">${userRedpacketMap.get(common.constants.ext.RedpacketKey.FIRST_INVEST)?.amount?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}</p>
+							<p class="">有效时长:${userRedpacketMap.get(common.constants.ext.RedpacketKey.FIRST_INVEST)?.limit_time?.format(common.constants.Constants.DATE_PLUGIN)}天</p>
+				#{/elseif}
+				
+				#{elseif models.ext.redpacket.entity.t_red_packet_user.RedpacketStatus.EXPIRED.equals(userRedpacketMap.get(common.constants.ext.RedpacketKey.FIRST_INVEST).status)}
+					<li class="account-redbox account-expired" onclick="reciveRedpacket('${userRedpacketMap.get(common.constants.ext.RedpacketKey.FIRST_INVEST)?._key}')">
+						<div class="account-rednum"><!-- 已过期 -->
+							<p class="w-hongbao-money">${userRedpacketMap.get(common.constants.ext.RedpacketKey.FIRST_INVEST)?.amount?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}</p>
+							<p class="">有效时长:${userRedpacketMap.get(common.constants.ext.RedpacketKey.FIRST_INVEST)?.limit_day}天</p>
+				#{/elseif}
+				#{elseif models.ext.redpacket.entity.t_red_packet_user.RedpacketStatus.ALREADY_USED.equals(userRedpacketMap.get(common.constants.ext.RedpacketKey.FIRST_INVEST).status)}
+					<li class="account-redbox account-already-used" onclick="reciveRedpacket('${userRedpacketMap.get(common.constants.ext.RedpacketKey.FIRST_INVEST)?._key}')">
+						<div class="account-rednum"><!-- 已使用 -->
+							<p class="w-hongbao-money">${userRedpacketMap.get(common.constants.ext.RedpacketKey.FIRST_INVEST)?.amount?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}</p>
+							<p class="">有效时长:${userRedpacketMap.get(common.constants.ext.RedpacketKey.ACCOUNT)?.limit_day}天</p>
+				#{/elseif}
+				#{elseif models.ext.redpacket.entity.t_red_packet_user.RedpacketStatus.IN_USED.equals(userRedpacketMap.get(common.constants.ext.RedpacketKey.FIRST_INVEST).status)}
+					<li class="account-redbox account-in-used" onclick="reciveRedpacket('${userRedpacketMap.get(common.constants.ext.RedpacketKey.FIRST_INVEST)?._key}')">
+						<div class="account-rednum"><!-- 使用中-->
+							<p class="w-hongbao-money">${userRedpacketMap.get(common.constants.ext.RedpacketKey.FIRST_INVEST)?.amount?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}</p>
+							<p class="">有效时长:${userRedpacketMap.get(common.constants.ext.RedpacketKey.FIRST_INVEST)?.limit_day}天</p>
+				#{/elseif}
+				#{else}
+					<li class="account-redbox account-reddone" >
+						<div class="account-rednum"><!-- 已领取 -->
+							<p class="w-hongbao-money">${userRedpacketMap.get(common.constants.ext.RedpacketKey.FIRST_INVEST)?.amount?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}</p>
+							<p class="">有效时长:${userRedpacketMap.get(common.constants.ext.RedpacketKey.FIRST_INVEST)?.limit_time?.format(common.constants.Constants.DATE_PLUGIN)}</p>
+				#{/else}
+							<p class="">使用条件:出借超过 ${userRedpacketMap.get(common.constants.ext.RedpacketKey.FIRST_INVEST)?.use_rule?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}元 </p>
+						</div>
+						<p class="account-redname">${userRedpacketMap.get(common.constants.ext.RedpacketKey.FIRST_INVEST)?.red_packet_name}</p>
+						<i class="account-redstatus icon"></i>
+					</li>
+			#{/if}
+			
+			#{list items:generalizeList, as:'generalize'}
+				#{if generalize?.status?.code == 0}
+					<li class="account-redbox account-redwill" onclick="javascript:document.location.href='@{front.account.MyRewardCtrl.awardPre()}'">
+						<div class="account-rednum">
+							<p class="w-hongbao-money">${generalize?.amount?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}</p>
+							<p class="">有效时长:${generalize?.limit_day}天</p>
+				#{/if}
+				#{elseif generalize?.status?.code == 1}
+					<li class="account-redbox account-redcan" onclick="reciveRedpacket('${generalize?._key}')">
+						<div class="account-rednum">
+							<p class="w-hongbao-money">${generalize?.amount?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}</p>
+							<p class="">有效时长:${generalize?.limit_time?.format(common.constants.Constants.DATE_PLUGIN)}</p>
+				#{/elseif}
+				
+				#{elseif generalize?.status?.code == -1}
+					<li class="account-redbox account-expired" onclick="reciveRedpacket('${generalize?._key}')">
+						<div class="account-rednum"><!-- 已过期 -->
+							<p class="w-hongbao-money">${generalize?.amount?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}</p>
+							<p class="">有效时长:${generalize?.limit_day}天</p>
+				#{/elseif}
+				#{elseif generalize?.status?.code == 3}
+					<li class="account-redbox account-already-used" onclick="reciveRedpacket('${generalize?._key}')">
+						<div class="account-rednum"><!-- 已使用 -->
+							<p class="w-hongbao-money">${generalize?.amount?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}</p>
+							<p class="">有效时长:${generalize?.limit_day}天</p>
+				#{/elseif}
+				#{elseif generalize?.status?.code == -2}
+					<li class="account-redbox account-in-used" onclick="reciveRedpacket('${generalize?._key}')">
+						<div class="account-rednum"><!-- 使用中-->
+							<p class="w-hongbao-money">${generalize?.amount?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}</p>
+							<p class="">有效时长:${generalize?.limit_day}天</p>
+				#{/elseif}
+				#{else}
+					<li class="account-redbox account-reddone" >
+						<div class="account-rednum"><!-- 已领取 -->
+							<p class="w-hongbao-money">${generalize?.amount?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}</p>
+							<p class="">有效时长:${generalize?.limit_time?.format(common.constants.Constants.DATE_PLUGIN)}</p>
+				#{/else}
+							<p class="">使用条件:出借超过 ${generalize.use_rule}元 </p>
+						</div>
+						<p class="account-redname">${generalize.red_packet_name}</p>
+						<i class="account-redstatus icon"></i>
+					</li>
+			#{/list}
+			
+			
+			#{list items:shakeRedPacketList, as:'shakeRedPacket'}
+
+				#{if shakeRedPacket?.status?.code == -1}
+					<li class="account-redbox account-expired" >
+						<div class="account-rednum"><!-- 已过期 -->
+							<p class="w-hongbao-money">${shakeRedPacket?.amount?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}</p>
+							<p class="">有效时长:${shakeRedPacket?.limit_day}天</p>
+				#{/if}
+				#{if shakeRedPacket?.status?.code == 3}
+					<li class="account-redbox account-already-used" >
+						<div class="account-rednum"><!-- 已使用 -->
+							<p class="w-hongbao-money">${shakeRedPacket?.amount?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}</p>
+							<p class="">有效时长:${shakeRedPacket?.limit_day}天</p>
+				#{/if}
+			
+				#{if shakeRedPacket?.status?.code == 2}
+					<li class="account-redbox account-used" onclick="javascript:document.location.href='@{front.invest.InvestCtrl.toInvestPre()}'" >
+						<div class="account-rednum"><!-- 待使用-->
+							<p class="w-hongbao-money">${shakeRedPacket?.amount?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}</p>
+							<p class="">有效时长:${shakeRedPacket?.limit_time?.format(common.constants.Constants.DATE_PLUGIN)}</p>
+				#{/if}
+							<p class="">使用条件:出借超过 ${shakeRedPacket.use_rule}元 </p>
+						</div>
+						<p class="account-redname">${shakeRedPacket.red_packet_name}</p>
+						<i class="account-redstatus icon"></i>
+					</li>
+			#{/list}
+			
+		</ul>
+		<div class="left account-rednote major">
+			<span>可领红包数&nbsp;&nbsp;&nbsp;${countUnreceived} &nbsp;个</span>
+			*{ <span>红包金额&nbsp;&nbsp;&nbsp;${amontReceived?.format(common.constants.Constants.FINANCE_FORMATE_NORMAL)}元<a href="javascript:void(0);" #{if amontReceived>=0}onclick="redpacketExchange()"#{/if} class="account-debtbtn">兑换&gt;</a></span> }*
+		</div>
+	</div>
+	<div class="account-debt account-exchangeok clearfix none" id="redpacketConvDia">
+		<p class="findepassword-success">
+			<span class="timeout-note major"><i class="icon success-icon"></i>兑换申请成功，平台正在处理！</span>
+		</p>
+		<p class="returnprev">
+			<a href="javascript:void(0);" onclick="showMyRedpackets(1)" class="backpage"><i class="icon return-icon"></i>返回</a>
+		</p>
+	</div>
+	
+	
+	<!-- 红包弹窗 -->
+	<div class="dialog red-dialog" id="red_dialog">
+		<div class="dialog-bg"></div>
+		<div class="red-dialogbox dialog-cont">
+			<a href="javascript:void(0);" class="dialog-close">×</a>
+			<p class="red-typename">恭喜您获得<span id="redpacketName">实名认证红包</span></p>
+			<p class="red-money"><span id="redpacketAmt">5.00</span>元</p>
+		<!-- <a href="javascript:void(0);" class="dialog-console">点击查看</a> -->	
+		</div>
+	</div>
+	
+<script type="text/javascript">
+	require(['front'],function(front){
+		
+		//点击关闭红包效果后，刷新本页
+		$("#red_dialog").find(".dialog-bg").click(function(){
+			showMyRedpackets();
+		});
+		$("#red_dialog").find(".dialog-close").click(function(){
+			showMyRedpackets();
+		});
+	});
+	
+	//兑换红包
+	function redpacketExchange(){
+		#{if isSimulated}
+		alert("模拟登录不能执行该操作");
+		return false;
+		#{/if}
+		#{else}
+		$.ajax({
+			url : "@{front.account.MyRedpacketCtrl.applayConversion()}",
+			type : "POST",
+			success : function(result) {
+				var flag = interceptorCheck(result);
+				if(!flag){
+					return;
+				}
+				
+				if (result.code < 1) {
+					alert(result.msg);
+				} else {
+					var	debtForm = $('#redpacketConvDia');
+					var	mainTable = $('#redpacketMain');
+					mainTable.addClass('none');
+					debtForm.removeClass('none');
+				}
+				
+			}
+		});
+		#{/else}
+	}
+	
+	function reciveRedpacket(key){
+		#{if isSimulated}
+		alert("模拟登录不能执行该操作");
+		return false;
+		#{/if}
+		#{else}
+ 		$.ajax({
+			url : "@{front.account.MyRedpacketCtrl.receiveRedpacket()}",
+			type : "POST",
+			data : {
+				"key":key
+			},
+			success : function(result) {
+				var flag = interceptorCheck(result);
+				if(!flag){
+					return;
+				}
+				
+				if (result.code < 1) {
+					alert(result.msg);
+				} else {
+					$('#red_dialog').find("#redpacketAmt").html(result.obj.amount);
+					$('#red_dialog').find("#redpacketName").html(result.obj.red_packet_name);
+					$('#red_dialog').dialog();
+				}
+				
+			}
+		});
+		#{/else}
+	}
+	
+</script>
+#{/if}
+#{else}
+	<div class="account-debt account-exchangeok clearfix ">
+		<p class="findepassword-success">
+			<span class="timeout-note major"><i class="icon fail-icon"></i><span class="mgle40">没有收到任何红包！</span></span>
+		</p>
+	</div>
+#{/else}
+
+
+

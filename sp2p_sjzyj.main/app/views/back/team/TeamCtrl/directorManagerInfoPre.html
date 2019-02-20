@@ -1,0 +1,213 @@
+#{extends 'common/back/teamMain.html' /}
+	#{set title:'团队长 | 业务部经理' /}
+	#{set smallclass:2 /}
+	#{set crumbs:'团队长 >业务部经理'/}
+<div class="back-main">
+	<!-- 头部筛选条件 -->
+	<div class="back-usertop">
+		<!-- 搜索按钮，控制搜索条件的显示隐藏 -->
+		<div class="left back-usermenu">
+		<a href="@{back.team.TeamCtrl.directorManagerListPre()}" >业务部经理</a>
+		<a href="@{back.team.TeamCtrl.directorManagerInfoPre()}"  class="selected"  >个人中心</a>
+		</div>
+		<!-- 右侧功能按钮 -->
+	</div>
+	<div class="back-search-option" >
+		<form action="@{back.team.TeamCtrl.directorManagerInfoPre()}" method="GET" id="showReleaseListPre">
+			<input type="hidden" id="currPage" name="currPage"/>
+	  		<input type="hidden" id="pageSize" name="pageSize" value="${pageBean?.pageSize}"/>
+	  		<input type="hidden" id="exports" name="exports"/><!--是否导出  -->
+			<input type="submit" class="bgbtn" value="搜索" />
+		</form>
+	</div>
+	<div class="back-box back-divy clearfix">
+             <div class="left">
+                <p class="y-715p">个人资料</p>
+    			<table class=" table-fixed" width="100%">
+					<tbody><tr class="even" height="40">
+					<td>
+					 职位: #{if team?.type==0}
+					客户经理
+					#{/if}
+					#{if team?.type==1}
+					业务主任
+					#{/if}
+					#{if team?.type==2}
+					业务部经理
+					#{/if}
+					</td>
+					<td>真实姓名:${team?.realName}</td>
+					<td>手机号码: ${supervisors?.mobile}</td>
+					</tr>
+						<tr height="40">
+						<td> </td>
+					<td></td>
+                    <td></td>
+					</tr>
+                    <tr height="40">
+                        <td colspan="3">
+                            <div class="by-btn">
+                   <!--  <a href="#" class="back-loginbtn bgbtn">编辑</a>
+                    <a href="#" class="back-loginbtn bgbtn">保存</a> -->
+                </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="left">
+                    <p class="y-715p">个人业绩 </p>
+                        <table class=" table-fixed" width="100%">
+            					<tbody><tr class="even" height="40">
+            					<td>团队主任人数：${team?.count}人</td>
+                                <td>理财会员人数：${team?.investCount}人</td>
+                                <td></td>
+            					</tr>
+            					<tr height="40">
+                                <td>理财总金额：${team?.total_money?.format("#0.00")}元</td>
+            					<td>理财团队总佣金：${team?.total_commission?.format("#0.00")}元</td>
+            					
+            					</tr>
+            					<tr class="even" height="40">
+            					<td>
+            					本月理财总金额:${team?.month_money?.format("#0.00")}元
+            					</td>
+            						<td>
+            					本月团队总佣金:${team?.month_commission?.format("#0.00")}元
+            					</td>
+            					</tr>
+            	</tbody></table>
+            </div>
+        </div>
+        <div class="back-divy2">
+            <div class=""></div>
+                <div class="back-yasd clearfix">
+                    <span class="bgbtn">我的团队</span>
+                    <a class="back-loginbtn bgbtn" href="@{back.team.TeamCtrl.addDireManagerPre()}">添加业务室主任</a>
+                    <a class="back-loginbtn bgbtn" href="javascript:exportList(1)">导出</a>
+
+                </div>
+                <table class="back-table table-fixed" width="100%">
+    				<tbody>
+    				<tr height="40">
+					<th width="70" class="align-left">
+						<span class="back-order">
+							序号
+						</span>
+					</th>
+					<th>职位</th>
+					<th>真实姓名</th>
+					<th>推广会员人数</th>
+					<th>理财会员人数</th>
+					<th>当月推广理财金额</th>
+					<th>推广理财总金额</th>
+					<th>业绩提成</th>
+					<th width="140">操作</th>
+					</tr>
+    			#{if page?.page}
+				#{list page?.page}
+				<tr height="40">
+					<td class="align-left">
+						<label><input type="checkbox" class="back-tdcheck" />${_index}</label>
+					</td>
+							<td >
+				业务主任
+					</td>
+					<td >
+			${_?.realName}
+					</td>
+					<td>
+					${_?.userCode}
+					</td>
+					<td>
+						${_?.investCount}
+					</td>
+					<td>
+					${_?.month_money}
+					</td>
+					<td>
+					${_?.total_money}
+					</td>
+					<td>
+					${_?.total_commission}
+					</td>
+				
+					<td>
+					<form action="@{back.team.TeamCtrl.delectManager()}" method="post" id="delete">
+						<input type="hidden" name="id" value="${_?.id}">
+					</form>
+					<a  href="javascript:void(0)" onclick="deletes()"> 删除</a>
+					
+					 <a href="@{back.team.TeamCtrl.promotionDirectorPre(_?.supervisor_id)}">部门经理</a>
+					<a href="javascript:directorDetails('${_?.realName}', '${_?.code}','${_?.mobile}','${_?.total_commission}')" class="">主任详情</a> 
+					</td>
+				</tr>
+				#{/list}
+				<!-- 表格数据统计 -->
+							<tr height="40">
+						<td colspan="9" class="back-lasttd">
+							<!-- 分页组件--pageTag -->
+							#{backPageTag page:page,showPage:"showReleaseListPre"/}
+						</td>
+					</tr>
+			#{/if}
+			#{else}	
+					<!-- 暂无记录 -->
+					<tr height="58">
+						<td colspan="9" class="back-nodata"><i class="iconfont">&#xe613;</i>暂无记录</td>
+					</tr>
+			#{/else}
+    			</tbody></table>
+    			
+    		</div>
+    	</div>
+	
+<script type="text/javascript">
+	require(["back"],function(back){
+		// 搜索 排序 选中
+		require(["search","linechecked"],function(){
+		});
+	});
+	
+	function release(bidNo) {
+		confirm("编号"+bidNo+"，执行放款", function(){
+			waitingDialog();
+			$("#form_"+bidNo).submit();
+		});
+	}
+	
+	function showReleaseListPre(currPage, pageSize) {
+		$("#currPage").val(currPage);
+		$("#pageSize").val(pageSize);
+		
+		$("#showReleaseListPre").submit();
+	}
+	
+	//导出
+	function exportList(expor){
+		$("#exports").val(expor);
+		
+		$("#showReleaseListPre").submit();
+		$("#exports").val(0);
+	}
+	
+	//排序
+	function orderBy(orderType,orderValue){
+		$("#showReleaseListPre input[name='orderType']").val(orderType);
+		$("#showReleaseListPre input[name='orderValue']").val(orderValue);
+		
+		$("#showReleaseListPre input[name='currPage']").val(1);
+		
+		$("#showReleaseListPre").submit();
+	}
+	
+	function directorDetails(name,code,mobile,amount){
+		alert("<ul><li><span>姓名:</span><span >"+name+"</span></li><li><span>手机号码:</span><span >"+mobile+"</span></li></ul>")
+
+	}
+	function deletes(){
+		confirm("确定删除？",function(){
+			$("#delete").submit();
+		})
+	}
+</script>

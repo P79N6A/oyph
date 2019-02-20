@@ -1,0 +1,203 @@
+<!-- 账户主要表格 -->
+<div class="account-box c3" id='account_pull_down_box'>
+	<h2 class="account-title">
+		<div class="left account-checktitle"><i class="icon"></i>审核科目</div>
+		<input type="hidden" id="bid_id_subject" value="${tb?.id}"/>
+		<span class="right">${tb?.getBid_no()}${tb?.title}</span>
+	</h2>
+	<!-- 审核科目 -->
+	<div>
+		#{list userLoop}
+		<div class="check-box">
+			<h2 class="check-title"><span class="left check-titlename">${_?.bid_audit_subject?.name}</span>
+				<span class="major left">${_?.bid_audit_subject?.description}</span>
+				#{if _?.bid_item_user?.size()<10}
+					
+					<a href="javascript:void(0);" class="major right check-upbtn" onclick="showLibrary(1,6,${_?.bid_audit_subject?.id});">科目库</a>
+					<label class="major right check-upbtn">
+						<input type="file" accept=".jpg,.jpeg,.png,.gif" name="imgFile" id="imgFile_${_?.bid_audit_subject?.id}" onchange="uploadImg('imgFile_${_?.bid_audit_subject?.id}')"/>
+						上传
+					</label>
+					
+				#{/if}
+				#{else}
+					<a class="c9 right check-upbtn">科目库</a>
+					<a class="c9 right check-upbtn">上传</a>
+				#{/else}
+			</h2>
+			<table width="100%" class="check-table">
+				#{list _?.bid_item_user, as:'item'}
+				<tr height="40">
+					<td width="115">${item_index}</td>
+					<td width="300">${item?.name}</td>
+					<td width="310">${item?.status?.value}</td>
+					<td width="410">
+						#{if item?.status==models.core.entity.t_bid_item_user.BidItemAuditStatus.NO_SUBMIT}
+						<a href="javascript:void(0);" class="major" onclick="submitItem(${item?.id})" id="bid_item_user_${item?.id}">提交</a>
+						#{/if}
+						#{else}
+						<a href="javascript:void(0);" class="c9" id="bid_item_user_${item?.id}">提交</a>
+						#{/else}
+						#{if item?.status==models.core.entity.t_bid_item_user.BidItemAuditStatus.NO_PASS||item?.status==models.core.entity.t_bid_item_user.BidItemAuditStatus.NO_SUBMIT}
+						<a href="javascript:void(0);" class="major" onclick="deleteItem(${item?.id})">删除</a>
+						#{/if}
+						#{else}
+						<a href="javascript:void(0);" class="c9">删除</a>
+						#{/else}
+						<a class="major previewbtn" data-src="${item?.url}" onclick="javascript:$(this).preview('${item?.url}')" data-alt="">预览</a>
+					</td>
+				</tr>
+				#{/list}
+			</table>
+		</div>
+		#{/list}
+		<p class="returnprev">
+			<a class="backpage" href="@{front.account.MyFundCtrl.accountManagePre(1)}"><i class="icon return-icon"></i>返回</a>
+		</p>
+	</div>
+	
+	<!-- 科目库弹窗 -->
+	<div id="library_box"></div>
+
+</div>
+
+
+
+<script type="text/javascript">
+	//上传审核资料
+	function uploadImg(fileId, subjectId){
+		#{if isSimulated}
+			alert("模拟登录不能执行该操作");
+			return false;
+		#{/if}
+		#{else}
+			var bidAuditSubjectId = fileId.substring(fileId.indexOf("_")+1);
+			var bidId = $("#bid_id_subject").val();
+			var file = $("#" + fileId).val();
+			var pos = file.lastIndexOf("\\");
+			var fileName = file.substring(pos + 1);
+			$.ajaxFileUpload({
+				url : '@{front.account.MyFundCtrl.imagesUpload()}',
+				secureuri : false,
+				fileElementId : fileId,
+				data:{
+					"fileName" : fileName,
+					"bidAuditSubjectId" : bidAuditSubjectId,
+					"bidId" : bidId,
+					"subjectId" : subjectId//审核资料类型
+				},
+				dataType : 'json',
+				success : function(data) {
+					if (data.code < 0) {
+						alert(data.msg);
+						return;
+					}
+					weakDialog('上传成功!');
+					pullDownAuditSubject(bidId);
+				}
+			})
+		#{/else}
+		
+	}
+	
+	//提交审核资料
+	function submitItem(itemUserId){
+		#{if isSimulated}
+			alert("模拟登录不能执行该操作");
+			return false;
+		#{/if}
+		#{else}
+			$.ajax({
+				url : "@{front.account.MyFundCtrl.submitBidItemUser()}",
+				type : "POST",
+				data : {
+					"bidItemUserId": itemUserId
+				},
+				success : function(data){
+					var flag = interceptorCheck(data);
+					if(!flag){
+						return;
+					}
+					if(data.code < 1){
+						alert(data.msg);
+					}else{
+						$("#bid_item_user_"+itemUserId).removeClass("major").addClass("c9");
+						$("#bid_item_user_"+itemUserId).removeAttr("onclick");
+						$("#bid_item_user_"+itemUserId).parent().prev().html("待审核");
+						$("#bid_item_user_"+itemUserId).next().removeClass("major").addClass("c9");
+						$("#bid_item_user_"+itemUserId).next().removeAttr("onclick");
+						weakDialog('提交完成!');
+					}
+				}
+			}); 
+		#{/else}
+	 	
+	}
+	
+	//删除审核资料
+	function deleteItem(itemUserId){
+		#{if isSimulated}
+			alert("模拟登录不能执行该操作");
+			return false;
+		#{/if}
+		#{else}
+			$.ajax({
+				url : "@{front.account.MyFundCtrl.deleteBidItemUser()}",
+				type : "POST",
+				data : {
+					"bidItemUserId": itemUserId
+				},
+				success : function(data){
+					var flag = interceptorCheck(data);
+					if(!flag){
+						return;
+					}
+					if(data.code < 1){
+						alert(data.msg);
+					}else{
+						weakDialog('删除成功!');
+						pullDownAuditSubject($("#bid_id_subject").val());
+				}
+			}
+		}); 
+		#{/else}
+	 	
+	}
+
+	//显示用户科目库
+	function showLibrary(currPage,pageSize,bidAuditSubjectId) {
+		if(!bidAuditSubjectId || bidAuditSubjectId == 0) {
+			bidAuditSubjectId = $("#bid_audit_subject_id").val();
+		}
+		$.ajax({
+			url : "@{front.account.MyFundCtrl.showUserLibrary()}",
+			type : "POST",
+			data : {
+				"currPage" : currPage,
+				"pageSize" : pageSize,
+				"bidAuditSubjectId": bidAuditSubjectId
+			},
+			success : function(data){
+				console.log(data)
+				/* var subjectList = [];
+				for(var i = 0; i < data.length; i++) {
+					subjectList.push("<li class='lib-imgbox'><img src='"+data[i].url+"' width='300' height='150' alt='' title='' /><div><label><input type='checkbox' name='library_check' value='"+data[i].id+"' />"+data[i].name+"</label></div>");
+				}
+				console.log(subjectList);
+				$("#bid_audit_subject").val(bidAuditSubjectId);//标的审核科目ID
+				//alert($("#subjectList").html());
+				//alert(subjectList);
+				$("#subjectList").html(subjectList);
+				$('.lib-dialog').dialog(); */
+				var flag = interceptorCheck(data);
+				if(!flag){
+					return;
+				}
+				$("#library_box").html("");
+				$("#library_box").html(data);
+				$("#bid_audit_subject_id").val(bidAuditSubjectId);//标的审核科目ID
+			}
+		}); 
+	}
+
+</script>

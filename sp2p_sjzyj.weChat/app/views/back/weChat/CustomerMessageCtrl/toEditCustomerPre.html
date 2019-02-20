@@ -1,0 +1,60 @@
+#{extends 'common/back/weChatMain.html' /}
+	#{set title:'微信 | 客服管理  | 修改客服信息' /}
+	#{set smallclass:6 /}
+	#{set crumbs:'微信>客服管理>修改客服信息'/}
+<div class="back-main">
+	<!-- 头部筛选条件 -->
+	<div class="back-usertop">
+		<div class="left back-usermenu">
+			<a class="selected">修改客服信息</a>
+		</div>
+		
+		<!-- 右侧功能按钮 -->
+		<div class="right back-rightbtns">
+			<a  href="@{back.weChat.CustomerMessageCtrl.showCustomerListPre()}"><i class="iconfont">&#xe60b;</i>返回</a>
+		</div>
+	</div>
+		<!-- 搜索条件，默认隐藏 -->
+	
+	<!-- 修改菜单 -->
+	<form action="@{back.weChat.CustomerMessageCtrl.editCustomer()}" method="POST" id="" class="WeChatContent">
+	#{authenticityToken /}
+			<ul class="back-ul">
+				<li>
+					<span class="lileft">客服账号</span>
+					<div class="liright">
+						<input type="text" name="kf_account" class="required" value="${customer?.kf_account}" readonly="readonly">
+						<p class="ccc">格式为：账号前缀@公众号微信号(公众号微信号:OUYE0312)</p>
+						<p class="ccc">账号前缀最多10个字符   必须是英文、数字字符、或者下划线</p>
+						<p class="ccc">后缀为公众号 微信号，长度不超过30个字符</p>
+					</div>
+				</li>
+				<li>
+					<span class="lileft">客服昵称</span>
+					<div class="liright">
+						<input type="text" name="nickname" class="required" value="${customer?.kf_nick}"  maxlength="16">
+						<p class="ccc">客服昵称：最长16个字</p>
+						<input type = "hidden" name = "customerId" value = "${customer?.id}">
+					</div>
+				</li>
+				<li>
+					<span class="lileft">真实姓名</span>
+					<div class="liright">
+						<select name = "realNameId"  class="my_selected"  data-edit-select="1"  onmousedown="if(this.options.length>3){this.size=10}" onblur="this.size=0" onchange="this.size=0"  style="position:absolute;z-index:1;">
+						<option value = "${customer?.supervisor_id}" selected="selected" >${customer?.realName}</option>
+						#{list supervisor}
+							<option value = "${_?.id}" >${_?.reality_name}</option>
+						#{/list}
+						</select>
+					</div>
+				</li>
+				<li>
+					<span class="lileft"></span>
+					<div class="liright">
+						<input type="submit" class="WeChatbut" value="保存">
+						<input type="reset" value="取消" class="WeChatbut addWeChatbut">
+					</div>
+				</li>
+			</ul>
+	</form>
+</div>

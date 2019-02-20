@@ -1,0 +1,20 @@
+# This file defines all module routes (Higher priority routes first)
+#
+# import these routes in the main app as :
+# *     /                       module:sp2p_sjzyj.ext.wealthcircle
+#
+# ~~~~
+
+
+# 前台-账户中心-我的奖励-财富圈控制器(controllers.front.account.MyWealthCircleCtrl)
+GET  /account/reward/wealthCircleSetting/{action}.html                   front.account.MyWealthCircleCtrl.{action}Pre
+POST /account/reward/wealthCircleSetting/{action}                        front.account.MyWealthCircleCtrl.{action}
+
+
+# 后台-推广-财富圈-财富圈规则控制器(controllers.back.spread.WealthCircleSettingCtrl)
+GET  /supervisor/spread/wealthCircleSetting/{action}.html                      back.spread.WealthCircleSettingCtrl.{action}Pre
+POST /supervisor/spread/wealthCircleSetting/{action}                           back.spread.WealthCircleSettingCtrl.{action}
+
+# 后台-推广-财富圈-邀请记录控制器(controllers.back.spread.WealthCicleRecordCtrl)
+GET  /supervisor/spread/wealthCircleRecord/{action}.html                      back.spread.WealthCicleRecordCtrl.{action}Pre
+POST /supervisor/spread/wealthCircleRecord/{action}                           back.spread.WealthCicleRecordCtrl.{action}

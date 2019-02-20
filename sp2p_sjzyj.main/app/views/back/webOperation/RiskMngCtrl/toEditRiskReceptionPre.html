@@ -1,0 +1,84 @@
+#{extends 'common/back/webOperationMain.html' /}
+#{set title:'运维 | 风控专员管理 | 修改风控专员信息' /}
+#{set smallclass:9 /}
+#{set crumbs:'运维>风控专员管理>修改风控专员信息' /}
+%{
+	java.lang.Integer type = controllers.common.BackBaseController.getCurrentSupervisorType();
+}%
+<div class="back-main">
+	<!-- 头部筛选条件 -->
+	<div class="back-usertop">
+		<!-- 搜索按钮，控制搜索条件的显示隐藏 -->
+		<div class="left back-usermenu">
+		<a href="@{back.webOperation.TransferMngCtrl.showNoticeSuperPre()}"  class="selected">转让通知管理</a>		
+		</div>
+		
+	</div>
+	
+	<div class="back-cont">
+		<form onsubmit="return jianyan();" action="@{back.webOperation.RiskMngCtrl.editRiskMember()}" method="POST" id="form_addDiff">
+		<input id="riskReceptionId" name="riskReceptionId" type="hidden" value="${trNotice.id}">		 
+			<div class="back-infor">
+				<h2 class="back-infor-head">
+					<span class="left">修改专员信息</span>
+				</h2>				
+				<ul class="back-infor-set">	
+					<li >			   				 	
+						<span class="lileft">接待人姓名：</span>
+						<div class="liright">							
+							<input id="riskName" name="riskName" type="text" value="${trNotice?.reception_name}">							
+						</div>
+					</li>
+					 <li >			   				 	
+						<span class="lileft">接待人手机号：</span>
+						<div class="liright">							
+							<input id="riskMobile" name="riskMobile" type="text" value="${trNotice?.phone}">							
+						</div>
+					</li>
+					 <li >			   				 	
+						<span class="lileft">接待人所属分公司：</span>
+						<div class="liright">							
+							<select name="riskBranch">
+								#{list items:branchs, as: 'branch' }
+									<option value="${branch.id}" #{if trNotice?.branch_id==branch.id} selected="selected" #{/if}>${branch.branch_name}</option>
+								#{/list}
+							</select>						
+						</div>
+					</li>
+					 <li >			   				 	
+						<span class="lileft">接待人类型：</span>
+						<div class="liright">							
+								<select name="riskType">
+									<option value="1" #{if trNotice?.type==1} selected="selected" #{/if}>专员</option>
+									<option value="2" #{if trNotice?.type==2} selected="selected" #{/if}>经理</option>
+									<option value="3" #{if trNotice?.type==3} selected="selected" #{/if}>总监</option>
+								</select>
+												
+						</div>
+					</li>												
+					<li>
+						<p class="back-audit-btns">
+							<input type="submit" id="pageSave" value="保存" class="bgbtn">
+							<input type="reset" value="取消" class="bdbtn dialog-console">
+						</p>
+					</li>				
+				</ul>
+			</div>						
+		</form>
+	</div>
+	<script type="text/javascript" >
+
+	function jianyan(){
+		var mobile=$("#riskMobile").val().trim();
+		var name=$("#riskName").val();
+		if(mobile == '' || name == ''){
+			alert("姓名或手机号不能为空");
+			return false;
+		}else if(!mobile.isMobileNum()){
+			alert("手机号格式不正确");
+			return false;
+		}else{
+			return true;
+		}
+	}
+	</script>

@@ -1,0 +1,58 @@
+<!-- 下拉账单 -->
+<td colspan="9">
+	<div class="account-billbox none">
+		<table width="100%">
+			<tr height="46">
+				<td>资金借出方</td>
+				<td>借出金额</td>
+				<td>时间</td>
+				<td colspan="2">操作</td>
+			</tr>
+			#{list items:loanContract,as:"lc"}
+			<tr height="46">
+				<td>${lc?.name?:'----'}</td>
+				<td>${lc?.amount}</td>
+				<td>${lc?.time?.format(common.constants.Constants.DATE_TIME_FORMATE)?:'----'}</td>
+				<td>#{if lc?.contract_id !=null || lc?.contract!=null}
+				<span style="cursor: pointer;"class="major account-debtbtn" onclick="previewContract(${lc?.bidId},'${lc?.time}',${lc?.user_id})"target="_blank">查看</span>
+				#{/if}
+				#{else} 
+					#{if lc?.status == 4 || lc?.status == 5} 
+						<a href="@{front.account.MyFundCtrl.showBidPactPre(lc?.bidId,lc?.time,lc?.user_id)}"class="major account-debtbtn" target="_blank">查看</a> 
+					#{/if}
+					#{else}
+					
+						<a href="javascript:void(0)"  class="c9">查看</a>
+					#{/else}
+				#{/else}
+				</td>
+			</tr>
+			#{/list}
+		</table>
+	</div>
+</td>
+
+<script type="text/javascript">
+
+function previewContract(bidId,time,userId) {
+	$.ajax({
+	url : "@{front.account.MyFundCtrl.showBidPactSSQPre()}",
+	type : "GET",
+	data : {
+		"bidId" :bidId,
+		"time" :time,
+		"userId" :userId
+	},
+	success : function(data){
+		
+		if (data.url !=undefined){
+			
+			window.location.href = data.url;
+		}else {
+			window.location.href ='/account/fund/showBidPact.html?bidId='+bidId+'&release_time='+time+'&userId='+userId;
+		}
+				
+	}
+});
+}
+</script>

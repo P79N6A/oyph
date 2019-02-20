@@ -1,0 +1,125 @@
+#{extends 'common/back/activityMain.html' /}
+	#{set title:'活动 | 摇一摇活动' /}
+	#{set smallclass:3 /}
+	#{set crumbs:'活动>摇一摇活动'/}
+	
+<div class="back-main">
+	<!-- 头部筛选条件 -->
+	<div class="back-usertop">
+		<div class="left back-usermenu">
+			<a href="@{back.activity.shake.ShakeActivityCtrl.shakeActivityListPre(0)}" #{if showType==0} class="selected"#{/if}>活动列表</a>
+			<a href="@{back.activity.shake.ShakeActivityCtrl.shakeActivitySetPre(1)}" #{if showType==1} class="selected"#{/if}>活动设置</a>
+			<a href="@{back.activity.shake.ShakeActivityCtrl.shakeActivityRecordPre(2)}" #{if showType==2} class="selected"#{/if}>中奖记录</a>
+		</div>
+	</div>
+	<!-- 搜索条件，默认隐藏 -->
+	<div class="back-search-option" #{if loanName}style="display: block;"#{/if}>
+		
+	</div>
+	
+	
+	<div class="back-cont">
+		<div class="back-box">
+		<form action="@{back.activity.shake.ShakeActivityCtrl.shakeActivityRecordPre()}" id="showRecordPre" method="get">
+			<input type="hidden" id="currPage" name="currPage" value="${pageBean?.currPage}" />
+	  		<input type="hidden" id="pageSize" name="pageSize" value="${pageBean?.pageSize}"/>
+	  		<input type="hidden" id="showType" name="showType" value="${showType}"/>
+	  		<input type="hidden" id="activityId" name="activityId" value="${activityId}" />
+	  		<!-- <select name="winPrize">
+	  			<option value="1">中奖</option>
+	  			<option value="2">未中奖</option>
+	  		</select> -->
+	  	<table width="100%" class="back-table table-fixed">
+				<tr height="40">
+					<th width="70" class="align-left">编号</th>
+					<th>中奖类型</th>
+					<th>中奖大小</th>
+					<th>中奖人</th>
+					<th>中奖人电话</th>
+					<th>分享次数</th>
+					<th>获得次数</th>
+					<th>获取分享红包用户ID</th>
+				</tr>
+			#{if pageBean?.page}
+				#{list pageBean?.page}
+					<tr height="40">
+					<td class="align-left">
+						${_?.id}
+					</td>
+					<td>
+						#{if _?.type == 1}
+							红包
+						#{/if}
+						#{if _?.type == 2}
+							加息券
+						#{/if}
+						#{if _?.type == 3}
+							积分
+						#{/if}
+					</td>
+					<td>
+						#{if _?.type == 2}
+							${_?.amount / 100}
+						#{/if}
+						#{else}
+							${_?.amount}
+						#{/else}
+						
+					</td>
+					<td>
+						${_?.user_name?:"无"}
+					</td>
+					<td>
+						${_?.user_mobile?:"无"}
+					</td>
+					<td>${_?.share_count}</td>
+					<td>${_?.gain_count}</td>
+					<td>${_?.gain_user}</td>
+				</tr>
+					
+				#{/list}
+				<!-- 表格数据统计 -->
+				<tr height="40">
+					<td colspan="8" class="back-lasttd">				
+						<!-- 分页组件--pageTag -->
+						#{backPageTag page:pageBean,showPage:"showRecordPre"/}
+					</td>
+				</tr>
+			#{/if}
+			#{else}	
+						
+					<!-- 暂无记录 -->
+					<tr height="58">
+						<td colspan="8" class="back-nodata"><i class="iconfont">&#xe613;</i>暂无记录</td>
+					</tr>
+				</table>
+			#{/else}
+			</form>
+			
+		</div>
+	</div>
+	
+</div>
+
+
+<<script type="text/javascript">
+<!--
+
+//-->
+function showRecordPre(currPage, pageSize) {
+	$("#currPage").val(currPage);
+	$("#pageSize").val(pageSize);
+	
+	$("#showRecordPre").submit();
+}
+
+</script>
+
+
+
+
+
+
+
+
+

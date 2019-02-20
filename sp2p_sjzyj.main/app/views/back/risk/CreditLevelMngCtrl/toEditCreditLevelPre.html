@@ -1,0 +1,140 @@
+#{extends 'common/back/riskMain.html' /}
+	#{set title:'风控 | 信用等级 | 编辑信用等级' /}
+	#{set smallclass:4 /}
+	#{set crumbs:'风控>信用等级>编辑信用等级'/}
+	
+<!-- 信用等级编辑start -->
+<div class="back-main">
+	<!-- 头部筛选条件 -->
+	<div class="back-usertop">
+		<b class="left font14">${creditLevel?.order_no} ${creditLevel?.name}>编辑</b>
+		<!-- 右侧功能按钮 -->
+		<div class="right back-rightbtns">
+			<a href="javascript:backAndRefresh('@{back.risk.CreditLevelMngCtrl.showCreditLevelsPre}');"><i class="iconfont">&#xe60b;</i>返回</a>
+		</div>
+	</div>
+	<div class="back-cont">
+		<form action="@{back.risk.CreditLevelMngCtrl.updateCreditLevel()}" method="post" id="form_creditLevel">
+			#{authenticityToken /}
+			<div class="back-infor">
+				<h2 class="back-infor-head">
+					<span class="left">等级详情</span>
+				</h2>
+				<ul class="back-infor-set">
+					<li>
+						<span class="lileft">名称</span>
+						<div class="liright">
+							<input type="hidden" name="creditLevelSign" value="${creditLevel?.sign}"/>
+							<input type="text" name="levelName" value="${creditLevel?.name}" autofocus="autofocus" maxlength="4" minlength="1" class="width01 iffocus required" />
+							<span class="back-text-limit">1~4个字符</span>
+						</div>
+					</li>
+					<li>
+						<span class="lileft">图标</span>
+						<div class="liright">
+							<span class="back-imgarea imgrequired">
+								<!-- 没有上传图片 -->
+								#{if creditLevel?.image_url == null ||creditLevel?.image_url == ""}
+									<span class="back-noimg" title="您还没有上传图片"></span>
+								#{/if}
+								#{else}
+									<!-- 上传图片后隐藏back-noimg显示img-->
+									<img src="${creditLevel?.image_url}" onerror="this.src='/public/common/default.jpg'" class="backupimg" height="100" width="100" id='image' name="image" alt="" title="" />
+									<input type="hidden" id="imgurl" name="imgurl" value="${creditLevel?.image_url}">
+								#{/else}
+							</span>
+							<span class="back-upimg">
+								<label class="back-upbtn">
+									<input type="file" class="upload_file" value="" accept=".jpg,.jpeg,.png,.gif" name="imgFile" id="imgFile" onchange="upload()"/>
+									<i class="iconfont">&#xe608;</i>本地上传
+								</label>
+								<!-- 图片要求 -->
+								<p class="back-imginfor-note">100*100&nbsp;jpg/png&nbsp;大小不超过2M</p>
+								<div>
+									<span id="resolutionshow">${creditLevel?.image_resolution}</span>&nbsp;&nbsp;<span id="formatshow">${creditLevel?.image_format}</span>&nbsp;&nbsp;<span id="sizeshow">${creditLevel?.image_size}</span>
+								</div>
+								<!-- 图片参数，用于保存 -->
+								<input type="hidden" id="imageResolution" name="imageResolution" value="${creditLevel?.image_resolution}">
+								<input type="hidden" id="imageSize" name="imageSize" value="${creditLevel?.image_size}">
+								<input type="hidden" id="imageFormat" name="imageFormat" value="${creditLevel?.image_format}">
+							</span>
+						</div>
+					</li>
+				</ul>
+			</div>
+			<p class="back-audit-btns">
+				<input type="submit" id="pageSave" value="保存" class="bgbtn">
+				<input type="button" value="取消" class="bdbtn" onclick="javascript:backAndRefresh('@{back.risk.CreditLevelMngCtrl.showCreditLevelsPre}');">
+			</p>
+		</form>
+	</div>
+</div>
+<!-- 信用等级编辑end -->
+
+<!-- 页面js -->
+<script type="text/javascript">
+require(["back"],function(back){
+	//弹窗
+	require(["ajaxfileupload"]);
+	
+	$("form[id='form_creditLevel']").validate({
+			errorPlacement: function(error, element) {
+				error.addClass('back-notice').insertAfter(element);
+			},
+			rules:{
+				"levelName":{
+					required:true,
+					rangelength:[1,4]
+				}
+			},
+			messages:{
+				"levelName":{
+				}
+			},
+			submitHandler:function(form){
+				var imgurl = $(form).find("input[name='imgurl']");
+				if(!imgurl.val().isNotBlank()){
+					alert("请上传图标!");
+					return false;
+				}
+				form.submit();
+			}
+		});
+});
+
+
+function upload(){
+	
+	var fileId = "imgFile";
+	var file = $("#" + fileId).val();
+	var pos = file.lastIndexOf("\\");
+	var fileName = file.substring(pos + 1);
+	
+	$.ajaxFileUpload({
+		url : '@{back.risk.CreditLevelMngCtrl.uploadCreditLevelImage()}',
+		secureuri : false,
+		fileElementId : fileId,
+		data:{
+			"fileName":fileName
+		},
+		dataType : 'json',
+		success : function(result) {
+			if(result.code == 1){
+				var data = result.obj;
+				$("#image").attr("src", data.staticFileName);
+				$("#imageSize").val(data.size+"kb");
+				$("#imageFormat").val(data.fileSuffix);
+				$("#imageResolution").val(data.imageResolution);
+				$("#resolutionshow").html(data.imageResolution);
+				$("#formatshow").html(data.fileSuffix);
+				$("#sizeshow").html(data.size+"kb");
+				$("#imgurl").val(data.staticFileName);
+			} else {
+				alert(result.msg);
+			}
+		}
+	})
+}
+	
+
+</script>	

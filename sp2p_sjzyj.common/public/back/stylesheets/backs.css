@@ -1,0 +1,52 @@
+@CHARSET "UTF-8";
+
+.mod-wrap #picture_mask, .mod-wrap #secondPicture_mask {
+    display: none;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: #000;
+    opacity: .5;
+    filter: alpha(opacity=50);
+    z-index: 1100;
+}
+.mod-wrap #picture_layer, .mod-wrap #secondPicture_layer{
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1200;
+    overflow-y: scroll;
+}
+
+.mod-wrap #picture_layer #containers, .mod-wrap #secondPicture_layer #container-picture{
+    position: relative;
+    z-index: 1200;
+    width: 1000px;
+    margin: auto;
+    background-color: #fff;
+    border-radius: 2px;
+}
+.mod-wrap #picture_layer .containers, .mod-wrap #secondPicture_layer .containers {
+    padding: 100px 0;
+}
+.mod-wrap #picture_layer .tit,.mod-wrap #secondPicture_layer .tit {
+    height: 55px;
+    line-height: 55px;
+    position: relative;
+}
+.mod-wrap #picture_layer .tit span, .mod-wrap #secondPicture_layer .tit span{
+    padding-left: 29px;
+    font-size: 18px;
+    font-weight: bold;
+}
+.mod-wrap #picture_layer .tit i, .mod-wrap #secondPicture_layer .tit i {
+    position: absolute;
+    right: 32px;
+    float: right;
+    cursor: pointer;
+}

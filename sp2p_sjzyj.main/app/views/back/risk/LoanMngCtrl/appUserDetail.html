@@ -1,0 +1,249 @@
+<link rel="stylesheet" type="text/css" href="@{'/public/back/stylesheets/backs.css'}" />
+<dd>
+	<p>
+		<span class="infor-cell width01">姓名：&nbsp;&nbsp;#{if report?.app_name==null}----#{/if}#{else}${report?.app_name}#{/else}</span>
+		<span class="infor-cell width02">身份证号：&nbsp;&nbsp;#{if report?.app_creditNo==null}----#{/if}#{else}${report?.app_creditNo}#{/else}</span>
+		<span class="infor-cell width03">性别：&nbsp;&nbsp;#{if report?.app_sex==null}----#{/if}#{else}${report?.app_sex}#{/else}</span>
+	</p>
+	<p>
+		<span class="infor-cell width01">年龄：&nbsp;&nbsp;#{if report?.app_age==null}----#{/if}#{else}${report?.app_age}岁#{/else}</span>
+		<span class="infor-cell width02">学历：&nbsp;&nbsp;#{if report?.applicate==null}----#{/if}#{else}${report?.applicate}#{/else}</span>
+		<span class="infor-cell width03">婚姻：&nbsp;&nbsp;#{if report?.app_marriage==null}----#{/if}#{else}${report?.app_marriage?.value}#{/else}</span>
+	</p>
+	<p>
+		<span class="infor-cell width01">现住址：&nbsp;&nbsp;#{if report?.app_address==null}----#{/if}#{else}${report?.app_address}#{/else}</span>
+		<span class="infor-cell width02">联系电话：&nbsp;&nbsp;#{if report?.app_phone==null}----#{/if}#{else}${report?.app_phone}#{/else}</span>
+		<span class="infor-cell width03">职业：&nbsp;&nbsp;#{if report?.app_guild==null}----#{/if}#{else}${report?.app_guild}#{/else}</span>
+	</p>
+	<p>
+		<span class="infor-cell width01">工作单位：&nbsp;&nbsp;#{if report?.app_company==null}----#{/if}#{else}${report?.app_company}#{/else}</span>
+		<span class="infor-cell width02">单位地址：&nbsp;&nbsp;#{if report?.company_address==null}----#{/if}#{else}${report?.company_address}#{/else}</span>
+		<span class="infor-cell width03">单位电话：&nbsp;&nbsp;#{if report?.company_tel==null}----#{/if}#{else}${report?.company_tel}#{/else}</span>
+	</p>
+	
+	<p>
+		<span class="infor-cell width01">月收入：&nbsp;&nbsp;#{if report?.app_monthly_income==null}----#{/if}#{else}${report?.app_monthly_income?.format('0')}元#{/else}</span>
+		<span class="infor-cell width02">家庭年收入：&nbsp;&nbsp;#{if report?.home_annual_income==null}----#{/if}#{else}${report?.home_annual_income?.format('0')}元#{/else}</span>
+		<span class="infor-cell width03">劳动力报酬：&nbsp;&nbsp;#{if report?.labor_reward==null}----#{/if}#{else}${report?.labor_reward?.format('0')}元/月#{/else}</span>
+	</p>
+	<p>
+		<span class="infor-cell width01">申请人家庭住址：&nbsp;&nbsp;#{if report?.app_home_address==null}----#{/if}#{else}${report?.app_home_address}#{/else}</span>
+		<span class="infor-cell width02">收入来源：&nbsp;&nbsp;#{if report?.income_kinds==null}----#{/if}#{else}${report?.income_kinds?.value}#{/else}</span>
+		<span class="infor-cell width03">还款来源：&nbsp;&nbsp;#{if report?.back_resource==null}----#{/if}#{else}${report?.back_resource}#{/else}</span>
+	</p>
+	<p>
+		<span class="infor-cell width01">居住年限：&nbsp;&nbsp;#{if report?.resident_year==null}----#{/if}#{else}${report?.resident_year}#{/else}</span>
+	</p>
+</dd>
+
+	
+<dt>借款情况</dt>
+<dd>
+	<p>
+		<span class="infor-cell width01">借款金额：&nbsp;&nbsp; <input type="text" id="loan" value="${report?.loan_amount}" style="width: 70px;" onblur="javascript:getLoanAmount()">元</span>
+		<span class="infor-cell width02">借款周期：&nbsp;&nbsp;#{if report?.loan_time_limit==null}----#{/if}
+			#{else}
+				#{if report?.loan_time_limit=='0.5'} 15天  #{/if}
+				#{else} ${report?.loan_time_limit}个月 #{/else}
+			#{/else}
+			</span>
+		<span class="infor-cell width03">年利率：&nbsp;&nbsp;#{if report?.annual_rate==null}----#{/if}#{else}${report?.annual_rate}%#{/else}</span>
+	</p>
+	<p>
+		<span class="infor-cell width01">借款品种：&nbsp;&nbsp;#{if report?.loan_kind==null}----#{/if}
+		#{else}
+			#{if report?.loan_kind=='其他'}
+				${report?.loan_clear_kind}
+			#{/if}
+			#{else}
+		    	${report?.loan_kind}
+		    #{/else}
+		#{/else}</span>
+		<span class="infor-cell width02">抵押方式：&nbsp;&nbsp;#{if report?.pledge_kind==null}----#{/if}#{else}${report?.pledge_kind}#{/else}</span>
+		<span class="infor-cell width03">抵押物权属：&nbsp;&nbsp;#{if report?.pledge_ownership==null}----#{/if}#{else}${report?.pledge_ownership?.value}#{/else}</span>
+		
+	</p>
+	<p>
+		<span class="infor-cell width01">抵押物评估价：&nbsp;&nbsp;#{if report?.evaluate_price==null}----#{/if}#{else}${report?.evaluate_price?.format('0')}元#{/else}</span>
+		<span class="infor-cell width02">借款用途：&nbsp;&nbsp;#{if report?.loan_purpose==null}----#{/if}#{else}${report?.loan_purpose}#{/else}</span>
+		<span class="infor-cell width03">担保方式：&nbsp;&nbsp;#{if report?.guaranty_kind==null}----#{/if}#{else}${report?.guaranty_kind}#{/else}</span>
+	</p>
+	<p>
+		<span class="infor-cell width01">筹款时间：&nbsp;&nbsp;#{if report?.loan_time==null}----#{/if}#{else}${report?.loan_time}天#{/else}</span>
+	</p>
+</dd>
+
+<dt>征信情况</dt>
+<dd>
+	<p>
+		<span class="infor-cell width01">是否贷过款：&nbsp;&nbsp;#{if report?.is_loan_pass==null}----#{/if}#{else}${report?.is_loan_pass?.value}#{/else}</span>
+		<span class="infor-cell width02">履约还款情况：&nbsp;&nbsp;#{if report?.backloan_condition==null}----#{/if}#{else}${report?.backloan_condition}#{/else}</span>
+		<span class="infor-cell width03">信用卡总额度：&nbsp;&nbsp;#{if report?.credit_card_limit==null}----#{/if}#{else}${report?.credit_card_limit?.format('0')}元#{/else}</span>
+	</p>
+	<p>
+		<span class="infor-cell width01">银行负债情况：&nbsp;&nbsp;#{if report?.bank_debt==null}----#{/if}#{else}${report?.bank_debt}#{/else}</span>
+		<span class="infor-cell width02">民间负债情况：&nbsp;&nbsp;#{if report?.folk_debt==null}----#{/if}#{else}${report?.folk_debt}#{/else}</span>
+		<span class="infor-cell width03">征信：&nbsp;&nbsp;#{if report?.credit_condition==null}----#{/if}#{else}${report?.credit_condition}#{/else}</span>
+	</p>
+	<p>
+		
+		<span class="infor-cell width01">贷款记录：&nbsp;&nbsp;#{if report?.debt_record==null}----#{/if}#{else}${report?.debt_record}#{/else}</span>
+		
+	</p>
+</dd>
+
+<dt>身份相关图片</dt>
+<dd>
+	#{list items:riskPicList,as:'pic'}
+		#{if pic.type==-2}
+			 <a href="javascript:riskPicture(${pic.risk_id},${pic.type})" target="_blank">
+			 	<img src="${pic.pic_path}" width="143px" height="100px" style="cursor: pointer;">
+			 </a>
+		#{/if}
+	#{/list}
+</dd>
+
+<dt>房本或车本相关图片</dt>
+<dd>
+	#{list items:riskPicList,as:'pic'}
+		#{if pic.type==-1}
+			 <a href="javascript:riskPicture(${pic.risk_id},${pic.type})" target="_blank">
+			 	<img src="${pic.pic_path}" width="143px" height="100px" style="cursor: pointer;">
+			 </a>
+		#{/if}
+	#{/list}
+</dd>
+
+<dt>信用相关图片</dt>
+<dd>
+	#{list items:riskPicList,as:'pic'}
+		#{if pic.type==1}
+			 <a href="javascript:riskPicture(${pic.risk_id},${pic.type})" target="_blank">
+			 	<img src="${pic.pic_path}" width="143px" height="100px" style="cursor: pointer;">
+			 </a>
+		#{/if}
+	#{/list}
+</dd>
+
+<dt>实物图</dt>
+<dd>
+	#{list items:riskPicList,as:'pic'}
+		#{if pic.type==2}
+			 <a href="javascript:riskPicture(${pic.risk_id},${pic.type})" target="_blank">
+				<img src="${pic.pic_path}" width="143px" height="100px" style="cursor: pointer;">
+			</a>
+		#{/if}
+	#{/list}
+</dd>
+
+<dt>经营状况图</dt>
+<dd>
+	#{list items:riskPicList,as:'pic'}
+		#{if pic.type==3}
+			 <a href="javascript:riskPicture(${pic.risk_id},${pic.type})" target="_blank">
+				<img src="${pic.pic_path}" width="143px" height="100px" style="cursor: pointer;">
+			</a>
+		#{/if}
+	#{/list}
+</dd>
+<dt>现地址居住图</dt>
+<dd>
+	#{list items:riskPicList,as:'pic'}
+		#{if pic.type==4}
+			 <a href="javascript:riskPicture(${pic.risk_id},${pic.type})" target="_blank">
+				<img src="${pic.pic_path}" width="143px" height="100px" style="cursor: pointer;">
+			</a>
+		#{/if}
+	#{/list}
+</dd>
+
+<dt>行驶证相关图片</dt>
+<dd>
+	#{list items:riskPicList,as:'pic'}
+		#{if pic.type==5}
+			 <a href="javascript:riskPicture(${pic.risk_id},${pic.type})" target="_blank">
+				<img src="${pic.pic_path}" width="143px" height="100px" style="cursor: pointer;">
+			</a>
+		#{/if}
+	#{/list}
+</dd>
+
+
+<dt>资产情况</dt>
+<dd>
+	<p>
+		<span class="infor-cell width01">房产：&nbsp;&nbsp;#{if report?.house_condition==null}----#{/if}#{else}${report?.house_condition}#{/else}</span>
+		<span class="infor-cell width02">车产：&nbsp;&nbsp;#{if report?.vehicle_condition==null}----#{/if}#{else}${report?.vehicle_condition}#{/else}</span>
+		<span class="infor-cell width03">其他固定资产：&nbsp;&nbsp;#{if report?.otherfixed_condition==null}----#{/if}#{else}${report?.otherfixed_condition}#{/else}</span>
+	</p>
+</dd>
+
+#{if report?.app_marriage?.code}
+	<dt>申请人配偶情况</dt>
+	<dd>
+		<p>
+			<span class="infor-cell width01">姓名：&nbsp;&nbsp;#{if report?.pair_name==null}----#{/if}#{else}${report?.pair_name}#{/else}</span>
+			<span class="infor-cell width02">联系方式：&nbsp;&nbsp;#{if report?.pair_contact_way==null}----#{/if}#{else}${report?.pair_contact_way}#{/else}</span>
+			<span class="infor-cell width03">月收入：&nbsp;&nbsp;#{if report?.pair_monthly_income==null}----#{/if}#{else}${report?.pair_monthly_income}元#{/else}</span>
+		</p>
+	</dd>
+#{/if}
+
+<dt>担保人情况</dt>
+	<dd>
+		<p>
+			<span class="infor-cell width01">姓名：&nbsp;&nbsp;#{if report?.guarantor_name==null}----#{/if}#{else}${report?.guarantor_name}#{/else}</span>
+			<span class="infor-cell width02">担保金额：&nbsp;&nbsp;#{if report?.guarantee_amount==null}----#{/if}#{else}${report?.guarantee_amount?.format('0')}元#{/else}</span>
+		</p>
+	</dd>
+
+<dt><span class="left">借款说明</span></dt>
+	<dd>
+		<div id="descriptioncont" class="edittext newline">
+		${report?.loan_state}
+		</div>
+		<input type="hidden" value="" id="hidden_description"/>
+	</dd>
+
+<dt>勘察师意见</dt>
+	<dd>
+		<div id="descriptioncont" class="edittext newline">${report?.tech_opinion}</div>
+		<input type="hidden" value="" id="hidden_description" />
+	</dd>
+
+<!-- 相册轮播 -->
+<div class="mod-wrap">
+	<div id="secondPicture_mask" ></div>
+	<div id="secondPicture_layer" >
+	    <div class="containers">
+	      <div id="container-picture">
+	      </div>
+	    </div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	
+//图片放大轮播
+function riskPicture(riskId,type) {
+	$.ajax({
+		url : "@{back.risk.LoanMngCtrl.showPictureCarouselPre()}",
+		type : "GET",
+		data : {
+			"riskId" : riskId,
+			"type" : type
+		},
+		success : function(data){
+			$("#secondPicture_mask").fadeIn("slow");
+			$("#secondPicture_layer").fadeIn("slow");
+			$("#container-picture").html(data);
+		}
+	});
+}
+	
+function hiddenPicture() {
+	$("#secondPicture_mask").fadeOut("slow");
+	$("#secondPicture_layer").fadeOut("slow");
+}
+	
+</script>

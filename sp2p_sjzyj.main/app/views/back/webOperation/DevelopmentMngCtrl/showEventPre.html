@@ -1,0 +1,117 @@
+#{extends 'common/back/webOperationMain.html' /}
+	#{set title:'运维 | 发展历程 | 显示列表' /}
+	#{set smallclass:7 /}
+	#{set crumbs:'运维>发展历程>显示列表' /}
+<div class="back-main">
+	<div class="back-usertop">
+		<!-- 头部筛选条件 -->
+		<div class="left back-usermenu">
+			<a href="@{back.webOperation.DevelopmentMngCtrl.showEventPre()}" class="selected">所有</a>
+		</div>
+		<!-- 右侧功能按钮 -->
+		<div class="right back-rightbtns">
+		#{rightMng rightId:208001}
+			<a href="@{back.webOperation.DevelopmentMngCtrl.toAddEventPre()}" class="back-addmsg"><i class="iconfont">&#xe60f;</i>添加</a>
+		#{/rightMng}
+		</div>
+	</div>
+	<!-- 搜索条件，默认隐藏 -->
+	<div class="back-search-option">
+		<form action="@{back.webOperation.DevelopmentMngCtrl.showEventPre()}" method="GET" id="showEventList">
+			<input type="text" class="iffocus" name="operation" value="${operation}" />
+			<input type="hidden" id="currPage" name="currPage" value="${page?.currPage}"/>
+	  		<input type="hidden" id="pageSize" name="pageSize" value="${page?.pageSize}"/>
+			<input type="submit" class="bgbtn" value="搜索" />
+		</form>
+	</div>
+	<!-- 左侧菜单 -->
+	<div class="back-cont">
+		<div class="back-box">
+			<table width="100%" class="back-table table-fixed">
+				<tr height="39">
+					<th class="align-left" width="70">编号</th>
+					<th>内容</th>
+					<th>分类</th>
+					<th>发布人</th>
+					<th>事件时间</th>
+					<th>发布时间</th>
+					<th width="200">操作</th>
+				</tr>
+			#{if page.page}
+				#{list items:page.page,as:"deve"}
+					<tr height="39">
+						<td class="align-left">
+							<label><input type="checkbox" class="back-tdcheck" />${deve?.id}</label>
+						</td>
+						<td>${deve?.event_content}</td>
+						<td>${deve?.time_year}年度历程</td>
+						<td>${deve?.create_supervisor}</td>
+						<td>${deve?.time_year}年${deve?.time_month}月#{if deve?.time_day>0}${deve?.time_day}日#{/if}</td>
+						<td>${deve?.create_time}</td>						
+						<td class="back-handle">
+							#{rightMng rightId:208001}
+								<a href="@{back.webOperation.DevelopmentMngCtrl.toEditEventPre(deve.id)}" title="编辑" class="iconfont">&#xe602;</a>
+							#{/rightMng}
+							
+							#{rightMng rightId:208001}
+								<a href="javascript:delDevelop('${deve?.id}');" data-title="删除" class="iconfont">&#xe601;</a>
+							#{/rightMng}
+						</td>
+					</tr>
+				#{/list}
+					<!-- 表格数据统计 -->
+					<tr height="39">
+						<td colspan="7" class="back-lasttd">
+							<span class="back-choose left">
+								<input type="button" id="chooseAll" value="全选" />
+								<input type="button" id="chooseReverse" value="反选" />
+							</span>
+							
+							<!-- 分页组件--pageTag -->
+							#{backPageTag page:page,showPage:'showPage' /}
+							
+						</td>
+					</tr>
+			#{/if}
+			#{else}
+				<!-- 暂无记录 -->
+				<tr height="58">
+					<td colspan="7" class="back-nodata"><i class="iconfont">&#xe613;</i>暂无记录</td>
+				</tr>
+			#{/else}
+			</table>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	require(["back"],function(back){
+		// 搜索、左侧菜单展开收缩、表格排序
+		require(["search","linechecked"],function(){
+		});
+	});
+	
+	function delDevelop(id){
+		confirm("编号"+id+"，执行删除",function(){	
+			$.post('@{back.webOperation.DevelopmentMngCtrl.delEvent()}',{id:id},function(data){
+				var flag = interceptorCheck(data);
+				if(!flag){
+					return;
+				}
+				if(data.code<1){
+					alert(data.msg);
+					return;
+				}
+				location.reload();
+			});
+		})
+	}
+	
+	function showPage(currPage,pageSize){
+		$("#showEventList input[name='currPage']").val(currPage);
+		$("#showEventList input[name='pageSize']").val(pageSize);
+		
+		$("#showEventList").submit();
+	}
+</script>
+	

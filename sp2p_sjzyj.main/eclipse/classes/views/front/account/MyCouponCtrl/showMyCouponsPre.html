@@ -1,0 +1,120 @@
+<link href="/public/front/stylesheets/coupons.css" rel="stylesheet" type="text/css" >
+<h1 class="azamoney-nav">加息券</h1>
+<div class="account-debt account-exchangeok clearfix ">
+		
+		#{list items:tickets, as:'ticket'}
+		
+			#{if ticket?.status == 1}
+				<div class="voucher1">
+				
+				<div class="voucher-left">
+					<div class="numerically1">加息券</div>
+					<div class="numerically2"><i>${ticket?.apr}</i>%</div>
+					<div class="numerically3">剩余${ticket?.day}天</div>
+				</div>
+				<div class="voucher-right">
+					<div class="numerically4">投资满${(int)ticket?.amount}元可用</div>
+					<div class="numerically5">有效期限至：${ticket?.todate}</div>
+				</div>
+				</div>
+			#{/if}
+			#{if ticket?.status == 2}
+				<div class="voucher3">
+					<div class="voucher-left">
+						<div class="numerically1">加息券</div>
+						<div class="numerically2"><i>${ticket?.apr}</i>%</div>
+					</div>
+					<div class="voucher-right">
+						<div class="numerically4">投资满${(int)ticket?.amount}元可用</div>
+						<div class="numerically5">有效期限至：${ticket?.todate}</div>
+					</div>
+				</div>
+			#{/if}
+			#{if ticket?.status == 3}
+				<div class="voucher3">
+					<div class="voucher-left">
+						<div class="numerically1">加息券</div>
+						<div class="numerically2"><i>${ticket?.apr}</i>%</div>
+					</div>
+					<div class="voucher-right">
+						<div class="numerically4">投资满${(int)ticket?.amount}元可用</div>
+						<div class="numerically5">有效期限至：${ticket?.todate}</div>
+					</div>
+				</div>
+			#{/if}
+			#{if ticket?.status == 4}
+				<div class="voucher2">
+				<div class="voucher-left">
+					<div class="numerically1">加息券</div>
+					<div class="numerically2"><i>${ticket?.apr}</i>%</div>
+				</div>
+				<div class="voucher-right">
+					<div class="numerically4">投资满${(int)ticket?.amount}元可用</div>
+					<div class="numerically5">有效期限至：${ticket?.todate}</div>
+				</div>
+				</div>
+			#{/if}
+		#{/list}
+		<!-- <div class="voucher1">
+			
+			<div class="voucher-left">
+				<div class="numerically1">加息券</div>
+				<div class="numerically2"><i>0.7</i>%</div>
+				<div class="numerically3">剩余30天</div>
+			</div>
+			<div class="voucher-right">
+				<div class="numerically4">投资满3万元可用</div>
+				<div class="numerically5">有效期限至：2018-01-01</div>
+			</div>
+		</div>
+		<div class="voucher2">
+			<div class="voucher-left">
+				<div class="numerically1">加息券</div>
+				<div class="numerically2"><i>0.7</i>%</div>
+			</div>
+			<div class="voucher-right">
+				<div class="numerically4">投资满3万元可用</div>
+				<div class="numerically5">有效期限至：2018-01-01</div>
+			</div>
+		</div>
+		<div class="voucher3">
+			<div class="voucher-left">
+				<div class="numerically1">加息券</div>
+				<div class="numerically2"><i>0.7</i>%</div>
+			</div>
+			<div class="voucher-right">
+				<div class="numerically4">投资满3万元可用</div>
+				<div class="numerically5">有效期限至：2018-01-01</div>
+			</div>
+		</div>
+		<div class="voucher3">
+			<div class="voucher-left">
+				<div class="numerically1">加息券</div>
+				<div class="numerically2"><i>0.7</i>%</div>
+			</div>
+			<div class="voucher-right">
+				<div class="numerically4">投资满3万元可用</div>
+				<div class="numerically5">有效期限至：2018-01-01</div>
+			</div>
+		</div>
+		<div class="voucher3">
+			<div class="voucher-left">
+				<div class="numerically1">加息券</div>
+				<div class="numerically2"><i>0.7</i>%</div>
+			</div>
+			<div class="voucher-right">
+				<div class="numerically4">投资满3万元可用</div>
+				<div class="numerically5">有效期限至：2018-01-01</div>
+			</div>
+		</div>
+		<div class="voucher3">
+			<div class="voucher-left">
+				<div class="numerically1">加息券</div>
+				<div class="numerically2"><i>0.7</i>%</div>
+			</div>
+			<div class="voucher-right">
+				<div class="numerically4">投资满3万元可用</div>
+				<div class="numerically5">有效期限至：2018-01-01</div>
+			</div>
+		</div> -->
+</div>

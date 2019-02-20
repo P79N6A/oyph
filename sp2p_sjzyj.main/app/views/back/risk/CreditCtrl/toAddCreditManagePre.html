@@ -1,0 +1,116 @@
+#{extends 'common/back/riskMain.html' /}
+	#{set title:'风控 | 分级管理 | 添加' /}
+	#{set smallclass:8 /}
+	#{set crumbs:'风控>分级管理>添加'/}
+<div class="back-main">
+	<div class="back-usertop">
+		<b class="left font14">添加分级管理</b>
+		<!-- 右侧功能按钮 -->
+		<div class="right back-rightbtns">
+			<a href="@{back.risk.CreditCtrl.showCreditManagePre()}"><i class="iconfont">&#xe60b;</i>返回</a>
+		</div>
+	</div>
+	<!-- 左侧菜单 -->
+	<form action="@{back.risk.CreditCtrl.addCreditManage()}" method="POST" id="addAds">
+		<div class="back-cont">
+			<div class="back-infor">
+				<h2 class="back-infor-head">分级管理</h2>
+				<ul class="back-infor-set">
+					<li>
+						<span class="lileft">信用等级</span>
+						<div class="liright">
+							<select name='credit.credit_class' style="width: 233px;">
+									<option value="1">1</option>
+									<option value="2">2</option>
+									<option value="3">3</option>
+									<option value="4">4</option>
+									<option value="5">5</option>
+							</select>
+						</div>
+					</li>
+					<li>
+						<span class="lileft">类型</span>
+						<div class="liright">
+							<select name='type' style="width: 233px;">
+									<option value="1">保守型</option>
+									<option value="2">稳健型</option>
+									<option value="3">平衡型</option>
+									<option value="4">成长型</option>
+									<option value="5">进取型</option>
+							</select>
+						</div>
+					</li>
+					<li>
+						<span class="lileft">投资待还金额</span>
+						<div class="liright">
+							<input type="number"  name="credit.residue_amount" id="residue_amount" class="width01" value="" />
+							<span class="back-text-limit">单位：元</span>
+							<input type="hidden"  name="credit.residue_amounts" id="residue_amounts" class="width01" value=""/>
+						</div>
+					</li>
+					<li>
+						<span class="lileft">每日限额</span>
+						<div class="liright">
+							<input type="number"  name="credit.day_quota" id="day_quota" class="width01" value="" />
+							<span class="back-text-limit">单位：元</span>
+							<input type="hidden"  name="credit.day_quotaes" id="day_quotaes" class="width01" value=""/>
+						</div>
+					</li>
+					<li>
+						<span class="lileft">单标出借额度</span>
+						<div class="liright">
+							<input type="number"  name="credit.single_bid_invest_quota" class="width01" value="" />
+							<span class="back-text-limit">单位：元</span>
+						</div>
+					</li>
+					<li>
+						<span class="lileft">单标出借次数</span>
+						<div class="liright">
+							<input type="number"  name="credit.single_bid_invest_count" class="width01" value="" />
+						</div>
+					</li>
+					<li>
+						<span class="lileft">规定时间出借额度</span>
+						<div class="liright">
+							<input type="number"  name="credit.rule_time_invest_quota" class="width01" value="" />
+							<span class="back-text-limit">单位：元</span>
+						</div>
+					</li>
+					
+					<li>
+						<span class="lileft">规定时间出借次数</span>
+						<div class="liright">
+							<input type="number"  name="credit.rule_time_invest_count" class="width01" value="" />
+						</div>
+					</li>
+					<li>
+						<span class="lileft">出借标的种类</span>
+						<div class="liright">
+							<select name='invest_type' style="width: 233px;">
+								<option value="1">全部</option>
+							</select>
+						</div>
+					</li>
+					
+				</ul>
+			</div>
+			<p class="back-audit-btns">
+				<input type="button" id="pageSave" value="保存" class="bgbtn">
+				<input type="reset" value="取消" class="bdbtn">
+			</p>
+		</div>
+	</form>
+</div>	
+	
+	
+<script type="text/javascript">
+//转化为万元
+$("#pageSave").click(function(){
+	var residue_amount = $('#residue_amount').val();
+	$('#residue_amounts').val(residue_amount/10000+'万');
+	var day_quota = $('#day_quota').val();
+	$('#day_quotaes').val(day_quota/10000+'万');
+	$('#addAds').submit();
+})
+
+</script>

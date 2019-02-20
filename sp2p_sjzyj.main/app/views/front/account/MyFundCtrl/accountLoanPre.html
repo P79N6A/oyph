@@ -1,0 +1,137 @@
+<h1 class="azamoney-nav">我的借款</h1>
+<table class="account-table" width="100%">
+	<tr height="46">
+		<th>项目编号</th>
+		<th>项目</th>
+		<th>借款金额</th>
+		<th>年利率</th>
+		<th>期限</th>
+		<th>还款方式</th>
+		<th>放款时间</th>
+		<th>状态</th>
+		<th width="280">操作</th>
+	</tr>
+	#{list pageBean?.page}
+	<tr height="46">
+		<td>${_?.getBid_no()}</td>
+		<td><a href="@{front.invest.InvestCtrl.investPre(_?.id)}" title="" target="">${_?.title}</a></td>
+		<td>${_?.amount?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}</td>
+		<td>${_?.apr}%</td>
+		<td>${_?.period}${_?.period_unit?.getShowValue()}</td>
+		<td>${_?.repayment_type?.value}</td>
+		<td>${_?.release_time?.format(common.constants.Constants.DATE_TIME_FORMATE)?:'----'}</td>
+		<td>${_?.status?.value}</td>
+		<td>
+			<input type="hidden" id="bid_id${_?.id}" value="${_?.id}"/>
+			<a #{if _?.total_repayment_bill>0} onclick='pullDownBill(${_?.id})' class="major account-debtbtn" #{/if}#{else}class="c9"#{/else}>账单（${_?.has_repayment_bill}/${_?.total_repayment_bill}）</a>&nbsp;
+			<a class="major account-debtbtn" #{if _?.total_upload_item>0}onclick='pullDownAuditSubject(${_?.id})'#{/if}>审核科目（${_?.has_upload_item}/${_?.total_upload_item}）</a>&nbsp;
+			#{if models.core.entity.t_bid.Status.REPAYING.equals(_?.status) || models.core.entity.t_bid.Status.REPAYED.equals(_?.status)} 
+				<a class="major account-debtbtn" onclick="LoanContract(${_?.id},'${_?.release_time}',$(this))">合同</a>
+			#{/if}
+			#{else}
+				<a href="javascript:void(0)"  class="c9">合同</a>
+			#{/else}
+		</td>
+	</tr>
+	<tr class="account-bill">
+	</tr>
+	#{/list}
+
+</table>
+
+<!-- 分页组件 -->
+#{if pageBean?.page}
+	#{frontPageTag page:pageBean,showPage:"accountLoanPre"/}
+#{/if}
+#{if pageBean?.page == null}
+<div class="norecord-box c9">
+	暂无记录
+</div>
+#{/if}
+<script type="text/javascript">
+$(".account-debtbtn").click(function(){
+	var bidId = $(this).parent().children('input:first').val();
+});
+
+function pullDownBill(bidId){
+	var $bill_box = $("#bid_id"+bidId).parent().parent().next(),
+		$bill_box_cont = $bill_box.find('.account-billbox'),
+		siblings = $('.account-billbox:visible');
+	if($bill_box_cont.is(':visible')){
+		$bill_box_cont.stop(true,true).slideUp(300);
+	}else{
+		queryBill(bidId, function(data){
+			$bill_box.html(data);
+			$bill_box.find('.account-billbox').stop(true,true).slideDown(300);
+			siblings.stop(true,true).slideUp(300);
+		});
+	}
+}
+function pullDownAuditSubject(bidId){
+	$.ajax({
+		url : "@{front.account.MyFundCtrl.pullDownAuditSubjectPre()}",
+		type : "GET",
+		data : {
+			"bidId" : bidId
+		},
+		success : function(data){
+			var flag = interceptorCheck(data);
+			if(!flag){
+				return;
+			}
+			$(".account-box").html(data);
+		}
+	});
+}
+function queryBill(bid_id, callback){
+	$.ajax({
+		url : "@{front.account.MyFundCtrl.pullDownMyBillPre()}",
+		type : "GET",
+		data : {
+			"bidId" :bid_id
+		},
+		success : function(data){
+			var flag = interceptorCheck(data);
+			if(!flag){
+				return;
+			}
+			if(callback){
+				callback(data);
+			}
+		}
+	});
+}
+function LoanContract(bidId,time,$this) {
+	var $bill_box = $this.parent().parent().next(),
+		$bill_box_cont = $bill_box.find('.account-billbox'),
+		siblings = $('.account-billbox:visible');
+	if($bill_box_cont.is(':visible')){
+		$bill_box_cont.stop(true,true).slideUp(300);
+	}else{
+		pullDownMyLoanContractPre(bidId,time,function(data){
+			$bill_box.html(data);
+			$bill_box.find('.account-billbox').stop(true,true).slideDown(300);
+			siblings.stop(true,true).slideUp(300);
+		});
+	}
+}
+function pullDownMyLoanContractPre (bid_id,time,callback){
+	$.ajax({
+		url : "@{front.account.MyFundCtrl.pullDownMyLoanContractPre()}",
+		type : "GET",
+		data : {
+			"bidId" :bid_id,
+			"time" :time
+		},
+		success : function(data){
+			var flag = interceptorCheck(data);
+			if(!flag){
+				return;
+			}
+			if(callback){
+				callback(data);
+			}
+		}
+	});
+}
+</script>

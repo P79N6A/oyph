@@ -1,0 +1,102 @@
+#{extends 'common/back/weChatMain.html' /}
+	#{set title:'微信 | 客服管理 |添加客服' /}
+	#{set smallclass:6 /}
+	#{set crumbs:'微信>客服管理>添加客服'/}
+<div class="back-main">
+	<!-- 头部筛选条件 -->
+	<div class="back-usertop">
+		<div class="left back-usermenu">
+			<a class="selected">添加客服</a>
+		</div>
+		
+		<!-- 右侧功能按钮 -->
+		<div class="right back-rightbtns">
+			<a  href="@{back.weChat.CustomerMessageCtrl.showCustomerListPre()}"><i class="iconfont">&#xe60b;</i>返回</a>
+		</div>
+	</div>
+		<!-- 搜索条件，默认隐藏 -->
+	
+	<!-- 修改菜单 -->
+	<form action="@{back.weChat.CustomerMessageCtrl.addCustomer()}" method="POST" id="form-service" class="WeChatContent">
+	#{authenticityToken /}
+			<ul class="back-ul">
+				<li>
+					<span class="lileft">客服昵称</span>
+					<div class="liright">
+						<input type="text" name="nickname" id="name-service" class="required" value="${flash?.keywords}" maxlength="16">
+						<p class="ccc">客服昵称：最长16个字</p>
+					</div>
+					<div class="liaddright" id="name-text"></div>
+				</li>
+				<li>
+					<span class="lileft">客服账号</span>
+					<div class="liright" style="position: relative;">
+						<input type="text" name="kf_account" id="id-service" class="required"   oninput="if(/@$/.test(value)) value+='OUYE0312'"  value="${flash?.keywords}">
+						<p class="ccc">格式为：账号前缀@公众号微信号(公众号微信号:OUYE0312)</p>
+						<p class="ccc">账号前缀最多10个字符   必须是英文、数字字符、或者下划线</p>
+						<p class="ccc">后缀为公众号 微信号，长度不超过30个字符</p>
+					</div>
+					<div class="liaddright" id="id-text"></div>
+				</li>
+				<li>
+					<span class="lileft">真实姓名</span>
+					<div class="liright">
+						<select name = "realNameId" class="my_selected"  data-edit-select="1"  onmousedown="if(this.options.length>3){this.size=10}" onblur="this.size=0" onchange="this.size=0"  style="position:absolute;z-index:1;">
+						#{list supervisor}
+							<option value = "${_?.id}" >${_?.reality_name}</option>
+						#{/list}
+						</select>
+					</div>
+				</li>
+				<li>
+					<span class="lileft"></span>
+					<div class="liright">
+						<input type="button" class="WeChatbut" id="sub-service" value="保存">
+						<input type="reset" value="取消" class="WeChatbut addWeChatbut">
+					</div>
+				</li>
+			</ul>
+	</form>
+</div>
+<script type="text/javascript">
+	$(function(){
+		$("#sub-service").click(function(){
+			var Names = $("#name-service").val();
+			var Ids = $("#id-service").val();
+			var reg=/^\w{1,10}@(OUYE0312)$/;
+			if(Names == ""){
+				$("#name-text").html("请输入客服昵称");
+				return false;
+			}else{
+				$("#name-text").html("");
+			}
+			if(Ids == ""){
+				$("#id-text").html("请输入客服账号");
+				return false;
+			}else if(!reg.test(Ids)){
+				$("#id-text").html("请正确输入客服账号");
+				return false;
+			}
+			$.ajax({
+				  url:'@{back.weChat.CustomerMessageCtrl.judgeKfAccount()}',
+				  type: 'post',
+				  dataType: 'JSON',
+				  data:{'kf_account':Ids},
+				  success: function (data) {
+					  /* 判断返回值客服账号是否存在 */
+				    if(data){
+				    	$("#id-text").html("");
+				    	$("#form-service").submit();
+				    }else{
+				    	$("#id-text").html("客服账号已存在");
+				    }
+				  },
+				  error:function(data){
+					  alert('错误')
+				  }
+				})
+			
+		})
+
+	})
+</script>

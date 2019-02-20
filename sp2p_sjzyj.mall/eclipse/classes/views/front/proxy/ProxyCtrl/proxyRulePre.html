@@ -1,0 +1,30 @@
+#{extends 'front/proxy/proxyMainPre.html' /}
+<!-- 代理商收益规则  -->
+<div class="message_container">
+    <div class="income_vessel">
+		<h3>收益规则</h3>
+	    <div class="table_title">
+	    		<div class="Commission-list additionStyle">
+		    		<b>理财期限</b>
+		    		#{list proxyRule}
+		    		<span><i class="wide1">${_?.timeLimit}</i>个月</span>
+		    		#{/list}
+		    	</div>
+		    	<div class="Commission-list additionStyle">
+		    		<b>提成点</b>
+		    		#{list proxyRule}
+		    		<span><i class="wide1">${_?.discountRate}</i>‱</span>
+		    		#{/list}
+		    	</div>
+		    	<div class="Commission-list additionStyle">
+		    		<b>提成计算举例说明</b>
+		    		#{list proxyRule}
+		    		<span><em class="declare">1万元*${_?.discountRate}‱=${_?.sum}元</em></span>
+		    		#{/list}
+		    	</div>
+	    </div>
+	</div>					
+</div>
+<script type="text/javascript">	
+		$('.Rule').addClass('text-color').siblings().removeClass("text-color");
+</script>

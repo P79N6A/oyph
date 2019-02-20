@@ -1,0 +1,96 @@
+#{extends 'back/spread/RedpacketCtrl/redpacketsMain.html' /}
+	#{set title:'推广 | 红包 | 红包规则' /}
+	#{set smallclass:1 /}
+	#{set crumbs:'推广>红包>红包规则'/}
+
+<div class="back-main">
+	<div class="back-cont">
+		<div class="back-infor">
+			<h2 class="back-infor-head"><span class="left">红包规则</span>
+			#{rightMng rightId:701002}
+			<a href="javascript:void(0);" class="right iconfont finance-edit" data-title="编辑" >&#xe602;</a>
+			#{/rightMng}
+			</h2>
+			<div class="back-infor-lcset back-infor-getset">
+				<p>但红包金额设置为0时，该场景的红包将被不会触发，前台红包栏目也不会显示该红包类型。</p>
+				<form action="@{back.spread.RedpacketCtrl.editRedpackets()}" method="POST" id="form_redpacket">
+					#{authenticityToken /}
+					#{list items:redPackets,as:'redpacket'}
+						<p class="back-experience-set">
+							<label>
+								<span class="lileft">${redpacket.name}</span>
+									-->红包金额
+								<label class="back-unitinput">
+									<input type="text" name="${redpacket._key}" disabled="disabled" oninput="$(this).ndigitInteger(3)" onpropertychange="$(this).ndigitInteger(3)" value="#{formatIntMoney money:redpacket?.amount?:0 /}"  class="width01 iffocus"><i class="unit">元</i>
+								</label>
+									红包使用条件(投资最小金额)
+								<label class="back-unitinput">
+									<input type="text" name="use_rule_${redpacket._key}" disabled="disabled" oninput="$(this).ndigitInteger(8)" onpropertychange="$(this).ndigitInteger(8)" value="#{formatIntMoney money:redpacket?.use_rule?:0 /}"  class="width01 iffocus"><i class="unit">元</i>
+								</label>
+									红包有效时长
+								<label class="back-unitinput">
+									<input type="text" name="limit_day_${redpacket._key}" disabled="disabled" oninput="$(this).ndigitInteger(3)" onpropertychange="$(this).ndigitInteger(3)" value="#{formatIntMoney money:redpacket?.limit_day?:0 /}"  class="width01 iffocus"><i class="unit">天</i>
+								</label>
+							</label>
+						</p>
+					#{/list}
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+<!-- 页面js -->
+<script type="text/javascript">
+	require(["back"],function(back){
+		// 搜索 排序 选中
+		require(["search","order","linechecked"]);
+		require(["validation/validateExt"]);
+
+		
+		$(".back-infor").each( function() {
+			var that = this, 
+			editBtn = $(this).find( ".finance-edit"),
+			editText = $(this).find("input:not(.easyui-datetimebox)");
+			editText.prop("disabled", true);
+			editBtn.click(function() {
+				disable = editText.prop("disabled");
+				if (disable) {
+					editBtn.html("&#xe630;").data("title","保存");
+					
+					$(".titlebox").text( editBtn.data('title'));
+					editText.prop("disabled", !disable);
+					editText.eq(0).focus();
+				} else {
+					$("#form_redpacket").submit();
+				}
+			});
+		});
+	
+		$("#form_redpacket").validate({
+			errorPlacement: function(error, element) {
+				error.addClass('back-notice').insertAfter(element.parent());
+			},
+			rules:{
+				#{list items:redPacketMap.keySet(),as:'redkey'}
+					"${redkey}":{
+						required:true,
+						digits:true,
+						range:[0,100]
+					},
+				#{/list}		
+			},
+			messages:{
+				#{list items:redPacketMap.keySet(),as:'redkey'}
+					"${redkey}":{
+						required:'请输入金额',
+						digits:'0~100的整数',
+						range:'0~100的整数'
+					},
+				#{/list}	
+			}
+		});
+	});
+</script>	

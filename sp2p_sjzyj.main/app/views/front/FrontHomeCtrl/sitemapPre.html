@@ -1,0 +1,73 @@
+#{extends 'common/frontMain.html' /} 
+#{set title: '网站地图'/}
+<link rel="stylesheet" type="text/css" href="/public/front/stylesheets/sitemap.css"/>
+<div class="wdw-cent">
+        <div class="sitemap">
+            <div class="title">
+                <h2><i class="icons icon-title"></i>网站地图</h2>
+            </div>
+            <div class="sm-cont-wrap">
+                <div class="sm-module">
+                    <h2>借款</h2>
+                    <ul>
+                        <li><a href="@{front.LoanCtrl.toLoanPre()}">借款</a></li>
+                    </ul>
+                </div>
+                <div class="sm-module">
+                    <h2>新手</h2>
+                    <ul>
+                        <li><a href="@{front.FrontHomeCtrl.newhandPre()}">新手指引</a></li>
+                        <li><a href="@{front.FrontHomeCtrl.lecturePre()}">大讲堂</a></li>
+                    </ul>
+                </div>
+                <div class="sm-module">
+                    <h2>信息披露</h2>
+                    <ul>
+                         <li><a href="@{front.PublishMessageCtrl.publishIndexPre()}">信息披露</a></li>
+                         <li><a href="@{front.PublishMessageCtrl.recordsInformationPre()}">备案信息</a></li>
+					     <li><a href="@{front.PublishMessageCtrl.tissueInformationPre()}">组织信息</a></li>
+					     <li><a href="@{front.PublishMessageCtrl.auditInformationPre()}">审核信息</a></li>
+					     <li><a href="@{front.PublishMessageCtrl.archivalInformationPre()}">经营信息</a></li>
+					     <li><a href="@{front.PublishMessageCtrl.auditingReportPre()}">审计报告</a></li>
+					     <li><a href="@{front.PublishMessageCtrl.toPublishMessagePre()}">实时数据</a></li>
+					     <li><a href="@{front.YearReportCtrl.yearReportOnePre()}">年度报告</a></li>
+                    </ul>
+                </div>
+                <div class="sm-module">
+                    <h2>关于我们</h2>
+                    <ul>
+                        <li><a href="@{front.FrontHomeCtrl.developPre()}">关于我们</a></li>
+                        <li><a href="@{front.FrontHomeCtrl.aboutUsPre()}">公司简介</a></li>
+                        <li><a href="@{front.FrontHomeCtrl.developPre()}">发展历程</a></li>
+                        <li><a href="@{front.FrontHomeCtrl.developPre(4)}">媒体资讯</a></li>
+                        <li><a href="@{front.FrontHomeCtrl.developPre(3)}">官方公告</a></li>
+                        <li><a href="@{front.FrontHomeCtrl.developPre(8)}">安全故事</a></li>
+                        <li><a href="@{front.FrontHomeCtrl.sainPre()}">安全保障</a></li>
+                        <li><a href="@{front.FrontHomeCtrl.developPre(7)}">荣誉资质</a></li>
+                        <li><a href="@{front.FrontHomeCtrl.newhandPre()}">新手指引</a></li>
+                        <li><a href="@{front.FrontHomeCtrl.developPre(5)}">联系我们</a></li>
+                        <li><a href="@{front.FrontHomeCtrl.developPre(6)}">帮助我们</a></li>
+                    </ul>
+                </div>
+                <div class="sm-module">
+                    <h2>积分商城</h2>
+                    <ul>
+                        <li><a href="@{front.MallCtrl.mallHomePre()}">积分商城</a></li>
+                    </ul>
+                </div>
+                <div class="sm-module">
+                    <h2>个人中心</h2>
+                    <ul>
+                        <li><a href="@{front.account.MyAccountCtrl.homePre()}">账户首页</a></li>
+                        <li><a href="@{front.account.MyAccountCtrl.homePre()}">账户信息</a></li>
+                        <li><a href="@{front.account.MyAccountCtrl.homePre()}">交易记录</a></li>
+                        <li><a href="@{front.account.MyInfoCtrl.toUserInfoPre()}">个人信息</a></li>
+                        <li><a href="@{front.account.MySecurityCtrl.securityPre()}">安全中心</a></li>
+                        <li><a href="@{front.account.MyRewardCtrl.awardPre()}">我的奖励</a></li>
+                        <li><a href="@{front.account.MyAccountCtrl.showNoticePre()}">我的消息</a></li>
+                        <li><a href="@{front.ActivityCtrl.frontActivityPre()}">讴业活动</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+   </div>

@@ -1,0 +1,213 @@
+#{extends 'common/front/accountMain.html' /}
+#{set title:'个人中心 | 安全中心 | 绑定银行卡' /}
+#{set smallclass:4 /}
+<style>
+	.icons{
+		display:block;
+		width:16px;
+		height:16px;
+		background: url(/public/front/images/refresh.png) no-repeat;
+		position: absolute;
+    	left: 3px;
+    	top: 17px;
+	}
+</style>
+<!-- 账户主要表格 -->
+<div class="account-box">
+	<div class="account-infor">
+		<!-- 修改银行卡 -->
+		<div class="account-setbank">
+			<h2 class="account-title">
+				<span class="left bankcard-title c3"><i class="icon"></i>绑定银行卡</span>
+				#{if common.constants.ConfConst.IS_LOCALHOST}
+				<a href="@{front.account.MySecurityCtrl.flushBindCardPre()}" class="right major bankcard-add">银行卡同步(测试环境使用)</a>
+				#{/if}
+				#{if isHaveCard}
+					<a id="bankcard_refresh" href="@{front.account.MySecurityCtrl.updateUserBankCardPre()}" style="margin-left: 20px;" class="right major bankcard-add" target="_self"><i class="icons"></i>刷新</a>
+					<a id="bankcard_add" href="javascript:void(0)" class="right major bankcard-add" target="_self"><i class="icon"></i>添加银行卡</a>
+				#{/if}
+				#{else}
+					<span class="right c9 bankcard-unadd">添加银行卡</span>
+				#{/else}
+			</h2>
+			<!-- <!-- 银行卡列表 -->
+			<div class="account-box" id="list_bankcard"></div>
+	
+			<div class="bankcard-addnote">
+				<span class="borrow-notehead"><i class="icon note-icon"></i>温馨提示：</span><br/>
+				1. 请先将本人的银行卡与“宜宾商业银行”存管账户进行绑定，否则无法提现；<br/>
+				2. 确保本人的银行卡开户人真实姓名与平台实名认证的真实姓名一致；<br/>
+				3. 若绑定银行卡过程中遇到任何问题，请及时联系客服。<br/>
+				4. 平台暂时支持的银行卡有:工商银行、交通银行、中国银行、建设银行、光大银行、中信银行、兴业银行、邮政银行、广发银行、浦发银行、北京银行、平安银行、渤海银行、上海银行、宜宾市商业银行
+			</div>
+			<p class="returnprev">
+				<a href="@{front.account.MySecurityCtrl.securityPre()}" class="backpage"><i class="icon return-icon"></i>返回</a>
+			</p>
+		</div>
+	</div>
+</div>
+
+<!-- 绑卡弹窗 -->
+<div class="dialog" id="bandcard">
+	<div class="dialog-bg"></div>
+	<div class="dialog-cont trusteeship-dialog">
+		<h2 class="dialog-head">
+			<span class="left">平台提示</span>
+		</h2>
+		<div class="trusteeship-cont">
+			<div class="trusteeship-wrap">
+				<i class="trusteeship-icon"></i>
+				<p class="major">请在新页面完成绑卡操作。</p>
+				<a href="@{front.account.MySecurityCtrl.securitysPre()}" class="bdbtn">绑卡成功</a>
+				<p class="trusteeship-help"><a href="@{front.FrontHomeCtrl.helpPre(models.common.entity.t_help_center.Column.FINANCIAL_KNOWLEDGE.code,1)}" class="c9">绑卡遇到问题></a></p>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="dialog" id="mobilePhone" style="display: none;">
+	<div class="dialog-bg"></div>
+	<div class="dialog-cont trusteeship-dialog" style="left: 50%; top: 50%; opacity: 1; margin-top: -105px; margin-left: -320px;">
+		<h2 class="dialog-head">
+			<span class="left">平台提示</span>
+		</h2>
+		<div class="trusteeship-cont">
+			<div class="band-tel">
+			请输入银行预留手机号:<input type="text" maxlength="11" class="text-tel" id="mmobile">
+			</div>
+			<div class="band-btn">
+				<input type="button" value="确定" class="cbtn" id="sure">
+				<input type="reset" value="取消" class="cbtn" id="cancel">
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+require(['front'],function(front){
+	$("#bankcard_add").click(function(){
+		#{if isSimulated}
+			alert("模拟登录不能执行该操作");
+			return false;
+		#{/if}
+		#{else}
+			$.ajax({
+				url :"@{front.account.MySecurityCtrl.transactionPasswordValue()}",
+				type :'post',
+				async :false,
+				data :{'userId' : ${session.userId} },
+				dataType :"text",
+				success : function (data) {
+					if (data == 1) {
+						$('#mobilePhone').show();
+						$('#cancel').click(function () {
+							$('#mobilePhone').hide();
+						});
+						$('#sure').click(function () {
+							$.ajax({
+								url:"@{front.account.MySecurityCtrl.checkUserMobile()}",
+								type:'post',
+								async:false,
+								data:{ 'mobile' : $("#mmobile").val() },
+								dataType:"json",
+								success:function (data) {
+									if (data) {
+										$('#mobilePhone').hide();
+										$('#bandcard').dialog();
+										window.open("@{front.account.MySecurityCtrl.toBindCardPre()}?mobilePhone="+$("#mmobile").val());
+									} else {
+										alert("手机号输入有误,请重新输入!");
+									}
+								}
+							});
+						});
+					} else {
+						alert("请设置交易密码");
+					}
+				}
+			});
+			
+		#{/else}
+	});
+	
+	listOfUserBankCardPre(1,5);
+})
+
+//设置默认银行卡
+function setDefaultCard(id){
+	#{if isSimulated}
+			alert("模拟登录不能执行该操作");
+			return false;
+	#{/if}
+	#{else}
+	$.ajax({
+		url : "@{front.account.MySecurityCtrl.setDefaultBankCard()}",
+		type : "POST",
+		data : {
+			"id" : id
+		},
+		dataType:"json",
+		success : function(data) {
+			var flag = interceptorCheck(data);
+			if(!flag){
+				return;
+			}
+			if(data.result < 1){
+				alert(data.msg);
+			} else {
+				location.reload();
+			}
+		}
+	});
+	#{/else}
+}
+
+//银行卡列表 
+function listOfUserBankCardPre(currPage, pageSize){
+	$.ajax({
+		url : "@{front.account.MySecurityCtrl.listOfUserBankCardPre()}",
+		type : "GET",
+		data : {
+			"currPage" : currPage,
+			"pageSize" : pageSize
+		},
+		success : function(data) {
+			var flag = interceptorCheck(data);
+			if(!flag){
+				return;
+			}
+			$("#list_bankcard").html(data);
+			// 表格隔行换色
+			$('.account-table').each(function(){
+				$(this).children('tbody').children('tr:not(.account-bill):even').addClass('even');
+			});
+		}
+	 });
+}
+
+
+</script>
+
+<style type="text/css">
+	.band-tel{
+		color: black;
+	}
+	.text-tel{
+		width:200px;
+		height:25px;
+		outline: none;
+		border: 1px solid black;
+		padding-left: 8px;
+		margin-left: 20px;
+	}
+	.band-btn{
+		margin-top: 30px;
+	}
+	.band-btn .cbtn{
+		width: 80px;
+		height: 35px;
+		background: #f77b0f;
+		color: #fff;
+		margin: 0 20px;
+	}
+</style>

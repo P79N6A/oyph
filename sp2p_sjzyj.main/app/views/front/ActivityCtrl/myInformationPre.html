@@ -1,0 +1,310 @@
+#{if flag == true}
+<form action="@{front.ActivityCtrl.addUsers()}" method="POST" id="addUser">
+<h1 class="regards">尊敬的${user?.name}<span>您好</span></h1>
+<div class="information">
+	<h2 class="headline">【上传信息】</h2>
+	<p>1、照片必须是情侣照，照片名字为两个人的名字。（你的名字在前爱人名字在后）</p>
+    <p>2、黑白彩色不限</p>    
+    <p>3、照片必须是本人原创</p>
+    <p>4、照片大小不得超过5m</p>
+    <p>5、每人每天限投1票</p>
+    <p>6、有关照片造成的纠纷或责任，由参赛者本人承担</p>
+    <p>7、如果上传照片不成功，请联系15511331912（微信），将图片发送给该微信。</p>  
+</div>
+<div class="information-wrap">
+    <div class="information-pic">
+    	   <div class="print">
+    	   <img id="image" name="image" src="" onerror="this.src='/public/back/images/noimg.jpg'" style="width: 500px; height: 400px;">
+    	   </div>
+    	   <label class="back-upbtn" style="margin-top: 20px;">
+               <input style="width: 180px;" type="file" class="upload_file" value="" accept=".jpg,.jpeg,.png,.gif" name="imgFile" id="imgFile" onchange="upload()"/>
+               <span class="buttonPic">点击上传照片</span>
+               <input type="hidden" name="flag" value="${flag}">
+               <input type="hidden" id="imageUrl" name="imageUrl" >
+               <input type="hidden" id="activityId" name="activityId" value="${voteActivity?.id}" >
+           </label>
+    </div>
+    <div class="slogan">
+    	 <p>昵&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;称：<input type="text" name="name" id="name" /></p>
+    	 <p>照片信息：<input type="text" name="description" id="description" /></p>
+    	 <p>参赛口号：<input type="text" name="slogan" id="slogan" /></p>
+    	 <div class="affirm">
+    	 	<input type="submit" name="" id="anniu1" value="提交" />
+    	 	 <input type="reset" id="anniu2" value="取消" />
+    	 </div>
+    </div>
+</div>
+<h2 class="headline">【奖品设置】</h2>
+<div class="text-wrap text-big">
+	<p>1、投票达到215票（玫瑰花），即可获得讴业普惠特意为本次活动订制纪念
+                                                          水杯1个</p>
+	 <img src="/public/front/activity/333333.jpg"/>
+	 <p>2、投票数达到521票（玫瑰花），即可获得永久玫瑰花</p>
+	 <img src="/public/front/activity/664.jpg" />
+	 <p>3、投票达到999票（玫瑰花），即可获得一人高抱熊</p>
+	 <img src="/public/front/activity/55V.jpg"/>
+	 <p>4、投票达到1314票（玫瑰花），情侣手表一对。</p>
+	 <img src="/public/front/activity/2222.jpg"/>
+	 <p>5、投标达到1999票（玫瑰花），即可获得情侣婚纱写真</p>
+	<img src="/public/front/activity/3334.jpg"/>
+</div>
+</form>
+#{/if}
+
+#{if flag==false}
+	#{if parts?.status?.code == 0}
+	<h1 class="regards">尊敬的${user?.name}<span>您好</span></h1>
+	<div class="tupian">
+		<div class="tu-kuang1" style="float: right; height: auto;">
+		    <p>您的资料正在审核当中...</p>
+		</div>
+	</div>
+	#{/if}
+	
+	#{if parts?.status?.code == 1}
+	<h1 class="regards">尊敬的${user?.name}<span>您好</span></h1>
+	<div class="tupian" style="height: 50px; margin-bottom: 20px;">
+		<div class="tu-kuang1" style="float: right; height: auto; margin: 0;">
+			<p style="color: red;">您的资料已通过审核</p>
+		</div>
+	</div>
+	<div class="information">
+		<h2 class="headline">【上传信息】</h2>
+		<p>1、照片必须是情侣照，照片名字为两个人的名字。（你的名字在前爱人名字在后）</p>
+	    <p>2、黑白彩色不限</p>    
+	    <p>3、照片必须是本人原创</p>
+	    <p>4、照片大小不得超过5m</p>
+	    <p>5、每人每天限投1票</p>
+	    <p>6、有关照片造成的纠纷或责任，由参赛者本人承担</p>
+	    <p>7、如果上传照片不成功，请联系15511331912（微信），将图片发送给该微信。</p>  
+	</div>
+	<div class="information-wrap">
+	    <div class="information-pic">
+    	   <div class="print">
+    	   <img id="image" name="image" src="${parts?.img_url}" onerror="this.src='/public/back/images/noimg.jpg'" style="width: 500px; height: 400px;">
+    	   </div>
+    	   <label class="back-upbtn" style="margin-top: 20px;">
+               <input style="width: 180px;" type="file" class="upload_file" value="" accept=".jpg,.jpeg,.png,.gif" name="imgFile" id="imgFile" onchange="upload()"/>
+               <span class="buttonPic">点击上传照片</span>
+           </label>
+	    </div>
+	    <div class="slogan">
+	    	 <p>昵&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;称：<input type="text" name="name" id="name" readonly="readonly" value="${parts?.name}" /></p>
+	    	 <p>照片信息：<input type="text" name="description" id="description" readonly="readonly" value="${parts?.description}" /></p>
+	    	 <p>参赛口号：<input type="text" name="slogan" id="slogan" readonly="readonly" value="${parts?.slogan}" /></p>
+	    </div>
+	</div>
+	<h2 class="headline">【奖品设置】</h2>
+	<div class="text-wrap text-big">
+		<p>1、投票达到215票（玫瑰花），即可获得讴业普惠特意为本次活动订制纪念
+	                                                          水杯1个</p>
+		 <img src="/public/front/activity/333333.jpg"/>
+		 <p>2、投票数达到521票（玫瑰花），即可获得永久玫瑰花</p>
+		 <img src="/public/front/activity/664.jpg" />
+		 <p>3、投票达到999票（玫瑰花），即可获得一人高抱熊</p>
+		 <img src="/public/front/activity/55V.jpg"/>
+		 <p>4、投票达到1314票（玫瑰花），情侣手表一对。</p>
+		 <img src="/public/front/activity/2222.jpg"/>
+		 <p>5、投标达到1999票（玫瑰花），即可获得情侣婚纱写真</p>
+		<img src="/public/front/activity/3334.jpg"/>
+	</div>
+	#{/if}
+	#{if parts?.status?.code == 2}
+		<form action="@{front.ActivityCtrl.addUsers()}" method="POST" id="addUser">
+		<h1 class="regards">尊敬的${user?.name}<span>您好</span></h1>
+		<div class="tupian" style="height: 50px; margin-bottom: 20px;">
+			<div class="tu-kuang1" style="float: right; height: auto; margin: 0;">
+				<p style="color: red;">您的资料未通过审核,请重新上传</p>
+				<p style="color: red; font-weight: 700;">审核建议：</p>
+                <p style="color: red;">${parts?.verifier_idea}</p>
+			</div>
+		</div>
+		<div class="information">
+			<h2 class="headline">【上传信息】</h2>
+			<p>1、照片必须是情侣照，照片名字为两个人的名字。（你的名字在前爱人名字在后）</p>
+		    <p>2、黑白彩色不限</p>    
+		    <p>3、照片必须是本人原创</p>
+		    <p>4、照片大小不得超过5m</p>
+		    <p>5、每人每天限投1票</p>
+		    <p>6、有关照片造成的纠纷或责任，由参赛者本人承担</p>
+		    <p>7、如果上传照片不成功，请联系15511331912（微信），将图片发送给该微信。</p>  
+		</div>
+		<div class="information-wrap">
+		    <div class="information-pic">
+	    	   <div class="print">
+	    	   <img id="image" name="image" src="${parts?.img_url}" onerror="this.src='/public/back/images/noimg.jpg'" style="width: 500px; height: 400px;">
+	    	   </div>
+	    	   <label class="back-upbtn" style="margin-top: 20px;">
+	               <input style="width: 180px;" type="file" class="upload_file" value="" accept=".jpg,.jpeg,.png,.gif" name="imgFile" id="imgFile" onchange="upload()"/>
+	               <span class="buttonPic">点击上传照片</span>
+	           </label>
+		    </div>
+		    <div class="slogan">
+		    	 <p>昵&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;称：<input type="text" name="name" id="name" value="${parts?.name}" /></p>
+		    	 <p>照片信息：<input type="text" name="description" id="description" value="${parts?.description}" /></p>
+		    	 <p>参赛口号：<input type="text" name="slogan" id="slogan" value="${parts?.slogan}" /></p>
+		    	 <div class="affirm">
+		    	 	<input type="submit" name="" id="anniu1" value="提交" />
+		    	 	<input type="reset" id="anniu2" value="取消" />
+		    	 </div>
+		    </div>
+		</div>
+		<h2 class="headline">【奖品设置】</h2>
+		<div class="text-wrap text-big">
+			<p>1、投票达到215票（玫瑰花），即可获得讴业普惠特意为本次活动订制纪念
+		                                                          水杯1个</p>
+			 <img src="/public/front/activity/333333.jpg"/>
+			 <p>2、投票数达到521票（玫瑰花），即可获得永久玫瑰花</p>
+			 <img src="/public/front/activity/664.jpg" />
+			 <p>3、投票达到999票（玫瑰花），即可获得一人高抱熊</p>
+			 <img src="/public/front/activity/55V.jpg"/>
+			 <p>4、投票达到1314票（玫瑰花），情侣手表一对。</p>
+			 <img src="/public/front/activity/2222.jpg"/>
+			 <p>5、投标达到1999票（玫瑰花），即可获得情侣婚纱写真</p>
+			<img src="/public/front/activity/3334.jpg"/>
+		</div>
+		<div class="f2" style="height: 700px;">
+			<div class="size1" style="margin-bottom: 30px;">
+				<p>尊敬的${user?.name}会员您好</p>
+			</div>
+			<div class="tupian" style="height: 50px; margin-bottom: 20px;">
+				<div class="tu-kuang1" style="float: right; height: auto; margin: 0;">
+					<p style="color: red;">您的资料未通过审核,请重新上传</p>
+					<p style="color: red; font-weight: 700;">审核建议：</p>
+	                <p style="color: red;">${parts?.verifier_idea}</p>
+				</div>
+			</div>
+			<div class="tupian">
+				
+				<div class="tu-kuang1">
+					<p style="color: #fba053;">【上传须知】</p>
+				    <p style="color: black;">1、${voteActivity?.pic_need}。</p>
+				    <p style="color: black;">2、黑白彩色不限。</p>
+				    <p style="color: black;">3、照片必须是本人原创。</p>
+				    <p style="color: black;">4、图片大小必须在5M以内。</p>
+				    <p style="color: black;">5、每人每天限投3票</p>
+	                <p style="color: black;">6、有关照片造成的纠纷或责任，由参赛者本人承担。</p>
+	                <p style="color: black;">7、如果上传照片不成功，请联系15511331912（微信），将图片发送给该微信。</p>
+					<div class="apellation-1">
+					    <div>
+		                    <label class="back-upbtn">
+		                        <input type="file" class="upload_file" value="" accept=".jpg,.jpeg,.png,.gif" name="imgFile" id="imgFile" onchange="upload()"/>
+		                        <span class="buttonPic">点击上传照片</span> 
+		                        <input type="hidden" name="flag" value="${flag}">
+		                        <input type="hidden" id="imageUrl" name="imageUrl" value="${parts?.img_url}">
+		                        <input type="hidden" id="activityId" name="activityId" value="${voteActivity?.id}" >
+		                        <input type="hidden" name="Ids" value="${parts?.id}">
+		                    </label>
+		                </div>
+						<p style="margin-top: 15px;">昵&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;称:&nbsp;<input type="text" name="name" id="name" value="${parts?.name}"></p>
+						<p>参赛口号:&nbsp;<input type="text" name="slogan" id="slogan" value="${parts?.slogan}"></p>
+						<p>照片信息:&nbsp;<input type="text" name="description" id="description" value="${parts?.description}"></p>
+					</div>
+					
+			        <div class="apellation-2"><input type="submit" value="提交" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="reset" value="取消" /></div>
+				</div>
+				<div class="tu-kuang">
+	                <img id="image" name="image" src="${parts?.img_url}" onerror="this.src='/public/back/images/noimg.jpg'" style="width: 394px; height: 500px;">
+	            </div>
+			</div>
+		</div>
+		<div class="jieshao">
+		    <p style="font-size:25px; color: #fba053;">【奖品设置】</p>
+		    <p>1、投票数前5名，评选出“有爱家”“团圆家”“欢乐家”“幸福家”“创意家”五个奖项。</p>
+			<p style="font-size:25px; color: #000;">奖品：第一名：价值1088的航拍无人机一个。（活动奖品具体以实物为准，图片仅供参考。）</p>
+			<img alt="" src="/public/back/images/wurenji.png">
+			<p> 奖品：第二名：价值988的桌面足球一台。（活动奖品具体以实物为准，图片仅供参考。）</p>
+			<img alt="" src="/public/back/images/prize-2.jpg">
+			<p> 奖品： 第三名：价值888的越野山地自行车一个。（活动奖品具体以实物为准，图片仅供参考。）</p>
+			<img alt="" src="/public/back/images/prize-3.png">
+			<p> 奖品：  第四名：价值788的拍立得一台。（活动奖品具体以实物为准，图片仅供参考。）</p>
+			<img alt="" src="/public/back/images/prize-4.png">
+			<p> 奖品：  第五名：价值688的尤克里里一个。（活动奖品具体以实物为准，图片仅供参考。）</p>
+			<img alt="" src="/public/back/images/prize-5.png">
+			<p> 2、 投票数前50名，都可获得讴业普惠特意为本次活动订制的价值100元的精美家庭礼包。</p>
+			<p> 精美家庭礼包：订制创意骨瓷水杯+订制创意亚麻抱枕（活动奖品具体以实物为准，图片仅供参考。）</p>
+			<img alt="" src="/public/back/images/prize-6.png">
+			<img alt="" src="/public/back/images/prize=7.png">
+	    </div>
+	</form>
+	#{/if}
+#{/if}
+
+<script type="text/javascript">
+require(['front'],function(front){
+	
+	//上传功能的js
+	require(["ajaxfileupload"]);
+	
+	//验证信息
+	$("#addUser").submit(function(){
+		#{ifnot currUser}
+			window.location.href="@{front.LoginAndRegisteCtrl.loginPre()}";
+			return false;
+		#{/ifnot}
+		#{if isSimulated}
+	    	alert("模拟登录不能执行该操作");
+	    	return false;
+	    #{/if}
+	    #{else}
+		var imageUrl = $('#imageUrl').val();
+		var name = $('#name').val();
+		var slogan = $('#slogan').val();
+		var description = $('#description').val();
+		
+		if(imageUrl==null || imageUrl=='' || imageUrl==undefined){
+			weakDialog('请上传照片!');
+			return false;
+		}
+		
+		if(name==null || name=='' || name==undefined){
+			weakDialog('请输入名称!');
+			return false;
+		}
+		
+		if(slogan==null || slogan=='' || slogan==undefined){
+			weakDialog('请输入口号!');
+			return false;
+		}
+		
+		if(description==null || description=='' || description==undefined){
+			weakDialog('请输入照片信息!');
+			return false;
+		}
+		
+	    $('.dialog').dialog();
+	    #{/else}
+	});
+});
+
+function upload(){
+	var fileId = "imgFile";
+	var file = $("#" + fileId).val();
+	var pos = file.lastIndexOf("\\");
+	var fileName = file.substring(pos + 1);
+	
+	$.ajaxFileUpload({
+		url : '@{front.ActivityCtrl.updatePhoto()}',
+		secureuri : false,
+		fileElementId : fileId,
+		data:{
+			"fileName":fileName
+		},
+		dataType : 'json',
+		success : function(data) {
+			console.info(data);
+			var flag = interceptorCheck(data);
+			if(!flag){
+				return;
+			}
+			if(data.code == 1){
+				$("#image").attr("src", data.obj);
+				$("#imgFile").val('');
+				$("#imageUrl").val(data.obj);
+			} else {
+			alert(data.msg);
+			}
+		}
+	})	
+}
+</script>

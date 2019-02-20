@@ -1,0 +1,84 @@
+<!-- 下拉账单 -->
+<td colspan="9">
+	<div class="account-billbox none">
+		<table width="100%">
+			<tr height="46">
+				<td>账单编号</td>
+				<td>期数</td>
+				<td>本金</td>
+				<td>利息</td>
+				<td>服务费</td>
+				<td>合计</td>
+				<td>到期时间</td>
+				<td>还款时间</td>
+				<td>状态</td>
+				<td colspan="2">操作</td>
+			</tr>
+			#{list billList}
+			<tr height="46">
+				<input type="hidden" id="repay_bill_${_?.id}"/>
+				<td>${_?.bill_no}</td>
+				<td>${_?.period}/${totalPeriod}</td>
+				<td>${_?.repayment_corpus?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}</td>
+				<td>${_?.repayment_interest?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}</td>
+				<td>${serviceAmount.format(common.constants.Constants.FINANCE_FORMATE_TAD)}</td>
+				<td>${(_?.repayment_corpus+_?.repayment_interest + serviceAmount).format(common.constants.Constants.FINANCE_FORMATE_TAD)}</td>
+				<td>${_?.repayment_time?.format(common.constants.Constants.DATE_FORMATE)}</td>
+				<td>${_?.real_repayment_time?.format(common.constants.Constants.DATE_FORMATE)?:"----"}</td>
+				#{if _?.status==models.core.entity.t_bill.Status.NORMAL_NO_REPAYMENT||_?.status==models.core.entity.t_bill.Status.ADVANCE_PRINCIIPAL_NO_REPAYMENT}
+				<td class="assistant">未还</td>
+				<td width="50px"><a class="major" onclick="repayBill(${_?.id})" >还款</a>
+					<form action="@{front.account.MyFundCtrl.repaymentCheckPass()}" method="POST" id="form_${_?.id}" >
+						<input type="hidden" name="billSign" value="${_?.sign}"/>
+					</form>
+				</td>
+				<td width="70px">
+					#{if _?.status==models.core.entity.t_bill.Status.NORMAL_NO_REPAYMENT && totalPeriod>1}
+					<a class="major" onclick="repayBillAll(${_?.id})" >提前还款</a>
+					 <form action="@{front.account.MyFundCtrl.repaymentCheckPasses()}" method="POST" id="formAll_${_?.id}" >
+						<input type="hidden" name="billSign" value="${_?.sign}"/>
+					</form> 
+					#{/if}
+					#{else}
+						<a href="#">----</a>
+					#{/else}
+				</td>
+				
+				
+				#{/if}
+				#{else}
+				<td class="c9">已还</td>
+				<td colspan="2">----</td>
+				
+				#{/else}
+			</tr>
+			#{/list}
+		</table>
+	</div>
+</td>
+
+<script type="text/javascript">
+function repayBill(billId){
+	#{if isSimulated}
+		alert("模拟登录不能执行该操作");
+		return false;
+	#{/if}
+	#{else}
+			//处理中遮罩 
+		waitingDialog();
+		$("#form_"+billId).submit();
+	#{/else}
+}
+
+function repayBillAll(billId){
+	#{if isSimulated}
+		alert("模拟登录不能执行该操作");
+		return false;
+	#{/if}
+	#{else}
+		//处理中遮罩 
+		waitingDialog();
+		$("#formAll_"+billId).submit();
+	#{/else}
+}
+</script>

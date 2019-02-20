@@ -1,0 +1,184 @@
+<script type="text/javascript" src="/public/front/javascripts/jquery.qrcode.js" ></script>
+<style>
+	.Extension-left{
+		width: 670px;
+		height: 150px;
+		margin-top: 35px;
+		line-height: 55px;
+	}
+	.ExtensionLink{
+		width: 465px;
+		height: 28px;
+		border: 1px solid #dcdcdc;
+		outline: none;
+		padding: 0 10px;
+	}
+	.copyBtn{
+		width: 70px;
+		height: 30px;
+		border: none;
+		outline: none;
+		margin-left: 25px;
+		color: #fff;
+		background: #ffaf05;
+	}
+	.Extension-right{
+		 width:150px;
+		 height:150px; 
+		 margin-top: 35px;
+		 margin-left: 50px;
+	}
+</style>
+<h1 class="azamoney-nav">CPS推广</h1>
+<div class="account-main " id="cpsMain">
+<table class="account-table" width="100%">
+		<tr height="46">
+			<th>活动名称</th>
+			<th>推广会员</th>
+			<th>累计总额</th>
+			<th>推广时间</th>
+		</tr>
+		#{if page?.page}
+		#{list items:page?.page,as:'cpsSpreadRecords'}
+			<tr height="46">
+				<td>${cpsSpreadRecords?.activityName}</td>
+				<td>${cpsSpreadRecords?.user_name}</td>
+				<td>${cpsSpreadRecords?.total_invest}</td>
+				<td>${cpsSpreadRecords?.time?.format(common.constants.Constants.DATE_TIME_FORMATE)}</td>
+			</tr>
+		#{/list}
+		#{/if}
+	</table>
+	#{if page?.page}
+	#{frontPageTag page:page,showPage:'showMyCps' /}
+	#{/if}
+	#{else} 
+		<div class="norecord-box c9">
+			暂无记录
+		</div>
+	#{/else}
+</div>
+<h1 class="azamoney-nav">推广方式</h1>
+<div class="account-main " id="cpsMain">
+	<div class="Extension-left left">
+		推广码：<span style="color: #f8952b;">${mobile}</span><br>
+		推广链接：<input class="ExtensionLink" id="ExtensionLink" type="text" value="${url}"><input class="copyBtn" onClick="copyUrl()" type="button" value="复制">
+	</div>
+	<div class="Extension-right left">
+	</div>
+</div>
+<script>
+
+
+require(['front'],function(front){
+	require(['share','ZeroClipboard/ZeroClipboard'],function(){
+		cpsShare();
+	});
+});
+
+
+
+/*二维码生成*/
+var link = $("#ExtensionLink").val();
+jQuery('.Extension-right').qrcode({
+    render: "canvas", //也可以替换为table
+    width: 150,
+    height: 150,
+    text: link
+});
+/*二维码生成*/
+
+//复制链接
+function copyUrl(){
+		var Url2=document.getElementById("ExtensionLink");
+		Url2.select(); // 选择对象
+		document.execCommand("Copy"); // 执行浏览器复制命令
+		alert("已复制好，可贴粘。");
+	}
+function cpsShare() {
+	//cps微信推广 
+	$('.cps—wx-share').each(function(){
+		if('placeholder' in document.createElement('input')){
+			if($(this).find('canvas').length == 0){
+				$(this).find('.code-area').qrcode({
+					width:100,
+					height:100,
+					text: $(this).find('.code-url').val()
+				});
+			}
+		}else{
+			if($(this).find('table').length == 0){
+				$(this).find('.code-area').qrcode({
+					render:'table',
+					width:100,
+					height:100,
+					text: $(this).find('.code-url').val()
+				});
+			}
+		}
+	});
+}
+
+function reciveCps(sign){
+	#{if isSimulated}
+		alert("模拟登录不能执行该操作");
+		return false;
+	#{/if}
+	#{else}
+ 		$.ajax({
+			url : "@{front.account.MyCpsCtrl.reciveCps()}",
+			type : "POST",
+			data : {
+				"cpsSign":sign
+			},
+			success : function(result) {
+				var flag = interceptorCheck(result);
+				if(!flag){
+					return;
+				}
+				if (result.code < 1) {
+					alert(result.msg);
+				} else {
+					weakDialog(result.msg);
+					showMyCps(1);
+				}
+				
+			}
+		});
+	#{/else} 	
+}
+
+function cpsExchange(){
+	#{if isSimulated}
+	alert("模拟登录不能执行该操作");
+	return false;
+	#{/if}
+	#{else}
+	$.ajax({
+		url : "@{front.account.MyCpsCtrl.cpsExchange()}",
+		type : "POST",
+		success : function(result) {
+			var flag = interceptorCheck(result);
+			if(!flag){
+				return;
+			}
+			
+			if (result.code < 1) {
+				alert(result.msg);
+			} else {
+				var	debtForm = $('#cpsConvDia');
+				var	mainTable = $('#cpsMain');
+				mainTable.addClass('none');
+				debtForm.removeClass('none');
+			}
+			
+		}
+	});
+	#{/else} 
+}
+
+require(['front'],function(front){
+	/* 回款计划 */
+	
+});
+</script>

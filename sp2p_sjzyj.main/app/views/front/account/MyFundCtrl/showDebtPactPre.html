@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>协议${' | '+settings?.get(common.constants.SettingKey.SEO_TITLE)+' | '+settings?.get(common.constants.SettingKey.PLATFORM_NAME)}</title>
+		<meta name="keywords" content="${settings?.get(common.constants.SettingKey.PLATFORM_NAME)}" />
+		<meta name="description" content="${settings?.get(common.constants.SettingKey.PLATFORM_NAME)}" />
+		<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+		<link rel="shortcut icon" type="image/png" href="${settings?.get(common.constants.SettingKey.PLATFORM_ICON_FILENAME)}" />
+		<link rel="stylesheet" type="text/css" href="@{'/public/front/stylesheets/front.css'}" />
+		<!-- 皮肤背景、颜色 -->
+		<link rel="stylesheet" type="text/css" href="@{'/public/front/themes/'+settings?.get(common.constants.SettingKey.THEME_NAME)+'/background.css'}" />
+		#{if settings?.get(common.constants.SettingKey.THEME_CUSTOMIZE).equals('0')}
+			<link rel="stylesheet" type="text/css" href="@{'/public/front/themes/'+settings?.get(common.constants.SettingKey.THEME_NAME)+'/color.css'}" />
+		#{/if}
+		#{else}
+			
+			#{set mainColor:'#'+settings?.get(common.constants.SettingKey.THEME_MAIN_COLOR) /}
+			#{set auxColor:'#'+settings?.get(common.constants.SettingKey.THEME_AUX_COLOR) /}
+			#{set thdColor:'#'+common.utils.StrUtil.colorByAlpha(settings?.get(common.constants.SettingKey.THEME_MAIN_COLOR)) /}
+			#{include 'common/front/colorCont.html' /}
+		#{/else}
+		
+	</head>
+	<body>
+		<style type="text/css">
+			body{background-image: none;}
+		</style>
+		<!-- 合同页面 -->
+		<div class="deal-box">
+	    	<!--开始 债权转让及回购协议-->
+	    	<div class="contract-box">
+	        	<div class="contract" style="background-color: rgb(255, 255, 255);">
+	            	 <!--开始 合同编号-->
+	                <div class="contract-serial"></div>
+	                <!--结束 合同编号-->
+	                #{verbatim}
+	                	${pact?.content}
+	                #{/verbatim}
+	            </div>
+	        </div>
+	    	<!--结束 债权转让及回购协议-->
+	       	<div class="contract-download">
+	       		<a href="@{front.account.MyFundCtrl.exportPactPre(pact?.sign)}" target="_blank" class="btn">下载合同</a>
+	       	</div>
+	    </div>
+	</body>
+</html>

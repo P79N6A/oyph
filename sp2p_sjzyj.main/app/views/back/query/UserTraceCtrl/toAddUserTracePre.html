@@ -1,0 +1,97 @@
+#{extends 'common/back/queryMain.html' /}
+	#{set title:'查询 | 交易状态 | 理财会员追踪' /}
+	#{set smallclass:6 /}
+	#{set crumbs:'查询>交易状态>添加追踪信息页面' /}
+	
+<div class="back-main">
+	<div class="back-usertop">
+		<b class="left font14">添加追踪信息</b>
+		<!-- 右侧功能按钮 -->
+		<div class="right back-rightbtns">
+			<a href="javascript:backAndRefresh('@{back.query.UserTraceCtrl.showServiceUserlistPre(0,0,1,10)}');"><i class="iconfont">&#xe60b;</i>返回</a>
+		</div>
+	</div>
+	<!-- 左侧菜单 -->
+	<form action="@{back.query.UserTraceCtrl.addUserTrace()}" method="POST" id="addUserTrace">
+		#{authenticityToken /}
+		<div class="back-cont">
+			<div class="back-infor">
+				<h2 class="back-infor-head">跟踪信息</h2>
+				<ul class="back-infor-set">
+					<li>
+						<span class="lileft">账号</span>
+						<div class="liright">
+							<input type="hidden" name="userId" value="${user?.id}"/>
+							<input type="hidden" name="serviceId" value="${person?.id}"/>
+							<input type="text" name="name" readonly="readonly" class="width05 required iffocus" value="${user?.name}" />
+						</div>
+					</li>
+					<li>
+						<span class="lileft">电话</span>
+						<div class="liright">
+							<input type="text" name="mobile" readonly="readonly" class="width05 required iffocus" value="${user?.mobile}" />
+						</div>
+					</li>
+					<li>
+						<span class="lileft">跟踪信息</span>
+						<div class="liright">
+							<textarea rows="5" cols="200" style="resize:none; margin: 10px 0px;" name="content"></textarea>
+						</div>
+					</li>
+					<li>
+						<span class="lileft">添加时间</span>
+						<div class="liright">
+							<input type="text" class="easyui-datetimebox" id="time" name="time" value="${flash?.time}" />
+						</div>
+					</li>
+				</ul>
+			</div>
+			<p class="back-audit-btns">
+				<input type="submit" id="pageSave" value="保存" class="bgbtn">
+				<input type="reset" value="取消" class="bdbtn">
+			</p>
+		</div>
+	</form>
+</div>	
+	
+	
+<script type="text/javascript">
+
+require(["back"],function(back){
+	require(["ajaxfileupload","datatime","cutImg"]);
+	
+	//添加广告图片
+	$("#addUserTrace").validate({
+		errorPlacement: function(error, element) {
+			error.addClass('back-notice').insertAfter(element);
+		},
+		rules:{
+			"name":{
+				required:true,
+				rangelength:[1,20]
+			},
+			"mobile":{
+				required:true,
+				rangelength:[1,20]
+			},
+			"time":{
+				required:true
+			}
+			
+		},
+		messages:{
+			"name":{
+				required:"账号不能为空"
+			},
+			"mobile":{
+				required:"电话不能为空"
+			},
+			"time":{
+				required:"添加时间不能为空"
+			}
+		}
+	});
+	
+});	
+</script>
+	

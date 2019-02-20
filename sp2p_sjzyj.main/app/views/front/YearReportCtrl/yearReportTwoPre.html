@@ -1,0 +1,193 @@
+#{extends 'common/frontMain.html' /} 
+#{set title: '首页'/} #{set AItem:4/}
+
+
+<link rel="stylesheet" type="text/css" href="@{'/public/front/stylesheets/yearReport.css'}" />
+
+<div class="reportBox">
+		<div class="chooseBox">
+			<select class="selectStyle" id="testSelect">
+			    <option value="-1">年度报告</option>
+			    <option value="5">2017年度报告</option>
+		   		<option value="1">2016年度报告</option>
+		   		<option value="2">2015年度报告</option>
+		   		<option value="3">2014年度报告</option>
+		   		<option value="4">2013年度报告</option>
+		   </select>
+		</div>
+		<div class="contentBox ">
+			<h1>2015年度报告</h1>
+			<div class="overview">
+				 <div class="contentBox-title">
+				 	基本信息
+				 </div>
+				 <div class="overview">
+	                <dl>
+	                    <dt class="item" id="uniscIdForColor1">统一社会信用代码/注册号：</dt>
+	                    <dd class="result" id="uniscId">15373459626</dd>
+	                </dl>
+	                <dl>
+	                    <dt class="item_right" id="entNameForColor1">企业名称：</dt>
+	                    <dd class="result" id="entName">石家庄菲尔德投资咨询有限公司</dd>
+	                </dl>
+	                <dl>
+	                    <dt class="item" id="addrForColor1">企业通信地址：</dt>
+	                    <dd class="result" id="addr">石家庄新华区赵陵铺镇北郡小区2-103</dd>
+	                </dl>
+	                <dl>
+	                    <dt class="item_right" id="postForColor1">邮政编码：</dt>
+	                    <dd class="result" id="postalCode">050000</dd>
+	                </dl>
+	                <dl>
+	                    <dt class="item" id="telForColor1">企业联系电话：</dt>
+	                    <dd class="result" id="tel">13932166356</dd>
+	                </dl>
+	                <dl>
+	                    <dt class="item_right" id="emailForColor1">企业电子邮箱：</dt>
+	                    <dd class="result" id="email">无</dd>
+	                </dl>
+	                <dl>
+	                    <dt class="item_right" id="empNumForColor1">从业人数：</dt>
+	                    <dd class="result" id="empNum">企业选择不公示</dd>
+	                </dl>
+	                <dl>
+	                    <dt class="item" id="busStForColor1">企业经营状态：</dt>
+	                    <dd class="result" id="busSt">开业</dd>
+	                </dl>
+	                <dl>
+	                    <dt class="item_right">是否有网站或网店：</dt>
+	                    <dd class="result" id="webIsOrNot">否</dd>
+	                </dl>
+	                <dl>
+	                    <dt class="item">有限责任公司本年度是否发生股东股权转让：</dt>
+	                    <dd class="result" id="alterStockInfo">否</dd>
+	                </dl>
+	                <dl>
+	                    <dt class="item">是否有投资信息或购买其他公司股权：</dt>
+	                    <dd class="result" id="forInvestment">否</dd>
+	                </dl>
+	                <dl>
+	                    <dt class="item">是否有对外提供担保信息：</dt>
+	                    <dd class="result" id="forGuaranteeinfo">否</dd>
+	                </dl>
+	            </div>
+	            <div class="annual_onlineshop websiteInformation">
+			        <div class="contentBox-title">
+			        	网站或网店信息
+				 	</div>
+			        
+			        <div id="needPaging_onlineshop" class="clearfix">
+			            <div class="td" style="background:#F3F7FA;color:#666;" id="dataTables_empty" colspan="4">暂无网站或网店信息</div>
+			        </div>
+			    </div>
+			    <div class="annual_share websiteInformation">
+		        	<div class="contentBox-title">
+			        	股东及出资信息
+				 	</div>
+				        <div id="needPaging_share_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer"><div class="row"><div class="col-sm-12"><table class="display dataTable no-footer" id="needPaging_share" role="grid" aria-describedby="needPaging_share_info">
+				            <thead>
+				            <tr role="row"><th width="6%" class="sorting_disabled" rowspan="1" colspan="1">序号</th><th class="sorting_disabled" rowspan="1" colspan="1">股东</th><th class="sorting_disabled" rowspan="1" colspan="1">认缴出资额（万元）</th><th width="13%" class="sorting_disabled" rowspan="1" colspan="1">认缴出资时间</th><th class="sorting_disabled" rowspan="1" colspan="1">认缴出资方式</th><th class="sorting_disabled" rowspan="1" colspan="1">实缴出资额（万元）</th><th width="13%" class="sorting_disabled" rowspan="1" colspan="1">实缴出资时间</th><th class="sorting_disabled" rowspan="1" colspan="1">实缴出资方式</th></tr>
+				            </thead>
+				
+				        <tbody><tr role="row" class="odd"><td>1</td><td>武镇海</td><td>1</td><td>2013年9月25日</td><td>货币</td><td>1</td><td>2013年9月25日</td><td>货币</td></tr><tr role="row" class="even"><td>2</td><td>董涛</td><td>9</td><td>2013年9月25日</td><td>货币</td><td>9</td><td>2013年9月25日</td><td>货币</td></tr></tbody></table><div id="needPaging_share_processing" class="dataTables_processing panel panel-default" style="display: none;">正在加载，请稍后</div></div></div></div>
+				</div>
+				<div class="annual_onlineshop websiteInformation">
+			        <div class="contentBox-title">
+			        	对外投资信息
+				 	</div>
+			        
+			        <div id="needPaging_onlineshop" class="clearfix">
+			            <div class="td" style="background:#F3F7FA;color:#666;" id="dataTables_empty" colspan="4">暂无对外投资信息</div>
+			        </div>
+			    </div>
+			    <div class="annual_assert websiteInformation" id="oneAss">
+			        <div class="contentBox-title">
+			        	 企业资产状况信息
+				 	</div>
+			        <table class="display" id="needPaging_assert">
+			            <tbody>
+			            <tr>
+			                <th>资产总额</th>
+			                <td id="assGroDisIs">企业选择不公示</td>
+			                <th>所有者权益合计</th>
+			                <td id="totEquDisIs">企业选择不公示</td>
+			            </tr>
+			            <tr>
+			                <th>营业总收入</th>
+			                <td id="vendIncDisIs" style="background:#f7f8fa">企业选择不公示</td>
+			                <th>利润总额</th>
+			                <td id="proGroDisIs" style="background:#f7f8fa">企业选择不公示</td>
+			            </tr>
+			            <tr>
+			                <th>营业总收入中主营业务收入</th>
+			                <td id="maiBusIncDisIs">企业选择不公示</td>
+			                <th>净利润</th>
+			                <td id="netIncDisIs">企业选择不公示</td>
+			            </tr>
+			            <tr>
+			                <th>纳税总额</th>
+			                <td id="ratGroDisIs" style="background:#f7f8fa">企业选择不公示</td>
+			                <th>负债总额</th>
+			                <td id="liaGroDisIs" style="background:#f7f8fa">企业选择不公示</td>
+			            </tr>
+			            </tbody>
+			        </table>
+			    </div>
+			    <div class="annual_guarantee websiteInformation" id="oneForGua">
+			        <div class="contentBox-title">
+			        	 对外提供保证担保信息
+				 	</div>
+			        <div id="needPaging_guarantee_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer"><div class="row"><div class="col-sm-12"><table class="display dataTable no-footer" id="needPaging_guarantee" role="grid" aria-describedby="needPaging_guarantee_info">
+			            <thead>
+			            <tr role="row"><th width="6%" class="sorting_disabled" rowspan="1" colspan="1">序号</th><th width="10%" class="sorting_disabled" rowspan="1" colspan="1">债权人</th><th width="10%" class="sorting_disabled" rowspan="1" colspan="1">债务人</th><th width="14%" class="sorting_disabled" rowspan="1" colspan="1">主债权种类</th><th width="14%" class="sorting_disabled" rowspan="1" colspan="1">主债权数额</th><th width="26%" class="sorting_disabled" rowspan="1" colspan="1">履行债务的期限</th><th width="11%" class="sorting_disabled" rowspan="1" colspan="1">保证的期间</th><th width="11%" class="sorting_disabled" rowspan="1" colspan="1">保证的方式</th></tr>
+			            </thead>
+			        <tbody><tr class="odd"><td valign="top" colspan="8" class="dataTables_empty">暂无对外提供保证担保信息</td></tr></tbody></table><div id="needPaging_guarantee_processing" class="dataTables_processing panel panel-default" style="display: none;">正在加载，请稍后</div></div></div></div>
+			    </div>
+			    <div class="annual_shareChanged websiteInformation">
+			        <div class="contentBox-title">
+			        	 股权变更信息
+				 	</div>
+			
+			        <div id="needPaging_shareChanged_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer"><div class="row"><div class="col-sm-12"><table class="display dataTable no-footer" id="needPaging_shareChanged" role="grid" aria-describedby="needPaging_shareChanged_info">
+			            <thead>
+			            <tr role="row"><th width="6%" class="sorting_disabled" rowspan="1" colspan="1">序号</th><th class="sorting_disabled" rowspan="1" colspan="1">股东</th><th class="sorting_disabled" rowspan="1" colspan="1">变更前股权比例</th><th class="sorting_disabled" rowspan="1" colspan="1">变更后股权比例</th><th width="13%" class="sorting_disabled" rowspan="1" colspan="1">股权变更日期</th></tr>
+			            </thead>
+			
+			        <tbody><tr class="odd"><td valign="top" colspan="5" class="dataTables_empty">暂无股权变更信息</td></tr></tbody></table><div id="needPaging_shareChanged_processing" class="dataTables_processing panel panel-default" style="display: none;">正在加载，请稍后</div></div></div></div>
+			    </div>
+			    <div class="annual_modify websiteInformation">
+			        <div class="contentBox-title">
+			          		  修改信息
+			        </div>
+			        <div id="needPaging_modify_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer"><div class="row"><div class="col-sm-12"><table class="display dataTable no-footer" id="needPaging_modify" role="grid" aria-describedby="needPaging_modify_info">
+			            <thead>
+			            <tr role="row"><th width="6%" class="sorting_disabled" rowspan="1" colspan="1">序号</th><th class="sorting_disabled" rowspan="1" colspan="1">修改事项</th><th class="sorting_disabled" rowspan="1" colspan="1">修改前</th><th class="sorting_disabled" rowspan="1" colspan="1">修改后</th><th width="13%" class="sorting_disabled" rowspan="1" colspan="1">修改日期</th></tr>
+			            </thead>
+			
+			        <tbody><tr class="odd"><td valign="top" colspan="5" class="dataTables_empty">暂无修改信息</td></tr></tbody></table><div id="needPaging_modify_processing" class="dataTables_processing panel panel-default" style="display: none;">正在加载，请稍后</div></div></div></div>
+			    </div>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+     //选中的值
+     $('#testSelect').change(function(){
+    	 var testSelect =$('#testSelect option:selected') .val();
+    	 if(testSelect==1){
+    		 window.location.href ="@{front.YearReportCtrl.yearReportOnePre()}"
+    	 }
+    	 if(testSelect==2){
+    		 window.location.href ="@{front.YearReportCtrl.yearReportTwoPre()}"
+    	 }
+    	 if(testSelect==3){
+    		 window.location.href ="@{front.YearReportCtrl.yearReportThreePre()}"
+    	 }
+    	 if(testSelect==4){
+    		 window.location.href ="@{front.YearReportCtrl.yearReportFourPre()}"
+    	 }
+    	 if(testSelect==5){
+    		 window.location.href ="@{front.YearReportCtrl.yearReportFivePre()}"
+    	 }
+     })
+     
+</script>

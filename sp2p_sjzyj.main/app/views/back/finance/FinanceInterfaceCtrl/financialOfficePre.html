@@ -1,0 +1,105 @@
+#{extends 'common/back/financeMain.html' /}
+	#{set title:'财务 | 财务信息表' /}
+	#{set smallclass:15 /}
+	#{set crumbs:'财务>财务信息表'/}
+<div class="back-main">
+	<div class="back-usertop">
+		<div class="left back-usermenu">
+			<a href="@{back.finance.FinanceInterfaceCtrl.balanceSheetPre()}">资产负债表</a>
+			<a href="@{back.finance.FinanceInterfaceCtrl.profitStatementPre()}">利润表</a>
+			<a href="@{back.finance.FinanceInterfaceCtrl.cashFlowSheetPre()}">现金流量表</a>
+			<a href="@{back.finance.FinanceInterfaceCtrl.financialOfficePre()}" class="selected">金融办</a>
+			<a href="@{back.finance.FinanceInterfaceCtrl.financialStatementsPre()}">财务报表</a>
+			<select id="searchMessage">
+				<option value="1">FP.FP01机构基本表报文</option>
+				<option value="2">FP.FP02机构关联方信息表报文</option>
+				<option value="3">FP.FP03客户基本信息表报文</option>
+				<option value="4">FP.FP04客户关联方信息表报文</option>
+				<option value="5">FP.FP05交易信息表报文</option>
+				<option value="6">FP.FP06借据信息表报文</option>
+				<option value="7">FP.FP07产品信息表报文</option>
+				<option value="8">FP.FP08产品投向表报文</option>
+				<option value="9">P.P01机构概括表报文</option>
+				<option value="10">P.P02股东信息表报文</option>
+				<option value="11">P.P03高管信息表报文</option>
+				<option value="12">P.P04客户信息表报文</option>
+				<option value="13">P.P05最大十家客户信息表报文</option>
+				<option value="14">P.P06贷款合同表报文</option>
+				<option value="15">P.P07投资合同表报文</option>
+				<option value="16">P.P08借款人还款明细表报文</option>
+				<option value="17">P.P09出借人收款明细表报文</option>
+				<option value="18">P.P10资产负债表报文</option>
+				<option value="19">P.P11机构利润表报文</option>
+				<option value="20">P.P12机构现金流量表报文</option>
+				<option value="21">P.P13内控情况表报文</option>
+			</select>
+			<input type="button" value="报送" style='width:50px;height: 30px;' id="Submitted">
+		</div>
+	</div>
+	<form action="@{back.finance.FinanceInterfaceCtrl.financialOfficePre()}" method="GET" id="financialOfficePre">
+			<input type="hidden" id="currPage" name="currPage" value="${page?.currPage}"/>
+	  		<input type="hidden" id="pageSize" name="pageSize" value="${page?.pageSize}"/>
+	  		<input type="hidden" id="showType" name="showType" value="${showType}"/>
+	</form>
+	<div class="back-cont">
+		<div class="back-box">
+			<table width="100%" class="back-table table-fixed">
+				<tr height="40">
+					<th width="70" class="align-left">编号</th>
+					<th>报文名称</th>
+					<th>报文类型</th>
+					<th>报文状态</th>
+					<th>备注</th>
+					<th>时间</th>
+					<th width="120">操作</th>
+				</tr>
+			#{if page.page}
+			  #{list items:page.page,as:"returnStatus"}
+				<tr height="40" class="changeColor">
+						<td class="align-left">${returnStatus?.id}</td>
+						<td>${returnStatus?.report_name}</td>
+						<td>${returnStatus?.report_type==1?"日":(returnStatus?.report_type==2?'月':'季')}</td>
+						<td class="lose">${returnStatus?.result_type==0?'成功':'失败'}</td>
+						<td data-title="${returnStatus?.remark}">${returnStatus?.remark}</td>
+						<td>${returnStatus?.time?.format(common.constants.Constants.DATE_PLUGIN)}</td>
+						<td class="back-handle">
+							<a href="@{back.finance.FinanceInterfaceCtrl.replayReportPre(returnStatus?.id)}" target="" data-title="重新发送" class="iconfont">&#xe631;</a>
+						</td>
+				</tr>
+			#{/list}
+			<tr height="40">
+					<td colspan="7" class="back-lasttd">
+						#{backPageTag page:page,showPage:"showHelps"/}
+						
+					</td>
+				</tr>
+			#{/if}
+			#{else}
+				<tr height="58">
+					<td colspan="7" class="back-nodata"><i class="iconfont">&#xe613;</i>暂无记录</td>
+				</tr>
+			#{/else}
+			</table>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	function showHelps(currPage, pageSize) {
+		$("#currPage").val(currPage);
+		$("#pageSize").val(pageSize);
+			
+		$("#financialOfficePre").submit();
+	}
+	$(".lose").each(function(){
+		if($(this).text()=='失败'){
+			$(this).parent().css("color",'red');
+		}else{
+			$(this).parent().css("color",'black');
+		}
+	})
+	$("#Submitted").click(function(){
+		var message = $('#searchMessage').val();
+		var url = "@{back.finance.FinanceInterfaceCtrl.sendReportPre()}?num="+message
+		window.location.href=url;
+	})
+</script>

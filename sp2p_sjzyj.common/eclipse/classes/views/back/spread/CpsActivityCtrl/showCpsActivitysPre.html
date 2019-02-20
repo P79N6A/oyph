@@ -1,0 +1,179 @@
+#{extends 'back/spread/cpsMain.html' /}
+	#{set title:'推广 | CPS | CPS活动' /}
+	#{set smallclass:3 /}
+	#{set crumbs:'推广>CPS>CPS活动'/}
+	
+
+<div class="back-main">
+	<!-- 头部筛选条件 -->
+	<div class="back-usertop">
+		<div class="left back-usermenu">
+			<a href="@{back.spread.CpsActivityCtrl.showCpsActivitysPre()}" class="selected">所有</a>
+		</div>
+		
+		<!-- 搜索按钮，控制搜索条件的显示隐藏 -->
+		<div class="back-search left">
+			<i class="iconfont searchicon">&#xe60a;</i>搜索<i class="iconfont arrowicon">&#xe603;</i>
+		</div>
+		
+		<!-- 右侧功能按钮 -->
+		<div class="right back-rightbtns">
+			<a href="@{back.spread.CpsActivityCtrl.toAddCpsActivityPre()}"><b class="iconfont">&#xe631;</b>添加活动</a>
+		</div>
+	</div>
+	<!-- 搜索条件，默认隐藏 -->
+	<div class="back-search-option" #{if title}style="display: block;"#{/if}>
+		<form action="@{back.spread.CpsActivityCtrl.showCpsActivitysPre()}" method="GET" id="showCpsActivitysPre">
+			<input type="hidden" id="currPage" name="currPage"/>
+	  		<input type="hidden" id="pageSize" name="pageSize" value="${pageBean?.pageSize}"/>
+	  		<input type="hidden" id="exports" name="exports"/>
+	  		
+			<input type="text" class="iffocus" id="title" name="title" value="${title}" placeholder="活动名称" maxlength="13"/>
+			<input type="submit" class="bgbtn" value="搜索" />
+		</form>
+	</div>
+	<div class="back-cont">
+		<div class="back-box">
+			<table width="100%" class="back-table table-fixed">
+				<tr height="40">
+					<th width="70" class="align-left">
+							编号
+					</th>
+					<th>活动名称</th>
+					<th>开始时间</th>
+					<th>截止时间</th>
+					<th>奖励设置</th>
+					<th>中奖记录</th>
+					<th>奖项结算</th>
+					<th>状态</th>
+					<th>操作</th>
+				</tr>
+		#{if page?.page}
+			#{list items:page.page,as:"cps"}
+				<tr height="40">
+					<td class="align-left"><input type="checkbox" class="back-tdcheck" />${cps?.id}</td>
+					<td>${cps?.title}</td>
+					<td>${cps?.begin_time?.format(common.constants.Constants.DATE_TIME_FORMATE)}</td>
+					<td>${cps?.end_time?.format(common.constants.Constants.DATE_TIME_FORMATE)}</td>
+					<td class="back-handle">
+						<a href="@{back.spread.CpsActivityCtrl.toSetAwardPre(cps?.id)}" data-title="活动奖项设置" class="iconfont">&#xe61c;</a>
+					</td>
+					<td class="back-handle">
+						<a href="@{back.spread.CpsActivityCtrl.toAwardRecordPre(1,10,cps?.id)}" data-title="中奖纪录" class="iconfont">&#xe61c;</a>
+					</td>
+					<td>
+						#{if cps?.account_type==0} 未结算  #{/if}
+						#{else} 已结算  #{/else}
+					</td>
+					<td>
+						#{if cps?.is_use.code==true} 上架  #{/if}
+						#{else} 下架 #{/else}
+					</td>
+					<td class="back-handle">
+					
+					<a href="@{back.spread.CpsActivityCtrl.toEditCpsActivityPre(cps?.id)}" data-title="编辑" class="iconfont">&#xe602;</a>
+					
+					#{if cps?.is_use.code == true}
+						<a id="${cps?.sign}" data-title="下架" class="iconfont">&#xe600;</a>		
+					#{/if}
+					#{else}
+						<a id="${cps?.sign}" data-title="上架" class="iconfont">&#xe61b;</a>								
+					#{/else}
+					
+						<a onclick="awardAccount(${cps?.id})" data-title="结算" class="iconfont" >&#xe62d;</a>
+					
+					</td>
+				</tr>
+			#{/list}
+				<!-- 表格数据统计 -->
+				<tr height="40">
+					<td colspan="9" class="back-lasttd">
+						<span class="back-choose left">
+							<input type="button" id="chooseAll" value="全选" />
+							<input type="button" id="chooseReverse" value="反选" />
+						</span>
+					<!-- 分页组件 -->
+					#{backPageTag page:page,showPage:"showCpsActivity"/}
+					</td>
+				</tr>
+		#{/if}
+		#{else}
+				<!-- 暂无记录 -->
+				<tr height="58">
+					<td colspan="9" class="back-nodata"><i class="iconfont">&#xe613;</i>暂无记录</td>
+				</tr>
+		#{/else}
+			</table>
+		</div>
+	</div>
+</div>
+
+<!-- 页面js -->
+<script type="text/javascript">
+
+require(["back"],function(back){
+	// 搜索、左侧菜单展开收缩、表格排序
+	require(["search","side","linechecked"],function(){
+		$(".back-sidebtn").click();//左侧菜单搜索
+	});
+	
+	var $a = $(".back-handle").children("a");
+	$a.click(function(){
+		var sign = $(this).attr("id");
+		if(sign==null || sign=='' || sign==undefined){
+			return;
+		}
+		upDownAds(sign, $(this));
+	});
+	
+});
+	
+//分页
+function showCpsActivity(currPage, pageSize) {
+	$("#currPage").val(currPage);
+	$("#pageSize").val(pageSize);
+	
+	$("#showCpsActivitysPre").submit();
+}
+
+//上下架 
+function upDownAds(sign,dom){
+	$.post('@{back.spread.CpsActivityCtrl.isUseCps()}',{sign:sign},function(data){
+		var flag = interceptorCheck(data);
+		if(!flag){
+			return;
+		}
+		if(data.code < 1){
+			alert(data.msg);
+			return;
+		}
+		if(!data.obj){
+			weakDialog("已经更新产品状态为[上架]");
+			dom.attr("data-title", "下架");
+			$('.titlebox').text('下架');
+			dom.html("&#xe600;");
+			dom.parent().prev().html('上架');
+		}else{
+			weakDialog("已经更新产品状态为[下架]");
+			dom.attr("data-title", "上架");
+			$('.titlebox').text('上架');
+			dom.html("&#xe61b;");
+			dom.parent().prev().html('下架');
+		}
+	});
+}
+//
+function awardAccount(cpsActivityId){
+	$.ajax({
+		url : "@{back.spread.CpsActivityCtrl.awardAccount()}",
+		type : "POST",
+		data : {
+			"cpsActivityId" : cpsActivityId
+		},
+		success : function(data) {
+			location.reload();
+		}
+	});
+}
+</script>
+

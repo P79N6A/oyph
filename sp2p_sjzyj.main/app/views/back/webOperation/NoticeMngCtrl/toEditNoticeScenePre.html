@@ -1,0 +1,135 @@
+#{extends 'common/back/webOperationMain.html' /}
+	#{set title:'运维 | 通知模板 | 编辑通知模板' /}
+	#{set smallclass:6 /}
+	#{set crumbs:'运维>通知模板>编辑通知模板' /}
+
+<div class="back-main">
+	<!-- 头部筛选条件 -->
+	<div class="back-usertop">
+		<b class="left font14">${scene?.code} &nbsp;${scene?.value}>编辑</b>
+		<!-- 右侧功能按钮 -->
+		<div class="right back-rightbtns">
+			<a href="javascript:backAndRefresh('@{back.webOperation.NoticeMngCtrl.showNoticeScenesPre}');"><i class="iconfont">&#xe60b;</i>返回</a>
+		</div>
+	</div>
+	<!-- 左侧菜单 -->
+	<div class="back-cont">
+	
+		#{if sms}
+		<div class="back-infor">
+			<h2 class="back-infor-head">
+				<span class="left">短信</span>
+				<input type="hidden" value="${sms?.sign}"/>
+				<a href="javascript:void(0);" class="right iconfont finance-edit" data-title="编辑">&#xe602;</a>
+			</h2>
+			<ul class="back-infor-set">
+				<li>
+					<span class="lileft">内容</span>
+					<div class="liright">
+						<textarea class="back-textarea back-msgarea required" minlength="1" maxlength="240">${sms?.content}</textarea>
+						<span class="back-text-limit">1.模板内容请控制在1~240个字符</span><br>
+						<span class="back-text-limit">2.模板中的英文单词是模板中要被替换的内容，请勿改动。</span>
+					</div>
+				</li>
+			</ul>
+		</div>
+		#{/if}
+		
+		#{if msg}
+		<div class="back-infor">
+			<h2 class="back-infor-head">
+				<span class="left">消息</span>
+				<input type="hidden" value="${msg?.sign}"/>
+				<a href="javascript:void(0);" class="right iconfont finance-edit" data-title="编辑">&#xe602;</a>
+			</h2>
+			<ul class="back-infor-set">
+				<li>
+					<span class="lileft">内容</span>
+					<div class="liright">
+						<textarea class="back-textarea back-msgarea required" minlength="1" maxlength="240">${msg?.content}</textarea>
+						<span class="back-text-limit">1.模板内容请控制在1~240个字符</span><br>
+						<span class="back-text-limit">2.模板中的英文单词是模板中要被替换的内容，请勿改动。</span>
+					</div>
+				</li>
+			</ul>
+		</div>
+		#{/if}
+		
+		#{if email}
+			<div class="back-infor email">
+				<h2 class="back-infor-head">
+					<span class="left">邮件</span>
+					<input type="hidden" value="${email?.sign}"/>
+					<a href="javascript:void(0);" class="right iconfont finance-edit" data-title="编辑">&#xe602;</a>
+				</h2>
+				<ul class="back-infor-set">
+					<li>
+					<span class="lileft">邮件</span>
+						<div class="liright">
+							<textarea id="inforTextarea" class="back-textarea">${email?.content}</textarea>
+						</div>
+					</li>
+				</ul>
+			</div>
+		#{/if}
+	</div>
+</div>
+
+
+
+<!-- 页面js -->
+<script type="text/javascript">
+require(["back"],function(back){	
+	require(["editor"],function(editor){
+		
+		$(".back-infor").each(function(){
+			var that = this,
+				editBtn = $(this).find(".finance-edit"),
+				editText = $(this).find("textarea");
+			editText.prop("disabled",true);
+			editBtn.click(function(){
+				disable = editText.prop("disabled");
+				if(disable){
+					editBtn.html("&#xe630;").data("title","保存");
+					
+					$(".titlebox").text(editBtn.data('title'));
+					editText.prop("disabled",!disable);
+					editText.eq(0).focus();
+				}else{
+					var noticeSign = editBtn.parent().children("input").val();
+					var content = editText.val();
+
+					$.ajax({
+						url : "@{back.webOperation.NoticeMngCtrl.editTemplateNotice()}",
+						type : "POST",
+						async:false,
+						data : {
+							"noticeSign":noticeSign,
+							"content":content
+						},
+						dataType:"json",
+						success : function(result) {
+							var flag = interceptorCheck(result);
+							if(!flag){
+								return;
+							}
+							if(result.code < 1){
+								alert(result.msg,function(){
+									editText.eq(0).focus();
+								});
+							}else {
+								weakDialog(result.msg);
+								editBtn.html("&#xe602;").data("title","编辑");
+								$(".titlebox").text(editBtn.data('title'));
+								editText.prop("disabled",!disable);
+							}
+						}
+					});
+				}
+				
+			});
+		});
+		var email = editor('#inforTextarea');
+	});
+});
+</script>

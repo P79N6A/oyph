@@ -1,0 +1,109 @@
+<!-- 科目库弹窗 begin -->
+<div class="dialog lib-dialog audit_library_box" >
+	<input type="hidden" id="bid_audit_subject_id" />
+	<div class="dialog-bg"></div>
+	<div class="dialog-cont">
+		<div class="dialog-head"><span class="left">科目库</span><i class="audit-dialog-close">×</i></div>
+		<div class="lib-box">
+			<div class="lib-yscroll">
+				<ul class="lib-imgs" id="subjectList">
+					#{list items:pageBean.page,as:"temp"}
+						<li class='lib-imgbox'>
+							<img src="${temp?.url}" width="300px" height="150px" alt='' title='' />
+							<div>
+								<label>
+									<input type="checkbox" name="library_check" value="${temp?.id}" />${temp?.name}
+								</label>
+							</div>
+						</li>
+					#{/list}
+				</ul>
+			</div>
+		</div>
+		#{if pageBean?.page}
+			#{frontPageTag page:pageBean,showPage:'showLibrary' /}
+		#{/if}
+		#{if pageBean?.page == null}
+			<div class="norecord-box c9">
+				暂无记录
+			</div>
+		#{/if}
+		#{else}
+			<div class="alerthandle">
+				<input type="button" class="btn dialog-consolesj" value="确定">
+				<input type="button" class="audit-cancle-button graybtn" style="border: none;" value="取消">
+			</div>
+		#{/else}	
+	</div>
+</div>
+<!-- 科目库弹窗 end -->
+
+<script type="text/javascript">
+	$(function(){
+		$('.lib-dialog').dialog();
+	});
+	
+	
+	$(function(){
+		$(".dialog-consolesj").click(function(){
+			#{if isSimulated}
+				alert("模拟登录不能执行该操作");
+				return false;
+			#{/if}
+			#{else}
+				var checkedBoxs = $("input[name='library_check']:checked");
+			if(checkedBoxs.size() < 1) {
+				weakDialog("请至少选中一个科目");
+				
+				return false;
+			}
+			
+			$('.lib-dialog').children(".dialog-cont").stop().animate({
+				"margin-top": 30
+			},300,function(){
+				$('.lib-dialog').children(".dialog-cont").css("margin-top", -30);
+			});
+			$('.lib-dialog').fadeOut(300);
+			
+			var subjectIds = [];
+			checkedBoxs.each(function(i){
+				subjectIds[i] = $(this).val();
+			});
+			//科目库to客户审核资料库
+			var bidId = $("#bid_id_subject").val();
+			var bidAuditSubjectId = $("#bid_audit_subject_id").val();
+			
+			$.ajax({
+				url : "@{front.account.MyFundCtrl.uploadLibrarySubjet()}",
+				type : "POST",
+				data : {
+					"subjectIds": subjectIds,
+					"bidId": bidId,
+					"bidAuditSubjectId": bidAuditSubjectId
+				},
+				success : function(data){
+					if (data.code < 0) {
+						alert(data.msg);
+						return;
+					}
+					weakDialog('资料库素材上传成功!');
+					pullDownAuditSubject(bidId);
+				}
+			}); 
+			#{/else}
+			
+		});
+		
+		$(".audit-dialog-close,.audit-cancle-button").click(function(){
+			$("#library_box").html("");
+			$('.lib-dialog').children(".dialog-cont").stop().animate({
+				"margin-top": 30
+			},300,function(){
+				$('.lib-dialog').children(".dialog-cont").css("margin-top", -30);
+			});
+			$('.lib-dialog').fadeOut(300);
+		});
+	});
+</script>
+
+

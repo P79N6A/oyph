@@ -1,0 +1,41 @@
+#{extends 'front/proxy/proxyMainPre.html' /}
+<!-- 添加业务员 -->
+<div class="center-main">
+	<div class="center-main-title">业务员编辑</div>
+	<div class="modify-password1">
+		<form action="@{front.proxy.ProxyCtrl.salesManEidt()}" method="post">
+			<span>姓名</span><input  type="text" value="${salesman?.sale_name}" name="salesManName" class="text-input" id="salesManName"/>
+			<span>手机号码</span><input  type="text" value="${salesman?.sale_mobile}" name="salesManMobile" class="text-input" id="salesManMobile" onkeyup="value=value.replace(/[^\d]/g,'') "onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))"/>
+			<span>登录密码</span><input  type="password" value="" name="" class="text-input" id="log"/>
+			<span>确认密码</span><input  type="password" value="" name="salesManPwd" class="text-input" id="logOn"/>
+			<i style="width: 200px;height: 30px;color: red;margin-left:  130px;display: block;font-style:  normal;" class="erro">${flash?.success}${flash?.error}</i>
+			<input type="submit" class="modify-button" value="保存" name="" id="sub"/>
+			<input type="hidden" name="proxyId" value="${salesman?.id}" />
+		</form>
+	</div>
+</div>
+<script type="text/javascript">	
+
+		$('.ManManage').addClass('text-color').siblings().removeClass("text-color");
+		$('#sub').click(function(){
+			var salesManName=$('#salesManName').val()
+			var salesManMobile=$('#salesManMobile').val()
+			var log=$("#log").val()
+			var logOn=$("#logOn").val()
+			if(salesManName==''){
+				$('.erro').text('姓名不能为空')
+				return false;
+			}
+			if(salesManMobile==''){
+				$('.erro').text('手机号码不能为空')
+				return false;
+			}
+
+			if(log == logOn){
+				return true;
+			}else{
+				$('.erro').text('两次密码输入不一致')
+				return false;
+			}
+		})
+</script>

@@ -1,0 +1,166 @@
+#{extends 'back/spread/AddRateCtrl/addRateMain.html' /}
+	#{set title:'推广 | 加息券 | 加息券规则' /}
+	#{set smallclass:2 /}
+	#{set crumbs:'推广>加息券>加息券规则'/}
+
+<div class="back-main">
+	<div class="back-cont">
+	
+		<div class="back-infor">
+			<h2 class="back-infor-head"><span class="left">加息券获取条件</span>
+			</h2>
+			<div class="back-infor-lcset back-infor-getset" id="editExperienceGoldDiv">
+			
+				<form action="@{back.spread.AddRateCtrl.addRateTicket()}" method="post">
+					<table style="height: 34px; margin: 0 auto; font-weight: bold; text-align: right;">
+						<tr>
+							<td></td>
+							<td style="text-align: center; width: 215px;">加息券</td>
+						</tr>
+						<tr style="height: 34px;">
+							<td style="width: 70px;">活动：</td>
+							<td style="width: 67px;">
+								<select name="actId" style="width: 215px; height: 35px; padding-left: 15px; margin-bottom: 3px; ">
+									#{if actList == null}
+										<option>暂无未开始活动</option>
+									#{/if}
+									
+									#{list actList}
+										<option value="${_?.id}">${_?.name}</option>
+									#{/list}
+								</select>						
+							</td>
+						
+						</tr>
+						<tr>
+							<td>利率：</td>
+							<td style="text-align: left;"><input name="apr" style="width: 211px; height: 30px;" /></td>
+							
+						</tr>
+						<tr>
+							<td>期限：</td>
+							<td style="text-align: left;"><input name="day" style="width: 211px; height: 30px;" /></td>
+						</tr>
+						
+						
+						<tr>
+							<td></td>
+							<td style="text-align: center; width: 215px;">获取条件</td>
+						</tr>
+						<tr>
+							<td>充值大于：</td>
+							<td style="text-align: left;"><input name="small" style="width: 211px; height: 30px;" /></td>
+							
+						</tr>
+						<tr>
+							<td>充值小于：</td>
+							<td style="text-align: left;"><input name="large" style="width: 211px; height: 30px;" /></td>
+						</tr>
+						
+						
+						<tr>
+							<td></td>
+							<td style="text-align: center; width: 215px;">使用条件</td>
+						</tr>
+						<tr>
+							<td>投资大于：</td>
+							<td style="text-align: left;"><input name="amount" style="width: 211px; height: 30px;" /></td>
+							
+						</tr>
+						<tr>
+							<td></td>
+							<td style="text-align: center;"><input type="submit" value="添加" style="height: 34px; width: 215px; margin-bottom: 3px;" /></td>
+							
+						</tr>
+					</table>
+				</form>
+				
+			</div>
+		</div>
+
+		<div class="back-infor">
+			<h2 class="back-infor-head"><span class="left">加息券活动的加息券</span>
+			</h2>
+			<div class="back-infor-lcset back-infor-getset" id="editExperienceGoldDiv">
+			
+				<form action="@{back.spread.AddRateCtrl.addRateRulePre()}" method="GET" id="showActs">
+					<input type="hidden" id="currPage" name="currPage"/><!-- 当前页 -->
+	  				<input type="hidden" id="pageSize" name="pageSize" value="${page?.pageSize}"/> <!-- 每页条数 -->
+				</form>
+				<table style="width: 600px; margin: 0 auto;">
+					<thead><tr	style="font-weight: bold;text-align: center;"><td>活动编号</td><td>开始时间</td><td>结束时间</td><td>活动名称</td><td>状态</td></tr></thead>
+					
+					#{if page?.page}
+					#{list items:page.page,as:"act"}
+						<tr style="text-align: center;">
+						
+						<td >${act?.id}</td><td>${act?.sdate}</td><td>${act?.edate}</td>
+						<td>${act?.name}</td>
+						<td>
+							#{if act?.status == 1}
+							未开始
+							#{/if}
+							#{if act?.status == 2}
+							进行中
+							#{/if}
+							#{if act?.status == 3}
+							已结束
+							#{/if}
+						</td>
+						<td></td><td></td>
+						</tr>
+						<!-- 加息券 -->
+						<tr style="text-align: center;">
+							<td></td>
+							<td></td>
+							<td>利率</td>
+							<td>期限</td>
+							<td>充值大于</td>
+							<td>充值小于</td>
+							<td>使用大于</td>
+						</tr>
+						
+						#{list items:tickets,as:'ticket'}
+							#{if ticket?.act_id == act?.id}
+								<tr style="text-align: center;">
+								<td></td>
+								<td>加息券</td>
+								<td>${ticket?.apr}</td>
+								<td>${ticket?.day}</td>
+								<td>${ticket?.small}</td>
+								<td>${ticket?.large}</td>
+								<td>${ticket?.amount}</td>
+								</tr>
+							#{/if}
+						#{/list}
+						
+					#{/list}
+						<tr height="40">
+						<td colspan="7">#{backPageTag page:page,showPage:"showActs"/}</td>
+						</tr>
+						
+						
+						
+						
+					#{/if}
+					#{else}
+						<tr>
+						<td></td><td></td><td colspan="4">暂无记录</td>
+						</tr>
+					#{/else}
+				</table>
+				
+			</div>
+		</div>
+
+	</div>
+</div>
+<script type="text/javascript">
+	function showActs(currPage, pageSize) {
+		$("#currPage").val(currPage);
+		$("#pageSize").val(pageSize);
+		
+		$("#showActs").submit();
+	}
+
+</script>

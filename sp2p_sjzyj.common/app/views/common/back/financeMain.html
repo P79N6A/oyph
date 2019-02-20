@@ -1,0 +1,28 @@
+*{
+	后台-财务的Main页面
+}*
+
+#{extends 'common/supervisorMain.html' /}
+#{set AItem:4 /}
+
+<!-- 二级导航 -->
+<ul class="back-secnav">
+	<li><a href="@{back.finance.ReleaseMngCtrl.showReleaseListPre()}">财务放款</a></li>
+	<li><a href="@{back.finance.BillMngCtrl.showLoanBillsPre()}">借款账单</a></li>
+	<li><a href="@{back.finance.InvestBillMngCtrl.showInvestBillsPre()}">理财账单</a></li>
+	<li><a href="@{back.finance.UserWithdrawMngCtrl.showWithdrawLogsPre()}">会员提现</a></li>
+	<li><a href="@{back.finance.UserRechargeMngCtrl.showRechargeLogsPre()}">会员充值</a></li>
+	<li><a href="@{back.finance.ConversionMngCtrl.showConversionsPre()}">奖励兑换</a></li>
+	<li><a href="@{back.finance.PlateformDealMngCtrl.showPlateformDealsPre()}">平台收支</a></li>
+	<li><a href="@{back.finance.FinanceSettingCtrl.toFinanceSettingPre()}">理财设置</a></li>
+	<li><a href="@{back.finance.MerchantMngCtrl.toMerchantPre()}">商户号管理</a></li>
+	<li><a href="@{back.finance.PaymentLogMngCtrl.showRequestLogsPre()}">托管记录</a></li>
+	<li><a href="@{back.finance.FundCheckCtrl.showFundInfoPre(0)}">资金校对</a></li>
+	<li><a href="@{back.finance.GuaranteeCtrl.showGuaranteePre()}">担保人管理</a></li>
+	<li><a href="@{back.finance.QuotaCtrl.showQuotaPre(0)}">投资人限额管理</a></li>
+	<li><a href="@{back.finance.CostMngCtrl.showCostListPre()}">费用账户明细管理</a></li>
+	<li><a href="@{back.finance.RepaymentCheckMngCtrl.showRepaymentCheckPre()}">还款校对</a></li>
+	<li><a href="@{back.finance.FinanceInterfaceCtrl.balanceSheetPre()}">财务信息表</a></li>
+</ul>
+
+#{doLayout /}

@@ -1,0 +1,135 @@
+#{extends 'common/back/riskMain.html' /}
+	#{set title:'风控 | 理财项目 | 报告审核' /}
+	#{set smallclass:0 /}
+
+	
+	
+<div class="back-main">
+	<div class="back-usertop">
+		<b class="left font14"> 理财项目 > 风控报告审核</b>
+		<!-- 右侧功能按钮 -->
+		<div class="right back-rightbtns">
+			<a href="javascript:backAndRefresh('@{back.risk.LoanMngCtrl.showBidPre}');"><i class="iconfont">&#xe60b;</i>返回</a>
+		</div>
+	</div>
+	<div class="back-cont">
+		
+		<!-- 理财详情项目详情选项卡 -->
+		<div class="back-fiance-detail">
+			<h2 class="back-infor-head">报告详情</h2>
+		<!-- 项目详情 -->
+		<div class="back-finace-cont" id="bid_detail">
+				<dl class="back-finace-infor">
+					<dt>申请人信息</dt>
+					#{include "back/risk/LoanMngCtrl/appUserDetail.html" /}
+					<dt><span class="left">风控意见</span></dt>
+					#{if suggestList!=null && suggestList.size()>0} 
+						#{list suggestList, as:'suggest'}
+							<dd>
+								<div id="descriptioncont" class="edittext newline">${suggest?.realName}： ${suggest?.suggest} &nbsp; &nbsp;——&nbsp;${suggest?.time.format('yyyy-MM-dd HH:mm:ss')}</div>
+								<input type="hidden" value="" id="hidden_description"/>
+							</dd>
+						#{/list}
+					#{/if}
+					#{else}
+						<dd>
+							<div id="descriptioncont" class="edittext newline"></div>
+							<input type="hidden" value="" id="hidden_description"/>
+						</dd>
+					#{/else}
+					<dt><span class="left">经理意见</span></dt>
+					#{if suggests!=null && suggests.size()>0} 
+						#{list suggests, as:'suggest'}	
+							<dd>
+								<div id="descriptioncont" class="edittext newline">${suggest?.realName}： ${suggest?.suggest} &nbsp; &nbsp;——&nbsp;${suggest?.time.format('yyyy-MM-dd HH:mm:ss')}</div>
+								<input type="hidden" value="" id="hidden_description"/>
+							</dd>
+						#{/list}
+					#{/if}
+					#{else}
+						<dd>
+							<div id="descriptioncont" class="edittext newline"></div>
+							<input type="hidden" value="" id="hidden_description"/>
+						</dd>
+					#{/else}
+					<dt><span class="left">操作记录</span></dt>
+					#{if recordList!=null && recordList.size()>0} 
+						#{list recordList, as:'record'}	
+							<dd>
+								<div id="descriptioncont" class="edittext newline">${record?.risk_handler}(${record?.superName})： ${record?.handle_content} &nbsp; &nbsp;——&nbsp;${record?.handle_time.format('yyyy-MM-dd HH:mm:ss')}</div>
+								<input type="hidden" value="" id="hidden_description"/>
+							</dd>
+						#{/list}
+					#{/if}
+					#{else}
+						<dd>
+							<div id="" class="edittext newline"></div>
+							<input type="hidden" value="" id=""/>
+						</dd>
+					#{/else}
+				</dl>
+		</div>
+				#{if report?.status?.code==0 }
+				<form action="" method="POST" id="preAudit">
+				<input type="hidden" name="loanAmount" value="${report?.loan_amount}" id="loanAmount">
+				<input type="hidden" name="loanId" value="${report?.id}" id="loanAmount">
+				<input type="hidden" name="riskStatus" value="2" id="riskStatus">
+				
+				<div class="back-infor">
+					<h2 class="back-infor-head">经理建议</h2>
+					<div class="back-finace-suggest">
+						<textarea class="required"  minlength="20" name="suggest" id="suggest"></textarea>
+						
+					</div>
+					
+				</div>
+				
+				<p class="back-audit-btns">
+					<input type="hidden" name="bidSign" value='${tb?.sign}' id="bid_id"/>
+					<input type="button" id="pageSave" value="打回" class="bbtn" onclick="setBackAction()"/>
+					<input type="button" id="pageSave" value="通过" class="bgbtn" onclick="setPassAction()"/>
+					<input type="button" id="notPass" value="不通过" class="bdbtn" onclick="setNotPassAction()"/>
+					<input type="button" id="notPass" value="取消" class="bdbtn" onclick="backAndRefresh('@{back.risk.LoanMngCtrl.showBidPre}');"/>
+				</p>
+				#{/if}
+				</form>
+			</div>
+		</div>
+</div>
+
+
+<!-- 页面js -->
+<script type="text/javascript">
+	function getLoanAmount(){
+		var loan=$("#loan").val();
+		$("#loanAmount").val(loan);
+	}
+	
+	function setPassAction(){
+		var oldAmount="${report?.loan_amount}";
+		var newAmount=$("#loanAmount").val();
+		if(oldAmount!=newAmount){
+			alert("修改数据必须打回");
+			return ;
+		}
+		$("#riskStatus").val("1");
+		$("#preAudit").attr("action", "@{back.risk.LoanMngCtrl.preAuditReport()}");
+		$("#preAudit").submit();
+	}
+	
+	function setBackAction(){
+		$("#riskStatus").val("3");
+		$("#preAudit").attr("action", "@{back.risk.LoanMngCtrl.preAuditReport()}");
+		$("#preAudit").submit();
+	}
+	
+	
+	function setNotPassAction(){
+		$("#riskStatus").val("2");
+		$("#preAudit").attr("action", "@{back.risk.LoanMngCtrl.preAuditReport()}");
+		$("#preAudit").submit();
+	}
+	
+
+</script>	
+	

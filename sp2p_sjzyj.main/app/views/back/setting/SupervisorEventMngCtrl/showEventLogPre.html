@@ -1,0 +1,122 @@
+#{extends 'common/back/settingMain.html' /}
+	#{set title:'设置 | 操作日志' /}
+	#{set smallclass:2 /}
+	#{set crumbs:'设置>操作日志'/}
+	
+		
+<div class="back-main">
+	<!-- 头部筛选条件 -->
+	<div class="back-usertop">
+		<div class="left back-usermenu">
+			<a href="@{back.setting.SupervisorEventMngCtrl.showEventLogPre()}" class="selected">所有</a>
+		</div>
+		
+		<!-- 搜索按钮，控制搜索条件的显示隐藏 -->
+		<div class="back-search left #{if column || supervisorName}selected#{/if}">
+			<i class="iconfont searchicon">&#xe60a;</i>搜索<i class="iconfont arrowicon">&#xe603;</i>
+		</div>
+		
+	</div>
+	<!-- 搜索条件，默认隐藏 -->
+	<div class="back-search-option" #{if column || supervisorName}style="display: block;"#{/if}>
+		<form action="@{back.setting.SupervisorEventMngCtrl.showEventLogPre()}" method="GET" id="form_showEventLog">
+			<input type="hidden" id="orderType" name="orderType" value="${orderType}" /><!-- 排序的类型 -->
+			<input type="hidden" id="orderValue" name="orderValue" value="${orderValue}" /><!-- 排序的值(0:降序，1:升序) -->
+			<input type="hidden" id="currPage" name="currPage"/><!-- 当前第几页 -->
+	  		<input type="hidden" id="pageSize" name="pageSize" value="${page?.pageSize}"/><!-- 每页显示多少 -->
+			
+			<select name="column">
+				<option value="" #{if column==null}selected="selected"#{/if}>---栏目---</option>
+	  			#{list items:models.common.entity.t_event_supervisor.Item.values(), as:'options'}
+					<option value="${options.code}" #{if options.code==column} selected="selected"#{/if}>${options.value}</option>
+				#{/list}
+	  		</select>
+			<input type="text" class="iffocus" name="supervisorName" value="${supervisorName}"  placeholder="姓名" maxlength="20"/>
+			<input type="submit" class="bgbtn" value="搜索" />
+		</form>
+	</div>
+	<div class="back-cont">
+		<div class="back-box">
+			<table width="100%" class="back-table table-fixed">
+				<tr height="40">
+					<th width="70" class="align-left">
+						<span class="back-order">
+							编号
+							#{backPageColumTag orderType:orderType,currOrderType:0,orderValue:orderValue,orderBy:'orderBy' /}
+						</span>
+					</th>
+					<th>姓名</th>
+					<th>
+						<span class="back-order">
+							栏目
+							#{backPageColumTag orderType:orderType,currOrderType:2,orderValue:orderValue,orderBy:'orderBy' /}
+						</span>
+					</th>
+					<th>内容</th>
+					<th>时间</th>
+				</tr>
+				
+				#{if page?.page}
+					#{list items:page.page,as:"event"}
+						<tr height="40">
+							<td class="align-left">
+								<label><input type="checkbox" class="back-tdcheck" />${event?.id}</label>
+							</td>
+							<td>${event?.supervisor_name}</td>
+							<td>${event?.item?.value}</td>
+							<td>${event?.description}</td>
+							<td>${event?.time?.format(common.constants.Constants.DATE_TIME_FORMATE)}</td>
+						</tr>
+					#{/list}
+					<!-- 表格数据统计 -->
+					<tr height="40">
+						<td colspan="5" class="back-lasttd">
+							<span class="back-choose left">
+								<input type="button" id="chooseAll" value="全选" />
+								<input type="button" id="chooseReverse" value="反选" />
+							</span>
+							
+							<!-- 分页组件 -->
+							#{backPageTag page:page,showPage:'showPage' /}
+						</td>
+					</tr>
+					
+				#{/if}
+				#{else}
+					<tr height="58">
+						<td colspan="5" class="back-nodata"><i class="iconfont">&#xe613;</i>暂无记录</td>
+					</tr>
+				#{/else}
+			</table>
+		</div>
+	</div>
+</div>
+
+
+<!-- 页面js -->
+<script type="text/javascript">
+	require(["back"],function(back){
+		// 搜索 排序 选中
+		require(["search","linechecked"],function(){
+
+		});
+
+	});
+
+function orderBy(orderType,orderValue){
+	$("#form_showEventLog input[name='orderType']").val(orderType);
+	$("#form_showEventLog input[name='orderValue']").val(orderValue);
+	
+	$("#form_showEventLog input[name='currPage']").val(1);
+	
+	$("#form_showEventLog").submit();
+}
+//分页方法
+function showPage(currPage,pageSize){
+	$("#form_showEventLog input[name='currPage']").val(currPage);
+	$("#form_showEventLog input[name='pageSize']").val(pageSize);
+	
+	$("#form_showEventLog").submit();
+}
+</script>
+

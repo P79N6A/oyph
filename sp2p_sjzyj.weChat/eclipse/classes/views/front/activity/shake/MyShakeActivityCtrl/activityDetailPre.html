@@ -1,0 +1,290 @@
+<link rel="stylesheet" type="text/css" href="@{'/public/front/stylesheets/activityStyle.css'}" />
+<script type="text/javascript" src="/public/front/javascripts/jquery-1.8.3.min.js" ></script>
+<script type="text/javascript" src="/public/front/javascripts/activity/scroll.js" ></script>
+<script type="text/javascript" src="/public/front/javascripts/activity/zepto.min.js" ></script>
+<script type="text/javascript" src="/public/front/javascripts/activity/danMu.beta.min.js" ></script>
+<style>
+  /*page css*/
+  .mydanmu{background: rgba(0,0,0,.5);border-radius:8px; padding: 8px; }
+  .content{width:100%;height:84%;position:relative;top:1473px;left:0;z-index:1;}
+  .danmustage{width:100%;height:100%;z-index:2;color:#fff;overflow:hidden;font-size:20px;}
+  </style>
+<script type="text/javascript">
+ $(document).ready(function(){
+	$('.list_lh li:even').addClass('lieven');
+})
+$(function(){
+	$("div.list_lh").myScroll({
+		speed:18, 
+		rowHeight:44
+	});
+}); 
+</script>
+
+<div class="activityBg" >
+<input type="hidden" value ="${activityId}" id="activityId" >
+	<div class="btnBox1">
+	   <div class="btnBox" id="str" title="开始" onclick="btnBegin()">
+	   </div>
+	</div>
+   <div class="detailBg">
+      <!-- 倒计时 -->
+      <div class="timeBox">
+		<div class="warp">
+			<strong class="a">60</strong>秒 <strong class="b">00</strong>毫秒
+		</div>
+	  </div>
+      <div class="bconBox">
+		   <div class="bcon">
+				<div class="list_lh">
+					<ul id="list">
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="information">
+		   <p><b>中奖信息</b></p>
+		</div>
+		
+   </div>  
+   <div class="regulation">
+        <h1>活动规则</h1>
+       <ul class="introduce">
+	     <li>1、凡使用加息卷，理财红包的标禁止债权转让。</li>
+	     <li>2、加息卷，理财红包不可同时使用。</li>
+	     <li>3、加息卷，理财红包有效期1个月，自领取日开始生效。</li>
+	     <li>4、凡在活动期间获得的奖品，您可以登录手机app在app首页的-我的奖励里面查到。</li>
+	     <li>5、在法律范围之内本次活动所有权归讴业普惠所有。</li>
+	   </ul>
+   </div>
+   <div class="ewmBox">
+      <img src="/public/front/activity/kehuduanewm.png"/>
+      <img class="downloadImg" src="/public/front/activity/downloadtext.png"/>
+   </div>
+  <!--  弹出框 -->
+  <div class="popBox">
+     <img class="tu1" src="/public/front/activity/close1.png"/>
+     <img title="关闭" onclick="close()" class="tu2" src="/public/front/activity/close.png"/>
+  </div>
+  
+</div>
+<div class="main">
+
+<div class="content">
+  <div class="danmustage"></div>
+</div>
+</div>
+<script>
+/*定时*/
+var kaiguan = 1;
+var j=1;
+var times = ${ctime} * 100 * 60;
+var date= new Date()
+var date1=date.getTime()
+var activityId=$('#activityId').val()
+if(${activityStatus}==3){
+	times=${continueTime}*100;
+	if(times==0){
+		end()
+		window.location.href='@{front.activity.shake.MyShakeActivityCtrl.endShakeActivityPre(activityId)}'
+	}
+	$('html,body').animate({scrollTop: '1320px'});
+	time()
+	danmu()
+	$('#str').hide()
+	$(".warp").show();
+}else if(${activityStatus}==4){
+	window.location.href='@{front.activity.shake.MyShakeActivityCtrl.endShakeActivityPre(activityId)}'
+}
+
+function btnBegin(){
+	date= new Date()
+	date1=date.getTime()
+		$.ajax({           
+		     url: '@{front.activity.shake.MyShakeActivityCtrl.startActivity()}',
+		     type: 'POST',  
+		     cache: false,  
+		     data:{
+					"activityId" :activityId ,
+				},     
+		     success:function(result){   
+		    	  console.log(result)
+		    	  if(result.code==1){
+		    		  if(kaiguan == 1){
+		    				 $('html,body').animate({scrollTop: '1320px'}, 800);  
+		    				 time()
+		    				 danmu()
+		    			     kaiguan = 0;
+		    				 $('#str').hide()
+		    				 $(".warp").show();
+		    			  } 
+		    	  }else{
+		    		  kaiguan = 0;    		  
+		    	  }
+		    	}
+		});
+		
+}
+function end(){
+	$.ajax({           
+	     url: '@{front.activity.shake.MyShakeActivityCtrl.endActivity()}',
+	     type: 'post',  
+	     cache: false,  
+	     data:{
+				"activityId" : activityId,
+			},     
+	     success:function(result){   
+	    	  console.log(result)
+	    	  if(result.code==1){
+	    		 
+	    	  }else{
+	    		  alert(result.msg)
+	    		  return false;	  
+	    	  }
+	    	}
+	});
+}
+
+function time() {
+	// 60秒
+	    countTime = setInterval(function() {
+		times = --times < 0 ? 0 : times;
+		var ms = Math.floor(times / 100).toString();
+		if(ms.length <= 1) {
+			ms = "0" + ms;
+		}
+		var hm = Math.floor(times % 100).toString();
+		if(hm.length <= 1) {
+			hm = "0" + hm;
+		}
+		if(times == 0) {
+			end()
+			clearInterval(countTime);
+			close()
+			kaiguan = 1;
+		}
+		// 获取分钟、毫秒数
+		$(".a").html(ms);
+		$(".b").html(hm);
+	}, 10);
+}
+function close(){
+	$(".popBox").show();
+}
+$(".tu2").click(function(){
+	$(".popBox").hide();
+});
+
+$(".activityBg").click(function(){
+	$(".popBox").hide();
+});
+/*弹幕*/
+var danmuData = [
+             
+            ];
+
+            //实例化弹幕
+var dm = new danMu({
+device:'pc',//m代表移动端弹幕,不设置或设为pc代表pc端弹幕
+stage: $(".danmustage"),
+comments: danmuData,
+danMuHtml: "<span>{comment}</span>",
+colors: ["#fff","#00ccff","#ff0000","#00ff00","#fef500"],
+flyTime:25000, 
+timeInterval:100,
+randomSort:true,
+myDanMuPrefix:"",
+mAnimation:'transform:translate3d(0,0,0)',
+loop:false,
+});
+
+function danmu(){
+	j=1;
+	var tt=self.setInterval(function(){
+		if(times ==0){
+			clearInterval(tt)
+		}
+	 $.ajax({           
+		     url: '@{front.activity.shake.MyShakeActivityCtrl.activityBarragePre()}',
+		     type: 'GET',  
+		     cache: false,  
+		     data:{
+					"activityId" : activityId,
+					"currPage" : j,
+					"current_time":date1
+				},
+		     success:function(result){   
+		    	  console.log(result)
+		    	  if(result.code==1){
+		    		  var data=result.obj
+		    		  var commVal0=data.user_mobile
+		    		  var commVal1=commVal0.substr(0,3)+'****'+commVal0.substr(7)
+		    		  var commVal2=data.amount
+		    		  var commVal3=data.type
+		    		  if(commVal3=="红包"){
+		    			  commVal='恭喜用户'+commVal1+'获得&nbsp;&nbsp;&nbsp;'+commVal2+'元&nbsp;'+commVal3
+		    			  $('#list').append('<li><p><span>'+commVal1+'</span><span>'+commVal3+'</span> <span>'+commVal2+'元</span></p></li>')
+		    		  }else if(commVal3=="加息券"){
+		    			  commVal='恭喜用户'+commVal1+'获得&nbsp;&nbsp;&nbsp;'+commVal2/100+'%&nbsp;'+commVal3
+		    			  $('#list').append('<li><p><span>'+commVal1+'</span><span>'+commVal3+'</span> <span>'+commVal2/100+'%</span></p></li>')
+		    		  }else if(commVal3=="积分"){
+		    			  commVal='恭喜用户'+commVal1+'获得&nbsp;&nbsp;&nbsp;'+commVal2+'&nbsp;'+commVal3
+		    			  $('#list').append('<li><p><span>'+commVal1+'</span><span>'+commVal3+'</span> <span>'+commVal2+'</span></p></li>')
+		    		  }
+		    		  if(data == undefined && data==""){
+		    		      return false;
+		    		    }
+		    		  
+		    		  dm.send(commVal,function(){
+		    			  j=j+1;
+		    		  });
+		    	  }else{
+		    		 
+		    		  return false;
+		    		  
+		    	  }
+		    	}
+		});
+	},500) 
+}
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

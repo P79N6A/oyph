@@ -1,0 +1,107 @@
+#{extends 'common/back/teamMain.html' /}
+#{set title:'团队长 | 客户经理' /}
+#{set smallclass:0 /}
+#{set crumbs:'团队长 >客户经理'/}
+<div class="back-main">
+	<!-- 头部筛选条件 -->
+	<div class="back-usertop">
+		<!-- 搜索按钮，控制搜索条件的显示隐藏 -->
+		<!-- 右侧功能按钮 -->
+		<div class="right back-rightbtns">
+			<a href="javascript:exportList(1)"><i class="iconfont">&#xe612;</i>导出</a>
+		</div>
+	</div>
+	<!-- 搜索条件，默认隐藏 -->
+	<div class="back-search-option" >
+		<form action="@{back.team.TeamCtrl.cpsDetailsPre()}" method="GET" id="showBidPre">
+			<input type="hidden" id="currPage" name="currPage"/>
+			<input type="hidden" id="userId" name="userId" value="${userId}"/>
+	  		<input type="hidden" id="pageSize" name="pageSize" value="${pageBean?.pageSize}"/>
+	  		<input type="hidden" id="exports" name="exports"/>
+	  		
+	  		<input type="text" class="iffocus" placeholder="时间范围" name="numNo" value="${numNo}" /> ~~ <input type="text"  name="projectName" value="${projectName}" maxlength="15"/>
+	  		<input type="text" class="iffocus" placeholder="用户名" name="userName" value="${userName}" maxlength="13"/>	  		
+			<input type="submit" class="bgbtn" value="搜索" />
+		</form>
+	</div>
+	<div class="back-cont">
+		<div class="back-box">
+			<table width="100%" class="back-table table-fixed">
+				<tr height="40">
+					<th width="70" class="align-left">
+						<span class="back-order">
+							编号
+						</span>
+					</th>
+					<th>用户名</th>
+					<th>理财时间</th>
+					<th>
+						<span class="back-order">
+							理财金额
+						</span>
+					</th>
+				</tr>
+				#{if pageBean?.page}
+					#{list pageBean?.page}
+					<tr height="40">
+						<td class="align-left">
+							<input type="hidden" id="bidId" value="${_?.id}" name="bidId"/>
+							<label><input type="checkbox" class="back-tdcheck" />${_index}</label>
+						</td>
+						<td>
+							<a  class="back-table-title"  target="" >${_?.realName}</a>
+						</td>
+						<td>
+							${_?.time?.format("yyyy-MM-dd")}
+						</td>
+						<td>
+							${_?.amount}
+						</td>
+					</tr>
+					#{/list}
+					
+							<tr height="40">
+						<td colspan="4" class="back-lasttd">
+							<!-- 分页组件--pageTag -->
+						#{backPageTag page:pageBean,showPage:"showBidPre"/}
+						</td>
+					</tr>
+				#{/if}
+				#{else}
+						<tr height="58">
+    						<td class="back-nodata" colspan="4"><i class="iconfont"></i>暂无记录</td>
+    					</tr>
+				#{/else}
+			</table>
+		</div>
+	</div>
+</div>
+<!-- 页面js -->
+<script type="text/javascript">
+	require(["back"],function(back){
+		// 搜索 排序 选中
+		require(["search","linechecked"],function(){
+		});
+	});
+	function showBidPre (currPage, pageSize) {
+		$("#currPage").val(currPage);
+		$("#pageSize").val(pageSize);
+		
+		$("#showBidPre").submit();
+	}
+	
+	function orderBy(orderType,orderValue){
+		$("#showBidPre input[name='orderType']").val(orderType);
+		$("#showBidPre input[name='orderValue']").val(orderValue);
+		
+		$("#showBidPre input[name='currPage']").val(1);
+		
+		$("#showBidPre").submit();
+	}
+	function exportList(expor){
+		$("#exports").val(expor);
+		
+		$("#showBidPre").submit();
+		$("#exports").val(0);
+	}
+</script>

@@ -1,0 +1,182 @@
+#{extends 'common/back/webOperationMain.html' /}
+#{set title:'运维 | 银行限额管理 ' /}
+#{set smallclass:12 /}
+#{set crumbs:'运维> 银行限额管理' /}
+<style>
+.bank-title{
+	margin-left:28px;
+	font-size:15px;
+	font-weight: bold;
+	margin-top:10px;
+}
+.bank-title span{
+	display: inline-block;
+	width:130px;
+	text-align:center;
+	margin-right: 14px;
+}
+.back-cont .lileft{
+	text-align:center;
+	margin-right: 24px;
+}
+</style>
+<div class="back-main">
+	<div class="back-usertop">
+        <div class="left back-usermenu">
+            <a href="#" class="selected">银行限额管理</a>
+        </div>
+        
+        <!-- 搜索按钮，控制搜索条件的显示隐藏 -->
+        <div class="back-search left #{if voteTitle}selected#{/if}">
+            <i class="iconfont searchicon">&#xe60a;</i>搜索<i class="iconfont arrowicon">&#xe603;</i>
+        </div>
+    </div>
+    <!-- 搜索条件，默认隐藏 -->
+    <div class="back-search-option"  #{if voteTitle}style="display: block;"#{/if}>
+        <form action="" method="GET" id="showVotesPre">
+            <input type="hidden" id="currPage" name="currPage"/>
+            <input type="hidden" id="pageSize" name="pageSize" value="${page?.pageSize}"/>
+            <input type="text" class="iffocus" name="voteTitle" placeholder="银行名称" value="${voteTitle}" maxlength="30" />
+            <input type="submit" class="bgbtn" value="搜索" />
+            
+        </form>
+    </div>
+	
+	<div class="back-cont">
+			<div class="back-infor">
+			<h2 class="back-infor-head"><span class="left">银行充值限额设置</span>
+			
+			</h2>
+			<div class="bank-title"><span>银行</span><span>单笔限额（元）</span><span>每日限额（元）</span></div>
+			<div class="back-infor-lcset back-infor-getset" id="editExperienceBidDiv">
+				#{list map, as:'maps'}
+				<p class="back-experience-set">
+				<input type="hidden" value='${maps?.id}' class="width01 iffocus" id="bankQuotaId"/>
+					<span class="lileft">${maps?.bank_name}</span>
+					<label class="back-unitinput">
+					<input type="text" disabled="disabled" value='${maps?.single_quota}' class="width01 iffocus" id="single_quota" maxlength="7" onkeyup="value=value.replace(/[^\d]/g,'') " ng-pattern="/[^a-zA-Z]/"/>
+					</label>
+					<label class="back-unitinput">
+					<input type="text" disabled="disabled" value='${maps?.day_quota}' class="width01 iffocus" id="day_quota" maxlength="7" onkeyup="value=value.replace(/[^\d]/g,'') " ng-pattern="/[^a-zA-Z]/" />
+				　　　</label>　　　　　　
+				#{rightMng rightId:2017002}
+				<a href="javascript:void(0);" id="editExperienceBid" class=" iconfont finance-edit editExperienceBid" data-title="编辑">&#xe602;</a>
+				#{/rightMng} 
+				</p>
+				
+				#{/list}
+			</div>
+		</div>
+	</div>
+</div>
+<input class="single_quota" style="display: none;">
+<input class="day_quota" style="display: none;">
+<input class="bankQuotaId" style="display: none;">
+<script type="text/javascript">
+			$('.primary .edit').click(function(){
+				$(this).prev().prev().removeAttr("readonly").css('color','black');
+				$(this).prev().removeAttr("readonly").css('color','black');
+			})
+			$('.primary .hold').click(function(){
+				$(this).prev().prev().prev().attr("readonly",'readonly').css('color','#ccc');
+				$(this).prev().prev().attr("readonly",'readonly').css('color','#ccc');
+			})
+</script>
+<script type="text/javascript">
+require(["back"],function(back){
+    // 搜索、左侧菜单展开收缩、表格排序
+    require(["search","side","linechecked"],function(){
+        $(".back-sidebtn").click();//左侧菜单搜索
+    });
+    
+    var $a = $(".back-handle").children("a");
+    $a.click(function(){
+        var sign = $(this).attr("id");
+        if(sign==null || sign=='' || sign==undefined){
+            return;
+        }
+        upDownHelp(sign, $(this));
+    });
+});
+</script>
+<script type="text/javascript">
+require(["back"],function(back){
+	$(".editExperienceBid").click(function(){
+		var $input = $(this).prev().prev().children()
+		var $select = $(this).prev().children()
+		var bankQuotaId =$(this).prev().prev().prev().prev().val()
+		var thiss=$(this)
+		var cc=$input.val()
+		var dd=$select.val()
+		$('.single_quota').val(cc)
+		$('.day_quota').val(dd)
+		$('.bankQuotaId').val(bankQuotaId)
+		editExperienceBidRule($input,$select,thiss);
+	});
+});
+
+
+function editExperienceBidRule(aa,bb,cc) {
+	
+	var disable = aa.prop("disabled");
+	console.log(disable)
+	if (disable) {
+		cc.html("&#xe630;");
+		aa.prop("disabled", !disable);
+		bb.prop("disabled", !disable);
+	} else {
+		
+		 var single_quota = $(".single_quota").val();
+		 var day_quota = $(".day_quota").val();
+
+		if (single_quota == null || single_quota =='' || single_quota==undefined) {
+			weakDialog("请输入单笔充值限额!");
+			return;
+		}
+		
+		if (day_quota == null || day_quota =='' || day_quota==undefined) {
+			weakDialog("请输入每日充值限额!");
+			return;
+		}
+		
+		aa.prop("disabled", !disable);
+		bb.prop("disabled", !disable);
+		editExperienceBidAction(function(data){
+			if(data.code < 1){
+				alert(data.msg);
+				aa.prop("disabled", disable);
+				bb.prop("disabled", disable);
+				return;
+			}else{
+				weakDialog('修改成功!');
+			}
+		});
+		cc.html("&#xe602;");
+	}
+}
+
+function editExperienceBidAction(callback){
+	$.ajax({
+		url : '@{back.webOperation.BankQuotaCtrl.saveBankQuotaCtrl()}',
+		type : "POST",
+		data : {
+			'bankQuotaId': $(".bankQuotaId").val(),
+			'single_quota': $(".single_quota").val(),
+			"day_quota": $('.day_quota').val()
+			
+		},
+		success : function(data){
+			var flag = interceptorCheck(data);
+			if(!flag){
+				return;
+			}
+			if(callback){
+				callback(data);
+			}
+		},
+		error : function(){
+			alert('糟糕!出错啦，请重新刷新页面');
+		}
+	});
+}
+</script>

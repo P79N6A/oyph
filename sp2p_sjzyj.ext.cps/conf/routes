@@ -1,0 +1,43 @@
+# This file defines all module routes (Higher priority routes first)
+#
+# import these routes in the main app as :
+# *     /                       module:sp2p_sjzyj.ext.cps
+#
+# ~~~~
+
+
+# 前台-账户中心-我的奖励-CPS控制器(controllers.front.account.MyCpsCtrl)
+GET  /account/reward/cps/{action}.html                   front.account.MyCpsCtrl.{action}Pre
+POST /account/reward/cps/{action}                        front.account.MyCpsCtrl.{action}
+
+
+# 后台-推广-CPS-CPS规则控制器(controllers.back.spread.CpsSettingCtrl)
+GET  /supervisor/spread/cpsSetting/{action}.html                      back.spread.CpsSettingCtrl.{action}Pre
+POST /supervisor/spread/cpsSetting/{action}                           back.spread.CpsSettingCtrl.{action}
+
+# 后台-推广-CPS-CPS记录控制器(controllers.back.spread.CpsRecordCtrl)
+GET  /supervisor/spread/cpsRecord/{action}.html                      back.spread.CpsRecordCtrl.{action}Pre
+POST /supervisor/spread/cpsRecord/{action}                           back.spread.CpsRecordCtrl.{action}
+
+# 后台-推广-CPS-CPS活动控制器(controllers.back.spread.CpsActivityCtrl)
+GET  /supervisor/spread/cpsActivity/{action}.html                      back.spread.CpsActivityCtrl.{action}Pre
+POST /supervisor/spread/cpsActivity/{action}                           back.spread.CpsActivityCtrl.{action}
+
+# 后台-推广-数据统计-数据统计控制器(controllers.back.spread.DataCtrl)
+GET  /supervisor/spread/data/{action}.html                      back.spread.DataCtrl.{action}Pre
+POST /supervisor/spread/data/{action}                           back.spread.DataCtrl.{action}
+
+# 后台-推广-加息券-加息券控制器(controllers.back.spread.AddRateCtrl)
+GET  /supervisor/spread/addrate/{action}.html                      back.spread.AddRateCtrl.{action}Pre
+POST /supervisor/spread/addrate/{action}                           back.spread.AddRateCtrl.{action}
+
+#前台-推广-CPS-CPS注册控制器(controllers.front.account.RegisterCtrl)
+GET /account/register/{action}.html									front.account.RegisterCtrl.{action}Pre
+POST /account/register/{action}										front.account.RegisterCtrl.{action}
+
+#前台-推广-CPS-新会员注册控制器(controllers.front.account.LandingPageCtrl)
+GET /account/landingPage/{action}.html								front.account.LandingPageCtrl.{action}Pre
+POST /account/landingPage/{action}									front.account.LandingPageCtrl.{action}
+
+GET  /supervisor/spread/landingPageSetting/{action}.html                      back.spread.LandingPageSettingCtrl.{action}Pre
+POST /supervisor/spread/landingPageSetting/{action}                           back.spread.LandingPageSettingCtrl.{action}

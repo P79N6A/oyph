@@ -1,0 +1,24 @@
+#{extends 'common/supervisorMain.html' /}
+#{set AItem:6 /}
+	
+<!-- 二级导航 -->
+<ul class="back-secnav">
+	<li class="promotion-select">
+		<select id="spreadMenu">
+			#{list items:common.enums.SpreadMenu.values(),as:'menu'}
+			<option value=${menu.url} #{if menu==common.enums.SpreadMenu.DATASTATISTICS}selected="selected"#{/if}>${menu.value}</option>
+			#{/list}
+  		</select>
+	</li>
+</ul>	
+
+#{doLayout /}
+<!-- 页面js -->
+<script type="text/javascript">
+	require(["back"],function(back){
+		//二级菜单切换的
+		$("#spreadMenu").change(function(){
+			window.location.href=$(this).children('option:selected').val();
+		});
+	});
+</script>	

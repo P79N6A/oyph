@@ -1,0 +1,31 @@
+<div class="tab-cont none clearfix account-manange" id="extExperienceBid">
+</div>
+
+<script type="text/javascript">
+	require(['front'],function(front){
+		$(".tab-menu").children("a[id='extExperienceGold']").click(function(){
+			var tab = $("#extExperienceBid");
+			var flag = tab.children(".account-main").length==0;
+			if(flag){
+				showMyExperienceAccount();
+			}
+		});
+	});
+	
+	function showMyExperienceAccount(currPage){
+		$.ajax({
+			url : "@{front.spread.ExperienceBidFrontCtrl.showMyExperienceGoldPre()}",
+			type : "GET",
+			data : {
+				"currPage": currPage
+			},
+			success : function(data) {
+				var flag = interceptorCheck(data);
+				if(!flag){
+					return;
+				}
+				$("#extExperienceBid").html(data);
+			}
+		});
+	}
+</script>

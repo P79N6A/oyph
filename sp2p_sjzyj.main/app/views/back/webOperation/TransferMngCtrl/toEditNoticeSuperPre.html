@@ -1,0 +1,72 @@
+#{extends 'common/back/webOperationMain.html' /}
+#{set title:'运维 | 通知管理 | 修改通知人信息' /}
+#{set smallclass:8 /}
+#{set crumbs:'运维>通知管理>修改通知人信息' /}
+%{
+	java.lang.Integer type = controllers.common.BackBaseController.getCurrentSupervisorType();
+}%
+<div class="back-main">
+	<!-- 头部筛选条件 -->
+	<div class="back-usertop">
+		<!-- 搜索按钮，控制搜索条件的显示隐藏 -->
+		<div class="left back-usermenu">
+		<a href="@{back.webOperation.TransferMngCtrl.showNoticeSuperPre()}"  class="selected">通知管理</a>		
+		</div>
+		
+	</div>
+	
+	<div class="back-cont">
+		<form onsubmit="return jianyan();" action="@{back.webOperation.TransferMngCtrl.editNoticeSuper()}" method="POST" id="form_addDiff">		 
+			<div class="back-infor">
+				<h2 class="back-infor-head">
+					<span class="left">修改通知人信息</span>
+				</h2>				
+				<ul class="back-infor-set">	
+					<li>			   				 	
+						<span class="lileft">通知人姓名：</span>
+						<div class="liright">		
+							<input id="noticeId" name="noticeId" type="hidden" value="${trNotice.id}">					
+							<input id="noticeName" name="noticeName" type="text" value="${trNotice.notice_name}">							
+						</div>
+					</li>
+					<li>			   				 	
+						<span class="lileft">通知人手机号：</span>
+						<div class="liright">							
+							<input id="noticeMobile" name="noticeMobile" type="text" value="${trNotice.notice_mobile}">						
+						</div>
+					</li>
+					<li>			   				 	
+						<span class="lileft">通知类型：</span>
+						<div class="liright">							
+							<select name="notice_temp" style="width: 164px;">
+								<option value="0" #{if trNotice?.notice_temp==0} selected="selected" #{/if}>转让</option>
+								<option value="1" #{if trNotice?.notice_temp==1} selected="selected" #{/if}>还款</option>
+							</select>							
+						</div>
+					</li>							
+					<li>
+						<p class="back-audit-btns">
+							<input type="submit" id="pageSave" value="保存" class="bgbtn">
+							<input type="reset" value="取消" class="bdbtn dialog-console">
+						</p>
+					</li>				
+				</ul>
+			</div>						
+		</form>
+	</div>
+	<script type="text/javascript" >
+
+	function jianyan(){
+		var mobile=$("#noticeMobile").val().trim();
+		var name=$("#noticeName").val();
+		if(mobile == '' || name == ''){
+			alert("姓名或手机号不能为空");
+			return false;
+		}else if(!mobile.isMobileNum()){
+			alert("手机号格式不正确");
+			return false;
+		}else{
+			return true;
+		}
+	}
+	</script>

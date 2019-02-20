@@ -1,0 +1,91 @@
+#{extends 'common/back/activityMain.html'/}
+	#{set title:'活动 | 大转盘活动|活动设置'/}
+	#{set smallclass:2 /}
+	#{set crumbs:'活动>大转盘活动>活动设置'/}
+<div class="back-main">
+	<!-- 头部筛选条件 -->
+	<div class="back-usertop">
+		<div class="left back-usermenu">
+			<a href="@{back.activity.shake.BigWheelActivityCtrl.awardManagerListPre()}">奖品列表</a>
+			<a href="@{back.activity.shake.BigWheelActivityCtrl.winningInfoPre()}">中奖信息列表</a>
+			<a href="@{back.activity.shake.BigWheelActivityCtrl.activitySettingPre()}" class="selected">活动设置</a>
+		</div>
+		<!-- 右侧功能按钮 -->
+		<div class="right back-rightbtns">
+			#{rightMng rightId:1302004}
+			<a href="@{back.activity.shake.BigWheelActivityCtrl.toAddActivitySettingPre()}"><b class="iconfont">&#xe631;</b>添加活动</a>
+			#{/rightMng}
+		</div>
+	</div>
+	<div class="back-cont">
+		<div class="back-box">
+			<form action="@{back.activity.shake.BigWheelActivityCtrl.activitySettingPre()}" method="get" id="activitySettingPre">
+				<input type="hidden" id="currPage" name="currPage" value="${pageBean?.currPage}" />
+		  		<input type="hidden" id="pageSize" name="pageSize" value="${pageBean?.pageSize}" />
+		  		<input type="hidden" id="showType" name="showType" value="${showType}" />
+	  		</form>
+			<table width="100%" class="back-table table-fixed">
+				<tr height="40">
+					<th width="70" class="align-left">编号</th>
+					<th>活动名称</th>
+					<th>活动时间</th>
+					<th>活动状态</th>
+					<th>操作</th>
+				</tr>
+			#{if pageBean.page}
+				#{list items:pageBean.page, as:"wheel"}
+				<tr height="40">
+					<td class="align-left">
+						${wheel?.id}
+					</td>
+					<td>
+						${wheel?.name}
+					</td>
+					<td>
+						${wheel?.start_time?.format(common.constants.Constants.DATE_PLUGIN)}
+					</td>
+					<td>
+						#{if wheel?.status==2}
+							<span style="color: blue;">未开始 </span>
+						#{/if}
+						#{if wheel?.status==3}
+							<span style="color: red;">进行中 </span>
+						#{/if}
+						#{if wheel?.status==4} 
+							<span style="color: gray;">已结束</span>
+						#{/if}
+					</td>
+					<td>
+						<a href="@{back.activity.shake.BigWheelActivityCtrl.toEditActivitySettingPre(wheel?.id)}" data-title="编辑" class="iconfont">&#xe602;</a>
+					</td>
+				</tr>
+				#{/list}
+				<!-- 表格数据统计 -->
+				<tr height="40">
+					<td colspan="5" class="back-lasttd">				
+						<!-- 分页组件--pageTag -->
+						#{backPageTag page:pageBean,showPage:"activitySettingPre"/}
+					</td>
+				</tr>
+				
+			#{/if}
+			#{else}	
+						
+					<!-- 暂无记录 -->
+					<tr height="58">
+						<td colspan="5" class="back-nodata"><i class="iconfont">&#xe613;</i>暂无记录</td>
+					</tr>
+				</table>
+			#{/else}
+		</div>
+	</div>
+</div>
+<script>
+function activitySettingPre(currPage, pageSize) {
+	
+	$("#currPage").val(currPage);
+	$("#pageSize").val(pageSize);
+	
+	$("#activitySettingPre").submit();
+}
+</script>

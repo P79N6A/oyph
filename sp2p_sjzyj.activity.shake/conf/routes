@@ -1,0 +1,49 @@
+#
+#
+# 后台-活动
+# ~~~~
+# 后台-活动-活动-控制器(controllers.back.activity.ActivityCtrl)
+GET  /supervisor/activity/{action}.html           		back.activity.ActivityCtrl.{action}Pre
+POST /supervisor/activity/{action}                		back.activity.ActivityCtrl.{action}
+# 
+# ~~~~
+# 后台-活动-摇一摇活动-控制器(controllers.back.activity.ActivityCtrl)
+GET  /supervisor/activity/shake/ShakeActivityCtrl/{action}.html           		back.activity.shake.ShakeActivityCtrl.{action}Pre
+POST /supervisor/activity/shake/ShakeActivityCtrl/{action}        	       		back.activity.shake.ShakeActivityCtrl.{action}
+#
+# ~~~~
+# 后台-活动-大转盘活动-控制器(controllers.back.shake.BigWheelActivityCtrl)
+GET  /supervisor/activity/shake/BigWheelActivityCtrl/{action}.html           		back.activity.shake.BigWheelActivityCtrl.{action}Pre
+POST /supervisor/activity/shake/BigWheelActivityCtrl/{action}        	       		back.activity.shake.BigWheelActivityCtrl.{action}
+# ~~~~
+# 后台-活动-新手任务活动-控制器(controllers.back.activity.shake.NewTaskCtrl)
+GET  /supervisor/activity/shake/NewTaskCtrl/{action}.html           		back.activity.shake.NewTaskCtrl.{action}Pre
+POST /supervisor/activity/shake/NewTaskCtrl/{action}        	       		back.activity.shake.NewTaskCtrl.{action}
+#
+#
+# 前台-活动
+# ~~~~
+# 前台-讴业活动(controllers.front.shankeActivity)
+GET  /front/activity/{action}.html           		front.activity.MyActivityCtrl.{action}Pre
+POST /front/activity/{action}        	       		front.activity.MyActivityCtrl.{action}
+
+# 前台-讴业活动-摇一摇活动(controllers.front.shankeActivity)
+GET  /front/activity/shake/{action}.html           		front.activity.shake.MyShakeActivityCtrl.{action}Pre
+POST /front/activity/shake/{action}        	       		front.activity.shake.MyShakeActivityCtrl.{action}
+
+# 前台-讴业活动-红包分享(controllers.front.activity.shake.RedPacketShareCtrl)
+GET  /front/activity/shakes/{action}.html           		front.activity.shake.RedPacketShareCtrl.{action}Pre
+POST /front/activity/shakes/{action}        	       		front.activity.shake.RedPacketShareCtrl.{action}
+# ~~~~
+# 前台-活动-大转盘活动-控制器(controllers.front.shake.MyBigWheelActivityCtrl)
+GET  /front/activity/shake/MyBigWheelActivityCtrl/{action}.html           		front.activity.shake.MyBigWheelActivityCtrl.{action}Pre
+POST /front/activity/shake/MyBigWheelActivityCtrl/{action}        	       		front.activity.shake.MyBigWheelActivityCtrl.{action}
+# ~~~~
+# 前台-活动-大转盘活动-抽奖控制器(controllers.front.activity.shake.DrawLotteryCtrl)
+GET  /front/activity/shake/DrawLotteryCtrl/{action}.html           		front.activity.shake.DrawLotteryCtrl.{action}Pre
+POST /front/activity/shake/DrawLotteryCtrl/{action}        	       		front.activity.shake.DrawLotteryCtrl.{action}
+
+# ~~~~
+# 前台-活动-新手任务活动-控制器(controllers.front.activity.shake.NewTaskCtrl)
+GET  /front/activity/shake/NewTaskCtrl/{action}.html           		front.activity.shake.NewTaskCtrl.{action}Pre
+POST /front/activity/shake/NewTaskCtrl/{action}        	       		front.activity.shake.NewTaskCtrl.{action}

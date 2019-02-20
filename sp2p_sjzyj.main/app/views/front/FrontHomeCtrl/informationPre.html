@@ -1,0 +1,90 @@
+<div class="evolution-box">
+
+	<h2 class="evolution-course">
+		${message?.value}<span style="display: none;">${message?.code}</span>
+	</h2>
+	#{if information}
+	<ul class="official">
+		#{list items:information, as:'info'}
+		<li><a class="official-pic"
+			href="@{front.InformationCtrl.informationDetailPre(info?.id)}"> <img
+				src="${info?.image_url}"
+				onerror="this.src='/public/common/default.jpg'" width="320" />
+		</a>
+			<div class="official-rg">
+				<h2>
+					<a href="@{front.InformationCtrl.informationDetailPre(info?.id)}">${info?.title}</a>
+				</h2>
+				<p>
+					${info?.source_from} <span>${common.utils.DateUtil.getTimeLine(info?.show_time)}</span>
+				</p>
+				<div class="official-size">
+					<a href="@{front.InformationCtrl.informationDetailPre(info?.id)}">
+						<div id="content" >
+							${info?.content.raw()}
+						</div>
+					</a>
+				</div>
+				<div class="official-tubiao">
+					<span class="haveseen-icon" title="浏览次数"><i style="width:30px;">${info?.read_count}</i></span>
+					<a class="yan-icon praise-btn" title="赞一个">
+						<input type="hidden" value="${info?.id}" />
+						<i class="praise-count">${info?.support_count}</i>
+					</a>
+					<span class="intercept"><i>|</i></span>
+					<div title="分享到新浪微博">
+						<a class="sina" href="javascript:sinaShare('@@{front.InformationCtrl.informationDetailPre}?id=${info?.id}','${info?.title}','${info?.image_url}');"></a>
+					</div>
+					<div class="wx shareto-wechat" title="分享到朋友圈">
+						<div class="shareto-wechat-upbox">
+							<i></i>
+							<i></i>
+							<div class="code-area"></div>
+							<input type="hidden" class="code-url" value="@@{front.InformationCtrl.informationDetailPre}?id=${info?.id}">
+						</div>
+					</div>
+					<div title="分享到QQ空间">
+						<a class="qqZone" href="javascript:qqZoneShare('@@{front.InformationCtrl.informationDetailPre}?id=${info?.id}','${info?.title}','${info?.image_url}');"></a>
+					</div>
+				</div>
+			</div></li> #{/list}
+	</ul>
+	<div class="loadingMore">
+		#{if information.size()< size }<a>点击加载更多</a>#{/if}
+		#{else }没有更多了#{/else}
+	</div>
+	#{/if}
+</div>
+
+<script type="text/javascript">
+	
+	
+	$(".loadingMore").click(function() {
+		var info = $(".evolution-course").children("span").text();
+		var limit = $(".official li").length + 2;
+		$.ajax({
+
+			type : "get",
+			url : "@{front.FrontHomeCtrl.informationPre()}",
+			data : {
+				"info" : info,
+				"limit" : limit
+			},
+			success : function(data) {
+
+				$(".rg-box").html(data);
+				omit();
+	            $(document).scrollTop($(document).height()-$(window).height()); 
+
+			}
+		})
+
+	});
+	require(['front'],function(){
+		
+		require(['share']);
+		
+	});
+</script> 
+
+

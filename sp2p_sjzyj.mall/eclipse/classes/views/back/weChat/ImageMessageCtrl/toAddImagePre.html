@@ -1,0 +1,100 @@
+#{extends 'common/back/weChatMain.html' /}
+	#{set title:'微信 | 图片回复' /}
+	#{set smallclass:1 /}
+	#{set crumbs:'微信>添加图片回复'/}
+<div class="back-main">	
+	<div class="back-usertop">
+		<b class="left font14">编辑文本自定义内容</b>
+		<!-- 右侧功能按钮 -->
+		<div class="right back-rightbtns">
+			<a href="@{back.weChat.ImageMessageCtrl.showImageListPre()}"><i class="iconfont">&#xe60b;</i>返回</a>
+		</div>
+	</div>
+	<form action="@{back.weChat.ImageMessageCtrl.addImage()}" method="post" id="" class="WeChatContent">
+			<ul class="back-ul">
+				<li>
+					<span class="lileft">关键词</span>
+					<div class="liright">
+						<input type="text" name="keywords" class="required">
+						<span class="ccc">多个关键词请用空格隔开 例如：美丽 漂亮 好看</span>
+					</div>
+				</li>
+				<li>
+					<span class="lileft">关键词类型</span>
+					<div class="liright">
+						<label class="radio">
+							<input type="radio" name="matchs" checked="checked" value="0">包含匹配（当此关键词包含粉丝输入关键词时有效）
+						</label>
+						<label class="radio">
+						<input type="radio" name="matchs" value="1">完全匹配（当此关键词包含粉丝输入关键词完全相同时有效）
+						</label>
+					</div>
+				</li>
+				<li>
+					<span class="lileft">上传链接</span>
+					<div class="liright">
+						<span class="back-imgarea imgrequired">
+							<img src="${flash?.image_url} ? ${flash?.image_url} : '/public/back/images/noimg.jpg'" onerror="this.src='/public/back/images/noimg.jpg'" class="backupimg" height="100" width="200" id='image' name="image" alt="" title="" />
+							<input type="hidden" id="imageUrl" name="image_url" value="${flash?.image_url}">
+						</span>
+						<span class="back-upimg" style='line-height: 30px;'> 
+							<label class="back-upbtn">
+								<input type="file" class="upload_file" value="" accept=".jpg,.jpeg,.png,.gif" name="imgFile" id="imgFile" onchange="upload()"/>
+								<i class="iconfont">&#xe608;</i>本地上传
+							</label>
+							
+							<p class="back-imginfor-note">700*420&nbsp;&nbsp;jpg/png&nbsp;&nbsp;大小不超过2M</p>
+							<span id="resolutionshow">${flash?.image_resolution}</span>&nbsp;<span id="formatshow">${flash?.imageFormat}</span>&nbsp;<span id="sizeshow">${flash?.image_size}</span>
+							
+							<!-- 图片参数，用于保存 -->
+							<input type="hidden" id="imageFormat" name="imageFormat" value="${flash?.image_format}">
+							<input type="hidden" id="imageSize" name="image_size" value="${flash?.image_size}">								
+						</span>
+					</div>
+				</li>
+				<li>
+					<span class="lileft"></span>
+					<div class="liright">
+						<input type="submit" class="WeChatbut" value="保存">
+						<input type="reset" value="取消" class="WeChatbut addWeChatbut">
+					</div>
+				</li>
+			</ul>
+	</form>
+</div>
+<script type="text/javascript">
+
+require(["back"],function(back){
+	require(["ajaxfileupload","datatime","cutImg"]);
+})
+
+function upload(){
+	var fileId = "imgFile";
+	var file = $("#" + fileId).val();
+	var pos = file.lastIndexOf("\\");
+	var fileName = file.substring(pos + 1);
+	
+	$.ajaxFileUpload({
+		url : '@{back.weChat.ImageMessageCtrl.uploadImage()}',
+		secureuri : false,
+		fileElementId : fileId,
+		data:{
+			"fileName":fileName
+		},
+		dataType : 'json',
+		success : function(result) {
+			if(result.code == 1){
+				var data = result.obj;
+				$("#image").attr("src", data.staticFileName);
+				$("#imageUrl").val(data.staticFileName);
+				$("#imageFormat").val(data.fileSuffix);
+				$("#imageSize").val(data.size+"kb");
+				$("#image").css({ "display": "block"});
+			} else {
+				alert(result.msg);
+			}
+		}
+	})
+}
+
+</script>

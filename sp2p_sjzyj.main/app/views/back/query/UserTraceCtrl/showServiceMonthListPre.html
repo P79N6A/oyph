@@ -1,0 +1,102 @@
+#{extends 'common/back/queryMain.html' /}
+	#{set title:'查询 | 交易状态 | 理财会员统计' /}
+	#{set smallclass:7 /}
+	#{set crumbs:'查询>交易状态>客服月统计列表' /}
+
+<div class="back-main">
+	<!-- 头部筛选条件 -->
+	<div class="back-search-option" style="display: block;">
+		<form action="@{back.query.UserTraceCtrl.showServiceMonthListPre()}" method="GET" id="showServiceMonthListPre">
+			<input type="hidden" id="currPage" name="currPage"/>
+	  		<input type="hidden" id="pageSize" name="pageSize" value="${pageBean?.pageSize}"/>
+	  		
+	  		<select name="year" style="margin-right: 20px;">
+				<option value="2018" #{if year==2018} selected="selected"#{/if} >2018年</option>
+				<option value="2019" #{if year==2019} selected="selected"#{/if} >2019年</option>
+				<option value="2020" #{if year==2020} selected="selected"#{/if} >2020年</option>
+			</select>
+			
+			<select name="month" style="margin-right: 20px;">
+				<option value="1" #{if month==1} selected="selected"#{/if} >1月</option>
+				<option value="2" #{if month==2} selected="selected"#{/if} >2月</option>
+				<option value="3" #{if month==3} selected="selected"#{/if} >3月</option>
+				<option value="4" #{if month==4} selected="selected"#{/if} >4月</option>
+				<option value="5" #{if month==5} selected="selected"#{/if} >5月</option>
+				<option value="6" #{if month==6} selected="selected"#{/if} >6月</option>
+				<option value="7" #{if month==7} selected="selected"#{/if} >7月</option>
+				<option value="8" #{if month==8} selected="selected"#{/if} >8月</option>
+				<option value="9" #{if month==9} selected="selected"#{/if} >9月</option>
+				<option value="10" #{if month==10} selected="selected"#{/if} >10月</option>
+				<option value="11" #{if month==11} selected="selected"#{/if} >11月</option>
+				<option value="12" #{if month==12} selected="selected"#{/if} >12月</option>
+			</select>
+			
+			<input type="submit" class="bgbtn" value="搜索" />
+		</form>
+	</div>
+	<div class="back-cont">
+		<div class="back-box">
+			<table width="100%" class="back-table table-fixed">
+				<tr height="40">
+					<th width="70" class="align-left">编号</th>
+					<th>客服</th>
+					<th>服务人数</th>
+					<th>开户人数</th>
+					<th>代收金额</th>
+					<th>增量金额</th>
+				</tr>
+			#{if pageBean?.page}
+				#{list pageBean?.page}
+				<tr height="40">
+					<td class="align-left">
+						<label><input type="checkbox" class="back-tdcheck" />${_?.id}</label>
+					</td>
+					<td>${_?.person?.realityName}</td>
+					<td>${_?.service_num}</td>
+					<td>${_?.open_num}</td>
+					<td>${_?.collect_money}</td>
+					<td>${_?.add_money}</td>
+				</tr>
+				#{/list}
+				<!-- 表格数据统计 -->
+				<tr height="40">
+					<td colspan="6" class="back-lasttd">
+						<span class="back-choose left">
+							<input type="button" id="chooseAll" value="全选" />
+							<input type="button" id="chooseReverse" value="反选" />
+						</span>
+						
+						<!-- 分页组件--pageTag -->
+						#{backPageTag page:pageBean,showPage:"showServiceMonthListPre"/}
+					</td>
+				</tr>
+			#{/if}
+			#{else}	
+						
+					<!-- 暂无记录 -->
+					<tr height="58">
+						<td colspan="6" class="back-nodata"><i class="iconfont">&#xe613;</i>暂无记录</td>
+					</tr>
+				</table>
+			#{/else}
+		</div>
+	</div>
+</div>
+
+<!-- 页面js -->
+<script type="text/javascript">
+	require(["back"],function(back){
+		// 搜索 排序 选中
+		require(["search","linechecked"],function(){
+			
+		});
+	});
+	
+	function showServiceMonthListPre(currPage, pageSize) {
+		$("#currPage").val(currPage);
+		$("#pageSize").val(pageSize);
+		
+		$("#showServiceMonthListPre").submit();
+	}
+	
+</script>	

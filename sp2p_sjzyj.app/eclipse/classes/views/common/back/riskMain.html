@@ -1,0 +1,19 @@
+*{
+	后台-风控的Main页面
+}*
+#{extends 'common/supervisorMain.html' /}
+#{set AItem:3 /}
+
+<!-- 二级导航 -->
+<ul class="back-secnav">
+	<li><a href="@{back.risk.LoanMngCtrl.showBidPre()}">理财项目</a></li>
+	<li><a href="@{back.risk.DebtMngCtrl.showDebtsPre()}">转让项目</a></li>
+	<li><a href="@{back.risk.ProductMngCtrl.showProductPre()}">借款产品</a></li>
+	<li><a href="@{back.risk.AuditSubjectMngCtrl.showAuditSubjectsPre()}">审核科目</a></li>
+	*{<li><a href="@{back.risk.CreditLevelMngCtrl.showCreditLevelsPre()}">信用等级</a></li>}*
+	<li><a href="@{back.risk.PactMngCtrl.showPactsPre()}">合同模板</a></li>
+	<li><a href="@{back.risk.MessageMngCtrl.showMessagePre()}">征信报文</a></li>
+	<li><a href="@{back.risk.LoanTrackMngCtrl.showLoanTrackPre()}">贷后跟踪</a></li>
+</ul>
+
+#{doLayout /}

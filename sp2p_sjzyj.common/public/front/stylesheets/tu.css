@@ -1,0 +1,117 @@
+.tu-kuang{
+	width: 394px;
+	height: 500px;
+	border: 5px  solid  #fba053;
+	float: left;
+	margin-left: 94px;
+}
+.tu-kuang1{
+	width: 700px;
+	height: 521px;
+	float: left;
+
+}
+.tu-kuang1>p{
+	color: block;
+	font-size: 25px;
+	line-height: 40px;
+}
+.tu-shangchuan{
+	width: 500px;
+	height: 80px;
+	margin-top: 80px;
+	border: 5px solid  #fba053;
+	margin-left: 105px;
+}
+.tu-shangchuan>p{
+	text-align: center;
+	font-size: 40px;
+	line-height: 80px ;
+	color: #fba053;
+}
+.apellation{
+	width: 100%;
+	height: 300px;
+	margin: auto;
+	
+}
+.apellation-1{
+	line-height: 60px;
+}
+.apellation-1>p{
+	color:  #fba053;
+	font-size: 24px;
+}
+.apellation-1 input{
+	border: 0;
+	border-bottom: 1px solid #fba053;
+	width: 250px;
+	height: 30px;
+	text-align: center;
+	outline:medium;
+	font-size: 24px;
+	letter-spacing: 3px;
+}
+.apellation-2{
+	width:100%;
+	height: 60px;
+	line-height: 60px;
+	text-align: center;
+}
+.apellation-2 input{
+	width: 80px;
+	height: 40px;
+	color: #fba053;
+	font-size: 16px;
+}
+.uploadFile{
+	text-align: center;
+	color: #fba053;
+	
+}
+
+.back-upbtn {
+    color: #fba053;
+    font-weight: bold;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+    font-size: 18px;
+    text-align: left;
+}
+.back-upbtn input {
+    height: 100%;
+    opacity: 0;
+    filter: alpha(opacity=0);
+    cursor: pointer;
+}
+.back-upbtn .iconfont {
+    margin-right: 7px;
+    font-weight: normal;
+}
+
+.buttonPic{
+	display: inline-block;
+	width: 150px;
+	height: 50px;
+	line-height: 50px;
+	text-align:center;
+	color: white;
+	border-radius: 4px;
+	background-color: #fba053;
+}
+.jieshao{
+	width:1200px;
+	height:4000px;
+	margin-top: 130px;
+}
+.jieshao>p{
+	margin-top: 10px;
+	font-size:25px;
+	color: #000;
+}
+.jieshao>img{
+	margin-left: 80px;
+	margin-top: 10px;
+}

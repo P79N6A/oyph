@@ -1,0 +1,53 @@
+#{if currUser}
+	#{if pageBean?.page == null}
+	<div class="norecord-box c9">
+	暂无记录
+	</div>
+	#{/if}
+	#{else}
+	<table width="100%" class="detail-record">
+		<input type="hidden" id="repaymentCurrpage" value="${pageBean?.currPage}"/>
+		<input type="hidden" id="repaymentPagesize" value="${pageBean?.pageSize}"/>
+		<input type="hidden" id="repaymentTotalSize" value="${pageBean?.totalCount}"/>
+		<tr height="40" class="treven">
+			<td width="20%">期数</td>
+			<td width="20%" align="center">应还本息</td>
+			<td width="20%" align="center">到期时间</td>
+			<td width="20%" align="center">还款时间</td>
+			<td width="20%" align="right">状态 </td>
+		</tr>
+		#{list pageBean.page}
+		<tr height="40">
+			<td>${_?.period}/${_?.totalPeriod}</td>
+			<td align="center">${_?.corpus_interest?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}</td>
+			<td align="center">${_?.receive_time?.format(common.constants.Constants.DATE_FORMATE)}</td>
+			<td align="center">${_?.real_receive_time?.format(common.constants.Constants.DATE_FORMATE)}</td>
+			<td align="right">${_?.status?.value}</td>
+		</tr>
+		#{/list}
+	</table>
+	<p class="loadmore">
+		<a href="javascript:void(0);" onclick="loadMoreRepayment()">点击加载更多</a>
+	</p>
+	#{/else}
+#{/if}
+#{else}
+	<div class="tab-cont">
+		<p class="detail-unlogin">请<a href="@{front.LoginAndRegisteCtrl.loginPre()}" class="major">登录</a>或<a href="@{front.LoginAndRegisteCtrl.registerPre()}" class="major">注册</a>后查看</p>
+	</div>
+#{/else}
+<script type="text/javascript">
+function loadMoreRepayment(){
+	var nowSize = $("#repaymentPagesize").val();
+	var totalSize = ${pageBean?.totalCount};
+	$("#repaymentPagesize").val(parseInt(nowSize)+5);
+	repaymentRecordPre(function(data){
+		$("#repayment_record").html(data);
+		trevenRows();
+		if(parseInt(nowSize)+5 >= parseInt(totalSize)){
+			$(".loadmore").html("<span>没有更多了</span>");
+			return;
+		}
+	});
+}
+</script>

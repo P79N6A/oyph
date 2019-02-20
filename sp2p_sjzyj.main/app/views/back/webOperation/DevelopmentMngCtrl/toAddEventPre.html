@@ -1,0 +1,158 @@
+#{extends 'common/back/webOperationMain.html' /}
+	#{set title:'运维 | 发展历程 | ' /}
+	#{set smallclass:7 /}
+	#{set crumbs:'运维>发展历程>添加发展历程' /}
+%{
+	java.lang.String supervisorName = controllers.common.BackBaseController.getCurrentSupervisorName();
+}%
+<div class="back-main">
+	<div class="back-usertop">
+		<b class="left font14">添加发展历程</b>
+		<!-- 右侧功能按钮 -->
+		<div class="right back-rightbtns">
+			<a href="javascript:backAndRefresh('@{back.webOperation.DevelopmentMngCtrl.showEventPre}');"><i class="iconfont">&#xe60b;</i>返回</a>
+		</div>
+	</div>
+	<div class="back-cont">
+		<form action="@{back.webOperation.DevelopmentMngCtrl.addEvent()}" method="POST" id="form_addEvent">
+		 
+			#{authenticityToken /}
+			<div class="back-infor">
+				<h2 class="back-infor-head">
+					<span class="left">历程详情</span>
+				</h2>
+				
+				<ul class="back-infor-set">
+				   				 	
+					<li style="display: block;height: 32px;"> 
+						<span class="lileft">历程时间</span>
+						<div class="liright">
+							<select id="eveYear" name="deve.time_year" style="width: 80px;" class="left back-select">
+								<option value="20${currYear}">20${currYear}年</option>
+								<option value="20${currYear-1}">20${currYear-1}年</option>
+								<option value="20${currYear-2}">20${currYear-2}年</option>
+								<option value="20${currYear-3}">20${currYear-3}年</option>
+							</select>
+							<select id="eveMonth" name="deve.time_month" style="width: 80px;"  class="left back-select">
+								<option value="1">1月</option>
+								<option value="2">2月</option>
+								<option value="3">3月</option>
+								<option value="4">4月</option>
+								<option value="5">5月</option>
+								<option value="6">6月</option>
+								<option value="7">7月</option>
+								<option value="8">8月</option>
+								<option value="9">9月</option>
+								<option value="10">10月</option>
+								<option value="11">11月</option>
+								<option value="12">12月</option>
+							</select>
+							<select id="eveDay" name="deve.time_day" style="width: 80px;" class="left back-select">
+								<option value="1">1日</option>
+								<option value="2">2日</option>
+								<option value="3">3日</option>
+								<option value="4">4日</option>
+								<option value="5">5日</option>
+								<option value="6">6日</option>
+								<option value="7">7日</option>
+								<option value="8">8日</option>
+								<option value="9">9日</option>
+								<option value="10">10日</option>
+								<option value="11">11日</option>
+								<option value="12">12日</option>
+								<option value="13">13日</option>
+								<option value="14">14日</option>
+								<option value="15">15日</option>
+								<option value="16">16日</option>
+								<option value="17">17日</option>
+								<option value="18">18日</option>
+								<option value="19">19日</option>
+								<option value="20">20日</option>
+								<option value="21">21日</option>
+								<option value="22">22日</option>
+								<option value="23">23日</option>
+								<option value="24">24日</option>
+								<option value="25">25日</option>
+								<option value="26">26日</option>
+								<option value="27">27日</option>
+								<option value="28">28日</option>
+								<option value="29">29日</option>
+								<option value="30">30日</option>
+								<option value="31">31日</option>
+								<option value="0">其他</option>
+							</select>
+						</div>
+					</li>	
+					
+					<li>
+						<input type="hidden" value="${supervisorName}" id="createSupervisor" name="deve.create_supervisor" />
+					</li>
+					
+					<li style="display: block;">
+						<span class="lileft">历程内容</span>
+						<div class="liright">
+							<input type="text"  class="width01 iffocus" autofocus="autofocus" onpropertychange="$(this).integerAndLetters()" value="${flash?.name}"  name="deve.event_content"/>
+						</div>
+					</li>
+					
+					<li>
+						<span class="lileft">缩略图</span>
+						<div class="liright">
+							<span class="back-imgarea imgrequired">
+								<img src="${flash?.image_url} ? ${flash?.image_url} : '/public/back/images/noimg.jpg'" onerror="this.src='/public/back/images/noimg.jpg'" class="backupimg" height="100" width="200" id='image' name="image" alt="" title="" />
+								<input type="hidden" id="image_url" name="image_url" value="${flash?.image_url}">
+								<input type="hidden" id="imageFormat" name="imageFormat" value="${flash?.image_format}">
+							</span>
+							<span class="back-upimg">
+								<label class="back-upbtn">
+									<input type="file" class="upload_file" value="" accept=".jpg,.jpeg,.png,.gif" name="imgFile" id="imgFile" onchange="upload()"/>
+									<i class="iconfont">&#xe608;</i>本地上传
+								</label>
+							</span>
+						</div>
+					</li>
+									
+				</ul>
+			</div>
+			
+			<p class="back-audit-btns">
+				<input type="submit" id="pageSave" value="保存" class="bgbtn">
+				<input type="button" onclick="backAndRefresh('@{back.webOperation.DevelopmentMngCtrl.showEventPre}');" value="取消" class="bdbtn dialog-console">
+			</p>
+		</form>
+	</div>
+</div>
+
+<script>
+require(["back"],function(back){
+	require(["ajaxfileupload"]);
+	
+});
+function upload(){
+	var fileId = "imgFile";
+	var file = $("#" + fileId).val();
+	var pos = file.lastIndexOf("\\");
+	var fileName = file.substring(pos + 1);
+	
+	$.ajaxFileUpload({
+		url : '@{back.webOperation.AdvertisementMngCtrl.uploadAdsImage()}',
+		secureuri : false,
+		fileElementId : fileId,
+		data:{
+			"fileName":fileName
+		},
+		dataType : 'json',
+		success : function(result) {
+			if(result.code == 1){
+				var data = result.obj;
+				$("#image").attr("src", data.staticFileName);
+				$("#image_url").val(data.staticFileName);
+				$("#imageFormat").val(data.fileSuffix);
+				$("#image").css({ "display": "block"});
+			} else {
+				alert(result.msg);
+			}
+		}
+	})
+}
+</script>

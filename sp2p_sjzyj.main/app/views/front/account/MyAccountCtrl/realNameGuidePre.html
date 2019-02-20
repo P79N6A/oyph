@@ -1,0 +1,22 @@
+#{extends 'common/front/accountMain.html' /}
+#{set title:'个人中心 | 账户首页 | 未实名认证' /}
+#{set smallclass:0 /}
+
+<div class="account-infor">
+	<div class="account-guidebox">
+		<p class="findepassword-success">
+			<span class="timeout-note major"><i class="icon timeout-icon"></i>你尚未完成实名认证</span>
+			<br/><a href="@{front.account.MySecurityCtrl.securityPre()}" target="" class="major handle-link">去认证</a>
+		</p>
+		<p class="returnprev">
+			<a href="@{front.account.MyAccountCtrl.homePre()}" class="backpage"><i class="icon return-icon"></i>返回</a>
+		</p>
+	</div>
+</div>
+<!-- 页面js -->
+<script type="text/javascript" data-main="/public/front/javascripts/front.js" src="@{'public/front/javascripts/require.js'}" ></script>
+<script type="text/javascript">
+	require(['front'],function(front){
+	
+	})
+</script>

@@ -1,0 +1,148 @@
+#{extends 'common/front/accountMain.html' /}
+#{set title:'个人中心 | 交易记录' /}
+#{set smallclass:2 /}
+
+<div class="account-box">
+	<h2 class="account-title">
+		<div class="right tab-menu account-menu">
+			<a href="javascript:void(0);" class="selected">${columns?.get(common.constants.ColumnKey.WEALTH_DEAL)?:'交易记录'}</a><!-- 交易记录 -->
+			<a href="javascript:void(0);">${columns?.get(common.constants.ColumnKey.WEALTH_DEAL_RECHARGE)?:'充值记录'}</a><!-- 充值记录 -->
+			<a href="javascript:void(0);">${columns?.get(common.constants.ColumnKey.WEALTH_DEAL_WITHDRAW)?:'提现记录'}</a><!-- 提现记录 -->
+			<a href="javascript:void(0);">${columns?.get(common.constants.ColumnKey.WEALTH_DEAL_CONVERSION)?:'兑换记录'}</a><!-- 兑换记录 -->
+		</div>
+	</h2>
+
+	<!-- 列表显示 -->
+	<div class="tab-cont none" id="dealRecord"></div>
+	<div class="tab-cont none" id="rechargeRecord"></div>
+	<div class="tab-cont none" id="withdrawRecord"></div>
+	<div class="tab-cont none" id="conversionRecord"></div>
+</div>
+<script type="text/javascript">
+require(['front'],function(front){
+
+	/* 交易记录 */
+	$(".tab-menu").children().eq(0).click(function(){
+		var flag = $("#dealRecord").children("table").length == 0;
+		if(flag){
+			listOfDealRecordsPre(1,5);
+		}
+	});
+	/* 充值记录 */
+	$(".tab-menu").children().eq(1).click(function(){
+		var flag = $("#rechargeRecord").children("table").length == 0;
+		if(flag){
+			listOfRechargeRecordsPre(1,5);
+		}
+	});
+	/* 提现记录 */
+	$(".tab-menu").children().eq(2).click(function(){
+		var flag = $("#withdrawRecord").children("table").length == 0;
+		if(flag){
+			listOfWithdrawRecordsPre(1,5);
+		}
+	});
+	/* 兑换记录 */
+	$(".tab-menu").children().eq(3).click(function(){
+		var flag = $("#conversionRecord").children("table").length == 0;
+		if(flag){
+			listOfConversionRecordsPre(1,5);
+		}
+	});
+	
+	$(".tab-menu").children().eq(0).click();
+	
+});
+
+//交易记录
+function listOfDealRecordsPre(currPage, pageSize){
+	$.ajax({
+		url : "@{front.account.MyDealCtrl.listOfDealRecordsPre()}",
+		type : "GET",
+		data : {
+			"currPage" : currPage,
+			"pageSize" : pageSize
+		},
+		success : function(data) {
+			var flag = interceptorCheck(data);
+			if(!flag){
+				return;
+			}
+			$("#dealRecord").html(data);
+			// 表格隔行换色
+			$('.account-table').each(function(){
+				$(this).children('tbody').children('tr:not(.account-bill):even').addClass('even');
+			});
+		}
+	 });
+}
+
+//充值记录
+function listOfRechargeRecordsPre(currPage, pageSize){
+	$.ajax({
+		url : "@{front.account.MyDealCtrl.listOfRechargeRecordsPre()}",
+		type : "GET",
+		data : {
+			"currPage" : currPage,
+			"pageSize" : pageSize
+		},
+		success : function(data) {
+			var flag = interceptorCheck(data);
+			if(!flag){
+				return;
+			}
+			$("#rechargeRecord").html(data);
+			// 表格隔行换色
+			$('.account-table').each(function(){
+				$(this).children('tbody').children('tr:not(.account-bill):even').addClass('even');
+			});
+		}
+	 });
+}
+
+//提现记录
+function listOfWithdrawRecordsPre(currPage, pageSize){
+	$.ajax({
+		url : "@{front.account.MyDealCtrl.listOfWithdrawRecordsPre()}",
+		type : "GET",
+		data : {
+			"currPage" : currPage,
+			"pageSize" : pageSize
+		},
+		success : function(data) {
+			var flag = interceptorCheck(data);
+			if(!flag){
+				return;
+			}
+			$("#withdrawRecord").eq(0).html(data);
+			// 表格隔行换色
+			$('.account-table').each(function(){
+				$(this).children('tbody').children('tr:not(.account-bill):even').addClass('even');
+			});
+		}
+	 });
+}
+
+//兑换记录
+function listOfConversionRecordsPre(currPage, pageSize){
+	$.ajax({
+		url : "@{front.account.MyDealCtrl.listOfConversionRecordsPre()}",
+		type : "GET",
+		data : {
+			"currPage" : currPage,
+			"pageSize" : pageSize
+		},
+		success : function(data) {
+			var flag = interceptorCheck(data);
+			if(!flag){
+				return;
+			}
+			$("#conversionRecord").eq(0).html(data);
+			// 表格隔行换色
+			$('.account-table').each(function(){
+				$(this).children('tbody').children('tr:not(.account-bill):even').addClass('even');
+			});
+		}
+	 });
+}
+</script>

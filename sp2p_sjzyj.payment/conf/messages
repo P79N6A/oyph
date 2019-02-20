@@ -1,0 +1,5 @@
+# Default com.shovesoft.sp2p.payment messages
+# You can specialize this file for each language.
+# For exemple, for french create a messages.fr file
+
+#com.shovesoft.sp2p.payment.name=com.shovesoft.sp2p.payment

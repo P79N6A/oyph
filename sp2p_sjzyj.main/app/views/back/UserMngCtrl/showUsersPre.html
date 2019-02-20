@@ -1,0 +1,343 @@
+#{extends 'common/back/userMain.html' /}
+	#{set title:'会员 | 平台会员' /}
+	#{set smallclass:0 /}
+	#{set crumbs:'会员>平台会员'/}
+	
+
+<div class="back-main">
+	<!-- 头部筛选条件 -->
+	<div class="back-usertop">
+		<div class="left back-usermenu">
+			<a href="@{back.UserMngCtrl.showUsersPre(0)}" #{if showType == 0}class="selected"#{/if}>所有</a>
+			<a href="@{back.UserMngCtrl.showUsersPre(1)}" #{if showType == 1}class="selected"#{/if} data-title="产生发标数据">借款</a>
+			<a href="@{back.UserMngCtrl.showUsersPre(2)}" #{if showType == 2}class="selected"#{/if} data-title="产生购买数据">理财</a>
+			<a href="@{back.UserMngCtrl.showUsersPre(3)}" #{if showType == 3}class="selected"#{/if} data-title="累计借款和累计投资都为0">新用户</a>
+			<a href="@{back.UserMngCtrl.showUsersPre(4)}" #{if showType == 4}class="selected"#{/if}>复合</a>
+			<a href="@{back.UserMngCtrl.showUsersPre(5)}" #{if showType == 5}class="selected"#{/if}>正常</a>
+			<a href="@{back.UserMngCtrl.showUsersPre(6)}" #{if showType == 6}class="selected"#{/if}>锁定</a>
+		</div>
+		
+		<!-- 搜索按钮，控制搜索条件的显示隐藏 -->
+		<div class="back-search left #{if userName}selected#{/if}">
+			<i class="iconfont searchicon">&#xe60a;</i>搜索<i class="iconfont arrowicon">&#xe603;</i>
+		</div>
+		
+		<!-- 右侧功能按钮 -->
+		<div class="right back-rightbtns">
+			#{rightMng rightId:301009}
+				<a href="@{back.UserMngCtrl.toMassSMSPre()}" target=""><i class="iconfont">&#xe614;</i>群发短信</a>
+			#{/rightMng}
+			#{rightMng rightId:301010}
+				<a href="@{back.UserMngCtrl.toMassEmailPre()}" target=""><i class="iconfont">&#xe629;</i>群发邮件</a>
+			#{/rightMng}
+			#{rightMng rightId:301011}
+				<a href="@{back.UserMngCtrl.toMassMSGPre()}" target=""><i class="iconfont">&#xe617;</i>群发消息</a>
+			#{/rightMng}
+			<a href="javascript:exportList(1)"><i class="iconfont">&#xe612;</i>导出</a>
+		</div>
+	</div>
+	<!-- 搜索条件，默认隐藏 -->
+	<div class="back-search-option" #{if userName}style="display: block;"#{/if}>
+		<form action="@{back.UserMngCtrl.showUsersPre()}" method="GET" id="showUsersPre">
+			<input type="hidden" id="orderType" name="orderType" value="${orderType}" /><!-- 排序的类型 -->
+			<input type="hidden" id="orderValue" name="orderValue" value="${orderValue}" /><!-- 排序的值(0:降序，1:升序) -->
+			<input type="hidden" id="currPage" name="currPage" />
+	  		<input type="hidden" id="pageSize" name="pageSize" value="${pageBean?.pageSize}"/>
+	  		<input type="hidden" id="showType" name="showType" value="${showType}"/>
+	  		<input type="hidden" id="exports" name="exports"/>
+	  		
+	  		<input type="text" class="iffocus" name="userName" placeholder="会员" value="${userName}" maxlength="13"/>
+			<input type="submit" class="bgbtn" onclick="showUsersPre(1,${page?.pageSize})" value="搜索" />
+		</form>
+	</div>
+	<div class="back-cont">
+		<div class="back-box">
+			<table width="100%" class="back-table table-fixed">
+				<tr height="40">
+					<th width="70" class="align-left">
+						<span class="back-order">
+							编号
+							#{backPageColumTag orderType:orderType,currOrderType:1,orderValue:orderValue,orderBy:'orderBy' /}
+						</span>
+					</th>
+					<th>会员</th>
+					<th>
+						<span class="back-order">
+							可用
+							#{backPageColumTag orderType:orderType,currOrderType:2,orderValue:orderValue,orderBy:'orderBy' /}
+						</span>
+					</th>
+					<th>
+						<span class="back-order">
+							冻结
+							#{backPageColumTag orderType:orderType,currOrderType:3,orderValue:orderValue,orderBy:'orderBy' /}
+						</span>
+					</th>
+					<th>
+						<span class="back-order">
+							待收
+							#{backPageColumTag orderType:orderType,currOrderType:4,orderValue:orderValue,orderBy:'orderBy' /}
+						</span>
+					</th>
+					<th>
+						<span class="back-order">
+							待还
+							#{backPageColumTag orderType:orderType,currOrderType:5,orderValue:orderValue,orderBy:'orderBy' /}
+						</span>
+					</th>
+					<th data-title="放款后的借款金额">
+						<span class="back-order">
+							累计借款
+							#{backPageColumTag orderType:orderType,currOrderType:6,orderValue:orderValue,orderBy:'orderBy' /}
+						</span>
+					</th>
+					<th data-title="放款后的投资金额">
+						<span class="back-order">
+							累计投资
+							#{backPageColumTag orderType:orderType,currOrderType:7,orderValue:orderValue,orderBy:'orderBy' /}
+						</span>
+					</th>
+					<th>
+						<span class="back-order">
+							登录次数
+							#{backPageColumTag orderType:orderType,currOrderType:8,orderValue:orderValue,orderBy:'orderBy' /}
+						</span>
+					</th>
+					<th width="140">最近登录时间</th>
+					<th width="80">状态</th>
+					<th width="190">操作</th>
+				</tr>
+				#{if pageBean?.page && pageBean?.page?.size()>0}
+					#{list pageBean?.page,as:'user'}
+					<tr height="40" #{ifnot user?.fund_sign_status}class="warning"#{/ifnot} id="tr_${user?.id}">
+						<td class="align-left">
+							<label><input type="checkbox" class="back-tdcheck" id="tdcheck_${user_index}"/>${user?.id}</label>
+							<input type="hidden" id="sign_${user_index}" value="${user?.id}"/>
+						</td>
+						<td>
+							<a href="#{rightMng rightId:301002}@{back.UserMngCtrl.showUserDetailPre(user?.sign)}#{/rightMng}" class="back-table-title">${user?.name}</a>
+						</td>
+						<td>${user?.balance?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}</td>
+						<td>${user?.freeze?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}</td>
+						<td>${user?.no_receive?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}</td>
+						<td>${user?.no_repayment?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}</td>
+						<td>${user?.borrow_total?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}</td>
+						<td>${user?.invest_total?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}</td>
+						<td>${user?.login_count}</td>
+						<td>#{if user?.last_login_time !=null} ${user?.last_login_time.format(common.constants.Constants.DATE_TIME_FORMATE)}#{/if}</td>
+						<td>${user?.is_allow_login? "未锁定" : "锁定"}</td>
+						<td class="back-handle">
+							#{rightMng rightId:301003}
+							<a href="@{back.UserMngCtrl.toSendSMSPre(user?.sign)}"  data-title="发短信" class="iconfont">&#xe614;</a>
+							#{/rightMng}
+							
+							#{rightMng rightId:301004}
+							#{if user.email}
+								<a href="@{back.UserMngCtrl.toSendEmailPre(user?.sign)}" data-title="发邮件" class="iconfont">&#xe629;</a>
+							#{/if}
+							#{else}
+								<a href="javascript:void(0)" target="" data-title="没有绑定邮箱" class="iconfont unable">&#xe629;</a>
+							#{/else}
+							#{/rightMng}
+							
+							#{rightMng rightId:301005}
+							<a href="@{back.UserMngCtrl.toSendMSGPre(user?.sign)}" data-title="发消息" class="iconfont">&#xe617;</a>
+							#{/rightMng}
+							
+							#{rightMng rightId:301006}
+							<a onclick="lockuser('${user?.sign}',this);" data-title="${user?.is_allow_login? "锁定" : "解锁"}" class="iconfont"> #{if user?.is_allow_login}&#xe627;#{/if}#{else}&#xe63c;#{/else}</a>
+							#{/rightMng}
+							
+							#{rightMng rightId:301007}
+							<a href="@{back.UserMngCtrl.toEditUserPre(user?.sign)}" target="" data-title="编辑" class="iconfont">&#xe602;</a>
+							#{/rightMng}
+							
+							#{rightMng rightId:301008}
+							<a href="javascript:updateFundSign('${user?.sign}', '${user?.id}')" data-title="账户资金解锁" class="iconfont">&#xe615;</a>
+							#{/rightMng}	
+							
+							#{rightMng rightId:301013}
+								<a href="@{back.UserMngCtrl.simuldatedLoginPre(user?.sign)}" target="_blank" data-title="模拟登录" class="iconfont">&#xe644;</a>
+							#{/rightMng}		
+							
+						</td>
+					</tr>
+					#{/list}
+					<!-- 表格数据统计 -->
+					<tr height="40">
+						<td colspan="12" class="back-lasttd">
+							<span class="back-choose left">
+								<input type="button" id="chooseAll" value="全选" />
+								<input type="button" id="chooseReverse" value="反选" />
+							</span>
+						#{rightMng rightId:301012}
+							<select class="left back-select" id="batch" onchange="batchSend()" >
+								<option>请选择</option>
+								<option value="1">发短信</option>
+								<option value="2">发邮件</option>
+								<option value="3">系统消息</option>
+							</select>
+							<!-- 批量发送短信 -->
+							<form action="@{back.UserMngCtrl.toSendBatchSMSPre()}" method="GET" id="batch_sms">
+								<input type="hidden" id="usersSms" name="users">
+							</form>
+							<!-- 批量发送邮件 -->
+							<form action="@{back.UserMngCtrl.toSendBatchEmailPre()}" method="GET" id="batch_email">
+								<input type="hidden" id="usersEmail" name="users">
+							</form>
+							<!-- 批量发送消息 -->
+							<form action="@{back.UserMngCtrl.toSendBatchMSGPre()}" method="GET" id="batch_msg">
+								<input type="hidden" id="usersMsg" name="users">
+							</form>
+						#{/rightMng}
+							<p class="back-table-totle left">
+								合计 可用余额&nbsp;<span>${fundStatistic?.balance_total?.format(common.constants.Constants.FINANCE_FORMATE_NORMAL)}元</span>，冻结金额&nbsp;<span>${fundStatistic?.freeze_total?.format(common.constants.Constants.FINANCE_FORMATE_NORMAL)}元</span>，待收金额&nbsp;<span>${fundStatistic?.no_receive_total?.format(common.constants.Constants.FINANCE_FORMATE_NORMAL)}元</span>，待还金额&nbsp;<span>${fundStatistic?.no_repayment_total?.format(common.constants.Constants.FINANCE_FORMATE_NORMAL)}元</span>
+							</p>
+							<!-- 分页组件--pageTag -->
+							#{backPageTag page:pageBean,showPage:'showUsersPre' /}
+						</td>
+					</tr>
+				#{/if}
+				#{else}
+					<tr height="58">
+						<td colspan="12" class="back-nodata"><i class="iconfont">&#xe613;</i>暂无记录</td>
+					</tr>
+				#{/else}
+			</table>
+		</div>
+	</div>
+</div>
+
+
+<!-- 页面js -->
+<script type="text/javascript">
+require(["back"],function(back){
+	// 搜索、左侧菜单展开收缩、表格排序
+	require(["search","linechecked"],function(){
+
+	});
+		
+});
+
+//排序 
+function orderBy(orderType,orderValue){
+	$("#showUsersPre input[name='orderType']").val(orderType);
+	$("#showUsersPre input[name='orderValue']").val(orderValue);
+	
+	$("#showUsersPre input[name='currPage']").val(1);
+	
+	$("#showUsersPre").submit();
+}
+
+//分页 
+function showUsersPre (currPage, pageSize) {
+	$("#currPage").val(currPage);
+	$("#pageSize").val(pageSize);
+	
+	$("#showUsersPre").submit();
+}
+
+//导出
+function exportList(expor){
+	$("#exports").val(expor);
+	
+	$("#showUsersPre").submit();
+	$("#exports").val(0);
+}
+
+//批量发送短信 
+function batchSend(){
+	//选中提交 
+	var batchVal = $("#batch").val();
+	if(batchVal > 0){
+		var users="";
+		//筛选出选中的 
+		var len = $(".back-tdcheck").length;
+		for(var i=1;i<=len;i++){
+			if($("#tdcheck_"+ i ).is(':checked')){
+				users += $("#sign_"+ i ).val()+";";
+			}
+		}
+		
+		if(users.length==0){
+			weakDialog("请选择要发送的用户");
+			return;
+		}
+		
+		if(batchVal=='1'){
+			$("#usersSms").val(users);
+			$("#batch_sms").submit();
+		}
+		else if(batchVal=='2'){
+			$("#usersEmail").val(users);
+			$("#batch_email").submit();
+		}
+		else if(batchVal=='3'){
+			$("#usersMsg").val(users);
+			$("#batch_msg").submit();
+		}
+	}
+}
+
+
+function lockuser(id,obj){
+	$.ajax({
+		url : "@{back.UserMngCtrl.supervisorLockUser()}",
+		type : "post",
+		data : {
+			"sign" : id
+		},
+		dataType : "json",
+		success : function (data) {
+			var flag = interceptorCheck(data);
+			if(!flag){
+				return;
+			}
+		
+			if(data.code < 1){
+				weakDialog(data.msg);
+			}else{
+				if(data.obj){
+					$(obj).parent("td").prev("td").html("锁定");
+					$(obj).data("title",'解锁');
+					$('.titlebox').text('解锁');
+					$(obj).html("&#xe63c;");
+					weakDialog(data.msg);
+				}else{
+					$(obj).parent("td").prev("td").html("未锁定");
+					$(obj).data("title",'锁定');
+					$('.titlebox').text('锁定');
+					$(obj).html("&#xe627;");
+					weakDialog(data.msg);
+				}
+			}
+		}
+	})
+}
+
+function updateFundSign(sign, id){
+	confirm("涉及资金安全问题，请慎重操作 ！是否更新？",function(){
+			$.ajax({
+				url : "@{back.UserMngCtrl.updateFundSign()}",
+				type : "post",
+				data : {
+					"sign" : sign
+				},
+				dataType : "json",
+				success : function (data) {
+					var flag = interceptorCheck(data);
+					if(!flag){
+						return;
+					}
+					
+					weakDialog(data.msg);
+					
+					$("#tr_"+id).removeClass("warning");
+					}
+				})
+			}
+		)
+	}
+
+	
+</script>	

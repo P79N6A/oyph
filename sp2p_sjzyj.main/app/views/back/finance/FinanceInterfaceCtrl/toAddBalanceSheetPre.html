@@ -1,0 +1,513 @@
+#{extends 'common/back/financeMain.html' /}
+	#{set title:'财务 | 财务信息表|添加' /}
+	#{set smallclass:15 /}
+	#{set crumbs:'财务>财务信息表>添加'/}
+<style>
+ 	.financialSurface{
+ 		width: 100%;
+ 	}
+ 	.financialSurface caption {
+		font-size: 30px;
+		font-weight: bold;
+		margin-bottom: 20px;
+	}
+	.financialSurface th{
+		width: 15%;
+	}
+	.financialSurface th.order{
+		width: 5%;
+	}
+	.financialSurface tr{
+		height: 40px;
+		text-align: center;
+	}
+	.financialSurface input{
+		outline: none;
+		border: none;
+		text-align: center;
+		background-color: transparent;
+	}
+	input::-webkit-outer-spin-button,
+	input::-webkit-inner-spin-button{
+    -webkit-appearance: none !important;
+    margin: 0; 
+	}
+	.tdblue{
+		background: #bcd6ee;
+	}
+</style>
+<div class="back-main">
+	<div class="back-usertop">
+		<div class="left back-usermenu">
+			<a href="@{back.finance.FinanceInterfaceCtrl.balanceSheetPre()}" class="selected">资产负债表</a>
+			<a href="@{back.finance.FinanceInterfaceCtrl.profitStatementPre()}">利润表</a>
+			<a href="@{back.finance.FinanceInterfaceCtrl.cashFlowSheetPre()}">现金流量表</a>
+			<a href="@{back.finance.FinanceInterfaceCtrl.financialOfficePre()}">金融办</a>
+			<a href="@{back.finance.FinanceInterfaceCtrl.financialStatementsPre()}">财务报表</a>
+		</div>
+	</div>
+	<div class="back-cont">
+		<div class="back-box">
+			<div class="controls">
+				<form action="@{back.finance.FinanceInterfaceCtrl.addBalanceSheet()}"  method="POST" id="saveFinance">
+					<table border="1" class="financialSurface">
+						<caption>资产负债表</caption>
+							<tr>
+								<th class="order">序号</th>
+								<th>项目</th>
+								<th>期初数</th>
+								<th>期末数</th>
+								<th class="order">序号</th>
+								<th>项目</th>
+								<th>期初数</th>
+								<th>期末数</th>
+							</tr>
+							<tr>
+								<td>1</td>
+								<td>一、资产类总计</td>
+								<td style="background: #d8d8d8;"></td>
+								<td style="background: #d8d8d8;"></td>
+								<td>33</td>
+								<td>二、负债类总计</td>
+								<td class="tdblue"><input type="number" name="assets.total_lias" step="0.01" readonly="readonly" id="total_lias"></td>
+								<td class="tdblue"><input type="number" name="assets.total_lias_end" step="0.01" readonly="readonly" id="total_lias_end"></td>
+							</tr>
+							<tr>
+								<td>2</td>
+								<td>（一）流动资产</td>
+								<td class="tdblue"><input type="number" name="assets.initial_sum" step="0.01" readonly="readonly" id="initial_sum"></td>
+								<td class="tdblue"><input type="number" name="assets.ending_sum" step="0.01" readonly="readonly" id="ending_sum"></td>
+								<td>34</td>
+								<td>（一）流动负债</td>
+								<td class="tdblue"><input type="number" name="assets.total_current_lia" step="0.01" readonly="readonly" id="total_current_lia"></td>
+								<td class="tdblue"><input type="number" name="assets.total_current_lia_end" step="0.01" readonly="readonly" id="total_current_lia_end"></td>
+							</tr>
+							<tr>
+								<td>3</td>
+								<td>现金</td>
+								<td><input type="number" name="assets.cash_assets" step="0.01" class="currentAssetsInitial"></td>
+								<td><input type="number" name="assets.cash_assets_end" step="0.01" class="currentAssetsEnd"></td>
+								<td>35</td>
+								<td>短期借款</td>
+								<td><input type="number" name="assets.short_trem_borrow" step="0.01" class="currentLiabilitiesInitial"></td>
+								<td><input type="number" name="assets.short_trem_borrow_end" step="0.01" class="currentLiabilitiesEnd"></td>
+							</tr>
+							<tr>
+								<td>4</td>
+								<td>银行存款</td>
+								<td><input type="number" name="assets.cash_in_bank" step="0.01" class="currentAssetsInitial"></td>
+								<td><input type="number" name="assets.cash_in_bank_end" step="0.01" class="currentAssetsEnd"></td>
+								<td>36</td>
+								<td>交易性金融负债</td>
+								<td><input type="number" name="assets.trading_fin_lia" step="0.01" class="currentLiabilitiesInitial"></td>
+								<td><input type="number" name="assets.trading_fin_lia_end" step="0.01" class="currentLiabilitiesEnd"></td>
+							</tr>
+							<tr>
+								<td>5</td>
+								<td>交易性金融资产</td>
+								<td><input type="number" name="assets.trading_financial_assets" step="0.01" class="currentAssetsInitial"></td>
+								<td><input type="number" name="assets.trading_financial_assets_end" step="0.01" class="currentAssetsEnd"></td>
+								<td>37</td>
+								<td>存入保证金</td>
+								<td><input type="number" name="assets.deposits_received" step="0.01" class="currentLiabilitiesInitial"></td>
+								<td><input type="number" name="assets.deposits_received_end" step="0.01" class="currentLiabilitiesEnd"></td>
+							</tr>
+							<tr>
+								<td>6</td>
+								<td>存出保证金</td>
+								<td><input type="number" name="assets.refundable_deposits" step="0.01" class="currentAssetsInitial"></td>
+								<td><input type="number" name="assets.refundable_deposits_end" step="0.01" class="currentAssetsEnd"></td>
+								<td>38</td>
+								<td>应付票据</td>
+								<td><input type="number" name="assets.notes_payable" step="0.01" class="currentLiabilitiesInitial"></td>
+								<td><input type="number" name="assets.notes_payable_end" step="0.01" class="currentLiabilitiesEnd"></td>
+							</tr>
+							<tr>
+								<td>7</td>
+								<td>应收票据</td>
+								<td><input type="number" name="assets.bill_receivable" step="0.01" class="currentAssetsInitial"></td>
+								<td><input type="number" name="assets.bill_receivable_end" step="0.01" class="currentAssetsEnd"></td>
+								<td>39</td>
+								<td>应付及预收账款</td>
+								<td><input type="number" name="assets.accounts_pay_received" step="0.01" class="currentLiabilitiesInitial"></td>
+								<td><input type="number" name="assets.accounts_pay_received_end" step="0.01" class="currentLiabilitiesEnd"></td>
+							</tr>
+							<tr>
+								<td>8</td>
+								<td>应收账款</td>
+								<td><input type="number" name="assets.receivables" step="0.01" class="currentAssetsInitial"></td>
+								<td><input type="number" name="assets.receivables_end" step="0.01" class="currentAssetsEnd"></td>
+								<td>40</td>
+								<td>应付股利</td>
+								<td><input type="number" name="assets.dividends_pay" step="0.01" class="currentLiabilitiesInitial"></td>
+								<td><input type="number" name="assets.dividends_pay_end" step="0.01" class="currentLiabilitiesEnd"></td>
+							</tr>
+							<tr>
+								<td>9</td>
+								<td>预付账款</td>
+								<td><input type="number" name="assets.prepayment" step="0.01" class="currentAssetsInitial"></td>
+								<td><input type="number" name="assets.prepayment_end" step="0.01" class="currentAssetsEnd"></td>
+								<td>41</td>
+								<td>应付利息</td>
+								<td><input type="number" name="assets.interest_pay" step="0.01" class="currentLiabilitiesInitial"></td>
+								<td><input type="number" name="assets.interest_pay_end" step="0.01" class="currentLiabilitiesEnd"></td>
+							</tr>
+							<tr>
+								<td>10</td>
+								<td>应收利息</td>
+								<td><input type="number" name="assets.interest_receivable" step="0.01" class="currentAssetsInitial"></td>
+								<td><input type="number" name="assets.interest_receivable_end" step="0.01" class="currentAssetsEnd"></td>
+								<td>42</td>
+								<td>应付职工薪酬</td>
+								<td><input type="number" name="assets.employee_pay" step="0.01" class="currentLiabilitiesInitial"></td>
+								<td><input type="number" name="assets.employee_pay_end" step="0.01" class="currentLiabilitiesEnd"></td>
+							</tr>
+							<tr>
+								<td>11</td>
+								<td>应收股利</td>
+								<td><input type="number" name="assets.dividends_receivable" step="0.01" class="currentAssetsInitial"></td>
+								<td><input type="number" name="assets.dividends_receivable_end" step="0.01" class="currentAssetsEnd"></td>
+								<td>43</td>
+								<td>应交税金</td>
+								<td><input type="number" name="assets.tax_payment" step="0.01" class="currentLiabilitiesInitial"></td>
+								<td><input type="number" name="assets.tax_payment_end" step="0.01" class="currentLiabilitiesEnd"></td>
+							</tr>
+							<tr>
+								<td>12</td>
+								<td>应收结算款</td>
+								<td><input type="number" name="assets.settlement_receivables" step="0.01" class="currentAssetsInitial"></td>
+								<td><input type="number" name="assets.settlement_receivables_end" step="0.01" class="currentAssetsEnd"></td>
+								<td>44</td>
+								<td>代收担保机构款项</td>
+								<td><input type="number" name="assets.collection_guarantee_agency" step="0.01" class="currentLiabilitiesInitial"></td>
+								<td><input type="number" name="assets.collection_guarantee_agency_end" step="0.01" class="currentLiabilitiesEnd"></td>
+							</tr>
+							<tr>
+								<td>13</td>
+								<td>其他应收款</td>
+								<td><input type="number" name="assets.other_receivables" step="0.01" class="currentAssetsInitial"></td>
+								<td><input type="number" name="assets.other_receivables_end" step="0.01" class="currentAssetsEnd"></td>
+								<td>45</td>
+								<td>其他应付款</td>
+								<td><input type="number" name="assets.other_pays" step="0.01" class="currentLiabilitiesInitial"></td>
+								<td><input type="number" name="assets.other_pays_end" step="0.01" class="currentLiabilitiesEnd"></td>
+							</tr>
+							<tr>
+								<td>14</td>
+								<td>存货</td>
+								<td><input type="number" name="assets.stock" step="0.01" class="currentAssetsInitial"></td>
+								<td><input type="number" name="assets.stock_end" step="0.01" class="currentAssetsEnd"></td>
+								<td>46</td>
+								<td>一年内到期的非流动负债</td>
+								<td><input type="number" name="assets.non_current_lia" step="0.01" class="currentLiabilitiesInitial"></td>
+								<td><input type="number" name="assets.non_current_lia_end" step="0.01" class="currentLiabilitiesEnd"></td>
+							</tr>
+							<tr>
+								<td>15</td>
+								<td>一年内到期的非流动资产</td>
+								<td><input type="number" name="assets.non_current_assets" step="0.01" class="currentAssetsInitial"></td>
+								<td><input type="number" name="assets.non_current_assets_end" step="0.01" class="currentAssetsEnd"></td>
+								<td>47</td>
+								<td>其他流动负债</td>
+								<td><input type="number" name="assets.other_current_lia" step="0.01" class="currentLiabilitiesInitial"></td>
+								<td><input type="number" name="assets.other_current_lia_end" step="0.01" class="currentLiabilitiesEnd"></td>
+							</tr>
+							<tr>
+								<td>16</td>
+								<td>其他流动资产</td>
+								<td><input type="number" name="assets.other_current_assets" step="0.01" class="currentAssetsInitial"></td>
+								<td><input type="number" name="assets.other_current_assets_end" step="0.01" class="currentAssetsEnd"></td>
+								<td>48</td>
+								<td>（二）非流动负债</td>
+								<td class="tdblue"><input type="number" name="assets.total_non_current_lia" step="0.01" readonly="readonly" id="total_non_current_lia"></td>
+								<td class="tdblue"><input type="number" name="assets.total_non_current_lia_end" step="0.01" readonly="readonly" id="total_non_current_lia_end"></td>
+							</tr>
+							<tr>
+								<td>17</td>
+								<td>（二）非流动资产</td>
+								<td class="tdblue"><input type="number" name="assets.non_initial_sum" step="0.01" readonly="readonly" id="non_initial_sum"></td>
+								<td class="tdblue"><input type="number" name="assets.non_ending_sum" step="0.01" readonly="readonly" id="non_ending_sum"></td>
+								<td>49</td>
+								<td>长期借款</td>
+								<td><input type="number" name="assets.long_term_loan" step="0.01" class="nonCurrentLiabilitiesInitial"></td>
+								<td><input type="number" name="assets.long_term_loan_end" step="0.01" class="nonCurrentLiabilitiesEnd"></td>
+							</tr>
+							<tr>
+								<td>18</td>
+								<td>可供出售金融资产</td>
+								<td><input type="number" name="assets.sales_financial_assets" step="0.01" class="illiquidAssetsInitial"></td>
+								<td><input type="number" name="assets.sales_financial_assets_end" step="0.01" class="illiquidAssetsEnd"></td>
+								<td>50</td>
+								<td>应付债券</td>
+								<td><input type="number" name="assets.bonds_payable" step="0.01" class="nonCurrentLiabilitiesInitial"></td>
+								<td><input type="number" name="assets.bonds_payable_end" step="0.01" class="nonCurrentLiabilitiesEnd"></td>
+							</tr>
+							<tr>
+								<td>19</td>
+								<td>持有至到期投资</td>
+								<td><input type="number" name="assets.held_maturity_invest" step="0.01" class="illiquidAssetsInitial"></td>
+								<td><input type="number" name="assets.held_maturity_invest_end" step="0.01" class="illiquidAssetsEnd"></td>
+								<td>51</td>
+								<td>长期应付款</td>
+								<td><input type="number" name="assets.long_term_payable" step="0.01" class="nonCurrentLiabilitiesInitial"></td>
+								<td><input type="number" name="assets.long_term_payable_end" step="0.01" class="nonCurrentLiabilitiesEnd"></td>
+							</tr>
+							<tr>
+								<td>20</td>
+								<td>长期应收款</td>
+								<td><input type="number" name="assets.long_term_receivables" step="0.01" class="illiquidAssetsInitial"></td>
+								<td><input type="number" name="assets.long_term_receivables_end" step="0.01" class="illiquidAssetsEnd"></td>
+								<td>52</td>
+								<td>预计负债</td>
+								<td><input type="number" name="assets.accrued_lia" step="0.01" class="nonCurrentLiabilitiesInitial"></td>
+								<td><input type="number" name="assets.accrued_lia_end" step="0.01" class="nonCurrentLiabilitiesEnd"></td>
+							</tr>
+							<tr>
+								<td>21</td>
+								<td>长期股权投资</td>
+								<td><input type="number" name="assets.long_trem_equity_invest" step="0.01" class="illiquidAssetsInitial"></td>
+								<td><input type="number" name="assets.long_trem_equity_invest_end" step="0.01" class="illiquidAssetsEnd"></td>
+								<td>53</td>
+								<td>递延所得税负债</td>
+								<td><input type="number" name="assets.deferred_tax_lia" step="0.01" class="nonCurrentLiabilitiesInitial"></td>
+								<td><input type="number" name="assets.deferred_tax_lia_end" step="0.01" class="nonCurrentLiabilitiesEnd"></td>
+							</tr>
+							<tr>
+								<td>22</td>
+								<td>投资性房地产</td>
+								<td><input type="number" name="assets.invest_pro" step="0.01" class="illiquidAssetsInitial"></td>
+								<td><input type="number" name="assets.invest_pro_end" step="0.01" class="illiquidAssetsEnd"></td>
+								<td>54</td>
+								<td>其他长期负债</td>
+								<td><input type="number" name="assets.other_long_term_debt" step="0.01" class="nonCurrentLiabilitiesInitial"></td>
+								<td><input type="number" name="assets.other_long_term_debt_end" step="0.01" class="nonCurrentLiabilitiesEnd"></td>
+							</tr>
+							<tr>
+								<td>23</td>
+								<td>固定资产原值</td>
+								<td><input type="number" name="assets.immobilisations" step="0.01"></td>
+								<td><input type="number" name="assets.immobilisations_end" step="0.01"></td>
+								<td>55</td>
+								<td>三、所有者权益类总计</td>
+								<td class="tdblue"><input type="number" name="assets.total_liabilities_equity" step="0.01" readonly="readonly" id="total_liabilities_equity"></td>
+								<td class="tdblue"><input type="number" name="assets.total_liabilities_equity_end" step="0.01" readonly="readonly" id="total_liabilities_equity_end"></td>
+							</tr>
+							<tr>
+								<td>24</td>
+								<td>固定资产净值</td>
+								<td><input type="number" name="assets.fixed_assets_net_value" step="0.01" class="illiquidAssetsInitial"></td>
+								<td><input type="number" name="assets.fixed_assets_net_value_end" step="0.01" class="illiquidAssetsEnd"></td>
+								<td>56</td>
+								<td>实收资本</td>
+								<td><input type="number" name="assets.pacil_up_capital" step="0.01" class="ownersEquityInitial"></td>
+								<td><input type="number" name="assets.pacil_up_capital_end" step="0.01" class="ownersEquityEnd"></td>
+							</tr>
+							<tr>
+								<td>25</td>
+								<td>固定资产清理</td>
+								<td><input type="number" name="assets.disposal_fixed_assets" step="0.01" class="illiquidAssetsInitial"></td>
+								<td><input type="number" name="assets.disposal_fixed_assets_end" step="0.01" class="illiquidAssetsEnd"></td>
+								<td>57</td>
+								<td>资本公积</td>
+								<td><input type="number" name="assets.capital_reserve" step="0.01" class="ownersEquityInitial"></td>
+								<td><input type="number" name="assets.capital_reserve_end" step="0.01" class="ownersEquityEnd"></td>
+							</tr>
+							<tr>
+								<td>26</td>
+								<td>无形资产</td>
+								<td><input type="number" name="assets.intangible_assets" step="0.01" class="illiquidAssetsInitial"></td>
+								<td><input type="number" name="assets.intangible_assets_end" step="0.01" class="illiquidAssetsEnd"></td>
+								<td>58</td>
+								<td>盈余公积</td>
+								<td><input type="number" name="assets.surplues_reserves" step="0.01" class="ownersEquityInitial"></td>
+								<td><input type="number" name="assets.surplues_reserves_end" step="0.01" class="ownersEquityEnd"></td>
+							</tr>
+							<tr>
+								<td>27</td>
+								<td>开发支出</td>
+								<td><input type="number" name="assets.dev_exp" step="0.01" class="illiquidAssetsInitial"></td>
+								<td><input type="number" name="assets.dev_exp_end" step="0.01" class="illiquidAssetsEnd"></td>
+								<td>59</td>
+								<td>其他综合收益</td>
+								<td><input type="number" name="assets.other_income" step="0.01" class="ownersEquityInitial"></td>
+								<td><input type="number" name="assets.other_income_end" step="0.01" class="ownersEquityEnd"></td>
+							</tr>
+							<tr>
+								<td>28</td>
+								<td>商誉</td>
+								<td><input type="number" name="assets.good_will" step="0.01" class="illiquidAssetsInitial"></td>
+								<td><input type="number" name="assets.good_will_end" step="0.01" class="illiquidAssetsEnd"></td>
+								<td>60</td>
+								<td>未分配利润</td>
+								<td><input type="number" name="assets.undistributed_profit" step="0.01" class="ownersEquityInitial"></td>
+								<td><input type="number" name="assets.undistributed_profit_end" step="0.01" class="ownersEquityEnd"></td>
+							</tr>
+							<tr>
+								<td>29</td>
+								<td>长期待摊费用</td>
+								<td><input type="number" name="assets.deferred_assets" step="0.01" class="illiquidAssetsInitial"></td>
+								<td><input type="number" name="assets.deferred_assets_end" step="0.01" class="illiquidAssetsEnd"></td>
+								<td>61</td>
+								<td>归属于母公司的所有者权益</td>
+								<td><input type="number" name="assets.owenership_equity" step="0.01" class="ownersEquityInitial"></td>
+								<td><input type="number" name="assets.owenership_equity_end" step="0.01" class="ownersEquityEnd"></td>
+							</tr>
+							<tr>
+								<td>30</td>
+								<td>递延所得税资产</td>
+								<td><input type="number" name="assets.deferred_tax_assets" step="0.01" class="illiquidAssetsInitial"></td>
+								<td><input type="number" name="assets.deferred_tax_assets_end" step="0.01" class="illiquidAssetsEnd"></td>
+								<td>62</td>
+								<td>少数股东权益</td>
+								<td><input type="number" name="assets.minority_equity" step="0.01" class="ownersEquityInitial"></td>
+								<td><input type="number" name="assets.minority_equity_end" step="0.01" class="ownersEquityEnd"></td>
+							</tr>
+							<tr>
+								<td>31</td>
+								<td>其他非流动资产</td>
+								<td><input type="number" name="assets.other_non_current_assets" step="0.01" class="illiquidAssetsInitial"></td>
+								<td><input type="number" name="assets.other_non_current_assets_end" step="0.01" class="illiquidAssetsEnd"></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>32</td>
+								<td>资产总计</td>
+								<td class="tdblue"><input type="number" name="assets.initial_assets_total" step="0.01" readonly="readonly" id="initial_assets_total"></td>
+								<td class="tdblue"><input type="number" name="assets.ending_assets_total" step="0.01" readonly="readonly" id="ending_assets_total"></td>
+								<td>63</td>
+								<td>负债和所有者权益（或股东权益）总计</td>
+								<td class="tdblue"><input type="number" name="assets.total_owners_equity" step="0.01" readonly="readonly" id="total_owners_equity"></td>
+								<td class="tdblue"><input type="number" name="assets.total_owners_equity_end" step="0.01" readonly="readonly" id="total_owners_equity_end"></td>
+							</tr>
+							<tr>
+								<td>时间</td>
+								<td colspan="7"><input type="text" class="easyui-datetimebox"  name="create_time" value="${flash?.orderTime}" /></td>
+							</tr>
+					</table>
+					<p class="back-audit-btns" style="padding-bottom: 20px;">
+						<input type="submit" id="page" value="保存" class="bbtn"/>
+						<input type="button" value="取消" class="bdbtn" onclick="window.location.href='@{back.finance.FinanceInterfaceCtrl.balanceSheetPre()}'">
+				    </p>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+require(["back"],function(back){
+	// 时间框
+	require(["datatime"],function(){
+	});
+});
+function add (a, b) {  //加法
+    var arg1 = a, arg2 = b, r1, r2, m;
+    try {
+        r1 = arg1.toString().split(".")[1].length
+    } catch (e) {
+        r1 = 0
+    }
+    try {
+        r2 = arg2.toString().split(".")[1].length
+    } catch (e) {
+        r2 = 0
+    }
+    m = Math.pow(10, Math.max(r1, r2));
+    return (Math.round(arg1 * m) + Math.round(arg2 * m)) / m
+}
+
+function subtraction(arg1, arg2) {   //减法
+    var r1, r2, m, n;
+    try {
+        r1 = arg1.toString().split(".")[1].length
+    } catch (e) {
+        r1 = 0
+    }
+    try {
+        r2 = arg2.toString().split(".")[1].length
+    } catch (e) {
+        r2 = 0
+    }
+    m = Math.pow(10, Math.max(r1, r2));
+    //动态控制精度长度
+    n = (r1 >= r2) ? r1 : r2;
+    return ((Math.round(arg2 * m) - Math.round(arg1 * m)) / m).toFixed(n);
+}
+/*计算*/
+function sum (){
+	var initial_sum = 0;//流动资产期初数
+	var ending_sum = 0;//流动资产期末数
+	var total_current_lia = 0;//流动负债期初数
+	var total_current_lia_end = 0;//流动负债期末数
+	var non_initial_sum = 0//非流动资产期初数
+	var non_ending_sum = 0//非流动资产期末数
+	var total_non_current_lia = 0;//非流动负债期初数
+	var total_non_current_lia_end = 0;//非流动负债期末数
+	var total_liabilities_equity = 0;//所有者权益类总计期初数
+	var total_liabilities_equity_end = 0;//所有者权益类总计末数
+	$('.currentAssetsInitial').each(function(){
+		initial_sum = add(initial_sum,$(this).val());
+	});
+	$('.currentAssetsEnd').each(function(){
+		ending_sum = add(ending_sum,$(this).val());
+	});
+	$('.currentLiabilitiesInitial').each(function(){
+		total_current_lia = add(total_current_lia,$(this).val());
+	});
+	$('.currentLiabilitiesEnd').each(function(){
+		total_current_lia_end = add(total_current_lia_end,$(this).val());
+	});
+	$('.illiquidAssetsInitial').each(function(){
+		non_initial_sum = add(non_initial_sum,$(this).val());
+	});
+	$('.illiquidAssetsEnd').each(function(){
+		non_ending_sum = add(non_ending_sum,$(this).val());
+	});
+	$('.nonCurrentLiabilitiesInitial').each(function(){
+		total_non_current_lia = add(total_non_current_lia,$(this).val());
+	});
+	$('.nonCurrentLiabilitiesEnd').each(function(){
+		total_non_current_lia_end = add(total_non_current_lia_end,$(this).val());
+	});
+	$('.ownersEquityInitial').each(function(){
+		total_liabilities_equity = add(total_liabilities_equity,$(this).val());
+	});
+	$('.ownersEquityEnd').each(function(){
+		total_liabilities_equity_end = add(total_liabilities_equity_end,$(this).val());
+	});
+	$('#initial_sum').val(initial_sum);
+	$('#ending_sum').val(ending_sum);
+	$('#total_current_lia').val(total_current_lia);
+	$('#total_current_lia_end').val(total_current_lia_end);
+	$('#non_initial_sum').val(non_initial_sum);
+	$('#non_ending_sum').val(non_ending_sum);
+	$('#total_non_current_lia').val(total_non_current_lia);
+	$('#total_non_current_lia_end').val(total_non_current_lia_end);
+	$('#total_liabilities_equity').val(total_liabilities_equity);
+	$('#total_liabilities_equity_end').val(total_liabilities_equity_end);
+	$('#initial_assets_total').val(add(initial_sum,non_initial_sum));
+	$('#ending_assets_total').val(add(ending_sum,non_ending_sum));
+	$('#total_lias').val(add(total_current_lia,total_non_current_lia));
+	$('#total_lias_end').val(add(total_current_lia_end,total_non_current_lia_end));
+	$('#total_owners_equity').val(add($('#total_lias').val(),total_liabilities_equity));
+	$('#total_owners_equity_end').val(add($('#total_lias_end').val(),total_liabilities_equity_end));
+}
+	$('.financialSurface').keyup(function(){
+		sum();
+	});
+	$('.financialSurface').change(function(){
+		sum();
+	});
+</script>
+
+
+
+
+
+
+
+
+
+

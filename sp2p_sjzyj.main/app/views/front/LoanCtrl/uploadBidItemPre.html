@@ -1,0 +1,44 @@
+#{extends 'common/front/loanMain.html' /}
+#{set title:'借款 | 借款成功' /}
+#{set smallclass:0 /}
+
+
+<!-- 页内banner -->
+<div class="container mt30">
+	<div class="borrowsuccess-box">
+		<div class="borrow-success major">
+			<span class="timeout-note"><i class="icon success-icon"></i>申请成功!</span>
+			<p>项目编号 ${tb?.getBid_no()} ，借款金额#{formatIntMoney money:tb?.amount}#{/formatIntMoney}元 ， 借款期限 ${tb?.period}${tb?.period_unit?.getShowValue()}，年利率${tb?.apr}%，本息合计${(tb?.amount+tb?.getLoanSumInterest())?.format(common.constants.Constants.FINANCE_FORMATE_NORMAL)}元，服务费${tb?.loan_fee?.format(common.constants.Constants.FINANCE_FORMATE_NORMAL)}元。</p>
+		</div>
+		<div class="borrow-need c3">
+			<p>为了保证项目顺利通过审核，还需提交以下审核科目：</p>
+			<ul class="borrow-needlist">
+				#{list tasb}
+				<li>
+					<span class="needname left">${_?.name}</span>
+					<span class="needintro left">${_?.description}</span>
+				</li>
+				#{/list}
+			</ul>
+		</div>
+		<span class="c9 borrowsuccess-note">
+			<i class="icon note-icon"></i>温馨提示：平台承诺不会将借款人资料用于其它用途；当借款人出现逾期未还行为时，平台有权公布借款人信息。
+		</span>
+		<p class="borrowsuccess-btn">
+			<a href="@{front.account.MyFundCtrl.accountManagePre(1)}" class="condition-btn btn mb30" title="" target="" >去提交</a>
+		</p>
+		<p class="returnprev">
+			<a href="@{front.LoanCtrl.toLoanPre()}" class="backpage"><i class="icon return-icon"></i>返回</a>
+		</p>
+	</div>
+</div>
+<!-- main end-->
+
+
+<script type="text/javascript">
+require(['front'],function(front){
+	// select
+	//require(['dropdown']);
+});
+</script>
+	

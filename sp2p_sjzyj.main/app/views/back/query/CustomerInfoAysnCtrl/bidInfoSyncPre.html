@@ -1,0 +1,187 @@
+#{extends 'common/back/queryMain.html' /}
+	#{set title:'查询 | 标的信息' /}
+	#{set smallclass: 4/}
+	#{set crumbs:'查询>标的信息' /}
+	
+<div class="back-main">
+	<div class="back-cont">
+		<div class="Marketing">营销冲正</div>
+		<div class="Cancel">取消投标</div>
+		<div class="switch" style="float: left;font-size: 12px;cursor: pointer;margin-left: 20px;">营销运维</div>
+		<div class="back-box" id='back-box'>
+		<form action="@{back.query.CustomerInfoAysnCtrl.marketingInfoSync()}" method="post">
+			<table style="width: 500px; margin: 50px auto;">
+				<tr>
+					<td class="one">会员编号</td>
+					<td class="two">:</td>
+					<td class="tre"><input name="userId" value="" /></td>
+					<td class="for">*</td>
+				</tr>
+				<tr>
+					<td class="one">业务操作类型</td>
+					<td class="two">:</td>	
+					<td class="tre">
+						<select name="busiTradeType">
+							<option value="T11">营销冲正</option> 
+						</select>
+					</td>
+					<td class="for">*</td>
+				</tr>
+				<tr>
+					<td class="one">手机号</td>
+					<td class="two">:</td>
+					<td class="tre"><input name="phoneNo" value="" /></td>
+					<td class="for">*</td>
+				</tr>
+				<tr>
+					<td class="one">标的id</td>
+					<td class="two">:</td>
+					<td class="tre"><input name="bidId" value="" /></td>
+					<td class="for">*</td>
+				</tr>
+				<tr>
+					<td class="one">冲正金额</td>
+					<td class="two">:</td>
+					<td class="tre"><input name="amount" value="" /></td>
+					<td class="for">*</td>
+				</tr>
+				<tr>
+					<td class="one">冲正流水号</td>
+					<td class="two">:</td>
+					<td class="tre"><input name="oldbusinessSeqNo" value="" /></td>
+					<td class="for">*</td>
+				</tr>
+				<tr>
+					<td class="one"></td>
+					<td class="two"></td>
+					<td class="tre"><input type="submit" value="提交" id="sbmt" /></td>
+				</tr>
+			</table>
+		</form>
+		</div>
+		<div class="back-box" id='back-box1' style="display: none">
+		<form action="@{back.query.CustomerInfoAysnCtrl.bidInfoSync()}" method="post">
+			<table style="width: 500px; margin: 50px auto;">
+				<tr>
+					<td class="one">会员编号</td>
+					<td class="two">:</td>
+					<td class="tre"><input name=userId value="" /></td>
+					<td class="for">*</td>
+				</tr>
+				<tr>
+					<td class="one">业务操作类型</td>
+					<td class="two">:</td>	
+					<td class="tre">
+						<select name="busiTradeType">
+							<option value="T02">取消投标</option> 
+						</select>
+					</td>
+					<td class="for">*</td>
+				</tr>
+				<tr>
+					<td class="one">手机号</td>
+					<td class="two">:</td>
+					<td class="tre"><input name="phoneNo" value="" /></td>
+					<td class="for">*</td>
+				</tr>
+					<tr>
+					<td class="one">标的id</td>
+					<td class="two">:</td>
+					<td class="tre"><input name="bidId" value="" /></td>
+					<td class="for">*</td>
+				</tr>			
+				<tr>
+					<td class="one">投标金额</td>
+					<td class="two">:</td>
+					<td class="tre"><input name="amount" value="" /></td>
+					<td class="for">*</td>
+				</tr>
+				<tr>
+					<td class="one">取消标的流水号</td>
+					<td class="two">:</td>
+					<td class="tre"><input name="oldbusinessSeqNo" value="" /></td>
+					<td class="for">*</td>
+				</tr>
+				<tr>
+					<td class="one"></td>
+					<td class="two"></td>
+					<td class="tre"><input type="submit" value="提交" id="sbmt1"/></td>
+				</tr>
+			</table>
+		</form>
+		</div>
+		<div class="back-box" id='back-box2' style="display: none">
+		<form action="@{back.query.CustomerInfoAysnCtrl.markInvest()}" method="post">
+			<table style="width: 500px; margin: 50px auto;">
+				<tr>
+					<td class="one">会员编号</td>
+					<td class="two">:</td>
+					<td class="tre"><input name=userId value="" /></td>
+					<td class="for">*</td>
+				</tr>
+				<tr>
+					<td class="one">业务操作类型</td>
+					<td class="two">:</td>	
+					<td class="tre">
+						<select name="busiTradeType">
+							<option value="T02">营销运维</option> 
+						</select>
+					</td>
+					<td class="for">*</td>
+				</tr>
+				<tr>
+					<td class="one">手机号</td>
+					<td class="two">:</td>
+					<td class="tre"><input name="phoneNo" value="" /></td>
+					<td class="for">*</td>
+				</tr>
+					<tr>
+					<td class="one">标的id</td>
+					<td class="two">:</td>
+					<td class="tre"><input name="bidId" value="" /></td>
+					<td class="for">*</td>
+				</tr>			
+				<tr>
+					<td class="one">营销金额</td>
+					<td class="two">:</td>
+					<td class="tre"><input name="markeAmt" value="" /></td>
+					<td class="for">*</td>
+				</tr>
+				<tr>
+					<td class="one"></td>
+					<td class="two"></td>
+					<td class="tre"><input type="submit" value="提交" id="sbmt2"/></td>
+				</tr>
+			</table>
+		</form>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	$("tr").css({"width":"500px","height":"38px"});
+	$(".one").css({"text-align":"right","width":"150px"});
+	$(".two").css({"width":"15px","text-align":"center"});
+	$(".tre").css({"text-align":"left","width":"250px"});
+	$("input").css({"width":"250px", "height":"26px"});
+	$("select").css({"width":"254px"});
+	$("#sbmt").css({"width":"254px", "height":"31px"});
+	$("#sbmt1").css({"width":"254px", "height":"31px"});
+	$("#sbmt2").css({"width":"254px", "height":"31px"});
+	$(".for").css({"width":"75px","text-align":"left", "padding-left":"10px", "color":"red"});
+	$('.Marketing').click(function(){
+		$('#back-box').show();
+		$('#back-box1').hide();
+		$('#back-box2').hide();
+	})
+	$('.Cancel').click(function(){
+		$('#back-box').hide();
+		$('#back-box1').show();
+		$('#back-box2').hide()
+	})
+	$('.switch').click(function(){
+		$('#back-box').hide();
+		$('#back-box1').hide();
+		$('#back-box2').show()
+	})
+</script>

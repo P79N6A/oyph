@@ -1,0 +1,88 @@
+#{extends 'common/back/mallMain.html' /}
+#{set title:'积分商城 | 积分兑换记录' /}
+#{set smallclass:2 /}
+#{set crumbs:'积分商城 >积分兑换记录'/}
+<div class="back-main">
+	<!-- 头部筛选条件 -->
+	<div class="back-usertop">
+		<b class="left font14">发消息</b>
+		<!-- 右侧功能按钮 -->
+		<div class="right back-rightbtns">
+			<a href="javascript:backAndRefresh('@{back.UserMngCtrl.showUsersPre}');"><i class="iconfont">&#xe60b;</i>返回</a>
+		</div>
+	</div>
+	<!-- 左侧菜单 -->
+	
+		<div class="back-cont">
+			<form action="@{back.mall.ScroeRecordCtrl.markShipment()}" method="POST" id="form_msg">
+			<div class="back-infor">
+				<h2 class="back-infor-head">消息</h2>
+				<ul class="back-infor-set">
+					<li>
+						<span class="lileft">类型</span>
+						<div class="liright">
+							<select class="width01" autofocus="" name="notice_scene">
+									<option value="29" >消息通知</option>
+							</select>
+						</div>
+					</li>
+					<li>
+						<span class="lileft">收件人</span>
+						<div class="liright">
+							${mobile}<input type="hidden" name="userId" value="${userId}">
+							<input type="hidden" name="id" value="${id}">
+						</div>
+					</li>
+					<li>
+						<span class="lileft">物流单号</span>
+						<div class="liright">
+							<input type="text" class="width05 iffocus required" minlength="1" maxlength="20" name="dec" />
+						</div>
+					</li>
+						<li>
+						<div class="liright">
+						<input type="checkbox" class="back-tdcheck" name="sms" value="3" />短信
+						<input type="checkbox" class="back-tdcheck" name="mail" value="1" />站内信
+						<input type="checkbox" class="back-tdcheck" name="email" value="2" />邮件
+						</div>
+					</li>
+					<li>
+						<span class="lileft">内容</span>
+						<div class="liright">
+							<textarea class="back-textarea back-msgarea required"   name="content"></textarea>
+							<span class="back-text-limit">1~200个字符</span>
+						</div>
+					</li>
+				</ul>
+			</div>
+			<p class="back-audit-btns">
+				<input type="submit" id="pageSave" value="发送" class="bgbtn">
+				<input type="button" value="取消" onclick="javascript:backAndRefresh('@{back.UserMngCtrl.showUsersPre}');" class="bdbtn">
+			</p>
+			</form>
+		</div>
+</div>
+
+<!-- 页面js -->
+<script type="text/javascript">
+	require(["back"],function(back){
+		//判断输入的内容是否合法
+		$("#form_msg").validate({
+			errorPlacement: function(error, element) {
+				error.addClass('back-notice').insertAfter(element);
+			},
+			rules:{
+				"title":{
+					required:true,
+					rangelength:[1,20]
+				},
+				"content":{
+					required:true,
+					rangelength:[1,200]
+				}
+			},
+			messages:{
+			}
+		});
+	});
+</script>

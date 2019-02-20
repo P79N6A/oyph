@@ -1,0 +1,265 @@
+#{extends 'common/back/mallMain.html' /}
+	#{set title:'积分商城 | 添加商品分类' /}
+	#{set smallclass:0 /}
+	#{set crumbs:'积分商城 >添加商品分类'/}
+<div class="back-main">
+	<div class="back-usertop">
+	<!-- 搜索按钮，控制搜索条件的显示隐藏 -->
+		<div class="left back-usermenu">
+		<a href="@{back.mall.GoodsCtrl.goodsListPre()}"  >商品列表</a>
+		<a href="@{back.mall.GoodsCtrl.editGoodsPre(0,1)}" >新增商品</a>
+		<a href="@{back.mall.GoodsCtrl.virtualGoodsPre()}" >虚拟商品</a>
+		<a href="@{back.mall.GoodsCtrl.editGoodsTypePre()}" class="selected">新增商品分类</a>
+		<a href="@{back.mall.GoodsCtrl.goodsTypeListPre()}" >商品类型列表</a>
+		</div>
+	</div>
+	<div class="back-cont">
+		<form action="@{back.mall.GoodsCtrl.saveGoodsType()}" method="POST" id="form_editEvent">
+			<input type="hidden" name="id" value="${goods?.id}">
+		 	<input type="hidden" id="imageUrl" name="filename" value="${goods?.pic_path}" >	
+			#{authenticityToken /}
+			<div class="back-infor">
+				<h2 class="back-infor-head">
+					<span class="left">添加商品分类</span>
+				</h2>
+				
+				<ul class="back-infor-set">
+					<li style="display: block; height: 32px;">
+						<span class="lileft">添加类型:</span>
+						<div class="liright">
+							#{if goods?.goods_type}
+							<input type="text" id="leixing" name="goods_type" value="${goods.goods_type}"/>
+							
+							#{/if}
+							#{else}
+							<input type="text" id="leixing" name="goods_type" />
+							#{/else}
+							<select name = "type">
+								<option value = "${goods?.type}" #{if goods?.type == 0 }  selected="selected"  #{/if} >实物</option>
+								<option  value = "${goods?.type}" #{if goods?.type == 1 } selected="selected" #{/if} >虚拟</option>
+							</select>
+						</div>
+					</li>	
+					<li>
+						<span class="lileft">商品类型图片:</span>
+						<div class="liright">
+							<div id="img">
+									
+								#{if goods?.pic_path}	
+									<img src="${goods?.pic_path}" onerror="this.src='/public/common/default.jpg'" class="backupimg" height="100" width="200" id="image" name="image" alt="" title="" />
+								#{/if}
+								#{else}
+									<img src="${_}" onerror="this.src='/public/common/default.jpg'" class="backupimg" height="100" width="200" id="image" name="image" alt="" title="" />
+								#{/else}
+					
+							<label class="back-upbtn">
+								    <input type="file" class="upload_file" value="" name="imgFile" accept=".jpg,.jpeg,.png,.gif" id="imgFile" onchange="upload()"/> 
+									<i class="iconfont">&#xe608;</i>本地上传
+							</label>
+					
+							</div>
+						</div>
+					</li>		
+				</ul>
+			</div>
+			
+			<p class="back-audit-btns">
+				<input type="hidden" id="imageFormat" name="imageFormat" value="">
+				<input type="submit" id="pageSave" value="保存" class="bgbtn">
+				<input type="button" value="取消" class="bdbtn" onclick="location.href='@{back.mall.GoodsCtrl.goodsTypeListPre}'">
+			</p>
+		</form>
+	</div>
+</div>
+ <script type="text/javascript">
+
+var img_width = 265;
+var img_height = 530;
+require([ "back" ], function(back) {
+	require(["datatime","ajaxfileupload","cutImg"]);
+	imgLimitLoad();
+	
+	require(["editor"],function(editor){
+		infor_content = editor('#introduction');
+	}); 
+	
+	$("#location").change(function(){
+		imgLimitLoad();
+	});
+	
+	/* $(function(){
+		$("#imageUrl").val($("#image").attr("src"));
+	}); */
+	
+	//编辑广告图片
+	$("#edit_Ads").validate({
+		errorPlacement: function(error, element) {
+			error.addClass('back-notice').insertAfter(element);
+		},
+		rules:{
+			"location":{
+				required:true
+			},
+			"name":{
+				required:true,
+				rangelength:[1,20]
+			},
+			"orderTime":{
+				required:true
+			},
+			"url":{
+				rangelength:[0,100],
+				url:true
+			}
+			
+		},
+		messages:{
+			"location":{
+				required:"位置不能为空"
+			},
+			"name":{
+				required:"名称不能为空",
+				rangelength:"名称1-20个字符"
+			},
+			"orderTime":{
+				remote:"排序时间不能为空"
+			},
+			"url":{
+				rangelength:"链接0到100个字符",
+				url:"http://或者https://开头"
+			}
+		}
+	});
+});
+	
+function imgLimitLoad(){
+	var val = $("#location").val();
+	imgLimit = $('.back-imginfor-note');
+	switch(val){
+		case "1": {
+			img_width = 1920;
+			img_height = 800;
+			imgLimit.text('1920*800，jpg/png，大小不超过2M'); 
+			break;
+		}
+		case "2":  {
+			img_width = 1920;
+			img_height = 400;
+			imgLimit.text('1920*400，jpg/png，大小不超过2M');
+			break;
+		}
+		case "3":  {
+			img_width = 1198;
+			img_height = 133;
+			imgLimit.text('1198*133，jpg/png，大小不超过2M');
+			break;
+		}
+		case "4":  {
+			img_width = 360;
+			img_height = 280;
+			imgLimit.text('360*280，jpg/png，大小不超过2M');
+			break;
+		}
+		case "5":  {
+			img_width = 265;
+			img_height = 530;
+			imgLimit.text('265*530，jpg/png，大小不超过2M');
+			break;
+		}
+		case "6":  {
+			img_width = 640;
+			img_height = 230;
+			imgLimit.text('640*230，jpg/png，大小不超过2M');
+			break;
+		}
+		default: {
+			img_width = 265;
+			img_height = 530;
+			imgLimit.text('265*530，jpg/png，大小不超过2M');
+			break;
+		}
+	}
+}
+
+var imgCount= 0 ;
+var imgUrl= 0 ;
+#{if goods?.pic_path}
+	
+	imgUrl =  "${goods?.pic_path}" ;
+#{/if}
+function upload(){
+	
+	var fileId = "imgFile";
+	var file = $("#" + fileId).val();
+	var pos = file.lastIndexOf("\\");
+	var fileName = file.substring(pos + 1);
+	
+	$.ajaxFileUpload({
+		url : '@{back.webOperation.AdvertisementMngCtrl.uploadAdsImage()}',
+		secureuri : false,
+		fileElementId : fileId,
+		data:{
+			"fileName":fileName
+		},
+		dataType : 'json',
+		success : function(result) {
+			if(result.code == 1){
+				var data = result.obj;
+				//$("#image").attr("src", data.staticFileName);
+				/* $("#imageSize").val(data.size+"kb");
+				$("#imageFormat").val(data.fileSuffix);//图片格式
+				$("#imageResolution").val(data.imageResolution);
+				$("#resolutionshow").html(data.imageResolution);
+				$("#formatshow").html(data.fileSuffix);
+				$("#sizeshow").html(data.size+"kb "); */
+				if(imgCount == 0){
+					$("#img").html("") ;
+					imgUrl = data.staticFileName  ;
+				}else{
+					imgUrl = imgUrl+"+"+ data.staticFileName ;
+				}
+				$("#img").append("<img src='"+data.staticFileName+"'  class='backupimg' height='100' width='200' />");
+				$("#imageFormat").val(data.fileSuffix);//图片格式
+				imgCount = imgCount+1 ;
+				
+				$("#imageUrl").val(imgUrl);
+			
+				/* 
+				$("#picOld").css({ "display": "none"});
+				$("#picNew").css({ "display": "block"}); */
+				
+			} else {
+				alert(result.msg);
+			}
+		}
+	})
+}
+
+function reduce(id,type){
+	var num = $("#"+id).val() ;
+	if(type == 0 ){
+		if(num > 1 ){
+			num = num -1 ;
+			$("#"+id).val(num) ;
+		}
+	}
+	
+	if( type == 1 ){
+		num = num-1+2 ;
+		$("#"+id).val(num) ;
+	}
+}
+
+//图片裁剪成功，回调函数 
+var cropImgSuccess = function(data) {
+	$("#image").attr("src", data.staticFileName);
+	$("#imageUrl").val(data.staticFileName);
+	$("#imageSize").val(data.size+"kb");
+	$("#imageResolution").val(data.imageResolution);
+	$("#resolutionshow").html(data.imageResolution);
+	$("#sizeshow").html(data.size+"kb");
+}
+</script>
+
+
+

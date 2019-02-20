@@ -1,0 +1,115 @@
+#{extends 'common/frontMain.html' /}
+#{set title: '首页'/}
+		<link rel="stylesheet" type="text/css" href="/public/front/stylesheets/integral.css" />
+		<link rel="stylesheet" type="text/css" href="/public/front/stylesheets/validationEngine.jquery.css" />
+		<link rel="stylesheet" type="text/css" href="/public/front/stylesheets/commonality.jquery.css" />
+		<div class="container5">
+			<div class="nav-lf">
+				<div class="nav-box">
+					<div class="nav-tit">
+						<p class="inte-pic"></p>
+						<h2 class="inte-tit">
+							<a href="@{front.MallCtrl.mallHomePre()}">积分商城</a>
+						</h2>
+						<p class="inte-tit-bot">讴业积分可兑换各种好礼</p>
+					</div>
+                  
+					#{if currUser != null}
+					<div  class="storeBox">
+						<p class="inte-wl">欢迎来到积分商城</p>
+						<p class="inte-logout">
+							<a class="inte-name" href="javascript:;">
+								<i class="inte-icon"></i> ${currUser?.name}
+							</a>
+							<a class="inte-cancel inte-col" href="@{front.LoginAndRegisteCtrl.loginPre()}">【注销】</a>
+						</p>
+						<p class="inte-logout">
+							<i class="inte-icon1"></i> &nbsp;&nbsp;可用积分：
+							<span class="inte-col">${scroe}</span>
+						</p>
+						<p class="inte-logout">
+							<a href="@{front.MallCtrl.scroeRecordPre()}" class="inte-col" id="credits">积分记录</a>
+							<a href="@{front.MallCtrl.exchangedGoodsPre()}" class="inte-col inte-commodity" id="redemption">已兑换商品</a>
+						</p>
+						<div class="package">
+							<p class="check-box">
+								<i class="inte-icon2"></i>&nbsp;签到可得积分
+							</p>
+						</div>
+					</div>
+					#{/if}
+					  #{else}
+					<div  class="ssd">
+						<div class="enter">
+							<i class="inte-icon3"></i>
+							<a href="@{front.LoginAndRegisteCtrl.loginPre()}">登录</a>
+						</div>
+					</div>
+					#{/else}
+				</div>
+				<div class="convert-notice">
+					<h3 class="convert-tit">
+						兑换排行榜
+					</h3>
+					<ul class="convert-list">
+						#{list items:pageBean.page}
+						<li>
+							<div class="pic-none">
+								<img style="width: 215px;height: 200px;" src="${_?.pic_path}" />
+							</div>
+							<div class="ranking-list">
+								<p><a href="@{front.MallCtrl.goodsDetailPre(_?.id)}">&nbsp;&nbsp;${_?.name}</a></p>
+								<p class="ranking-col"><span>积分价</span><span class="size-place">${_?.exchange_scroe}万</span></p>
+								<i class="line-ridvo">${_index}</i>
+							</div>
+						</li>
+						#{/list}
+					</ul>
+				</div>
+			</div>
+			<div class="querylotusrecord-box" id="showScroeRecords">
+				<h3 class="exchange-1">
+					<span class="exchange-tit">积分记录</span>
+				</h3>
+					<table class="querylotusrecord-list" border="" >
+						<tr>
+						<th width="250">日期</th>
+						<th>操作</th>
+						<th>积分</th>
+						<th>事件</th>
+					</tr>
+						#{list items:page.page, as:'record'}
+						<tr>
+							<td>${record?.time?.format('yyyy-MM-dd HH:mm:ss')}</td>
+							<td class="cored">#{if record?.type == 5}消费#{/if}#{else}赠送#{/else}</td>
+							<td>${record?.scroe}</td>
+							<td>${record?.description}</td>
+						</tr>
+						#{/list}
+
+					</table>
+				<!-- 分页组件 -->
+					<form action="@{front.MallCtrl.scroeRecordPre()}" method="GET" id="toInvestPre">
+					<input type="hidden" id="currPage" name="currPage"/>
+					<input type="hidden" id="currPage" name="pageSize"/>
+					</form>
+					#{if page?.page}
+						#{frontPageTag page:page,showPage:"showPage"/}
+					#{/if}
+		</div>
+				
+	</div>
+<script>
+function showPage (currPage) {
+	$.ajax({
+		url : "@{front.MallCtrl.showScroeRecordPre()}",
+		type : "GET",
+		data : {
+			"currPage" : currPage
+		},
+		success : function(data){
+			$("#showScroeRecords").html(data);
+		}
+	});
+}
+</script>

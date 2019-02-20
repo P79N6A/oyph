@@ -1,0 +1,29 @@
+<h1 class="azamoney-nav">充值记录</h1>
+<table class="account-table" width="100%">
+	<tr height="46">
+		<th>流水号</th>
+		<th>金额</th>
+		<th>时间</th>
+		<th>状态</th>
+		<th>备注</th>
+	</tr>
+	#{if rechargePageBean.page != null}
+		#{list items:rechargePageBean.page,as:'page'}
+			<tr height="56">
+				<td>${page?.order_no}</td>
+				<td>${page?.amount?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}</td>
+				<td>${page?.time?.format(common.constants.Constants.DATE_TIME_FORMATE)}</td>
+				<td>${page?.status?.value}</td>
+				<td>${page?.summary}</td>
+			</tr>
+		#{/list}
+	#{/if}
+</table>
+#{if rechargePageBean?.page}
+	#{frontPageTag page:rechargePageBean,showPage:'listOfRechargeRecordsPre' /}
+#{/if}
+#{if rechargePageBean?.page == null}
+	<div class="norecord-box c9">
+		暂无记录
+	</div>
+#{/if}

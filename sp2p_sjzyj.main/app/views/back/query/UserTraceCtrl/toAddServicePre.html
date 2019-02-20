@@ -1,0 +1,75 @@
+#{extends 'common/back/queryMain.html' /}
+	#{set title:'查询 | 交易状态 | 理财会员管理' /}
+	#{set smallclass:5 /}
+	#{set crumbs:'查询>交易状态>添加客服页面' /}
+
+<div class="back-main">
+	<div class="back-usertop">
+		<b class="left font14">添加新客服</b>
+		<!-- 右侧功能按钮 -->
+		<div class="right back-rightbtns">
+			<a href="javascript:backAndRefresh('@{back.query.UserTraceCtrl.showUserlistPre(0,1,10)}');"><i class="iconfont">&#xe60b;</i>返回</a>
+		</div>
+	</div>
+	<!-- 左侧菜单 -->
+	<form action="@{back.query.UserTraceCtrl.addService()}" method="POST" id="addService">
+		#{authenticityToken /}
+		<div class="back-cont">
+			<div class="back-infor">
+				<h2 class="back-infor-head">添加新客服</h2>
+				<ul class="back-infor-set">
+					<li>
+						<span class="lileft">客服名称</span>
+						<div class="liright">
+							<input type="text" minlength="1" maxlength="10" id="name" name="name" class="width05 required iffocus" value="${flash?.name}" />
+							<span class="back-text-limit">1~10个字符</span>
+						</div>
+					</li>
+					<li>
+						<span class="lileft">添加时间</span>
+						<div class="liright">
+							<input type="text" class="easyui-datetimebox" id="orderTime" name="order_time" value="${flash?.order_time}" />
+						</div>
+					</li>
+				</ul>
+			</div>
+			<p class="back-audit-btns">
+				<input type="submit" id="pageSave" value="保存" class="bgbtn">
+				<input type="reset" value="取消" class="bdbtn">
+			</p>
+		</div>
+	</form>
+</div>	
+
+<script type="text/javascript">
+require(["back"],function(back){
+	require(["ajaxfileupload","datatime","cutImg"]);
+	
+	//添加客服
+	$("#addService").validate({
+		errorPlacement: function(error, element) {
+			error.addClass('back-notice').insertAfter(element);
+		},
+		rules:{
+			"name":{
+				required:true,
+				rangelength:[1,20]
+			},
+			"order_time":{
+				required:true
+			}
+			
+		},
+		messages:{
+			"name":{
+				required:"名称1-20个字符"
+			},
+			"order_time":{
+				required:"时间不能为空"
+			}
+		}
+	});
+	
+});	
+	
+</script>	

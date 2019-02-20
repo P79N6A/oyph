@@ -1,0 +1,27 @@
+<h1 class="azamoney-nav">新手任务</h1>
+<div class="account-main" id="exp_bid_invest_list">
+	<table class="account-table" width="100%">
+		<tr height="46">
+			<th>活动名称</th>
+			<th>京东E卡面额</th>
+			<th>时间</th>
+		</tr>
+		#{list pageBean?.page}
+		<tr height="46">
+			<td>#{if _?.win_type==0}新手任务#{/if}#{else}邀请新人#{/else}</td>
+			<td>${_?.denomination}元</td>
+			<td>${_?.time?.format(common.constants.Constants.DATE_FORMATE)}</td>
+		</tr>
+		#{/list}
+	</table>
+
+	#{if pageBean?.page == null}
+	<div class="norecord-box c9">
+		暂无记录
+	</div>
+	#{/if}
+	<!-- 分页组件 -->
+	#{if pageBean?.page}
+		#{frontPageTag page:pageBean,showPage:"newTaskList"/}
+	#{/if}
+</div>

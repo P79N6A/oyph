@@ -1,0 +1,195 @@
+#{extends 'common/back/activityMain.html' /}
+	#{set title:'活动 | 摇一摇活动' /}
+	#{set smallclass:1 /}
+	#{set crumbs:'活动>摇一摇活动'/}
+	
+<div class="back-main">
+	<!-- 头部筛选条件 -->
+	<div class="back-usertop">
+		<div class="left back-usermenu">
+			<a href="@{back.activity.shake.ShakeActivityCtrl.shakeActivityListPre(0)}" #{if showType==0} class="selected"#{/if}>活动列表</a>
+			<a href="@{back.activity.shake.ShakeActivityCtrl.shakeActivitySetPre(1)}" #{if showType==1} class="selected"#{/if}>活动设置</a>
+			<a href="@{back.activity.shake.ShakeActivityCtrl.shakeActivityRecordPre(2)}" #{if showType==2} class="selected"#{/if}>中奖记录</a>
+		</div>
+		<!-- 右侧功能按钮 -->
+		<div class="right back-rightbtns">
+			<span>APP个人中奖信息：</span>
+			#{rightMng rightId:1302004}
+			
+			<button onclick="updateActivity()" style="margin-bottom: 3px;" id="updateActivity">#{if status.display_status==1}关闭#{/if}#{else}开启#{/else}</button>
+			<a href="@{back.activity.shake.ShakeActivityCtrl.saveShakeActivityPre()}"><b class="iconfont">&#xe631;</b>添加活动</a>
+			#{/rightMng}
+		</div>
+	</div>
+	<!-- 搜索条件，默认隐藏 -->
+	<div class="back-search-option" #{if loanName}style="display: block;"#{/if}>
+		
+	</div>
+	
+	
+	<div class="back-cont">
+		<div class="back-box">
+			<form action="@{back.activity.shake.ShakeActivityCtrl.shakeActivityListPre()}" method="get" id="showActivityPre">
+			<table width="100%" class="back-table table-fixed">
+				<tr height="40">
+					<th width="70" class="align-left">编号</th>
+					<th>活动名称</th>
+					<th>开始时间</th>
+					<th>活动时间</th>
+					<th>活动状态</th>
+					<th>活动设置</th>
+					<th>中奖记录</th>
+					<th>摇奖次数</th>
+					<th>中奖次数</th>
+					<th>操作</th>
+				</tr>
+			#{if pageBean?.page}
+				#{list pageBean?.page}
+				<tr height="40">
+					<td class="align-left">
+						${_?.id}
+					</td>
+					<td>
+						${_?.name}
+					</td>
+					<td>
+						${_?.stime?:"----"}
+					</td>
+					<td>
+						${_?.ctime} 分钟
+					</td>
+					<td>
+						#{if _?.status==1}
+							未设置 
+						#{/if}
+						#{if _?.status==2}
+							<span style="color: blue;">未开始 </span>
+						#{/if}
+						#{if _?.status==3}
+							<span style="color: red;">进行中 </span>
+						#{/if}
+						#{if _?.status==4} 
+							<span style="color: gray;">已结束</span>
+						#{/if}
+					</td>
+					<td class="back-handle">
+						
+						<a href="@{back.activity.shake.ShakeActivityCtrl.shakeActivitySetPre(1, _?.id)}" data-title="活动奖项设置" class="iconfont" id="pre_audit_href">&#xe61c;</a>
+						
+					</td>
+					<td class="back-handle">
+						<a href="@{back.activity.shake.ShakeActivityCtrl.shakeActivityRecordPre(2, _?.id)}" data-title="中奖记录查看" class="iconfont" id="pre_audit_href">&#xe61c;</a>
+					</td>
+					<td>
+						${_?.shake_count}
+					</td>
+					<td>
+						${_?.win_count}
+					</td>
+					<td>
+						#{if _?.status==2}
+							<button onclick="startActivity(${_?.id})">开始</button>
+						#{/if}  
+						&nbsp;&nbsp;&nbsp;
+						#{if _?.status==3}
+							<button onclick="endActivity(${_?.id})">结束 </button>
+						#{/if} 
+						#{if _?.status==4}
+							活动已结束
+						#{/if} 
+					</td> 
+				</tr>
+				#{/list}
+				<!-- 表格数据统计 -->
+				<tr height="40">
+					<td colspan="10" class="back-lasttd">				
+						<!-- 分页组件--pageTag -->
+						#{backPageTag page:pageBean,showPage:"showActivityPre"/}
+					</td>
+				</tr>
+				
+					<input type="hidden" id="currPage" name="currPage" value="${pageBean?.currPage}" />
+			  		<input type="hidden" id="pageSize" name="pageSize" value="${pageBean?.pageSize}" />
+			  		<input type="hidden" id="showType" name="showType" value="${showType}" />
+			  		
+				
+			#{/if}
+			#{else}	
+						
+					<!-- 暂无记录 -->
+					<tr height="58">
+						<td colspan="10" class="back-nodata"><i class="iconfont">&#xe613;</i>暂无记录</td>
+					</tr>
+				</table>
+			#{/else}
+			</form>
+		</div>
+	</div>
+	
+	
+	
+</div>
+<script type="text/javascript">
+<!--
+
+//-->
+
+function startActivity(activityId) {
+	
+	$.ajax({
+		url : "@{back.activity.shake.ShakeActivityCtrl.startActivity()}",
+		type : "POST",
+		data : {
+			"activityId" : activityId
+		},
+		success : function(data){
+			
+		}
+	});
+	
+	
+}
+function updateActivity() {
+	
+	$.ajax({
+		url : "@{back.activity.shake.ShakeActivityCtrl.updateDisplayStatus()}",
+		type : "POST",
+		data : {
+			
+		},
+		success : function(data){
+			
+			if(data.obj == 1){
+				$('#updateActivity').text('关闭');
+			}
+		   if(data.obj == 0){
+				$('#updateActivity').text('开启');
+				
+			} 
+			
+		}
+	});
+	
+	
+}
+function endActivity(activityId) {
+	$.ajax({
+		url : "@{back.activity.shake.ShakeActivityCtrl.endActivity()}",
+		type : "POST",
+		data : {
+			"activityId" : activityId
+		},
+		success : function(data){
+			
+		}
+	});
+}
+
+function showActivityPre(currPage, pageSize) {
+	
+	$("#currPage").val(currPage);
+	$("#pageSize").val(pageSize);
+	
+	$("#showActivityPre").submit();
+}
+</script>

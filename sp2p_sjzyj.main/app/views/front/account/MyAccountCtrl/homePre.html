@@ -1,0 +1,30 @@
+#{extends 'common/front/accountMain.html' /}
+#{set title:'个人中心 | 账户首页' /}
+
+<!-- 账户主要表格 -->
+<div class="account-box" id="noReceiveBill"></div>
+<script type="text/javascript">
+require(['front'],function(front){
+	/* 回款计划 */
+	listOfNoReceiveBillPre(1,5);
+});
+
+function listOfNoReceiveBillPre(currPage, pageSize){
+	$.ajax({
+		url : "@{front.account.MyAccountCtrl.listOfNoReceiveBillPre()}",
+		type : "GET",
+		data : {
+			"currPage" : currPage,
+			"pageSize" : pageSize
+		},
+		success : function(data) {
+			var flag = interceptorCheck(data);
+			if(!flag){
+				return;
+			}
+			$("#noReceiveBill").html(data);
+		}
+	 });
+}
+
+</script>

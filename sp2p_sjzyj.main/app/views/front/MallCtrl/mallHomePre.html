@@ -1,0 +1,671 @@
+#{extends 'common/frontMain.html' /}
+#{set title: '首页'/}
+#{set AItem:6/}
+ 
+		<link rel="stylesheet" type="text/css" href="/public/front/stylesheets/integral.css" />
+		<link rel="stylesheet" type="text/css" href="/public/front/stylesheets/validationEngine.jquery.css" />
+		
+	    <link rel="stylesheet" type="text/css" href="/public/front/stylesheets/front1.css" />
+	    
+		<div class="container5">
+			<div class="nav-lf">
+				<div class="nav-box">
+					<div class="nav-tit">
+						<p class="inte-pic"></p>
+						<h2 class="inte-tit">
+							<a href="@{front.MallCtrl.mallHomePre()}">积分商城</a>
+						</h2>
+						<p class="inte-tit-bot">讴业积分可兑换各种好礼</p>
+					</div>
+                  
+					#{if currUser != null}
+					<div  class="storeBox">
+						<p class="inte-wl">欢迎来到积分商城</p>
+						<p class="inte-logout">
+							<a class="inte-name" href="javascript:;">
+								<i class="inte-icon"></i> ${currUser?.name}
+							</a>
+							<a class="inte-cancel inte-col" href="@{front.LoginAndRegisteCtrl.loginPre()}">【注销】</a>
+						</p>
+						<p class="inte-logout">
+							<i class="inte-icon1"></i> &nbsp;&nbsp;可用积分：
+							<span class="inte-col">${scroe}</span>
+						</p>
+						<p class="inte-logout">
+							<a href="@{front.MallCtrl.scroeRecordPre()}" class="inte-col" id="credits">积分记录</a>
+							<a href="@{front.MallCtrl.exchangedGoodsPre()}" class="inte-col inte-commodity" id="redemption">已兑换商品</a>
+						</p>
+						<div class="package" onclick="javascript:window.location.href='@{front.LoginAndRegisteCtrl.loginOutPre()}'">
+							<p class="check-box" style="text-align:center ">
+								<!-- <i class="inte-icon2"></i>&nbsp;签到可得积分 -->
+								退出
+							</p>
+						</div>
+					</div>
+					#{/if}
+					  #{else}
+					<div  class="ssd">
+						<div class="enter" onclick="javascript:location.href='@{front.LoginAndRegisteCtrl.loginPre()}'">
+							<i class="inte-icon3"></i>
+							<a href="@{front.LoginAndRegisteCtrl.loginPre()}">登录</a>
+						</div>
+					</div>
+					#{/else}
+				</div>
+				<div class="nav-bottom nav-box">
+					<div class="nav-tit nav-tit1">
+						<p class="inte-pic1"></p>
+						<h2 class="inte-tit1"><a href="@{front.MallCtrl.mallHomePre()}">所有礼物</a></h2>
+					</div>
+					<div class="list-sy">
+					     <div class="give-list ded">
+					        <h2>实物礼品</h2>
+					     </div>
+					     
+					     #{if goodsssList}
+							#{list goodsssList}
+					     <div  class="give-list">
+					        <a href="/MallCtrl/mallhome.html?typeId=${_?.id}">${_?.goods_type}</a>
+					     </div>
+					    	 #{/list}
+						#{/if}
+					     <!-- <div  class="give-list ded">
+					        <h2>线上礼品</h2>
+					     </div>
+					     <div  class="give-list">
+					       <a href="javascript:;">红包</a>
+					     </div>
+					     <div  class="give-list">
+					       <a href="javascript:;">加息券</a>
+					     </div> -->
+				</div>
+				</div>
+				<div class="convert-notice">
+					<h3 class="convert-tit">
+						兑换排行榜
+					</h3>
+					<ul class="convert-list">
+						#{list items:pageBean.page}
+						<li>
+							<div class="pic-none">
+								<img style="width: 215px;height: 200px;" src="${_?.pic_path}" />
+							</div>
+							<div class="ranking-list">
+								<p><a href="@{front.MallCtrl.goodsDetailPre(_?.id)}">&nbsp;${_?.name}</a></p>
+								<p class="ranking-col"><span>积分价</span><span class="size-place">${_?.exchange_scroe}万</span></p>
+								<i class="line-ridvo">${_index}</i>
+							</div>
+						</li>
+						#{/list}
+					</ul>
+				</div>
+			</div>
+			
+			<div class="nav-rg">
+			
+			<!-- luobo -->
+			   #{if banners}
+			   <div style="width:890px; height:450px; overflow:hidden;">
+				  <div id="focus">
+				    <ul>
+						 #{list items:banners,as:'banner'}
+		    				#{if banner.url}
+							<li><a href="${banner.url}" target="${banner.target?.value?:'_blank'}"><img style="width:890px;height:450px;" src="${banner.image_url}" onerror="this.src='/public/common/default.jpg'"/></a></li>
+							#{/if}
+							#{else}
+							<li><a href="javascript:void(0)" ><img style="width:890px;height:450px;"  src="${banner.image_url}" onerror="this.src='/public/common/default.jpg'" /></a></li>
+							#{/else}
+						#{/list}	
+						</ul>		
+				  </div>
+				</div>
+			   #{/if}
+			
+			
+			
+			
+			<!-- luobo -->
+			#{form @front.MallCtrl.submitExchange(), id:'submit'}
+				<div class="products-description">
+					<h3 class="products-tit">全部商品</h3>
+					<ul class="products-list">
+						#{list items:page.page, as:'goods'}
+						<li class="merchandise-list"  >
+							<div class="pic-exhibition" >
+								<a href="@{front.MallCtrl.goodsDetailPre(goods?.id)}" >
+								<img style="width: 215px;height: 200px;" src="${goods?.pic_path}"/>
+								</a>
+							</div>
+							<div class="convertibility-list">
+								<p class="convertibility-col"><span>${goods.name}</span></p>
+								<p class="ranking-col"><span>库存量：</span><span> #{if goods?.total == -1}无数量限制#{/if} #{else}${goods?.surplus}#{/else}</span></p>
+								<p class="ranking-col"><span>积分价：</span><span class="size-place" id="exchange_scroe">${goods?.exchange_scroe}万</span></p>
+
+								#{if goods?.surplus > 0 && goods?.total >= 0 }
+								<input type="hidden" name="exchangeNum" id="exchangeNum" value="1" size="1"/>
+								<i class="convertibility" onclick="exchange(${goods?.exchange_scroe},${goods?.id},${goods?.type_id})">兑换商品</i>
+								<input type="hidden" name="goods_id" id="goods_id" value="${goods?.id}"/>
+								#{/if}
+								#{else }
+									#{if goods?.total == -1}
+										<input type="hidden" name="exchangeNum" id="exchangeNum" value="1" size="1"/>
+										<i class="convertibility" onclick="exchangeVirtualGoods(${goods?.exchange_scroe},${goods?.id},${goods?.type_id},1)">兑换商品</i>
+										<input type="hidden" name="goods_id" id="goods_id" value="${goods?.id}"/>
+									#{/if}
+									#{else}
+										<i class=" y-jfbtosBtn" >兑换商品</i>
+									#{/else}
+								#{/else}
+							</div>
+						</li>
+						#{/list}
+					</ul>
+					<form action="@{front.MallCtrl.home2Pre()}" method="GET" id="toInvestPre">
+				<input type="hidden" id="currPage" name="currPage"/>
+				<input type="hidden" id="pageSize" name="pageSize"/>
+				<input type="hidden" id="typeId" name="typeId" value="${typeId}"/>
+				</form>
+				#{if typeId}
+					#{if page?.page}
+						#{frontPageTag page:page,showPage:"showPage"/}
+					#{/if}
+				#{/if}
+				</div>
+			</div>
+		</div>
+			<!-- 确认收货地址弹窗 -->
+	<div class="dialog y-jftc1" id="addresses" >
+		<div class="dialog-bg"></div>
+		<div class=" dialog-cont  y-tcmain" style="margin-top: 10%;margin-left: 28%;">
+			<h2 class="dialog-head">
+				<span class="left">平台提示</span>
+				<i title="关闭" class="dialog-close right" onclick="colseDialog(1)">×</i>
+			</h2>
+			<ul class="y-tcdhul" id="addressList">
+			</ul>
+			<a class="btn y-adddz" href="javascript:void(0);" onclick="addAddress()" ><i class="y-icobg"></i>新增收货地址</a>
+			<div class="y-addbz">添加备注：<input type="text" class="y-adretxt" name="remark" id="remark"></div>
+			<input class="y-qedzbto btn" onclick="submitExchange()" value="立即兑换" />
+		</div>
+	</div>
+	#{/form}
+	<!-- 新增地址 -->
+	<div class="m_mask4" style="display:none" ></div>
+	<div class="dialog y-jftc2"  id="addAddress">
+		<div class="dialog-bg"></div>
+		<div class=" dialog-cont  y-tcmain2" style="margin-top: 10%;margin-left: 28%;" >
+			<h2 class="dialog-head">
+			<input type="hidden" id="address_id" name="address_id"/>
+				<span class="left" id="oprTitle">收货地址</span>
+				<i title="关闭" class="dialog-close right" onclick="colseDialog(2)">×</i>
+			</h2>
+			<div class="y-adrestab">
+				<table width="100%">
+					<tbody><tr>
+						<td width="22%" align="right">收货人姓名：</td>
+						<td><input type="text" id="receiver" name="receiver" class="y-adretxt txt1"></td>
+					</tr>
+					<tr>
+						<td width="20%" align="right">详细地址：</td>
+						<td><input type="text" id="address" name="address" class="y-adretxt txt2"></td>
+					</tr>
+					<tr>
+						<td width="20%" align="right">手机号码：</td>
+						<td><input type="text" class="y-adretxt txt1" id="tel" name="tel"></td>
+					</tr>
+					<tr>
+						<td width="20%" align="right">邮政编码：</td>
+						<td><input type="text" class="y-adretxt txt1"  id="postcode" name="postcode"></td>
+					</tr>
+					<tr>
+						<td width="20%" align="right"></td>
+						<td></td>
+					</tr>
+				</tbody></table>
+				<input class="y-qedzbto btn" onclick="submitAddress();" value="保存" />
+			</div>
+		</div>
+	</div>
+	<input type="hidden" id="commodity" />
+	<input type="hidden" id="integral" />
+
+	<!-- end -->
+	<!-- main end-->
+<script>
+require(['front'],function(front){
+	if(getParam("lottery")==1){
+		exchange();
+	}
+});
+
+	function colseDialog(dialogType) {
+		if (dialogType == 1) {
+			$(".y-jftc1").css("display","none");
+		} else if (dialogType == 2) {
+			$(".y-jftc2").css("display","none");
+		}
+	}
+	//加息券虚拟物品兑换ajax
+	function exchangeAddRateTicketVirtualGoodsAjax (goods_id,exchangeNum,goodsType) {
+		$.post("@{front.MallCtrl.exchangeAddRateTicketVirtualGoods()}",
+				{
+			"goods_id_str":goods_id,
+			"exchangeNum_str":exchangeNum,
+			"goods_type_name_str":goodsType
+			},
+			function (data) {
+				if (data == null || data == undefined) return;
+				if (data.msg == null || data.msg == "") return;
+				alert(data.msg);
+				return;
+		});
+	}
+	//红包虚拟物品兑换ajax
+	function exchangeRedPacketVirtualGoodsAjax (goods_id,exchangeNum,goodsType) {
+		$.post("@{front.MallCtrl.exchangeRedPacketVirtualGoods()}",
+				{
+			"goods_id_str":goods_id,
+			"exchangeNum_str":exchangeNum,
+			"goods_type_name_str":goodsType
+			},
+			function (data) {
+				if (data == null || data == undefined) return;
+				if (data.msg == null || data.msg == "") return;
+				alert(data.msg);
+				return;
+		});
+	}
+	//兑换虚拟商品红包，加息券(无数量限制)
+	function exchangeVirtualGoods (exchange_scroes,goods_id,type_id,exchangeNum) {
+		
+    	$("#commodity").val(goods_id)
+    	$("#integral").val(exchange_scroes)
+    	if("${currUser}"==""){
+    		weakDialog("您还未登录");
+    		return;
+    	}
+    	var exchangeNum=exchangeNum;
+    	var goods_id=goods_id;
+		var exchange_scroe = parseInt(exchange_scroes);
+    	if("${scroe}" * 1< exchange_scroe * 10000 * ("${vip}" == null ? 1:"${vip?.use_discount_integral}"==null ? 1 : "${vip?.use_discount_integral}")){
+    		alert("您好，您积分不足，不能兑换此商品!");
+    		return;
+    	}
+    	
+    	var type = "";
+    	var goodsType = "";
+    	$.ajax({
+    		url:"@{front.MallCtrl.getTypeName()}",
+    		type:"get",
+    		dataType: "json",
+    		async:false,
+    		data:{
+    			"id":type_id
+    		},
+    		success: function (data) {
+    			var goods = data.goodsType;
+    			type = goods.type;
+    			goodsType = goods.goods_type;
+    			
+    		}
+    	});
+    	if (type == 0) return;
+    	if (goodsType == "加息券") {
+	    	confirm('确定要兑换该加息券吗',function(){
+	    		exchangeAddRateTicketVirtualGoodsAjax(goods_id,exchangeNum,goodsType);
+	    	})
+		} else if (goodsType == "红包") {
+	    	confirm('确定要兑换该红包吗',function(){
+	    		exchangeRedPacketVirtualGoodsAjax(goods_id,exchangeNum,goodsType);
+	    	})
+		}
+	}
+    function exchange(exchange_scroes,id,type_id){
+    	
+    	$("#commodity").val(id)
+    	$("#integral").val(exchange_scroes)
+    	if("${currUser}"==""){
+    		weakDialog("您还未登录");
+    		return;
+    	}
+    	var exchange_scroe = parseInt(exchange_scroes);
+    	if("${scroe}" * 1< exchange_scroe * 10000 * ("${vip}" == null ? 1:"${vip?.use_discount_integral}"==null ? 1 : "${vip?.use_discount_integral}")){
+    		alert("您好，您积分不足，不能兑换此商品!");
+    		return;
+    	}
+    	
+    	var type = "";
+    	var goodsType = "";
+    	$.ajax({
+    		url:"@{front.MallCtrl.getTypeName()}",
+    		type:"get",
+    		dataType: "json",
+    		async:false,
+    		data:{
+    			"id":type_id
+    		},
+    		success: function (data) {
+    			var goods = data.goodsType;
+    			type = goods.type;
+    			goodsType = goods.goods_type;
+    			
+    		}
+    	});
+    	
+    	if (type == 1) {
+    		if (goodsType == "加息券") {
+    	    	confirm('确定要兑换该加息券吗',function(){
+    	    		exchangeAddRateTicketVirtualGoodsAjax(id,1,goodsType);
+    	    	})
+    		} else if (goodsType == "红包") {
+    	    	confirm('确定要兑换该红包吗',function(){
+    	    		exchangeRedPacketVirtualGoodsAjax(id,1,goodsType);
+    	    	})
+    		}
+    	} else if(type == 0) {
+    		var p = $("#addressList");
+    	   	$.post("/MallCtrl/exchange",function(data){
+    	   	    if(data == null || data == undefined)
+    	   	    	return;
+    	   	    if(data.error != null){
+    	   	    	alert(data.error.msg);
+    	   	    	return;
+    	   	    }
+    	   	    if(data.length == 0){
+    	   	   }
+    	   	   	p.html("");
+    	   	   	for(var i=0; i<data.length; i++){
+    	   	    	var detail = data[i].address + " " + data[i].receiver + " " + data[i].tel + " " + data[i].postcode;
+    	   	    	p.append("<li id='li"+i+"' ><span class='left' id='det_"+data[i].id+"'></i><input name='address'"+(i==0?" checked='checked'":"checked='false'")+" type='radio' id='add_"+data[i].id+"' style='margin-bottom:10px' value='"+detail+"'/>"+detail+"</span> <a class='major right y-address' href='javascript:modifyAddress("+data[i].id+")'> 修改地址</a></li>");
+    	   	    }
+    	   	    $("#addresses").show();
+    	   	    $(".m_mask3").attr("style","display:block");
+    		});
+    	}
+    }
+    function closeAddress(){
+    	$("#addresses").hide();
+    	$(".m_mask3").attr("style","display:none");
+    }
+    function closeAddAddress(){
+    	$("#addAddress").hide();
+    	$(".m_mask4").attr("style","display:none");
+    }
+    //增加地址
+    function addAddress(){
+    	if($("input[name='address']").length>3){
+    		alert("收货地址不能大于三个");
+    		return;
+    	}
+    	$("#address_id").val(0);
+    	$("input[name='address']").length;
+    	$("#oprTitle").html("新增收货地址");
+    	$("#addAddress").show();
+    	$(".m_mask4").attr("style","display:block");
+    }
+    function modifyAddress(id){
+    	$.post("/MallCtrl/modifyAddress",{"address_id":id},function(data){
+    		var addr = data.address;
+    		$("#address_id").val(addr.id);
+    		$("#receiver").val(addr.receiver);
+    		$("#address").val(addr.address);
+    		$("#tel").val(addr.tel);
+    		$("#postcode").val(addr.postcode);
+    		
+    		$("#oprTitle").html("修改收货地址");
+    		$("#addAddress").show();
+    	});
+    }
+    //提交地址
+    function submitAddress(){
+    	var address_id = $("#address_id").val();
+    	var receiver = $.trim($("#receiver").val());
+    	var address = $.trim($("#address").val());
+    	var tel = $.trim($("#tel").val());
+    	var postcode = $.trim($("#postcode").val());
+    	if(receiver == ''){
+    		alert("请输入收货人姓名");
+    		return;
+    	}
+    	if(address == ''){
+    		alert("请输入收货人地址");
+    		return;
+    	}
+    	if(tel == ''){
+    		alert("请输入收货人手机号码");
+    		return;
+    	}
+    	if(postcode == ''){
+    		alert("请输入邮政编码");
+    		return;
+    	}
+    	var reg = /^[\u4E00-\u9FA5]{2,4}$/;
+    	if (!reg.test(receiver)) {
+    		alert("请输入正确的中文姓名");
+    		return;
+    	}
+    	reg = /^0?1[3|4|5|6|7|8][0-9]\d{8}$/;
+    	if (!reg.test(tel)) {
+    		alert("请输入正确的手机号码");
+    		return;
+    	}
+    	$.post("/MallCtrl/addAddress",{"address_id":address_id,"receiver":receiver,"address":address,"tel":tel,"postcode":postcode},function(data){
+   	    	if(data == null || data == undefined)
+   	    		return;
+   	    	if(data.error.code < 0){
+   	    		alert(data.error.msg);
+   	    		return;
+   	    	}
+   	 		if(data.error.code > 0){
+   	 			window.location.reload(); 
+	    		return;
+	    	}
+   	    	closeAddAddress();
+   	    	var detail = address + " " + receiver + " " + tel + " " + postcode;
+   	    	if(address_id == null || address_id == ''){//新增
+   	    		$("#addressList").append("<li id='li"+i+"' ><span class='left' id='det_"+data[i].id+"'></i><input name='address'"+(i==0?" checked='checked'":"checked='false'")+" type='radio' id='add_"+data[i].id+"' style='margin-bottom:10px' value='"+detail+"'/>"+detail+"</span> <a class='major right y-address' href='javascript:modifyAddress("+data[i].id+")'> 修改地址</a></li>");
+   	    	}else{//修改
+   	    		$("#add_"+address_id).val(detail);
+   	    		$("#det_"+address_id).html(detail);
+   	    	}
+   	    	
+   	    });
+    	
+    }
+    //立即兑换
+    function submitExchange(){
+    	var flag = false;
+    	if("${currUser}"==""){
+    		alert("请先进行登录");
+    		location.href = "/loginAndRegiste/login.html";
+    		return;
+    	}
+    	
+    	var num = $("#exchangeNum").val();
+    	//验证积分是否足够
+    	var exchange_scroe = parseInt($("#integral").val());
+    	var checkedAddress = false;
+    	var address = $('input[name="address"]:checked').val(); 
+    	
+    	if(address==""){
+    		alert("收货地址不能为空");
+    		return;
+    	}
+    	
+    	var user_scroe = '${scroe}';
+    	if(user_scroe < exchange_scroe * num * ("${vip}" == null ? 1:"${vip?.use_discount_integral}"==null ? 1 : "${vip?.use_discount_integral}")){
+    		alert("您的可用积分不足");
+    		return;
+    	}
+    	var goods_id = $("#commodity").val();
+    	var exchangeNum = $("#exchangeNum").val();
+    	var remark = $("#remark").val();
+    	console.log(goods_id)
+    	
+    	$.post(
+    		"/MallCtrl/submitExchange",
+    		{address:address,remark:remark,goods_id:goods_id,exchangeNum:exchangeNum},
+    		function(data){
+    			
+    			if(data.code<0){
+    			alert(data.msg);
+    			}else{
+    				weakDialog(data.msg);
+    			}
+    			colseDialog(1);
+    			location.reload();
+    		})
+    	
+    	//$("#submit").submit();
+    }
+    function add(){
+    	var intp = $("#exchangeNum");
+    	var max = parseInt($("#max").html());
+    	var val = intp.val();
+    	if(++val > max){
+    		return;
+    	}
+    	intp.val(val);
+    }
+    function minu(){
+    	var intp = $("#exchangeNum");
+    	var val = intp.val();
+    	if(--val == 0){
+    		return;
+    	}
+    	intp.val(val);
+    }
+    
+    
+    function getParam(paramName) {
+        paramValue = "";
+        isFound = false;
+        if (this.location.search.indexOf("?") == 0 && this.location.search.indexOf("=") > 1) {
+            arrSource = unescape(this.location.search).substring(1, this.location.search.length).split("&");
+            i = 0;
+            while (i < arrSource.length && !isFound) {
+                if (arrSource[i].indexOf("=") > 0) {
+                    if (arrSource[i].split("=")[0].toLowerCase() == paramName.toLowerCase()) {
+                        paramValue = arrSource[i].split("=")[1];
+                        isFound = true;
+                    }
+                }
+                i++;
+            }
+        }
+        return paramValue;
+    }
+    
+</script>
+	<!--Luara js文件-->
+	 <script src="/public/front/javascripts/js/jquery.luara.0.0.1.min.js""></script>
+	<script src="/public/front/javascripts/js1/jquery.validationEngine.js" type="text/javascript" charset="utf-8"></script>
+	<script src= "/public/front/javascripts/js1/jquery.validationEngine-zh_CN.js" type="text/javascript" charset="utf-8"></script>
+
+	<script>
+		$(function() {
+			$(".example2").luara({
+				width: "890",
+				height: "450",
+				interval: 4500,
+				selected: "seleted",
+				deriction: "left"
+			});
+		});
+	</script>
+	
+	<script type="text/javascript">
+		$(function() {
+			$('#pop-up-box-from1').validationEngine({
+				promptPosition: 'bottomRight',
+				addPromptClass: 'formError-white'
+			});
+		});
+	</script> 
+   <script> 
+      function showPage(currPage){
+	  var pagesize=12;
+	  var typeid=$("#typeId").val();
+    $.post(
+    	"/MallCtrl/home2Pre",
+    	{currPage:currPage,pageSize:pagesize,typeId:typeid},
+    	function(data){
+    		$(".products-description").html(data);
+    	}
+    )
+    //$("#submit").submit();
+  }
+  function detail(newsId,type) {
+	window.open("contentDetail?newsId=" + newsId + "&type=" + type);
+  }
+ 
+  /* liuyang 2017-2-6 --------------end------------------------ */
+</script>
+<!-- zhixin -->
+<script type="text/javascript">
+$(function() {
+	var sWidth = $("#focus").width(); //获取焦点图的宽度（显示面积）
+	var len = $("#focus ul li").length; //获取焦点图个数
+	var index = 0;
+	var picTimer;
+	
+	//以下代码添加数字按钮和按钮后的半透明条，还有上一页、下一页两个按钮
+	var btn = "<div class='btnBg'></div><div class='btn'>";
+	for(var i=0; i < len; i++) {
+		btn += "<span></span>";
+	}
+	btn += "</div><div class='preNext pre'></div><div class='preNext next'></div>";
+	$("#focus").append(btn);
+	$("#focus .btnBg").css("opacity",0.5);
+
+	//为小按钮添加鼠标滑入事件，以显示相应的内容
+	$("#focus .btn span").css("opacity",0.4).mouseenter(function() {
+		index = $("#focus .btn span").index(this);
+		showPics(index);
+	}).eq(0).trigger("mouseenter");
+
+	//上一页、下一页按钮透明度处理
+	$("#focus .preNext").css("opacity",0.2).hover(function() {
+		$(this).stop(true,false).animate({"opacity":"0.5"},300);
+	},function() {
+		$(this).stop(true,false).animate({"opacity":"0.2"},300);
+	});
+
+	//上一页按钮
+	$("#focus .pre").click(function() {
+		index -= 1;
+		if(index == -1) {index = len - 1;}
+		showPics(index);
+	});
+
+	//下一页按钮
+	$("#focus .next").click(function() {
+		index += 1;
+		if(index == len) {index = 0;}
+		showPics(index);
+	});
+
+	//本例为左右滚动，即所有li元素都是在同一排向左浮动，所以这里需要计算出外围ul元素的宽度
+	$("#focus ul").css("width",sWidth * (len));
+	
+	//鼠标滑上焦点图时停止自动播放，滑出时开始自动播放
+	$("#focus").hover(function() {
+		clearInterval(picTimer);
+	},function() {
+		picTimer = setInterval(function() {
+			showPics(index);
+			index++;
+			if(index == len) {index = 0;}
+		},4000); //此4000代表自动播放的间隔，单位：毫秒
+	}).trigger("mouseleave");
+	
+	//显示图片函数，根据接收的index值显示相应的内容
+	function showPics(index) { //普通切换
+		var nowLeft = -index*sWidth; //根据index值计算ul元素的left值
+		$("#focus ul").stop(true,false).animate({"left":nowLeft},300); //通过animate()调整ul元素滚动到计算出的position
+		//$("#focus .btn span").removeClass("on").eq(index).addClass("on"); //为当前的按钮切换到选中的效果
+		$("#focus .btn span").stop(true,false).animate({"opacity":"0.4"},300).eq(index).stop(true,false).animate({"opacity":"1"},300); //为当前的按钮切换到选中的效果
+	}
+});
+
+</script>

@@ -1,0 +1,756 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=8" />
+<title>讴业普惠活动</title> 
+<meta name="description" content="" />
+<link rel="stylesheet" type="text/css" href="/public/stylesheets/new_file.css"/>
+<link rel="stylesheet" type="text/css" href="@{'/public/front/stylesheets/front.css'}" />
+
+ 
+<script src="/public/javascripts/jquery-1.6.4.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="/public/javascripts/new_file.js" type="text/javascript" charset="utf-8"></script>
+<script src="/public/javascripts/new_file1.js" type="text/javascript" charset="utf-8"></script>
+<script src="/public/javascripts/new_file2.js" type="text/javascript" charset="utf-8"></script>
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?0cf5d93f97b0e2764bc9d8b9c4dfe476";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+	<style>
+		.input111 input{outline:0 !important}
+		.input111_btn{cursor:pointer}
+		.tipstxt{color:#f16701}
+	</style>
+</head>
+
+<body>
+<!-- 新版活动 -->
+		<div class="g_regPage">
+			
+		<!-- 头部start -->
+		<div id="header1027">
+			<div class="top1027">
+				<div class="content1027">
+					<div class="top">
+						<div>
+							<span class="fl block">客服热线：</span>
+							<span class="topspan01 fl" >400-901-8889</span>
+							<span class="topspan02 fl">关注我们：</span> 
+							<!--<a href="" class="weibo"><div></div></a>-->
+							<a href="javascript:void(0);" class="weixin"><div></div></a>
+							<div class="fr"> 
+								<a href="http://www.ouyepuhui.cn">讴业普惠官网</a> 
+							</div>
+						</div>	
+						
+					</div> 
+	
+					<div class="menu">
+						<div class="fl">
+							<a href="https://www.ouyepuhui.cn/" class="logo"><img style="width: 360px; height: 70px;" src="/public/images/123.png" ></a>
+							
+						</div>					
+						
+					</div>
+				</div>
+			</div>
+		</div>    
+		<!-- 头部 end -->
+ 	 <form  style="background: url(/public/images/1.jpg) center; height: 770px; " action="@{front.ActivityCtrl.registering()}" method="post" id="registerFrom">
+				<div class="container">
+				
+					<ul style="margin-left: 685px; background: #FFF; position:relative ;" >	
+					    <li class="clearfix mb301">
+							<br/>
+						</li>			
+						<li class="clearfix mb301">
+							<span class="register-left left">
+								<i class="important-point">*</i>手机号
+							</span>
+							<div class="register-wrap left">
+								<input type="text" class="text" value="${flash?.mobile}" id="mobile" name="mobile" autofocus="" maxlength="11" placeholder="填写本人手机号" oninput="$(this).ndigitInteger(11)" onpropertychange="$(this).ndigitInteger(11)"/>
+							</div>
+						</li>
+						<li class="clearfix mb30">
+							<span class="register-left left">
+								<i class="important-point">*</i>图文验证码
+							</span>
+							<div class="register-wrap left">
+								<div class="codetext left">
+									<input type="text" class="text" id="code" name="code" value="${flash?.code}" placeholder="计算结果" maxlength="2"/>
+								</div>
+								<!-- 按钮点击后添加disabled属性 -->
+								<input id="randomId" name="randomId" value="${randomId}" type="hidden"/>
+								<img src="@{common.CaptchaController.createCaptcha(randomId)}" id="captchaImage" onclick="refreshCaptcha(true);" class="codeimg right" height="46" alt="" title="换一张" />
+							</div>
+						</li>
+						<li class="clearfix mb301">
+							<span class="register-left left">
+								<i class="important-point">*</i>短信验证码
+							</span>
+							<div class="register-wrap left">
+								<div class="codetext left">
+									<input type="text" class="text" id="smsCode" name="smsCode" value="${flash?.smsCode}" placeholder="6位随机数" maxlength="6"/>
+									<input type="hidden" id="flag" value="1">
+									<input type="hidden" id="scene" name="scene" value="${common.constants.SmsScene.PC_REGISTER}">
+								</div>
+								<!-- 按钮点击后添加disabled属性 -->
+								<input type="button" value="获取验证码" onclick="sendCode();" id="getsmscode" class="getcode-btn right" />
+								<div  class="code-note1" id="code-note">
+									验证码已发送至你手机，请注意查收。
+									
+								</div>
+							</div>
+						</li>
+						<li class="clearfix mb301">
+							<span class="register-left left">
+								<i class="important-point">*</i>登录密码
+							</span>
+							<div class="register-wrap left">
+								<input type="text" id="password" name="password"  class="text" value="" placeholder="6~15位字母或数字组合区分大小写" maxlength="15" onpaste="return false" oncontextmenu="return false" oncopy="return false" oncut="return false"/>
+								<i class="password-show" id="passwordShow"></i>
+								<div class="password-level" id="passwordLevel">
+									<span>弱</span>
+									<span>中</span>
+									<span>强</span>
+								</div>
+							</div>
+						</li>
+						<li class="clearfix mb301">
+							<span class="register-left left">
+								邀请码
+							</span>
+							<div class="register-wrap left">
+								<input type="text" class="text" id="recommendCode" name="recommendCode" value="${flash?.recommendCode ? flash?.recommendCode : recommendCode}" placeholder="无邀请码可忽略此项" maxlength="12"  #{if recommendCode} readonly#{/if}/>
+							</div>
+						</li>
+
+						<li class="clearfix">
+							<span class="register-left left">
+								&nbsp;
+							</span>
+							<div class="left register-agree-wrap">
+								<label class="register-agree"><input type="checkbox" name="readandagree" checked="checked" id="readandagree"/>我已阅读并同意<a href="@{front.LoginAndRegisteCtrl.registerDealPre()}" target="_blank" title="" href="" class="major" >《${platformRegister?.title}》</a></label>
+							</div>
+						</li>
+						<li class="clearfix">
+							<span class="register-left left">
+								&nbsp;
+							</span>
+							<input type="submit" value="注 册 领 红 包" class="regBtn" />
+						</li>
+						 <li class="clearfix mb301">
+							<br />
+						</li>			
+					</ul>
+					<!-- 信息统计 start -->
+				<div class="m-leiji">
+					<ul class="topContent #{ifnot is_statistics_show} mb30 #{/ifnot} " >
+						<li>
+							<p class="leijiName">
+								<img src="/public/images/5.png"/>
+								累计投资
+							</p>
+							
+							<p class="leijiNum " id="DealAmount">
+								<span>${jobs.IndexStatisticsJob.totalBorrowAmount}</span>元
+							</p>
+						</li>
+						<li>
+							<p class="leijiName">
+								<img src="/public/images/8.png"/>
+								累计赚取
+							</p>
+							<p class="leijiNum " id="CorrectAmount">
+								<span>${jobs.IndexStatisticsJob.income}</span>元
+							</p>
+						</li>
+						<li>
+							<p class="leijiName">
+								<img src="/public/images/4.png"/>
+								注册人数
+							</p>
+							<p class="leijiNum" id="countUsers">
+								<span>${jobs.IndexStatisticsJob.userCount}</span>人
+							</p>
+						</li>
+						<li>
+							<p class="leijiName">
+								<img src="/public/images/2.png"/>
+								安全运行时间
+							</p>
+							<p class="leijiNum" id="safetyDay">
+								<span>${jobs.IndexStatisticsJob.serviceTime}</span>天
+							</p>
+						</li>
+					</ul>
+				</div>
+				<!-- 信息统计 end -->
+				</div>
+				
+			</form>
+			  
+				<!-- 注册窗口 end -->
+				
+			</div>
+			
+			<!-- 中间内容， 读库里面的 star-->
+			<!-- 中间内容， 读库里面的 end-->
+		</div>
+	<script>
+		$(".regBtn").click(function(){
+			if( $("input[type='checkbox']").is(':checked') ){
+				//alert("提交")
+			}else{
+				alert("请阅读并同意 《讴业普惠服务协议》后注册")
+			}
+		})
+		
+		
+	
+	
+	</script>		
+
+
+
+<!-- 新版活动 -->
+
+
+
+<div class="g_regPage">
+	<!-- 头部start -->
+	<!-- 头部 end -->
+	<div class="m-heXinYouShiBox">
+		<ul>
+			<li>
+				<p class="title">
+					专业团队
+				</p>
+<img src="/public/images/download.png" /> 
+				<p>
+					严格把控风险
+				</p>
+				
+			</li>
+			<li>
+				<p class="title">
+					安全保障
+				</p>
+<img src="/public/images/11.png" /> 
+				<p>
+					已签订<span>银行存管</span>协议
+				</p>
+				<p>
+					第三方机构担保
+				</p>
+			</li>
+			<li>
+				<p class="title">
+					灵活理财
+				</p>
+<img src="/public/images/22.png" /> 
+
+				<p>
+					1、2、3、4、5、6、12月标 
+				</p>
+				<p>
+					<span>期限任选</span>100元起投
+				</p>
+			</li>
+			<li>
+				<p class="title">
+					收益稳健
+				</p>
+<img src="/public/images/33.png" /> 
+				<p>
+					预期年化收益<span>8.5%-16%</span> 
+				</p>
+				<p>
+					领跑同类平台
+				</p>
+			</li>
+		</ul>
+	</div>
+	<div class="m_activity atv1">
+		<div class="atvTitle">
+		</div>
+		<p class="time">
+			活动时间：2017年7月15日--8月31日
+		</p>
+		<ul>
+			<li class="firstLi">
+				<div class="bgFAC232">
+					新用户首投金额
+				</div>
+				<div class="bgD74B3B">
+					新用户奖励金额
+				</div>
+				
+			</li>
+			<li>
+				<div class="bgFAC232">
+					5000~9999元
+				</div>
+				<div class="bgD74B3B">
+					5元
+				</div>
+				
+			</li>
+			<li>
+				<div class="bgFAC232">
+					10000~19999元
+				</div>
+				<div class="bgD74B3B">
+					15元
+				</div>
+				
+			</li>
+			<li>
+				<div class="bgFAC232">
+					20000~29999元
+				</div>
+				<div class="bgD74B3B">
+					66元
+				</div>
+				
+			</li>
+			<li>
+				<div class="bgFAC232">
+					30000~39999元
+				</div>
+				<div class="bgD74B3B">
+					98元
+				</div>
+				
+			</li>
+			<li>
+				<div class="bgFAC232">
+					40000~79999元
+				</div>
+				<div class="bgD74B3B">
+					118元
+				</div>
+				
+			</li>
+			<li>
+				<div class="bgFAC232">
+					80000以上
+				</div>
+				<div class="bgD74B3B">
+					216元
+				</div>
+				
+			</li>
+		</ul>
+		<p class="bgk1" style="text-align: center; font-size: 24px;padding: 20px; color: #D74B3B;">推广新用户可得6.6元红包</p>
+	</div>
+	<div class="m_activity atv2">
+		<div class="atvTitle">
+		</div>
+		<p class="time">
+			活动时间：2017年8月8日
+		</p>
+		<ul>
+			<li class="fl">
+				<div class="num">
+					+0.8%
+				</div>
+				<p>
+					1-3月散标 <br />
+加息
+				</p>
+			</li>
+			<li class="fl">
+				<div class="num">
+					+1.2%
+				</div>
+				<p>
+					3-6月散标 <br />
+加息
+				</p>
+			</li>
+			<li class="fl">
+				<div class="num">
+					+1.6%
+				</div>
+				<p>
+					3-6月散标<br />
+加息
+				</p>
+			</li>
+
+		</ul>
+	</div>
+
+	<div class="registerBtn">
+		<a href="#"></a> 
+	</div>
+	<p class="footerText1">
+		本页面所有活动最终解释权归讴业普惠金融所有 <br />
+如有疑问请联系在线客服或拨打热线：400-901-8889
+	</p>
+	<p class="footerText2">
+		河北石家庄讴业普惠金融服务有限公司 <br />
+www.ouyepuhui.cn <br />
+市场有风险，投资需谨慎
+	</p>
+</div>
+</body>
+	<!-- 页面js -->
+	<script type="text/javascript" data-main="/public/front/javascripts/front.js" src="@{'public/front/javascripts/require.js'}" ></script>
+	<script type="text/javascript">
+		require(['front'],function(){
+			#{if flash?.error}
+				alert('${flash?.error}');
+			#{/if}
+			//判断密码强度、引入validate验证框架
+			require(['passwordLevel','validation/validateExt']);
+			//密码显示隐藏
+			//密码显示隐藏
+			if('placeholder' in document.createElement('input')){
+				$('#password').on('input',function(){
+					if($(this).val() != ''){
+						$('#passwordShow').show();
+					}else{
+						$('#passwordShow').hide();
+					}
+				}).trigger('input');
+				$('#passwordShow').click(function(){
+					if($(this).hasClass('showpw')){
+						$(this).removeClass('showpw');
+						$('#password').attr('type','password');
+					}else{
+						$(this).addClass('showpw');
+						$('#password').attr('type','text');
+					}
+				});
+				//密码框类型改变
+				$("#password").focus(function(){
+					if($(this).attr("type") != "password"){
+						$(this).attr("type","password");
+						$('#passwordShow').removeClass('showpw');
+					}
+				})
+			}else{
+				$('#passwordShow').hide();
+			}
+			//取消获取验证码按钮禁用效果
+			$(".getcode-btn").removeAttr("disabled");
+			
+			$("#registerFrom").validate({
+				errorPlacement: function(error, element) {
+					if(element.is("#mobile")){
+						$("p[id='mobile-error']").remove();
+						$("input[id='mobile']").removeClass("focus").addClass("text-error");
+						error.addClass('error register-error').appendTo(element.parent());
+					}else if(element.is("#code")){
+						$("p[id='code-error']").remove();
+						$("input[id='code']").removeClass("focus").addClass("text-error");
+						error.addClass('register-error').appendTo(element.parent());
+					}else if(element.is("#smsCode")){
+						$("p[id='smsCode-error']").remove();
+						$("input[id='smsCode']").removeClass("focus").addClass("text-error");
+						error.addClass('register-error').appendTo(element.parent());
+					}else if(element.is("#password")){
+						$("p[id='password-error']").remove();
+						$("input[id='password']").removeClass("focus").addClass("text-error");
+						error.addClass('register-error').appendTo(element.parent());
+					}else if(element.is("#confirmPassword")){
+						$("p[id='confirmPassword-error']").remove();
+						$("input[id='confirmPassword']").removeClass("focus").addClass("text-error");
+						error.addClass('register-error').appendTo(element.parent());
+					}else if(element.is("#readandagree")){
+						$("p[id='readandagree-error']").remove();
+						error.addClass('register-error').appendTo(element.parent());
+					}else if(element.is("#recommendCode")){
+						$("p[id='recommendCode-error']").remove();
+						error.addClass('register-error').appendTo(element.parent());
+					}
+					else if(element.is("#extensionCode")){
+						$("p[id='extensionCode-error']").remove();
+						error.addClass('register-error').appendTo(element.parent());
+					}
+				},
+				success:function(label){
+					label.removeClass('error register-error');
+					$(label).parent().children("input").eq(0).addClass("focus");
+				},
+				errorElement:'p',
+				rules:{
+				    "mobile":{
+						required:true,
+						isMobile:true,
+						remote:{
+							 url: "@{front.FrontAjaxValideCtrl.checkUserMobile()}",
+							 type: "post",
+							 dataType: "json",
+							 data: {
+								 mobile: function() {
+									return $("input[id='mobile']").val();
+								}
+							}
+						}
+					},
+					"code":{
+						required:true,
+						digits:true
+					},
+					"smsCode":{
+						required:true,
+						digits:true,
+						minlength:6
+					},
+					"password":{
+						required:true,
+						isPassWord:true,
+						rangelength:[6,15]
+					},
+					"readandagree":{
+						required:true
+					},
+					"recommendCode":{
+						rangelength:[11,12],
+						remote:{
+							 url: "@{front.FrontAjaxValideCtrl.checkRecommendCode()}",
+							 type: "post",
+							 dataType: "json",
+							 data: {
+								 recommendCode: function() {
+									return $("input[id='recommendCode']").val();
+								}
+							}
+						}
+					},
+					"extensionCode":{
+						rangelength:[1,12],
+						remote:{
+							 url: "@{front.FrontAjaxValideCtrl.checkeExtensionCode()}",
+							 type: "post",
+							 dataType: "json",
+							 data: {
+								 recommendCode: function() {
+									return $("input[id='extensionCode']").val();
+								}
+							}
+						}
+					},
+				},
+				messages:{
+					"mobile":{
+						required:"手机号不能为空",
+						isMobile:"手机号格式不正确",
+						remote:"该手机号已被占用"
+					},
+					"code":{
+						required:"验证码不能为空",
+						digits:"验证码不正确"
+					},
+					"smsCode":{
+						required:"短信验证码不能为空",
+						digits:"短信验证码不正确",
+						minlength:"短信验证码不正确"
+					},
+					"password":{
+						required:"密码不能为空",
+						isPassWord:"密码格式不正确",
+						rangelength:"密码格式不正确"
+					},
+					"readandagree":{
+						required:"协议未勾选"
+					},
+					"recommendCode":{
+						rangelength:"请输入11位CPS推广码",
+						remote:"推广码不存在"
+					},
+					"extensionCode":{
+						rangelength:"请输入业务邀请码",
+						remote:"业务邀请码不存在"
+					},
+				},
+				submitHandler:function(form){
+					$.ajax({
+						url : "@{front.LoginAndRegisteCtrl.checkSmsCode()}",
+						type : "POST",
+						data : {
+							"mobile": $("#mobile").val(),
+							"randomId": $("#randomId").val(),
+							"code": $("#code").val(),
+							"smsCode": $("#smsCode").val(),
+							"type" : 2,
+							"scene": "${common.constants.SmsScene.PC_REGISTER}"
+						},
+						success : function(data){
+							if (data.code < 1) {
+								if($("#smsCode-error").length == 0){
+									$("#smsCode").after("<p style='display: block;' class='error register-error' id='smsCode-error'>"+data.msg+"</p>");
+								}else{
+									$("#smsCode-error").addClass("error register-error").css("display","block");
+									$("#smsCode-error").html(data.msg);
+								}
+							} else {
+								$("#smscode-error").css("display","none");
+								$("#smscode-error").html('');
+								form.submit();
+							}
+						}
+					});
+				}
+			})
+		});
+
+		/* 验证码刷新 */
+		function refreshCaptcha(isRefresh){
+			$.post("@{common.CaptchaController.flushCaptcha()}",function(data){
+				var arr=eval(data);
+				var randomid = arr.randomID;
+				$("#captchaImage").attr("src","@{common.CaptchaController.createCaptcha()}?uuid="+randomid);	
+				$("#randomId").val(randomid);
+			});
+			if(isRefresh){
+				$("#code").next("p").remove();
+				$("#code").removeClass("text-error focus");
+			}
+			$("#code").removeClass("focus");
+			$("#code").val("");
+		}
+		
+		var flag = true;
+		/* 发送手机验证码  */
+		function sendCode(){
+			
+			if($("#flag").val() == 2){
+				$("#code").val('');
+				$("#getsmscode").val("获取验证码");
+				$("#flag").val("1");
+				$("#code-note").css("display","none");
+				refreshCaptcha(false);
+				$("#code-error").addClass("error register-error").css("display","block").html("请重新输入图文验证码");
+			}
+			
+			var mobile = $("#mobile").val().trim();
+			var randomId = $("#randomId").val().trim();
+			var code = 	$("#code").val().trim();
+			
+		    if(mobile == ''){
+		    	if($("#mobile-error").length == 0){
+					$("#mobile").after("<p style='display: block;' class='error register-error' id='mobile-error'>手机号不能为空</p>");
+		    	}
+				
+				return;
+		    }else if (!mobile.isMobileNum()) {
+		    	if($("#mobile-error").length == 0){
+			    	$("#mobile").after("<p style='display: block;' class='error register-error' id='mobile-error'>手机号格式不正确</p>");
+		    	}
+		    	
+		    	return;
+			}
+		     
+			if(code == ''){
+				if($("#code-error").length == 0){
+					$("#code").after("<p style='display: block;' class='error register-error' id='code-error'>验证码不能为空</p>");
+				}
+				
+				return;
+			}
+		     
+			 $.ajax({
+					 url:"@{front.FrontAjaxValideCtrl.checkUserMobile()}",
+					 type: "POST",
+					 async:false,
+					 data:{
+						 'mobile':mobile
+					 },
+					 success:function(data){
+				 		if(!data){
+							flag = true;
+						}else{
+							flag = false;
+						}
+					}
+			 });
+			 //根据手机号码和验证码判断是否应该发送短信验证码
+		    if(flag){
+		    	
+		    	return;
+		    }
+
+			 $.ajax({
+				url : "@{front.LoginAndRegisteCtrl.sendCodeOfRegister()}",
+				type : "POST",
+				data : {
+					"mobile" : mobile,
+					"randomId" : randomId,
+					"code" : code,
+					"scene" : "${common.constants.SmsScene.PC_REGISTER}"
+				},
+				dataType:"json",
+				success : function(data) {
+					/* 判断短信验证码发送是否成功 */
+					if(data.code < 1){
+						if(data.code == -2){
+							//手机号码错误提示
+							if($("#mobile-error").length == 0){
+								$("#mobile").after("<p style='display: block;' class='error register-error' id='mobile-error'>"+data.msg+"</p>");
+							}else{
+								$("#mobile-error").addClass("error register-error").css("display","block");
+								$("#mobile-error").html(data.msg);
+							}
+							refreshCaptcha(false); //刷新验证码
+						}else if(data.code == -3){
+							//验证码错误提示
+							if($("#code-error").length == 0){
+								$("#captchaImage").after("<p style='display: block;' class='error register-error' id='code-error'>"+data.msg+"</p>");
+							}else{
+								$("#code-error").addClass("error register-error").css("display","block");
+								$("#code-error").html(data.msg);
+							}
+							refreshCaptcha(false); //刷新验证码
+						}else if(data.code == -4){
+							//短信提示
+							if($("#smsCode-error").length == 0){
+								$("#code-note").after("<p style='display: block;' class='error register-error' id='smsCode-error'>"+data.msg+"</p>");
+							}else{
+								$("#smsCode-error").addClass("error register-error").css("display","block");
+								$("#smsCode-error").html(data.msg);
+							}
+						}
+						$("#flag").val("1");
+					} else {
+						/* 短信发送成功，清除页面错误提示 */
+						$("#mobile-error").css("display","none");
+						$("#mobile-error").html('');
+						$("#code-error").css("display","none");
+						$("#code-error").html('');
+						$("#smsCode-error").css("display","none");
+						$("#smsCode-error").html('');
+						
+						if(!$(".getcode-btn").prop("disabled")){
+							$(".getcode-btn").prop("disabled",true).next(".code-note1").show();
+							var getCode = $(".getcode-btn"),
+								timeid,
+								i = 60;//再次获取验证码等待时间
+							getCode.val(i+'s');
+							timeid = setInterval(function(){
+								if(i > 1){
+									i--;
+									getCode.val(i+'s');
+								}else{
+									getCode.removeAttr("disabled");
+									getCode.val('再次获取');
+									clearInterval(timeid);
+									$("#flag").val("2");
+								}
+							},1000);
+						}
+					}
+				}
+			});
+		}
+	</script>
+</html>

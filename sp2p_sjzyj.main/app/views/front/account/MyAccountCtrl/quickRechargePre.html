@@ -1,0 +1,85 @@
+#{extends 'common/front/accountMain.html' /}
+#{set title:'个人中心 | 账户首页 | 闪电快充' /}
+#{set smallclass:0 /}
+
+
+<!-- 账户主要表格 -->
+<div class="account-box">
+	<h2 class="account-title">
+		<div class="right account-menu">
+			<a href="withdraw.html">&nbsp;提现&nbsp;</a>
+			<a href="recharge.html">账户直充</a>
+			<a href="quickRecharge.html" class="selected">闪电快充</a>
+		</div>
+	</h2>
+	<div class="bank-choose">
+		<p class="c3">选择银行：</p>
+		<ul class="bank-list">
+			<li>
+				<img src="/public/front/images/bank.png" width="198" height="48" alt="中国工商银行" title="中国工商银行" />
+			</li>
+			<li>
+				<img src="/public/front/images/bank.png" width="198" height="48" alt="中国工商银行" title="中国工商银行" />
+			</li>
+			<li>
+				<img src="/public/front/images/bank.png" width="198" height="48" alt="中国工商银行" title="中国工商银行" />
+			</li>
+			<li>
+				<img src="/public/front/images/bank.png" width="198" height="48" alt="中国工商银行" title="中国工商银行" />
+			</li>
+			<li>
+				<img src="/public/front/images/bank.png" width="198" height="48" alt="中国工商银行" title="中国工商银行" />
+			</li>
+			<li>
+				<img src="/public/front/images/bank.png" width="198" height="48" alt="中国工商银行" title="中国工商银行" />
+			</li>
+			<li>
+				<img src="/public/front/images/bank.png" width="198" height="48" alt="中国工商银行" title="中国工商银行" />
+			</li>
+			<li>
+				<img src="/public/front/images/bank.png" width="198" height="48" alt="中国工商银行" title="中国工商银行" />
+			</li>
+			<li>
+				<img src="/public/front/images/bank.png" width="198" height="48" alt="中国工商银行" title="中国工商银行" />
+			</li>
+			<li>
+				<img src="/public/front/images/bank.png" width="198" height="48" alt="中国工商银行" title="中国工商银行" />
+			</li>
+		</ul>
+	</div>
+	<div class="withdraw-box clearfix">
+		<div class="bankcard-addnote c9 left">
+			<span class="borrow-notehead"><i class="icon note-icon"></i>温馨提示：</span><br>
+			1. 出借人充值过程全程免费，部收取任何手续费；<br>
+			2. 最低充值金额应大于<span class="major">50</span>元 <br>
+			3. 充值必须为银行借记<br>
+			1. 出借人充值过程全程免费，部收取任何手续费；<br>
+			2. 最低充值金额应大于<span class="major">50</span>元 <br>
+			3. 充值必须为银行借记<br>
+			1. 出借人充值过程全程免费，部收取任何手续费；<br>
+			2. 最低充值金额应大于<span class="major">50</span>元 <br>
+			3. 充值必须为银行借记
+		</div>
+		<div class="left withdraw-right">
+			<p class="mb30 withdraw-title"><span class="left c3">充值金额</span><span class="right major">最小充值金额为50元</span></p>
+			<label class="unit-input mb30">
+				<input type="text" class="text">
+				<i class="unit">元</i>
+			</label>
+			<input type="button" value="下一步" class="condition-btn btn mb30">
+			<p class="withdraw-title"><a href="accountRecord.html" class="right major">查看充值记录></a></p>
+		</div>
+	</div>
+	<p class="returnprev">
+		<a href="@{front.account.MyAccountCtrl.homePre()}" class="backpage"><i class="icon return-icon"></i>返回</a>
+	</p>
+</div>
+
+
+
+<script type="text/javascript">
+require(['front'],function(front){
+	// 导航选中效果
+	require(['account']);
+});
+</script>

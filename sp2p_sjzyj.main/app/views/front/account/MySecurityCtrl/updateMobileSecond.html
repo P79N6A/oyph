@@ -1,0 +1,217 @@
+#{extends 'common/front/accountMain.html' /}
+#{set title:'个人中心 | 安全中心 |修改手机' /}
+#{set smallclass:4 /}
+
+<!-- 账户主要表格 -->
+<div class="account-infor">
+	<!-- 修改手机step2 -->
+	<div class="account-resetbox">
+		<form action="@{front.account.MySecurityCtrl.updateMobileThird()}" method="post" id="mobileform">
+			#{authenticityToken /}
+			<h2 class="account-title">
+				<span class="left bankcard-title c3"><i class="icon mobil-icon"></i>绑定手机</span>
+			</h2>
+			<ul class="register-list bind-mobillist">
+				<li class="clearfix mb30">
+					<span class="register-left left">
+						<i class="important-point">*</i>新手机号码
+					</span>
+					<div class="register-wrap left">
+						<div class="register-wrap left">
+							<input type="text" class="text" id="mobile" name="mobile" maxlength="11" value="" placeholder="填写本人手机号" onkeyup="$(this).ndigitInteger(11)">
+						</div>
+					</div>
+				</li>
+				<li class="clearfix mb30">
+					<span class="register-left left">
+						<i class="important-point">*</i>短信验证码
+					</span>
+					<div class="register-wrap left">
+						<div class="codetext left">
+							<input type="text" class="text" id="smsCode" name="smsCode" maxlength="6" value="" placeholder="6位随机数">
+							<input type="hidden" id="scene" name="scene" value="${common.constants.SmsScene.PC_UPDATE_MOBILE_NEW}">
+						</div>
+						<!-- 按钮点击后添加disabled属性 -->
+						<input type="button" onclick="sendCode();" value="获取验证码" id="sendsmscode" class="getcode-btn right getcode-button">
+						<div class="code-note">
+							验证码已发送至你手机，请注意查收，<br>
+							1~3分钟内收到短信，<br>
+							如未接收到短信，请再次发送验证码。
+						</div>
+						<div class="register-error" id="smscode-error">错误提示</div>
+					</div>
+				</li>
+				<li class="clearfix">
+					<span class="register-left left">
+						&nbsp;
+					</span>
+					<input type="submit" value="下一步" class="condition-btn btn left">
+				</li>
+			</ul>
+		</form>
+		<p class="returnprev">
+			<a href="@{front.account.MySecurityCtrl.securityPre()}" class="backpage"><i class="icon return-icon"></i>返回</a>
+		</p>
+	</div>
+</div>
+<script type="text/javascript" data-main="/public/front/javascripts/front.js" src="@{'public/front/javascripts/require.js'}" ></script>
+<script type="text/javascript">
+require(['front'],function(front){
+	require(["validation/validateExt"]);
+	
+	//取消获取验证码按钮禁用效果
+	$(".getcode-btn").removeAttr("disabled");
+	
+	$("#mobileform").validate({
+		errorPlacement: function(error, element) {
+			if(element.is("#mobile")){
+				$("p[id='mobile-error']").remove();
+				$("input[id='mobile']").removeClass("focus").addClass("text-error");
+				error.addClass('register-error').appendTo(element.parent());
+				
+			}else if(element.is("#smsCode")){
+				$("p[id='smsCode-error']").remove();
+				$("input[id='smsCode']").removeClass("focus").addClass("text-error");
+				error.addClass('register-error').appendTo(element.closest('.register-wrap'));
+			}
+		},
+		success:function(label){
+			label.removeClass('error register-error');
+			$(label).parent().children("input").eq(0).addClass("focus");
+		},
+		errorElement:'p',
+		rules:{
+			"mobile":{
+				required:true,
+				isMobile:true,
+				remote:{
+					 url: "@{front.FrontAjaxValideCtrl.checkUserMobile()}",
+					 type: "post",
+					 dataType: "json",
+					 data: {
+						 mobile: function() {
+							return $("input[id='mobile']").val();
+						}
+					}
+				}
+			},
+			"smsCode":{
+				required:true,
+				digits:true,
+				minlength:6
+			}
+		},
+		messages:{
+			"mobile":{
+				required:"手机号不能为空",
+				isMobile:"手机号格式不正确",
+				remote:"该手机号已被占用"
+			},
+			"smsCode":{
+				required:"短信验证码不能为空",
+				digits:"短信验证码不正确",
+				minlength:"短信验证码不正确"
+			}
+		},
+		submitHandler:function(form){
+			$.ajax({
+				url : "@{front.account.MySecurityCtrl.checkSmsCode()}",
+				type : "POST",
+				data : {
+					"mobile": $("#mobile").val(),
+					"smsCode": $("#smsCode").val(),
+					"type" : 2,
+					"scene": "${common.constants.SmsScene.PC_UPDATE_MOBILE_NEW}"
+				},
+				success : function(data){
+					if (data.code < 1) {
+						if($("#smsCode-error").length == 0){
+							$("#sendsmscode").after("<p style='display: block;' class='error register-error' id='smsCode-error'>"+data.msg+"</p>");
+						}else{
+							$("#smsCode-error").addClass("error register-error").css("display","block");
+							$("#smsCode-error").html(data.msg);
+						}
+					} else {
+						$("#smscode-error").css("display","none");
+						$("#smscode-error").html('');
+						form.submit();
+					}
+				}
+			});
+		}
+	})
+});
+
+var getCodeNum = 3; 	//获取短信验证码次数
+/* 发送手机验证码  */
+function sendCode(){
+	//防止手机号码已存在，未做光标移开事件
+	$("#mobile").blur();
+	var mobile = $("#mobile").val();
+	if(mobile == ''){
+		$("#mobile-error").css("display","block");
+		$("#mobile-error").html("请输入手机号码");
+		return;
+	} else {
+		$("#mobile-error").css("display","none");
+		$("#mobile-error").html("");
+	}
+	$.ajax({
+		url : "@{front.account.MySecurityCtrl.sendCode()}",
+		type : "POST",
+		data : {
+			"mobile" : mobile,
+			"type" : 2,
+			"scene": "${common.constants.SmsScene.PC_UPDATE_MOBILE_NEW}"
+		},
+		dataType:"json",
+		success : function(data) {
+			var flag = interceptorCheck(data);
+			if(!flag){
+				return;
+			}
+			/* 判断短信验证码发送是否成功 */
+			if(data.code < 1){
+				if(data.code == -1){
+					if($("#mobile-error").length == 0){
+						$("#mobile").after("<p style='display: block;' class='error register-error' id='mobile-error'>"+data.msg+"</p>");
+					}else{
+						$("#mobile-error").addClass("error register-error").css("display","block");
+						$("#mobile-error").html(data.msg);
+					}
+				}else if(data.code == -2){
+					if($("#smsCode-error").length == 0){
+						$("#sendsmscode").after("<p style='display: block;' class='error register-error' id='smsCode-error'>"+data.msg+"</p>");
+					}else{
+						$("#smsCode-error").addClass("error register-error").css("display","block");
+						$("#smsCode-error").html(data.msg);
+					}
+				}
+			} else {
+				$("#smsCode-error").css("display","none");
+				$("#smsCode-error").html('');
+				if(!$(".getcode-btn").prop("disabled")){
+					if(getCodeNum > 0){
+						getCodeNum --;
+						$(".getcode-btn").prop("disabled",true).next(".code-note").show();
+						var getCode = $(".getcode-btn"),
+							timeid,
+							i = 60; //再次获取验证码等待时间
+						getCode.val(i+'s');
+						timeid = setInterval(function(){
+							if(i > 1){
+								i--;
+								getCode.val(i+'s');
+							}else{
+								getCode.removeAttr("disabled");
+								getCode.val('再次获取');
+								clearInterval(timeid);
+							}
+						},1000);
+					}
+				}
+			}
+		}
+	});
+}
+</script>

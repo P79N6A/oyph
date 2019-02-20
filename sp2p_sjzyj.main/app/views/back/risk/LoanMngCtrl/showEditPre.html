@@ -1,0 +1,311 @@
+<table border="1" style="border: 1px dashed #ddd; width: 100%;">
+<tr class="trheight">
+	<th style="text-align: center; font-size: 20px;" colspan="10">风控报告</th>
+</tr>
+<tr class="trheight">
+	<td colspan="10" style="font-weight: bold; padding-left: 20px;">借款人身份信息</td>
+</tr>
+<tr class="trheight">
+	<td class="tabtext"><span class="spans-color">* </span>申请人姓名：</td>
+	<td class="tabinput">
+	<input type="hidden" value="${report?.user_id}" name="userId" id="user_id"/>
+	<input type="text" autofocus="autofocus" class="width01 iffocus" value="${userInfo?.reality_name}" readonly="readonly" name="appName" id="appName" />
+	<a href="javascript:void(0);" onclick="showPage(1,5)" data-title="选择" class="iconfont back-chooseone" >&#xe609;</a>
+	</td>
+	<td class="tabtext"><span class="spans-color">* </span>身份证号： </td>
+	<td class="tabinput">
+		<input type="text" name="appCreditNo" id="appCreditNo" onblur="checkCreditNo()" readonly="readonly" value="${userInfo?.id_number}"><br>
+		<span style="color: red" id="acn"></span>
+	</td>
+	<td class="tabtext"><span class="spans-color">* </span>申请人性别： </td>
+	<td class="tabinput">
+		<select name="appSex">
+			<option #{if userInfo?.sex?.code==1} selected="selected" #{/if} value="1" >男</option>
+			<option #{if userInfo?.sex?.code==2} selected="selected" #{/if} value="2" >女</option>
+		</select>
+	</td>
+	<td class="tabtext">申请人年龄： </td>
+	<td class="tabinput"><input type="number" name="appAge" onblur="checkAge()" id="appAge" class="tabnumber" value="${report?.app_age}"></td>
+	<td class="tabtext"><span class="spans-color">* </span>婚姻状况： </td>
+	<td class="tabinput">
+		<select name="appMarriage">
+			<option #{if userInfo?.marital?.code==10} selected="selected" #{/if} value="10" >未婚</option>
+			<option #{if userInfo?.marital?.code==20} selected="selected" #{/if} value="20" >已婚</option>
+			<option #{if userInfo?.marital?.code==30} selected="selected" #{/if} value="30" >丧偶</option>
+			<option #{if userInfo?.marital?.code==40} selected="selected" #{/if} value="40" >离婚</option>
+			<option #{if userInfo?.marital?.code==90} selected="selected" #{/if} value="90" >保密</option>
+		</select>
+	</td>
+</tr>
+<tr class="trheight">
+	<td class="tabtext"><span class="spans-color">* </span>最高学历： </td>
+	<td class="tabinput">
+		<select name="applicate">
+			<option #{if userInfo?.education?.code==10} selected="selected" #{/if} value="10" >研究生</option>
+			<option #{if userInfo?.education?.code==20} selected="selected" #{/if} value="20" >本科</option>
+			<option #{if userInfo?.education?.code==30} selected="selected" #{/if} value="30" >大专</option>
+			<option #{if userInfo?.education?.code==40} selected="selected" #{/if} value="40" >中专</option>
+			<option #{if userInfo?.education?.code==50} selected="selected" #{/if} value="50" >技校</option>
+			<option #{if userInfo?.education?.code==60} selected="selected" #{/if} value="60" >高中</option>
+			<option #{if userInfo?.education?.code==70} selected="selected" #{/if} value="70" >初中</option>
+			<option #{if userInfo?.education?.code==80} selected="selected" #{/if} value="80" >小学</option>
+			<option #{if userInfo?.education?.code==90} selected="selected" #{/if} value="90" >文盲</option>
+			<option #{if userInfo?.education?.code==99} selected="selected" #{/if} value="99" >未知</option>
+		</select>
+	</td>
+	<td class="tabtext"><span class="spans-color">* </span>最高学位： </td>
+	<td class="tabinput">
+		<select name="appDegree">
+			<option #{if userInfo?.degree?.code==0} selected="selected" #{/if} value="0" >其他</option>
+			<option #{if userInfo?.degree?.code==1} selected="selected" #{/if} value="1" >名誉博士</option>
+			<option #{if userInfo?.degree?.code==2} selected="selected" #{/if} value="2" >博士</option>
+			<option #{if userInfo?.degree?.code==3} selected="selected" #{/if} value="3" >硕士</option>
+			<option #{if userInfo?.degree?.code==4} selected="selected" #{/if} value="4" >学士</option>
+			<option #{if userInfo?.degree?.code==9} selected="selected" #{/if} value="9" >未知</option>
+		</select>
+	</td>
+	<td class="tabtext">手机号码： </td>
+	<td class="tabinput"><input type="number" name="appPhone" value="${userInfo?.mobile}" ></td>
+	<td class="tabtext">住宅电话： </td>
+	<td class="tabinput"><input type="text" name="appHomePhone" value="${userInfo?.home_phone}" ></td>
+	<td class="tabtext">单位电话： </td>
+	<td class="tabinput"><input type="text" name="companyTel" value="${userInfo?.work_phone}" ></td>
+</tr>
+<tr class="trheight">
+	<td class="tabtext"><span class="spans-color">* </span>通讯地址： </td>
+	<td class="tabinput"><input type="text" name="appCommunicationAddress" id="appCommunicationAddress" onblur="checkCommunicationAddress()" value="${userInfo?.communication_address}" ><br><span style="color: red" id="ca"></span></td>
+	<td class="tabtext"><span class="spans-color">* </span>通讯地址邮编： </td>
+	<td class="tabinput"><input type="text" name="appPostalCode" id="appPostalCode" onblur="checkPostalCode()" value="${userInfo?.postal_code}" ><br><span style="color: red" id="cpc"></span></td>
+	<td class="tabtext">户籍地址： </td>
+	<td class="tabinput"><input type="text" name="appCensusAddress" value="${userInfo?.census_address}" ></td>
+	<td class="tabtext">电子邮箱： </td>
+	<td class="tabinput"><input type="text" name="appEmail" value="${userInfo?.email}" ></td>
+	<td class="tabtext">配偶姓名： </td>
+	<td class="tabinput"><input type="text" name="pairName" value="${userInfo?.mate_name}" ></td>
+</tr>
+<tr class="trheight">
+	<td class="tabtext">配偶证件号码： </td>
+	<td class="tabinput"><input type="text" id="appMateIdNumber" name="appMateIdNumber" onblur="checkAppMateIdNumber()" value="${userInfo?.mate_id_number}" ><br><span style="color: red" id="camin"></span></td>
+	<td class="tabtext">配偶工作单位： </td>
+	<td class="tabinput"><input type="text" name="appMateWorkUnit" value="${userInfo?.mate_work_unit}" ></td>
+	<td class="tabtext">配偶联系电话： </td>
+	<td class="tabinput"><input type="text" name="pairContactWay" value="${userInfo?.mate_phone}" ></td>
+	<td class="tabtext"><span class="spans-color">* </span>第一联系人姓名： </td>
+	<td class="tabinput"><input type="text" name="appFirstName" id="appFirstName" onblur="checkFirstName()" value="${userInfo?.emergency_contact_name}" ><br><span style="color: red" id="cfn"></span></td>
+	<td class="tabtext"><span class="spans-color">* </span>第一联系人关系： </td>
+	<td class="tabinput">
+		<select name="appFirstRelation">
+			<option #{if userInfo?.emergency_contact_type?.code==0} selected="selected" #{/if} value="0" >父子(女)</option>
+			<option #{if userInfo?.emergency_contact_type?.code==1} selected="selected" #{/if} value="1" >母子(女)</option>
+			<option #{if userInfo?.emergency_contact_type?.code==2} selected="selected" #{/if} value="2" >配偶</option>
+			<option #{if userInfo?.emergency_contact_type?.code==3} selected="selected" #{/if} value="3" >子女</option>
+			<option #{if userInfo?.emergency_contact_type?.code==4} selected="selected" #{/if} value="4" >亲属</option>
+			<option #{if userInfo?.emergency_contact_type?.code==5} selected="selected" #{/if} value="5" >同事</option>
+			<option #{if userInfo?.emergency_contact_type?.code==6} selected="selected" #{/if} value="6" >朋友</option>
+			<option #{if userInfo?.emergency_contact_type?.code==7} selected="selected" #{/if} value="7" >兄弟姐妹</option>
+			<option #{if userInfo?.emergency_contact_type?.code==8} selected="selected" #{/if} value="8" >其他</option>
+		</select>
+	</td>
+</tr>
+<tr class="trheight">
+	<td class="tabtext"><span class="spans-color">* </span>第一联系人电话： </td>
+	<td class="tabinput"><input type="number" name="appFirstPhone" id="appFirstPhone" onblur="checkFirstPhone()" value="${userInfo?.emergency_contact_mobile}"><br><span style="color: red" id="cfp"></span></td>
+	<td class="tabtext">第二联系人姓名： </td>
+	<td class="tabinput"><input type="text" name="appSecondName" value="${userInfo?.second_name}" ></td>
+	<td class="tabtext">第二联系人关系： </td>
+	<td class="tabinput">
+		<select name="appSecondRelation">
+			<option #{if userInfo?.second_relation?.code==0} selected="selected" #{/if} value="0" >父子(女)</option>
+			<option #{if userInfo?.second_relation?.code==1} selected="selected" #{/if} value="1" >母子(女)</option>
+			<option #{if userInfo?.second_relation?.code==2} selected="selected" #{/if} value="2" >配偶</option>
+			<option #{if userInfo?.second_relation?.code==3} selected="selected" #{/if} value="3" >子女</option>
+			<option #{if userInfo?.second_relation?.code==4} selected="selected" #{/if} value="4" >亲属</option>
+			<option #{if userInfo?.second_relation?.code==5} selected="selected" #{/if} value="5" >同事</option>
+			<option #{if userInfo?.second_relation?.code==6} selected="selected" #{/if} value="6" >朋友</option>
+			<option #{if userInfo?.second_relation?.code==7} selected="selected" #{/if} value="7" >兄弟姐妹</option>
+			<option #{if userInfo?.second_relation?.code==8} selected="selected" #{/if} value="8" >其他</option>
+		</select>
+	</td>
+	<td class="tabtext">第二联系人电话： </td>
+	<td class="tabinput"><input type="number" name="appSecondPhone" value="${userInfo?.second_relation_phone}" ></td>
+	<td class="tabtext"><span class="spans-color">* </span>是否本月开户</td>
+	<td class="tabinput">
+		<select name="appAccount">
+			<option #{if userInfo?.is_account==0} selected="selected" #{/if} value="0" >否</option>
+			<option #{if userInfo?.is_account==1} selected="selected" #{/if} value="1" >是</option>
+		</select>
+	</td>
+</tr>
+</table>
+<table border="1" style="border: 1px dashed #ddd; width: 100%;">
+<tr class="trheight">
+	<td colspan="10" style="font-weight: bold; padding-left: 20px;">借款人职业信息</td>
+</tr>
+<tr class="trheight">
+	<td class="tabtext"><span class="spans-color">* </span>从事职业： </td>
+	<td class="tabinput">
+		<select name="appGuild">
+			<option #{if userProfession?.profession=='0'} selected="selected" #{/if} value="0">国家机关、企业、事业单位</option>
+			<option #{if userProfession?.profession=='1'} selected="selected" #{/if} value="1">专业技术人员</option>
+			<option #{if userProfession?.profession=='3'} selected="selected" #{/if} value="3">办事人员和有关人员</option>
+			<option #{if userProfession?.profession=='4'} selected="selected" #{/if} value="4">商业、服务业人员</option>
+			<option #{if userProfession?.profession=='5'} selected="selected" #{/if} value="5">农、林、牧、渔、水利业</option>
+			<option #{if userProfession?.profession=='6'} selected="selected" #{/if} value="6">生产、运输设备操作人员</option>
+			<option #{if userProfession?.profession=='X'} selected="selected" #{/if} value="X">军人</option>
+			<option #{if userProfession?.profession=='Y'} selected="selected" #{/if} value="Y">其他从业人员</option>
+			<option #{if userProfession?.profession=='Z'} selected="selected" #{/if} value="Z">未知</option>
+		</select>
+	</td>
+	<td class="tabtext"><span class="spans-color">* </span>单位名称： </td>
+	<td class="tabinput"><input type="text" name="appCompany" id="appCompany" onblur="checkCompany()" value="${userProfession?.company_name}"><br><span style="color: red" id="ccp"></span></td>
+	<td class="tabtext"><span class="spans-color">* </span>单位所属行业： </td>
+	<td class="tabinput">
+		<select name="appCompanyTrade">
+			<option #{if userProfession?.company_trade=='A'} selected="selected" #{/if} value="A">农、林、牧、渔业</option>
+			<option #{if userProfession?.company_trade=='B'} selected="selected" #{/if} value="B">采掘业</option>
+			<option #{if userProfession?.company_trade=='C'} selected="selected" #{/if} value="C">制造业</option>
+			<option #{if userProfession?.company_trade=='D'} selected="selected" #{/if} value="D">电力、燃气及水的生产和供应业</option>
+			<option #{if userProfession?.company_trade=='E'} selected="selected" #{/if} value="E">建筑业</option>
+			<option #{if userProfession?.company_trade=='F'} selected="selected" #{/if} value="F">交通运输、仓储和邮政业</option>
+			<option #{if userProfession?.company_trade=='G'} selected="selected" #{/if} value="G">信息传输、计算机服务和软件业</option>
+			<option #{if userProfession?.company_trade=='H'} selected="selected" #{/if} value="H">批发和零售业</option>
+			<option #{if userProfession?.company_trade=='I'} selected="selected" #{/if} value="I">住宿和餐饮业</option>
+			<option #{if userProfession?.company_trade=='J'} selected="selected" #{/if} value="J">金融业</option>
+			<option #{if userProfession?.company_trade=='K'} selected="selected" #{/if} value="K">房地产业</option>
+			<option #{if userProfession?.company_trade=='L'} selected="selected" #{/if} value="L">租赁和商务服务业</option>
+			<option #{if userProfession?.company_trade=='M'} selected="selected" #{/if} value="M">科学研究、技术服务业和地质勘察业</option>
+			<option #{if userProfession?.company_trade=='N'} selected="selected" #{/if} value="N">水利、环境和公共设施管理业</option>
+			<option #{if userProfession?.company_trade=='O'} selected="selected" #{/if} value="O">居民服务和其他服务业</option>
+			<option #{if userProfession?.company_trade=='P'} selected="selected" #{/if} value="P">教育</option>
+			<option #{if userProfession?.company_trade=='Q'} selected="selected" #{/if} value="Q">卫生、社会保障和社会福利业</option>
+			<option #{if userProfession?.company_trade=='R'} selected="selected" #{/if} value="R">文化、体育和娱乐业</option>
+			<option #{if userProfession?.company_trade=='S'} selected="selected" #{/if} value="S">公共管理和社会组织</option>
+			<option #{if userProfession?.company_trade=='T'} selected="selected" #{/if} value="T">国际组织</option>
+			<option #{if userProfession?.company_trade=='Z'} selected="selected" #{/if} value="Z">未知</option>
+		</select>
+	</td>
+	<td class="tabtext">单位地址： </td>
+	<td class="tabinput"><input type="text" name="companyAddress" value="${userProfession?.company_address}" ></td>
+	<td class="tabtext">单位地址邮编： </td>
+	<td class="tabinput"><input type="text" name="companyPostalCode" value="${userProfession?.company_postal_code}" ></td>
+</tr >
+<tr class="trheight">
+	<td class="tabtext">单位工作起始年份： </td>
+	<td class="tabinput">
+	<select name="startWorkTime">
+		<option #{if userProfession?.start_work_time==2018} selected="selected" #{/if} value="2018">2018</option>
+		<option #{if userProfession?.start_work_time==2017} selected="selected" #{/if} value="2017">2017</option>
+		<option #{if userProfession?.start_work_time==2016} selected="selected" #{/if} value="2016">2016</option>
+		<option #{if userProfession?.start_work_time==2015} selected="selected" #{/if} value="2015">2015</option>
+		<option #{if userProfession?.start_work_time==2014} selected="selected" #{/if} value="2014">2014</option>
+		<option #{if userProfession?.start_work_time==2013} selected="selected" #{/if} value="2013">2013</option>
+		<option #{if userProfession?.start_work_time==2012} selected="selected" #{/if} value="2012">2012</option>
+		<option #{if userProfession?.start_work_time==2011} selected="selected" #{/if} value="2011">2011</option>
+		<option #{if userProfession?.start_work_time==2010} selected="selected" #{/if} value="2010">2010</option>
+		<option #{if userProfession?.start_work_time==2009} selected="selected" #{/if} value="2009">2009</option>
+		<option #{if userProfession?.start_work_time==2008} selected="selected" #{/if} value="2008">2008</option>
+		<option #{if userProfession?.start_work_time==2007} selected="selected" #{/if} value="2007">2007</option>
+		<option #{if userProfession?.start_work_time==2006} selected="selected" #{/if} value="2006">2006</option>
+		<option #{if userProfession?.start_work_time==2005} selected="selected" #{/if} value="2005">2005</option>
+		<option #{if userProfession?.start_work_time==2004} selected="selected" #{/if} value="2004">2004</option>
+		<option #{if userProfession?.start_work_time==2003} selected="selected" #{/if} value="2003">2003</option>
+		<option #{if userProfession?.start_work_time==2002} selected="selected" #{/if} value="2002">2002</option>
+		<option #{if userProfession?.start_work_time==2001} selected="selected" #{/if} value="2001">2001</option>
+		<option #{if userProfession?.start_work_time==2000} selected="selected" #{/if} value="2000">2000</option>
+	</select>
+	</td>
+	<td class="tabtext"><span class="spans-color">* </span>职务： </td>
+	<td class="tabinput">
+		<select name="duty">
+			<option #{if userProfession?.duty?.code==1} selected="selected" #{/if} value="1">高级领导</option>
+			<option #{if userProfession?.duty?.code==2} selected="selected" #{/if} value="2">中级领导</option>
+			<option #{if userProfession?.duty?.code==3} selected="selected" #{/if} value="3">一般员工</option>
+			<option #{if userProfession?.duty?.code==4} selected="selected" #{/if} value="4">其他</option>
+			<option #{if userProfession?.duty?.code==9} selected="selected" #{/if} value="9">未知</option>
+		</select>
+	</td>
+	<td class="tabtext"><span class="spans-color">* </span>职称： </td>
+	<td class="tabinput">
+		<select name="professional">
+			<option #{if userProfession?.professional?.code==0} selected="selected" #{/if} value="0">无</option>
+			<option #{if userProfession?.professional?.code==1} selected="selected" #{/if} value="1">高级</option>
+			<option #{if userProfession?.professional?.code==2} selected="selected" #{/if} value="2">中级</option>
+			<option #{if userProfession?.professional?.code==3} selected="selected" #{/if} value="3">初级</option>
+			<option #{if userProfession?.professional?.code==9} selected="selected" #{/if} value="9">未知</option>
+		</select>
+	</td>
+	<td class="tabtext">年收入： </td>
+	<td class="tabinput"><input type="number" name="homeAnnualIncome" value="${userProfession?.annual_income}" ></td>
+	<td class="tabtext"><span class="spans-color">* </span>服务费费率： </td>
+	<td class="tabinput">
+		<input type="text" name="serviceCharge" id="serviceCharge" onkeyup="num(this)" onblur="checkserviceCharge()" value="${report?.service_charge}" ><br>
+		<span style="color: red" id="serviceCharges"></span>
+	</td>
+</tr>
+</table>
+<table border="1" style="border: 1px dashed #ddd; width: 100%;">
+<tr class="trheight">
+	<td colspan="10" style="font-weight: bold; padding-left: 20px;">借款人居住信息</td>
+</tr>
+<tr class="trheight">
+	<td class="tabtext"><span class="spans-color">* </span>居住地址： </td>
+	<td class="tabinput"><input type="text" name="residentialAddress" id="residentialAddress" onblur="checkResidentialAddress()" value="${userLive?.residential_address}" ><br><span style="color: red" id="cra"></span></td>
+	<td class="tabtext"><span class="spans-color">* </span>居住地址邮编： </td>
+	<td class="tabinput"><input type="text" name="residentialPostalCode" id="residentialPostalCode" onblur="checkResidentialPostalCode()" value="${userLive?.residential_postal_code}" ><br><span style="color: red" id="crp"></span></td>
+	<td class="tabtext"><span class="spans-color">* </span>居住状况： </td>
+	<td class="tabinput">
+		<select name="residentialCondition">
+			<option #{if userLive?.residential_condition?.code==1} selected="selected" #{/if} value="1">自置</option>
+			<option #{if userLive?.residential_condition?.code==2} selected="selected" #{/if} value="2">按揭</option>
+			<option #{if userLive?.residential_condition?.code==3} selected="selected" #{/if} value="3">亲属楼宇</option>
+			<option #{if userLive?.residential_condition?.code==4} selected="selected" #{/if} value="4">集体宿舍</option>
+			<option #{if userLive?.residential_condition?.code==5} selected="selected" #{/if} value="5">租房</option>
+			<option #{if userLive?.residential_condition?.code==6} selected="selected" #{/if} value="6">共有住宅</option>
+			<option #{if userLive?.residential_condition?.code==7} selected="selected" #{/if} value="7">其他</option>
+			<option #{if userLive?.residential_condition?.code==9} selected="selected" #{/if} value="9">未知</option>
+		</select>
+	</td>
+	<td class="tabtext"><span class="spans-color">* </span>居住年限： </td>
+	<td class="tabinput"><input type="text" name="residentYear" id="residentYear" onblur="checkResidentYear()" value="${report?.resident_year}" ><br><span style="color: red" id="cry"></span></td>
+	<td class="tabtext" width="7%"></td>
+	<td class="tabinput" width="12%"></td>
+</tr>
+</table>
+<table border="1" style="border: 1px dashed #ddd; width: 100%;">
+						<tr class="trheight">
+							<td colspan="10" style="font-weight: bold; padding-left: 20px;">合作机构</td>
+						</tr>
+						<tr class="trheight">
+							<td class="tabtext" width="7%"><span class="spans-color"> </span>担保机构： </td>
+							<td class="tabinput" width="14%">
+								<select name="guarantee_user" id='GuarantyAgency' >
+									#{if report?.guarantee_user==0}
+									<option value="0">--请选择--</option>
+									#{list items:guarantees,as:"guarantee"}
+									<option value="${guarantee?.user_id}">${guarantee?.name}</option>
+									#{/list}
+									#{/if}
+									#{else}
+									<option value="0">--请选择--</option>
+									#{list items:guarantees,as:"guarantee"}
+									<option #{if guarantee?.user_id==report?.guarantee_user} selected="selected" #{/if} value="${guarantee?.user_id}">${guarantee?.name}</option>				
+									#{/list}
+									#{/else}
+								</select>
+								<br/>
+								<span style="color: red" id="ga"></span>
+							</td>
+							<td class="tabtext" width="7%"><span class="spans-color">* </span>代偿账户： </td>
+							<td class="tabinput" width="14%">
+								<select name="" disabled="disabled">
+									<option value="1">--请选择--</option>
+								</select>
+							</td>
+							<td class="tabtext" width="8%"></td>
+							<td class="tabinput" width="8%"></td>
+							<td class="tabtext" width="7%"></td>
+							<td class="tabinput" width="14%"></td>
+							<td class="tabtext" width="7%"></td>
+							<td class="tabinput" width="12%"></td>
+						</tr>
+</table>

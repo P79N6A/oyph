@@ -1,0 +1,60 @@
+<!-- 投标 -->
+<div class="detail-box detail-right right">
+	<form action="@{front.spread.ExperienceBidFrontCtrl.investExperienceBid()}" method="POST" id="investExperienceForm" target='_self'>
+	#{authenticityToken /}
+	<input type="hidden" name="experienceBidId" value="${experienceBid?.id}"/>
+	<input type="hidden" name="uuidRepeat" value="${flash?.submitUuid}">
+	<h2 class="detail-head">
+		<span class="left c3">可投</span>
+		<a class="right major" onclick="javascript:window.location.reload()">无限制</a>
+	</h2>
+	<ul class="c3 detail-buylist transfer-buylist">
+		<li class="detail-lastmoney">
+			<span class="left lileft">我的体验金</span>
+			#{if currUser}
+			<span class="lastmoney right">
+				<a href='@{front.account.MyRewardCtrl.awardPre()}'> #{formatIntMoney money:visualBalance}#{/formatIntMoney}元 </a>
+			</span>
+			#{/if}
+			#{else}
+			<a href="@{front.LoginAndRegisteCtrl.loginPre()}" title="" target="" class="major right">登录查看体验金</a>
+			#{/else}
+		</li>
+		<li class="detail-buytext">
+			<p>购买</p>
+			<label class="detail-unit">
+				<input type="text" class="text" value="" name="investInput" id="invest_amount" oninput="$(this).ndigitInteger(6);calculateIncome()" onpropertychange="$(this).ndigitInteger(6)" autocomplete="off"/>
+				<i>元</i>
+			</label>
+			<p class="major" id="invest_expece_income">预期收益0.00元</p>
+		</li>
+		<li>
+			#{if currUser}
+			<input type="submit" value="立即购买" class="btn detail-buybtn" id="buyNowButton"/>
+			#{/if}
+			#{else}
+			<input type="button" value="立即购买" class="btn detail-buybtn" onclick="javascript:window.location.href='@{front.LoginAndRegisteCtrl.loginPre()}'"/>
+			#{/else}
+		</li>
+		<li class="clearfix">
+			<p class="detail-note c9"><i class="icon note-icon"></i>温馨提示：把控风险，谨慎操作</p>
+		</li>
+	</ul>
+	</form>
+</div>
+<script type="text/javascript">
+function calculateIncome(){
+	var investAmount = parseInt($("#invest_amount").val());
+	if(investAmount==''){
+		$("#invest_expece_income").html("预期收益0.00元");
+		return;
+	}
+	var apr = ${experienceBid?.apr};
+	var period = ${experienceBid?.period};
+	var income = ((investAmount*(apr/100)/360)*period).toFixed(2);
+	if(isNaN(income)){
+		income = '0.00';
+	}
+	$("#invest_expece_income").html("预期收益"+income+"元");
+}
+</script>

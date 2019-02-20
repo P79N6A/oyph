@@ -1,0 +1,413 @@
+.total-nav{
+	height: 70px;
+	background: #fff;
+}
+.nav-main{
+	width: 1200px;
+	margin: 0 auto;
+}
+.nav-main img{
+	margin-top: 6px;
+}
+.total-pc{
+	width: 100%;
+	min-width: 1600px;
+	background: #FFFFFF;
+	display: block;
+}
+.nav-bg{
+	width: 100%;
+	min-width: 1600px;
+	height: 716px;
+	position: relative;
+	background: url(/public/front/images/luoDiImg/nav-bg.png) no-repeat center;
+}
+.nav-bg input{
+	outline: none;
+	box-sizing: border-box;
+	border: none;
+}
+.lp-form{
+	width: 380px;
+	height: 537px;
+	position: absolute;
+	right: 255px;
+	top: 40px;
+	background: url(/public/front/images/luoDiImg/lp-form.png) no-repeat;
+	box-sizing: border-box;
+	padding: 25px;
+	text-align: center;
+}
+.lp-form p{
+	color: #ffca01 ;
+}
+.lp-form .form-list{
+	width: 100%;
+	height: 40px;
+	margin-top: 15px;
+	border-radius:3px ;
+	border: 1px solid #ffff00;
+}
+.lp-sr{
+	width: 100%;
+	height: 40px;
+	padding-left: 15px;
+}
+.lp-yz{
+	width: 180px;
+	height: 40px;
+	padding-left: 15px;
+	float: left;
+}
+.ident{
+	width: 150px;
+	height: 40px;
+	float: left;
+}
+#vCode{
+	width: 150px;
+	height: 40px;
+	background: #ffc435;
+	color: #ff3737;
+}
+.lp-sub{
+	width:200px;
+	height: 40px;
+	background: #ff9701;
+	color: #FFFFFF;
+	border-radius: 20px;
+	margin: 25px auto 15px;
+}
+.lp-span{
+	display: block;
+	color: #FFFFFF;
+}
+.lp-a{
+	color: #ffb502;
+}
+.bg2{
+	width: 100%;
+	background: url("/public/front/images/bg2.png");
+	background-position: 100%;
+	padding-bottom: 20px;
+}
+.lp-mian{
+	width: 1200px;
+	margin: 0 auto;
+}
+.lp-mian h1{
+	color: #ff7a02;
+	text-align: center;
+	font-size: 30px;
+	margin-bottom: 40px;
+	font-weight: bold;
+}
+.lp-mian hr{
+	color: #d2d2d2;
+}
+.redPacket{
+	width: 100%;
+	height: 600px;
+	padding: 50px;
+	box-sizing: border-box;
+}
+.redPacket-list{
+	width: 300px;
+	height: 125px;
+	float: left;
+	margin-bottom: 58px;
+}
+.lp-m{
+	margin: 0 54px;
+}
+.flow{
+	width: 100%;
+	height: 211px;
+	margin: 70px auto;
+	text-align: center;
+}
+.flow-img{
+	margin: 0 auto;
+}
+.ask{
+	width: 100%;
+}
+.ask-list{
+	width: 100%;
+	height: 179px;
+	padding: 0 50px;
+	margin: 35px 0;
+	box-sizing: border-box;
+	color: #2c2c2c;
+	font-size: 24px;
+}
+.ask-img{
+	width: 179px;
+	height: 179px;
+	float: left;
+}
+.ask-right{
+	float: left;
+	width: 665px;
+	margin-left: 70px;
+	height: 70px;
+	margin-top: 65px;
+}
+.ask-list h2{
+	font-size: 24px;
+	font-weight: bold;
+	margin-bottom: 10px;
+}
+.lp-footer{
+	width: 100%;
+	min-width: 1200px;
+	height: 150px;
+	text-align: center;
+	color: #555555;
+	font-size: 20px;
+	background: #f2f2f2;
+}
+.lp-footer span{
+	display: inline-block;
+	height: 60px;
+	margin-top: 45px;
+	line-height: 40px;
+}
+.total-yd{
+	display: none;
+}
+.foot-a1{
+	margin-left: 18px;
+}
+/*alert*/
+.dialog{
+	display: none;
+	position: fixed;
+	left: 0;
+	top: 0;
+	min-width: 1200px;
+	width: 100%;
+	height: 100%;
+	z-index: 9999;
+}
+.dialog-bg{
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background: #000;
+	opacity: .3;
+	filter: alpha(opacity=30);
+	z-index: 1;
+}
+.dialog-cont{
+	position: absolute;
+	background: #fff;
+	z-index: 2;
+	border-radius: 4px;
+}
+.dialog-head{
+	height: 48px;
+	line-height: 48px;
+	padding-left: 20px;
+	border-radius: 4px 4px 0 0;
+	font-size: 16px;
+	color: #fff;
+}
+.dialog-head .left{
+	font-weight: bold;
+}
+.dialog-close{
+	font-size: 24px;
+	float: right;
+	width: 48px;
+	text-align: center;
+	cursor: pointer;
+	font-weight: 100;
+}
+.audit-dialog-close{
+	font-size: 24px;
+	float: right;
+	width: 48px;
+	text-align: center;
+	cursor: pointer;
+	font-weight: 100;
+}
+.alertmsg{
+	padding: 30px;
+	font-size: 18px;
+	color: #333;
+	text-align: center;
+}
+.alerthandle{
+	text-align: center;
+	padding-bottom: 20px;
+}
+.alerthandle input{
+	width: 128px;
+	height: 34px;
+	margin: 0 15px;
+}
+.alerthandle .btn{
+	border: none;
+}
+.alerthandle .bdbtn{
+	background: none;
+}
+.back-alertcont{
+	width: 500px;
+}
+.btn{
+    cursor: pointer;
+    border-radius: 4px;
+    color: #fff;
+}
+@media screen and (max-width: 500px){
+	.total-pc{
+		display: none;
+	}
+	.total-yd{
+		display: block;
+	}
+	.total-yd .yd-bg{
+		position: absolute;
+		width: 100%;
+		top: 0;
+	}
+	.yd-logo{
+		display: block;
+		width: 150px;
+		height: 40px;
+		margin: 20px;
+	}
+	.yd-logo img{
+		width: 100%;
+	}
+	.yd-title{
+		width: 50%;	
+		margin-left: 95px;
+	}
+	.yd-main{
+		position: absolute;
+		width: 100%;
+	}
+	.yd-main input{
+		outline: none;
+		box-sizing: border-box;
+		border: none;
+		-webkit-appearance: none;
+	}	
+	.yd-form{
+		width: 100%;
+		margin-top: 150px;
+	}
+	.yd-form .form-list{
+		width: 100%;
+		padding: 0 10%;
+		box-sizing: border-box;
+		margin-top: 25px;
+		overflow: hidden;
+	}
+	.yd-form p{
+		display: block;
+		padding: 0 10%;
+		box-sizing: border-box;
+		color: #ffca01;
+		text-indent: 20px;
+	}
+	.yd-sr{
+		width: 100%;
+		height: 50px;
+		padding-left: 20px;
+		border-radius:10px;
+	}
+	.yd-yz{
+		width: 67%;
+		float: left;
+		height: 50px;
+		padding-left: 20px;
+		border-radius:10px 0 0 10px;
+	}
+	.ident, #yd-vCode{
+		width: 33%;
+		float: left;
+		height: 50px;
+		border-radius:0 10px 10px 0 ;
+		background: #ff8a01;
+		color: #FFFFFF;
+	}
+	.yd-sub{
+		display: none;
+	}
+	.img-sub{
+		width: 100%;
+	}
+	.yd-redPacket-list{
+		background: #fcf4dd;
+		width: 90%;
+		margin: 20px auto;
+		height: 120px;
+		padding: 15px;
+		box-sizing: border-box;
+	}
+	.yd-span{
+		color: #887050;
+	}
+	.yd-hr{
+		width: 100%;
+		border-bottom: dashed 1px #f4ebd4;
+		margin-top: 10px;
+	}
+	.yd-money{
+		width: 33%;
+		height: 60px;
+		float: left;
+		font-size: 33px;
+		line-height: 60px;
+		text-align: center;
+		color: red;
+	}
+	.use-limit{
+		width: 39%;
+		height: 60px;
+		float: left;
+	}
+	.limit1{
+		margin-bottom:15px;
+		margin-top: 5px;
+		display: inline-block;
+		color: #d2353c;
+		font-size: 16px;
+		font-weight: 600;
+	}
+	.limit2{
+		display: inline-block;
+		color: #838383;
+		font-size:12px ;
+	}
+	.yd-button{
+		width: 25%;
+		height: 40px;
+		margin-top: 15px;
+		background: red;
+		color: #FFFFFF;
+		border-radius:5px ;
+		float: left;
+		margin-left: 5px;
+		text-align: center;
+		line-height: 40px;
+	}
+	.yd-redPacket{
+		background: #dc3434;
+		padding-bottom: 95px;
+	}
+	.alertmsg {
+    	padding: 14px;
+    }
+    .back-alertcont{
+    	width:250px;
+    	left: 60px !important;
+    	top:270px !important;
+    }
+}

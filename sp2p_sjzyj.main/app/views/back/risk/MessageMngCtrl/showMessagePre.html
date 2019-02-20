@@ -1,0 +1,20 @@
+#{extends 'common/back/riskMain.html' /}
+	#{set title:'风控 | 征信报文' /}
+	#{set smallclass:5 /}
+	#{set crumbs:'风控>征信报文'/}
+	
+<div class="back-main">
+    <div class="back-usertop">
+        <div class="left back-usermenu">
+            <b class="font14">征信报文:&nbsp;</b>征信报文列表
+        </div>
+    </div>
+	<ul class="back-infor-set">
+		<li><div class="liright">身份信息表&nbsp;&nbsp;&nbsp;&nbsp;<a href="@{back.risk.MessageMngCtrl.identityInformationPre()}"><i class="iconfont">&#xe612;</i>导出</a></div></li>
+		<li><div class="liright">职业信息表&nbsp;&nbsp;&nbsp;&nbsp;<a href="@{back.risk.MessageMngCtrl.occupationalInformationPre()}"><i class="iconfont">&#xe612;</i>导出</a></div></li>
+		<li><div class="liright">居住信息表&nbsp;&nbsp;&nbsp;&nbsp;<a href="@{back.risk.MessageMngCtrl.residenceInformationPre()}"><i class="iconfont">&#xe612;</i>导出</a></div></li>
+		<li><div class="liright">贷款申请信息表&nbsp;&nbsp;&nbsp;&nbsp;<a href="@{back.risk.MessageMngCtrl.loanApplicationPre()}"><i class="iconfont">&#xe612;</i>导出</a></div></li>
+		<li><div class="liright">贷款业务信息表&nbsp;&nbsp;&nbsp;&nbsp;<a href="@{back.risk.MessageMngCtrl.loanTransactionPre()}"><i class="iconfont">&#xe612;</i>导出</a></div></li>
+		<li><div class="liright">贷款合同信息表&nbsp;&nbsp;&nbsp;&nbsp;<a href="@{back.risk.MessageMngCtrl.loanContractPre()}"><i class="iconfont">&#xe612;</i>导出</a></div></li>
+	</ul>
+</div>

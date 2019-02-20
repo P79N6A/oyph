@@ -1,0 +1,63 @@
+#{extends 'common/back/weChatMain.html' /}
+	#{set title:'微信 | 群发消息' /}
+	#{set smallclass:4 /}
+	#{set crumbs:'微信>群发消息'/}
+<div class="back-main">	
+	<div class="back-usertop">
+		<b class="left font14">设置群发消息</b>
+		<span style='font-size:12px;margin-left: 20px'>温馨提示：1.如果选择了分组群发并且选择了性别或地区等筛选条件，群发方式将变为指定粉丝发送方式。2.编辑时图文消息不允许编辑。</span>
+		<!-- 右侧功能按钮 -->
+		<div class="right back-rightbtns">
+			<a href="@{back.weChat.GroupSentMessageCtrl.showGroupSentListPre()}"><i class="iconfont">&#xe60b;</i>返回</a>
+		</div>
+	</div>
+	<form action="" method="post" id="" class="WeChatContent">
+			<ul class="back-ul">
+				<li>
+					<span class="lileft">群发标题</span>
+					<div class="liright">
+						<input type="text" name="title" class="required" value="${flash?.title}">
+						<span class="back-text-limit">此标题只做群发区分，不会发给粉丝</span>
+					</div>
+				</li>
+				<li>
+					<span class="lileft">选择图文消息</span>
+					<div class="liright">
+						<button class='back-but' style="width: 100px; margin-left:0; margin-right: 20px;">添加图文消息</button>清空选择
+					</div>
+				</li>
+				<li>
+					<span class="lileft">群消息发送方式</span>
+					<div class="liright">
+						<label class="radios">
+							<input type="radio" name="send_manner" checked="checked" value="0">分组群发
+						</label>
+						<label class="radios">
+							<input type="radio" name="send_manner" value="1">指定粉丝
+						</label>
+						<label class="radios">
+							<input type="radio" name="send_manner" value="2">全部粉丝
+						</label>
+					</div>
+				</li>
+				<li>
+					<span class="lileft">文章判断转载后是否继续群发</span>
+					<div class="liright">
+						<label class="radios">
+							<input type="radio" name="type" checked="checked" value="0">中断群发
+						</label>
+						<label class="radios">
+							<input type="radio" name="type" value="1">继续群发
+						</label>
+					</div>
+				</li>
+				<li>
+					<span class="lileft"></span>
+					<div class="liright">
+						<input type="submit" class="WeChatbut" value="保存">
+						<input type="reset" value="取消" class="WeChatbut addWeChatbut">
+					</div>
+				</li>
+			</ul>
+	</form>
+</div>

@@ -1,0 +1,65 @@
+#{extends 'common/frontMain.html' /}
+#{set title: '首页|经营信息'/}
+<link rel="stylesheet" type="text/css" href="/public/front/stylesheets/publishIndex.css"/>
+<div class="manageBox publishBox">
+    <h1 class="lineStrip">经营信息  <a href="@{front.PublishMessageCtrl.publishIndexPre()}" style="float: right;margin-right: 50px;"><img src="/public/front/images/return-img.png" /></a> </h1>
+    <div class="publishSynopsis">
+	   <h3>经营信息</h3>
+	   <p>（数据截止至${dates?.format(common.constants.Constants.DATE_FORMATESS)}，来源于讴业普惠内部统计）</p>
+	   <p>-自成立以来的累计借贷金额：${dis?.total_amount}元</p>
+	   <p>-自成立以来的累计借贷笔数：${dis?.total_count}个</p>
+	   <p>-借贷余额：${dis?.total_balance}元</p>
+	   <p>-累计出借人数量：${dis?.lender_total_count}人</p>
+	   <p>-累计借款人数量：${dis?.borrower_total_count}人</p>
+	   <p>-当前出借人数量：${dis?.lender_count}人</p>
+	   <p>-当前借款人数量：${dis?.borrower_count}人</p>
+	   <p>-前十大借款人待还金额占比：${dis?.ten_proportion}%</p>
+	   <p>-最大单一借款人待还金额占比：${dis?.one_proportion}%</p>
+	   <p>-关联关系借款余额及笔数：0个</p>
+	   <p>-逾期金额：0元</p>
+	   <p>-逾期笔数：0个</p>
+	   <p>-逾期90天（不含）以上金额：0元</p>
+	   <p>-逾期90天（不含）以上笔数：0个</p>
+	   <p>-累计代偿金额：336266.65元</p>
+	   <p>-累计代偿笔数：6个</p>
+	   <p>-项目逾期率：0%</p>
+	   <p>-金额逾期率：0%</p>
+    </div>
+    <div class="publishSynopsis">
+       <h3>收费标准</h3>
+	   <p>-充值免手续费</p>
+	   <p>-提现手续费：单笔提现手续费为（2+0.05%X）元。</p>
+	   <p>-收费标准：</p>
+	   <table class="fees" border="1" cellpadding="0" cellspacing="0">
+	   	<tr>
+	   		<td colspan="7">平台收费标准</td>
+	   	</tr>
+	   	<tr>
+	   		<th>惠房贷</th><th>1个月</th><th>2个月</th><th>3个月</th><th>6个月</th><th>12个月</th><th>18个月</th>
+	   	</tr>
+	   	<tr>
+	   		<td>出借人利息</td><td>10%</td><td>10.50%</td><td>11%</td><td>12%</td><td>13%</td><td>14%</td>
+	   	</tr>
+	   	<tr>
+	   		<td>平台服务费</td><td>14%</td><td>13.50%</td><td>13%</td><td>12%</td><td>11%</td><td>10%</td>
+	   	</tr>
+	   </table>
+	   <table class="fees" border="1" cellpadding="0" cellspacing="0">
+	   	<tr>
+	   		<td colspan="7">平台收费标准</td>
+	   	</tr>
+	   	<tr>
+	   		<th>惠车贷</th><th>1个月</th><th>2个月</th><th>3个月</th><th>6个月</th><th>12个月</th><th>18个月</th>
+	   	</tr>
+	   	<tr>
+	   		<td>出借人利息</td><td>10%</td><td>10.50%</td><td>11%</td><td>12%</td><td>13%</td><td>14%</td>
+	   	</tr>
+	   	<tr>
+	   		<td>平台服务费</td><td>14%</td><td>13.50%</td><td>13%</td><td>12%</td><td>11%</td><td>10%</td>
+	   	</tr>
+	   </table>
+    </div>
+    <div style="float: left;width: 100%;height: 100px;">
+        <p style="text-align: right;line-height: 100px;">法人签字：<img style="width: 160px;height: 100px;" src="/public/front/images/name1.png"/></p>
+    </div>
+</div>

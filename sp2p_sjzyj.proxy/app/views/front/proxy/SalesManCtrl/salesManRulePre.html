@@ -1,0 +1,33 @@
+#{extends 'front/proxy/proxyMainPre.html' /}
+#{set AItem:1 /}
+
+<!-- 业务员收益规则 -->
+<div class="message_container">
+    <div class="income_vessel">
+		<h3>业务员收益规则</h3>
+	    <div class="table_title">
+	    	    <p class="titText">推广会员资金年化折算</p>
+	    		<div class="Commission-list additionStyle annual">
+		    		<b>理财期限</b>
+		    		#{list annualConvert}
+		    		<span><i class="wide1">${_?.timeLimit}</i>个月</span>		    		
+		    		#{/list}
+		    	</div>
+		    	<div class="Commission-list additionStyle annual">
+		    		<b>折算率</b>
+		    		#{list annualConvert}
+		    		<span><i class="wide1">${_?.discountRate}</i>%</span>
+		    		#{/list}
+		    	</div>
+		    	<div class="Commission-list additionStyle annual">
+		    		<b>计算举例说明</b>
+		    		#{list annualConvert}
+		    		<span><em class="declare">1万元*${_?.discountRate}%=${_?.getSum1()}元</em></span>
+		    		#{/list}
+		    	</div>
+	    </div>
+	</div>
+</div>
+<script type="text/javascript">	
+		$('.ManRule').addClass('text-color').siblings().removeClass("text-color");
+</script>

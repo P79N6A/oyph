@@ -1,0 +1,105 @@
+#{extends 'common/back/financeMain.html' /}
+	#{set title:'财务 | 投资人限额管理' /}
+	#{set smallclass:12 /}
+	#{set crumbs:'财务>投资人限额管理>编辑限额页面'/}
+	
+<div class="back-main">
+	<div class="back-usertop">
+		<!-- 右侧功能按钮 -->
+		<div class="right back-rightbtns">
+			<a href="javascript:backAndRefresh('@{back.finance.QuotaCtrl.showQuotaPre(2)}');"><i class="iconfont">&#xe60b;</i>返回</a>
+		</div>
+	</div>
+	<div class="back-cont">
+		<form action="@{back.finance.QuotaCtrl.editQuota()}" method="post" id="form_mer_recharge">
+			#{authenticityToken /}
+			<input type="hidden" name="quoId" value="${quo?.id}">
+			<div class="back-infor">
+				<h2 class="back-infor-head">
+					<span class="left">投资人限额管理设置</span>
+				</h2>
+				<div class="back-infor-lcset">
+					<span class="lileft">姓名：</span>
+					<div class="liright">
+						<input type="text" readonly="readonly" value="${quo?.users?.reality_name}" />
+					</div>
+				</div>
+				<div class="back-infor-lcset">
+					<span class="lileft">电话：</span>
+					<div class="liright">
+						<input type="text" readonly="readonly" value="${quo?.users?.mobile}" />
+					</div>
+				</div>
+				<div class="back-infor-lcset">
+					<span class="lileft">累计投资金额：</span>
+					<div class="liright">
+						<label class="back-unitinput">
+						<input type="text" readonly="readonly" name="sumInvest" value="${quo?.sum_invest}" />
+						<i class="unit">元</i>
+						</label>
+					</div>
+				</div>
+				<div class="back-infor-lcset">
+					<span class="lileft">信用等级：</span>
+					<div class="liright">
+					<select name="type">
+						<option value="1">保守型</option>
+						<option value="2">稳健型</option>
+						<option value="3">成长型</option>
+						<option value="4">进取型</option>
+						<option value="5">风险型</option>
+					</select>
+					</div>
+					<!-- <div class="liright">
+						<label class="back-unitinput">
+							<input type="text" class="width04 iffocus required" id="amount" name="amount" value="" maxlength="10" oninput="$(this).ndigitInteger(10)" onpropertychange="$(this).ndigitInteger(10)">
+							<i class="unit">元</i>
+						</label>
+						<span class="back-text-limit">不超过10位的正整数</span>
+					</div> -->
+				</div>
+				<div class="back-infor-lcset">
+					<span class="lileft">信用说明：</span>
+					<div class="liright">
+						<p>保守型:&nbsp;投资待收金额为200万，每日限额为50万</p>
+						<p>稳健型:&nbsp;投资待收金额为300万，每日限额为100万</p>
+						<p>成长型:&nbsp;投资待收金额为400万，每日限额为150万</p>
+						<p>进取型:&nbsp;投资待收金额为500万，每日限额为200万</p>
+						<p>风险型:&nbsp;投资待收金额为1000万，每日限额为300万</p>
+					</div>
+				</div>
+			</div>
+			<p class="back-audit-btns">
+				#{rightMng rightId:509002}
+					<input type="submit" id="pageSave" class="bgbtn" value="保存">
+				#{/rightMng}
+				<input type="button" class="bdbtn" onclick="backAndRefresh('@{back.finance.QuotaCtrl.showQuotaPre(2)}');" value="取消">
+			</p>
+		</form>
+	</div>
+</div>
+
+<script type="text/javascript">
+	require(["back"],function(back){
+		
+		$("#form_mer_recharge").validate({
+			errorPlacement: function(error, element) {
+				error.addClass('back-notice').insertAfter(element.parent());
+			},
+			rules:{
+				"amount":{
+					required:true,
+					digits:true,
+					rangelength:[1,10]
+				}
+			},
+			messages:{
+				"amount":{
+					required:"请输入限额金额",
+					digits:"请输入正整数",
+					rangelength:"请输入不超过10位的正整数"
+				}
+			}
+		});
+	});
+</script>

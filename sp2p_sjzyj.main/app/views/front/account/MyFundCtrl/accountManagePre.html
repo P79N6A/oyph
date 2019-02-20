@@ -1,0 +1,194 @@
+#{extends 'common/front/accountMain.html' /}
+#{set title:'个人中心 | 资产管理' /}
+#{set smallclass:1 /}
+
+
+<!-- 账户主要表格 -->
+<div class="account-box" id="account_box">
+	<h2 class="account-title">
+		<div class="right tab-menu account-menu">
+			<a id="a_accountInvest">${columns?.get(common.constants.ColumnKey.WEALTH_INVEST_MINE)?:'我的投资'}</a><!-- 我的投资 -->
+			<a id="a_accountLoan">${columns?.get(common.constants.ColumnKey.WEALTH_INVEST_BID)?:'我的借款'}</a><!-- 我的借款 -->
+	   		<a id="a_accountInDebt">${columns?.get(common.constants.ColumnKey.WEALTH_INVEST_MYTRANSFER)?:'我的受让'}</a><!-- 受让债权 -->
+			<a id="a_accountOutDebt">${columns?.get(common.constants.ColumnKey.WEALTH_INVEST_TRANSFER)?:'我的转让'}</a><!-- 债权转让 -->
+			#{if isAutoInvestShow}
+			    <a id="a_autoInvest">${columns?.get(common.constants.ColumnKey.WEALTH_INVEST_AUTO)?:'自动投标'}</a>
+			#{/if}
+		</div>
+	</h2>
+	<!-- 我的投资 -->
+	<div class="tab-cont none account-manange" id="accountInvest">
+	</div>
+	
+	<!-- 我的借款 -->
+	<div class="tab-cont none account-manange" id="accountLoan">
+	</div>
+	
+	<!-- 受让债权 -->
+	<div class="tab-cont none account-manange" id="accountInDebt">
+	</div>
+	
+	<!-- 转让债权 -->
+	<div class="tab-cont none account-manange" id="accountOutDebt">
+	</div>
+	
+	<!-- 自动投标 -->
+	<div class="tab-cont none" id="accountAutoInvest">
+	</div>
+</div>
+
+<script type="text/javascript">
+require(['front'],function(front){
+	// 导航选中效果
+	require(['account']);
+	
+	var index = ${index};
+	if(index == 1){
+		$(".account-menu a").eq(1).attr("class", "selected");//从借款申请成功跳转过来，到"我的借款"
+	}else if(index == 2){
+		$(".account-menu a").eq(2).attr("class", "selected");
+	}else if(index == 3){
+		$(".account-menu a").eq(3).attr("class", "selected");
+	}else if(index == 4){
+		$(".account-menu a").eq(4).attr("class", "selected");
+	} else {
+		$(".account-menu a").eq(0).attr("class", "selected");
+	}
+	/* 我的投资 */
+	$(".tab-menu").children("a[id='a_accountInvest']").click(function(){
+		var flag = $("#accountInvest").children("table").length == 0;
+		if(flag || $("#invest_account_main").is(":hidden")){
+			accountInvestPre(1,5);
+		}
+	});
+	/* 我的借款 */
+	$(".tab-menu").children("a[id='a_accountLoan']").click(function(){
+		var flag = $("#accountLoan").children("table").length == 0;
+		if(flag){
+			accountLoanPre(1,5);
+		}
+	});
+	/* 受让债权 */
+	$(".tab-menu").children("a[id='a_accountInDebt']").click(function(){
+		var flag = $("#accountInDebt").children("table").length == 0;
+		if(flag){
+			accountInDebtPre(1,5);
+		}
+	});
+	/* 债权转让 */
+	$(".tab-menu").children("a[id='a_accountOutDebt']").click(function(){
+		var flag = $("#accountOutDebt").children("table").length == 0;
+		if(flag){
+			accountOutDebtPre(1,5);
+		}
+	});
+	/* 自动投标 */
+	$(".tab-menu").children("a[id='a_autoInvest']").click(function(){
+		var flag = $("#accountAutoInvest").children("table").length == 0;
+		if(flag){
+			accountAutoInvestPre();
+		}
+	});
+	
+	$(function(){
+		$(".account-menu a[class='selected']").trigger('click');
+	});
+});
+function accountInvestPre(currPage, pageSize){
+	$.ajax({
+		url : "@{front.account.MyFundCtrl.accountInvestPre()}",
+		type : "GET",
+		data : {
+			"currPage" : currPage,
+			"pageSize" : pageSize
+		},
+		success : function(data) {
+			var flag = interceptorCheck(data);
+			if(!flag){
+				return;
+			}
+			$("#accountInvest").html(data);
+			// 表格隔行换色
+			$('.account-table').each(function(){
+				$(this).children('tbody').children('tr:not(.account-bill):even').addClass('even');
+			});
+		}
+	});
+}
+function accountLoanPre(currPage, pageSize){
+	$.ajax({
+		url : "@{front.account.MyFundCtrl.accountLoanPre()}",
+		type : "GET",
+		data : {
+			"currPage" : currPage,
+			"pageSize" : pageSize
+		},
+		success : function(data) {
+			var flag = interceptorCheck(data);
+			if(!flag){
+				return;
+			}
+			$("#accountLoan").html(data);
+			// 表格隔行换色
+			$('.account-table').each(function(){
+				$(this).children('tbody').children('tr:not(.account-bill):even').addClass('even');
+			});
+		}
+	});
+}
+function accountInDebtPre(currPage, pageSize){
+	$.ajax({
+		url : "@{front.account.MyFundCtrl.accountInDebtPre()}",
+		type : "GET",
+		data : {
+			"currPage" : currPage,
+			"pageSize" : pageSize
+		},
+		success : function(data) {
+			var flag = interceptorCheck(data);
+			if(!flag){
+				return;
+			}
+			$("#accountInDebt").html(data);
+			// 表格隔行换色
+			$('.account-table').each(function(){
+				$(this).children('tbody').children('tr:not(.account-bill):even').addClass('even');
+			});
+		}
+	});
+}
+function accountOutDebtPre(currPage, pageSize){
+	$.ajax({
+		url : "@{front.account.MyFundCtrl.accountOutDebtPre()}",
+		type : "GET",
+		data : {
+			"currPage" : currPage,
+			"pageSize" : pageSize
+		},
+		success : function(data) {
+			var flag = interceptorCheck(data);
+			if(!flag){
+				return;
+			}
+			$("#accountOutDebt").html(data);
+			// 表格隔行换色
+			$('.account-table').each(function(){
+				$(this).children('tbody').children('tr:not(.account-bill):even').addClass('even');
+			});
+		}
+	});
+}
+function accountAutoInvestPre(){
+	$.ajax({
+		url : "@{front.account.MyFundCtrl.accountAutoInvestPre()}",
+		type : "GET",
+		success : function(data) {
+			var flag = interceptorCheck(data);
+			if(!flag){
+				return;
+			}
+			$("#accountAutoInvest").html(data);
+		}
+	});
+}
+</script>

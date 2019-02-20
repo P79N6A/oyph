@@ -1,0 +1,745 @@
+#{extends 'common/back/webOperationMain.html' /}
+	#{set title:'运维 | 栏目设置' /}
+	#{set smallclass:0 /}
+	#{set crumbs:'运维>栏目设置' /}
+
+
+<div class="back-main">
+	<!-- 左侧菜单 -->
+	<div class="back-cont">
+		<div class="back-box">
+			<table width="100%" class="back-table table-fixed back-column">
+				<tr height="39">
+					<th width="20%">编号</th>
+					<th width="50%">前台栏目名</th>
+					<th width="50%">栏目名</th>
+					<th width="30%">操作</th>
+				</tr>
+				
+				<!-- 首页 -->
+				#{if columnMap?.get(common.constants.ColumnKey.HOME) }
+					<tr height="39" class="column-title">
+						<td>${columnMap?.get(common.constants.ColumnKey.HOME)?.column_no}</td>
+						<td class="edit-text" maxlength="6">${columnMap?.get(common.constants.ColumnKey.HOME)?.name}</td>
+						<td>${columnMap?.get(common.constants.ColumnKey.HOME)?.back_name}</td>
+						<td>
+							<input type="hidden" name="hiddenvalue" value="${common.constants.ColumnKey.HOME}"/>
+							#{rightMng rightId:201002}
+							<a data-title="编辑" href="javascript:void(0);" class="iconfont back-column-edit">&#xe602;</a>
+							#{/rightMng}
+						</td>
+					</tr>
+				#{/if}
+				
+				<!-- 资讯 -->
+				#{if columnMap?.get(common.constants.ColumnKey.HOME_INFOMATION) }
+					<tr height="39">
+						<td>${columnMap?.get(common.constants.ColumnKey.HOME_INFOMATION)?.column_no}</td>
+						<td class="edit-text" maxlength="6">${columnMap?.get(common.constants.ColumnKey.HOME_INFOMATION)?.name}</td>
+						<td>${columnMap?.get(common.constants.ColumnKey.HOME_INFOMATION)?.back_name}</td>
+						<td>
+							<input type="hidden" name="hiddenvalue" value="${common.constants.ColumnKey.HOME_INFOMATION}"/>
+							#{rightMng rightId:201002}
+							<a data-title="编辑" href="javascript:void(0);" class="iconfont back-column-edit">&#xe602;</a>
+							#{/rightMng}
+						</td>
+					</tr>
+				#{/if}
+				
+				<!-- 晓风快报 -->
+				#{if columnMap?.get(common.constants.ColumnKey.HOME_BULLETIN) }
+					<tr height="39">
+						<td>${columnMap?.get(common.constants.ColumnKey.HOME_BULLETIN)?.column_no}</td>
+						<td class="edit-text" maxlength="6">${columnMap?.get(common.constants.ColumnKey.HOME_BULLETIN)?.name}</td>
+						<td>${columnMap?.get(common.constants.ColumnKey.HOME_BULLETIN)?.back_name}</td>
+						<td>
+							<input type="hidden" name="hiddenvalue" value="${common.constants.ColumnKey.HOME_BULLETIN}"/>
+							#{rightMng rightId:201002}
+							<a data-title="编辑" href="javascript:void(0);" class="iconfont back-column-edit">&#xe602;</a>
+							#{/rightMng}
+						</td>
+					</tr>
+				#{/if}
+				
+				<!-- 我们为财富护航 -->
+				#{if columnMap?.get(common.constants.ColumnKey.HOME_CONSULTANT) }
+					<tr height="39">
+						<td>${columnMap?.get(common.constants.ColumnKey.HOME_CONSULTANT)?.column_no}</td>
+						<td class="edit-text" maxlength="8">${columnMap?.get(common.constants.ColumnKey.HOME_CONSULTANT)?.name}</td>
+						<td>${columnMap?.get(common.constants.ColumnKey.HOME_CONSULTANT)?.back_name}</td>
+						<td>
+							<input type="hidden" name="hiddenvalue" value="${common.constants.ColumnKey.HOME_CONSULTANT}"/>
+							#{rightMng rightId:201002}
+							<a data-title="编辑" href="javascript:void(0);" class="iconfont back-column-edit">&#xe602;</a>
+							#{/rightMng}
+						</td>
+					</tr>
+				#{/if}
+				
+				<!-- 公司介绍 -->
+				#{if columnMap?.get(common.constants.ColumnKey.HOME_PROFILE) }
+					<tr height="39">
+						<td>${columnMap?.get(common.constants.ColumnKey.HOME_PROFILE)?.column_no}</td>
+						<td class="edit-text" maxlength="6">${columnMap?.get(common.constants.ColumnKey.HOME_PROFILE)?.name}</td>
+						<td>${columnMap?.get(common.constants.ColumnKey.HOME_PROFILE)?.back_name}</td>
+						<td>
+							<input type="hidden" name="hiddenvalue" value="${common.constants.ColumnKey.HOME_PROFILE}"/>
+							#{rightMng rightId:201002}
+							<a data-title="编辑" href="javascript:void(0);" class="iconfont back-column-edit">&#xe602;</a>
+							#{/rightMng}
+						</td>
+					</tr>
+				#{/if}
+				
+				<!-- 平台优势 -->
+				#{if columnMap?.get(common.constants.ColumnKey.HOME_ADVANTAGE) }
+					<tr height="39">
+						<td>${columnMap?.get(common.constants.ColumnKey.HOME_ADVANTAGE)?.column_no}</td>
+						<td class="edit-text" maxlength="6">${columnMap?.get(common.constants.ColumnKey.HOME_ADVANTAGE)?.name}</td>
+						<td>${columnMap?.get(common.constants.ColumnKey.HOME_ADVANTAGE)?.back_name}</td>
+						<td>
+							<input type="hidden" name="hiddenvalue" value="${common.constants.ColumnKey.HOME_ADVANTAGE}"/>
+							#{rightMng rightId:201002}
+							<a data-title="编辑" href="javascript:void(0);" class="iconfont back-column-edit">&#xe602;</a>
+							#{/rightMng}
+						</td>
+					</tr>
+				#{/if}
+				
+				<!-- 加入我们 -->
+				#{if columnMap?.get(common.constants.ColumnKey.HOME_JOINUS) }
+					<tr height="39">
+						<td>${columnMap?.get(common.constants.ColumnKey.HOME_JOINUS)?.column_no}</td>
+						<td class="edit-text" maxlength="6">${columnMap?.get(common.constants.ColumnKey.HOME_JOINUS)?.name}</td>
+						<td>${columnMap?.get(common.constants.ColumnKey.HOME_JOINUS)?.back_name}</td>
+						<td>
+							<input type="hidden" name="hiddenvalue" value="${common.constants.ColumnKey.HOME_JOINUS}"/>
+							#{rightMng rightId:201002}
+							<a data-title="编辑" href="javascript:void(0);" class="iconfont back-column-edit">&#xe602;</a>
+							#{/rightMng}
+						</td>
+					</tr>
+				#{/if}
+				
+				<!-- 联系我们 -->
+				#{if columnMap?.get(common.constants.ColumnKey.HOME_CONTACTUS) }
+					<tr height="39">
+						<td>${columnMap?.get(common.constants.ColumnKey.HOME_CONTACTUS)?.column_no}</td>
+						<td class="edit-text" maxlength="6">${columnMap?.get(common.constants.ColumnKey.HOME_CONTACTUS)?.name}</td>
+						<td>${columnMap?.get(common.constants.ColumnKey.HOME_CONTACTUS)?.back_name}</td>
+						<td>
+							<input type="hidden" name="hiddenvalue" value="${common.constants.ColumnKey.HOME_CONTACTUS}"/>
+							#{rightMng rightId:201002}
+							<a data-title="编辑" href="javascript:void(0);" class="iconfont back-column-edit">&#xe602;</a>
+							#{/rightMng}
+						</td>
+					</tr>
+				#{/if}
+				
+				<!-- 帮助中心 -->
+				#{if columnMap?.get(common.constants.ColumnKey.HOME_HELPCENTER) }
+					<tr height="39">
+						<td>${columnMap?.get(common.constants.ColumnKey.HOME_HELPCENTER)?.column_no}</td>
+						<td class="edit-text" maxlength="6">${columnMap?.get(common.constants.ColumnKey.HOME_HELPCENTER)?.name}</td>
+						<td>${columnMap?.get(common.constants.ColumnKey.HOME_HELPCENTER)?.back_name}</td>
+						<td>
+							<input type="hidden" name="hiddenvalue" value="${common.constants.ColumnKey.HOME_HELPCENTER}"/>
+							#{rightMng rightId:201002}
+							<a data-title="编辑" href="javascript:void(0);" class="iconfont back-column-edit">&#xe602;</a>
+							#{/rightMng}
+						</td>
+					</tr>
+				#{/if}
+				
+				<!-- 金融课堂 -->
+				#{if columnMap?.get(common.constants.ColumnKey.HOME_HELPCENTER_CLASS) }
+					<tr height="39">
+						<td>${columnMap?.get(common.constants.ColumnKey.HOME_HELPCENTER_CLASS)?.column_no}</td>
+						<td class="edit-text" maxlength="6">${columnMap?.get(common.constants.ColumnKey.HOME_HELPCENTER_CLASS)?.name}</td>
+						<td>${columnMap?.get(common.constants.ColumnKey.HOME_HELPCENTER_CLASS)?.back_name}</td>
+						<td>
+							<input type="hidden" name="hiddenvalue" value="${common.constants.ColumnKey.HOME_HELPCENTER_CLASS}"/>
+							#{rightMng rightId:201002}
+							<a data-title="编辑" href="javascript:void(0);" class="iconfont back-column-edit">&#xe602;</a>
+							#{/rightMng}
+						</td>
+					</tr>
+				#{/if}
+				
+				<!-- 理财专区 -->
+				#{if columnMap?.get(common.constants.ColumnKey.HOME_HELPCENTER_INVEST) }
+					<tr height="39">
+						<td>${columnMap?.get(common.constants.ColumnKey.HOME_HELPCENTER_INVEST)?.column_no}</td>
+						<td class="edit-text" maxlength="6">${columnMap?.get(common.constants.ColumnKey.HOME_HELPCENTER_INVEST)?.name}</td>
+						<td>${columnMap?.get(common.constants.ColumnKey.HOME_HELPCENTER_INVEST)?.back_name}</td>
+						<td>
+							<input type="hidden" name="hiddenvalue" value="${common.constants.ColumnKey.HOME_HELPCENTER_INVEST}"/>
+							#{rightMng rightId:201002}
+							<a data-title="编辑" href="javascript:void(0);" class="iconfont back-column-edit">&#xe602;</a>
+							#{/rightMng}
+						</td>
+					</tr>
+				#{/if}
+				
+				<!-- 借款专区 -->
+				#{if columnMap?.get(common.constants.ColumnKey.HOME_HELPCENTER_BORROW) }
+					<tr height="39">
+						<td>${columnMap?.get(common.constants.ColumnKey.HOME_HELPCENTER_BORROW)?.column_no}</td>
+						<td class="edit-text" maxlength="6">${columnMap.get(common?.constants.ColumnKey.HOME_HELPCENTER_BORROW)?.name}</td>
+						<td>${columnMap?.get(common.constants.ColumnKey.HOME_HELPCENTER_BORROW)?.back_name}</td>
+						<td>
+							<input type="hidden" name="hiddenvalue" value="${common.constants.ColumnKey.HOME_HELPCENTER_BORROW}"/>
+							#{rightMng rightId:201002}
+							<a data-title="编辑" href="javascript:void(0);" class="iconfont back-column-edit">&#xe602;</a>
+							#{/rightMng}
+						</td>
+					</tr>
+				#{/if}
+				
+				<!-- 理财 -->
+				#{if columnMap?.get(common.constants.ColumnKey.INVEST) }
+					<tr height="39" class="column-title">
+						<td>${columnMap?.get(common.constants.ColumnKey.INVEST)?.column_no}</td>
+						<td class="edit-text" maxlength="6">${columnMap?.get(common.constants.ColumnKey.INVEST)?.name}</td>
+						<td>${columnMap?.get(common.constants.ColumnKey.INVEST)?.back_name}</td>
+						<td>
+							<input type="hidden" name="hiddenvalue" value="${common.constants.ColumnKey.INVEST}"/>
+							#{rightMng rightId:201002}
+							<a data-title="编辑" href="javascript:void(0);" class="iconfont back-column-edit">&#xe602;</a>
+							#{/rightMng}
+						</td>
+					</tr>
+				#{/if}
+				
+				<!-- 散标投资 -->
+				#{if columnMap?.get(common.constants.ColumnKey.INVEST_STANDARD) }
+					<tr height="39">
+						<td>${columnMap?.get(common.constants.ColumnKey.INVEST_STANDARD)?.column_no}</td>
+						<td class="edit-text" maxlength="6">${columnMap?.get(common.constants.ColumnKey.INVEST_STANDARD)?.name}</td>
+						<td>${columnMap?.get(common.constants.ColumnKey.INVEST_STANDARD)?.back_name}</td>
+						<td>
+							<input type="hidden" name="hiddenvalue" value="${common.constants.ColumnKey.INVEST_STANDARD}"/>
+							#{rightMng rightId:201002}
+							<a data-title="编辑" href="javascript:void(0);" class="iconfont back-column-edit">&#xe602;</a>
+							#{/rightMng}
+						</td>
+					</tr>
+				#{/if}
+				
+				<!-- 转让专区 -->
+				#{if columnMap?.get(common.constants.ColumnKey.INVEST_TRANSFER) }
+					<tr height="39">
+						<td>${columnMap?.get(common.constants.ColumnKey.INVEST_TRANSFER)?.column_no}</td>
+						<td class="edit-text" maxlength="6">${columnMap?.get(common.constants.ColumnKey.INVEST_TRANSFER)?.name}</td>
+						<td>${columnMap?.get(common.constants.ColumnKey.INVEST_TRANSFER)?.back_name}</td>
+						<td>
+							<input type="hidden" name="hiddenvalue" value="${common.constants.ColumnKey.INVEST_TRANSFER}"/>
+							#{rightMng rightId:201002}
+							<a data-title="编辑" href="javascript:void(0);" class="iconfont back-column-edit">&#xe602;</a>
+							#{/rightMng}
+						</td>
+					</tr>
+				#{/if}
+				
+				<!-- 周投资排行版 -->
+				#{if columnMap?.get(common.constants.ColumnKey.INVEST_LEADERBOARD) }
+					<tr height="39">
+						<td>${columnMap?.get(common.constants.ColumnKey.INVEST_LEADERBOARD)?.column_no}</td>
+						<td class="edit-text" maxlength="6">${columnMap?.get(common.constants.ColumnKey.INVEST_LEADERBOARD)?.name}</td>
+						<td>${columnMap?.get(common.constants.ColumnKey.INVEST_LEADERBOARD)?.back_name}</td>
+						<td>
+							<input type="hidden" name="hiddenvalue" value="${common.constants.ColumnKey.INVEST_LEADERBOARD}"/>
+							#{rightMng rightId:201002}
+							<a data-title="编辑" href="javascript:void(0);" class="iconfont back-column-edit">&#xe602;</a>
+							#{/rightMng}
+						</td>
+					</tr>
+				#{/if}
+				
+				<!-- 大家都在投 -->
+				#{if columnMap?.get(common.constants.ColumnKey.INVEST_RECORD) }
+					<tr height="39">
+						<td>${columnMap?.get(common.constants.ColumnKey.INVEST_RECORD)?.column_no}</td>
+						<td class="edit-text" maxlength="6">${columnMap?.get(common.constants.ColumnKey.INVEST_RECORD)?.name}</td>
+						<td>${columnMap?.get(common.constants.ColumnKey.INVEST_RECORD)?.back_name}</td>
+						<td>
+							<input type="hidden" name="hiddenvalue" value="${common.constants.ColumnKey.INVEST_RECORD}"/>
+							#{rightMng rightId:201002}
+							<a data-title="编辑" href="javascript:void(0);" class="iconfont back-column-edit">&#xe602;</a>
+							#{/rightMng}
+						</td>
+					</tr>
+				#{/if}
+				
+				<!-- 借款 -->
+				#{if columnMap?.get(common.constants.ColumnKey.LOAN) }
+					<tr height="39" class="column-title">
+						<td>${columnMap?.get(common.constants.ColumnKey.LOAN)?.column_no}</td>
+						<td class="edit-text" maxlength="6">${columnMap?.get(common.constants.ColumnKey.LOAN)?.name}</td>
+						<td>${columnMap?.get(common.constants.ColumnKey.LOAN)?.back_name}</td>
+						<td>
+							<input type="hidden" name="hiddenvalue" value="${common.constants.ColumnKey.LOAN}"/>
+							#{rightMng rightId:201002}
+							<a data-title="编辑" href="javascript:void(0);" class="iconfont back-column-edit">&#xe602;</a>
+							#{/rightMng}
+						</td>
+					</tr>
+				#{/if}
+				
+				<!-- 资讯 -->
+				#{if columnMap?.get(common.constants.ColumnKey.INFO) }
+					<tr height="39" class="column-title">
+						<td>${columnMap?.get(common.constants.ColumnKey.INFO)?.column_no}</td>
+						<td class="edit-text" maxlength="6">${columnMap?.get(common.constants.ColumnKey.INFO)?.name}</td>
+						<td>${columnMap?.get(common.constants.ColumnKey.INFO)?.back_name}</td>
+						<td>
+							<input type="hidden" name="hiddenvalue" value="${common.constants.ColumnKey.INFO}"/>
+							#{rightMng rightId:201002}
+							<a data-title="编辑" href="javascript:void(0);" class="iconfont back-column-edit">&#xe602;</a>
+							#{/rightMng}
+						</td>
+					</tr>
+				#{/if}
+				
+				<!-- 官方公告-->
+				#{if columnMap?.get(common.constants.ColumnKey.INFO_BULLETIN) }
+					<tr height="39">
+						<td>${columnMap?.get(common.constants.ColumnKey.INFO_BULLETIN)?.column_no}</td>
+						<td class="edit-text" maxlength="6">${columnMap?.get(common.constants.ColumnKey.INFO_BULLETIN)?.name}</td>
+						<td>${columnMap?.get(common.constants.ColumnKey.INFO_BULLETIN)?.back_name}</td>
+						<td>
+							<input type="hidden" name="hiddenvalue" value="${common.constants.ColumnKey.INFO_BULLETIN}"/>
+							#{rightMng rightId:201002}
+							<a data-title="编辑" href="javascript:void(0);" class="iconfont back-column-edit">&#xe602;</a>
+							#{/rightMng}
+						</td>
+					</tr>
+				#{/if}
+				
+				<!-- 媒体报道-->
+				#{if columnMap?.get(common.constants.ColumnKey.INFO_REPORT) }
+					<tr height="39">
+						<td>${columnMap?.get(common.constants.ColumnKey.INFO_REPORT)?.column_no}</td>
+						<td class="edit-text" maxlength="6">${columnMap?.get(common.constants.ColumnKey.INFO_REPORT)?.name}</td>
+						<td>${columnMap?.get(common.constants.ColumnKey.INFO_REPORT)?.back_name}</td>
+						<td>
+							<input type="hidden" name="hiddenvalue" value="${common.constants.ColumnKey.INFO_REPORT}"/>
+							#{rightMng rightId:201002}
+							<a data-title="编辑" href="javascript:void(0);" class="iconfont back-column-edit">&#xe602;</a>
+							#{/rightMng}
+						</td>
+					</tr>
+				#{/if}
+				
+				<!-- 理财故事-->
+				#{if columnMap?.get(common.constants.ColumnKey.INFO_STORY) }
+					<tr height="39">
+						<td>${columnMap?.get(common.constants.ColumnKey.INFO_STORY)?.column_no}</td>
+						<td class="edit-text" maxlength="6">${columnMap?.get(common.constants.ColumnKey.INFO_STORY)?.name}</td>
+						<td>${columnMap?.get(common.constants.ColumnKey.INFO_STORY)?.back_name}</td>
+						<td>
+							<input type="hidden" name="hiddenvalue" value="${common.constants.ColumnKey.INFO_STORY}"/>
+							#{rightMng rightId:201002}
+							<a data-title="编辑" href="javascript:void(0);" class="iconfont back-column-edit">&#xe602;</a>
+							#{/rightMng}
+						</td>
+					</tr>
+				#{/if}
+			
+				<!-- 我的财富 -->
+				#{if columnMap?.get(common.constants.ColumnKey.WEALTH) }
+					<tr height="39" class="column-title">
+						<td>${columnMap?.get(common.constants.ColumnKey.WEALTH)?.column_no}</td>
+						<td class="edit-text" maxlength="6">${columnMap?.get(common.constants.ColumnKey.WEALTH)?.name}</td>
+						<td>${columnMap?.get(common.constants.ColumnKey.WEALTH)?.back_name}</td>
+						<td>
+							<input type="hidden" name="hiddenvalue" value="${common.constants.ColumnKey.WEALTH}"/>
+							#{rightMng rightId:201002}
+							<a data-title="编辑" href="javascript:void(0);" class="iconfont back-column-edit">&#xe602;</a>
+							#{/rightMng}
+						</td>
+					</tr>
+				#{/if}
+				
+				
+				<!-- 账户首页-->
+				#{if columnMap?.get(common.constants.ColumnKey.WEALTH_ACCOUNT) }
+					<tr height="39" >
+						<td>${columnMap?.get(common.constants.ColumnKey.WEALTH_ACCOUNT)?.column_no}</td>
+						<td class="edit-text" maxlength="6">${columnMap?.get(common.constants.ColumnKey.WEALTH_ACCOUNT)?.name}</td>
+						<td>${columnMap?.get(common.constants.ColumnKey.WEALTH_ACCOUNT)?.back_name}</td>
+						<td>
+							<input type="hidden" name="hiddenvalue" value="${common.constants.ColumnKey.WEALTH_ACCOUNT}"/>
+							#{rightMng rightId:201002}
+							<a data-title="编辑" href="javascript:void(0);" class="iconfont back-column-edit">&#xe602;</a>
+							#{/rightMng}
+						</td>
+					</tr>
+				#{/if}
+				
+				<!-- 最近回款计划-->
+				#{if columnMap?.get(common.constants.ColumnKey.WEALTH_ACCOUNT_SECTION) }
+					<tr height="39">
+						<td>${columnMap?.get(common.constants.ColumnKey.WEALTH_ACCOUNT_SECTION)?.column_no}</td>
+						<td class="edit-text" maxlength="6">${columnMap?.get(common.constants.ColumnKey.WEALTH_ACCOUNT_SECTION)?.name}</td>
+						<td>${columnMap?.get(common.constants.ColumnKey.WEALTH_ACCOUNT_SECTION)?.back_name}</td>
+						<td>
+							<input type="hidden" name="hiddenvalue" value="${common.constants.ColumnKey.WEALTH_ACCOUNT_SECTION}"/>
+							#{rightMng rightId:201002}
+							<a data-title="编辑" href="javascript:void(0);" class="iconfont back-column-edit">&#xe602;</a>
+							#{/rightMng}
+						</td>
+					</tr>
+				#{/if}
+				
+				<!-- 充值-->
+				#{if columnMap?.get(common.constants.ColumnKey.WEALTH_ACCOUNT_RECHARGE) }
+					<tr height="39">
+						<td>${columnMap?.get(common.constants.ColumnKey.WEALTH_ACCOUNT_RECHARGE)?.column_no}</td>
+						<td class="edit-text" maxlength="6">${columnMap?.get(common.constants.ColumnKey.WEALTH_ACCOUNT_RECHARGE)?.name}</td>
+						<td>${columnMap?.get(common.constants.ColumnKey.WEALTH_ACCOUNT_RECHARGE)?.back_name}</td>
+						<td>
+							<input type="hidden" name="hiddenvalue" value="${common.constants.ColumnKey.WEALTH_ACCOUNT_RECHARGE}"/>
+							#{rightMng rightId:201002}
+							<a data-title="编辑" href="javascript:void(0);" class="iconfont back-column-edit">&#xe602;</a>
+							#{/rightMng}
+						</td>
+					</tr>
+				#{/if}
+				
+				<!-- 提现-->
+				#{if columnMap?.get(common.constants.ColumnKey.WEALTH_ACCOUNT_WITHDRAW) }
+					<tr height="39">
+						<td>${columnMap?.get(common.constants.ColumnKey.WEALTH_ACCOUNT_WITHDRAW)?.column_no}</td>
+						<td class="edit-text" maxlength="6">${columnMap?.get(common.constants.ColumnKey.WEALTH_ACCOUNT_WITHDRAW)?.name}</td>
+						<td>${columnMap?.get(common.constants.ColumnKey.WEALTH_ACCOUNT_WITHDRAW)?.back_name}</td>
+						<td>
+							<input type="hidden" name="hiddenvalue" value="${common.constants.ColumnKey.WEALTH_ACCOUNT_WITHDRAW}"/>
+							#{rightMng rightId:201002}
+							<a data-title="编辑" href="javascript:void(0);" class="iconfont back-column-edit">&#xe602;</a>
+							#{/rightMng}
+						</td>
+					</tr>
+				#{/if}
+				
+				<!-- 消息 -->
+				#{if columnMap?.get(common.constants.ColumnKey.WEALTH_ACCOUNT_MSG) }
+					<tr height="39">
+						<td>${columnMap?.get(common.constants.ColumnKey.WEALTH_ACCOUNT_MSG)?.column_no}</td>
+						<td class="edit-text" maxlength="6">${columnMap?.get(common.constants.ColumnKey.WEALTH_ACCOUNT_MSG)?.name}</td>
+						<td>${columnMap?.get(common.constants.ColumnKey.WEALTH_ACCOUNT_MSG)?.back_name}</td>
+						<td>
+							<input type="hidden" name="hiddenvalue" value="${common.constants.ColumnKey.WEALTH_ACCOUNT_MSG}"/>
+							#{rightMng rightId:201002}
+							<a data-title="编辑" href="javascript:void(0);" class="iconfont back-column-edit">&#xe602;</a>
+							#{/rightMng}
+						</td>
+					</tr>
+				#{/if}
+				
+				<!-- 消息设置-->
+				#{if columnMap?.get(common.constants.ColumnKey.WEALTH_ACCOUNT_MSGMG) }
+					<tr height="39">
+						<td>${columnMap?.get(common.constants.ColumnKey.WEALTH_ACCOUNT_MSGMG)?.column_no}</td>
+						<td class="edit-text" maxlength="6">${columnMap?.get(common.constants.ColumnKey.WEALTH_ACCOUNT_MSGMG)?.name}</td>
+						<td>${columnMap?.get(common.constants.ColumnKey.WEALTH_ACCOUNT_MSGMG)?.back_name}</td>
+						<td>
+							<input type="hidden" name="hiddenvalue" value="${common.constants.ColumnKey.WEALTH_ACCOUNT_MSGMG}"/>
+							#{rightMng rightId:201002}
+							<a data-title="编辑" href="javascript:void(0);" class="iconfont back-column-edit">&#xe602;</a>
+							#{/rightMng}
+						</td>
+					</tr>
+				#{/if}
+				
+				<!-- 投资管理-->
+				#{if columnMap?.get(common.constants.ColumnKey.WEALTH_INVEST) }
+					<tr height="39">
+						<td>${columnMap?.get(common.constants.ColumnKey.WEALTH_INVEST)?.column_no}</td>
+						<td class="edit-text" maxlength="6">${columnMap?.get(common.constants.ColumnKey.WEALTH_INVEST)?.name}</td>
+						<td>${columnMap?.get(common.constants.ColumnKey.WEALTH_INVEST)?.back_name}</td>
+						<td>
+							<input type="hidden" name="hiddenvalue" value="${common.constants.ColumnKey.WEALTH_INVEST}"/>
+							#{rightMng rightId:201002}
+							<a data-title="编辑" href="javascript:void(0);" class="iconfont back-column-edit">&#xe602;</a>
+							#{/rightMng}
+						</td>
+					</tr>
+				#{/if}
+				
+				<!-- 我的理财 -->
+				#{if columnMap?.get(common.constants.ColumnKey.WEALTH_INVEST_MINE) }
+					<tr height="39">
+						<td>${columnMap?.get(common.constants.ColumnKey.WEALTH_INVEST_MINE)?.column_no}</td>
+						<td class="edit-text" maxlength="6">${columnMap?.get(common.constants.ColumnKey.WEALTH_INVEST_MINE)?.name}</td>
+						<td>${columnMap?.get(common.constants.ColumnKey.WEALTH_INVEST_MINE)?.back_name}</td>
+						<td>
+							<input type="hidden" name="hiddenvalue" value="${common.constants.ColumnKey.WEALTH_INVEST_MINE}"/>
+							#{rightMng rightId:201002}
+							<a data-title="编辑" href="javascript:void(0);" class="iconfont back-column-edit">&#xe602;</a>
+							#{/rightMng}
+						</td>
+					</tr>
+				#{/if}
+				
+				<!-- 我的借款 -->
+				#{if columnMap?.get(common.constants.ColumnKey.WEALTH_INVEST_BID) }
+					<tr height="39">
+						<td>${columnMap?.get(common.constants.ColumnKey.WEALTH_INVEST_BID)?.column_no}</td>
+						<td class="edit-text" maxlength="6">${columnMap?.get(common.constants.ColumnKey.WEALTH_INVEST_BID)?.name}</td>
+						<td>${columnMap?.get(common.constants.ColumnKey.WEALTH_INVEST_BID)?.back_name}</td>
+						<td>
+							<input type="hidden" name="hiddenvalue" value="${common.constants.ColumnKey.WEALTH_INVEST_BID}"/>
+							#{rightMng rightId:201002}
+							<a data-title="编辑" href="javascript:void(0);" class="iconfont back-column-edit">&#xe602;</a>
+							#{/rightMng}
+						</td>
+					</tr>
+				#{/if}
+				
+				<!-- 受让债权 -->
+				#{if columnMap?.get(common.constants.ColumnKey.WEALTH_INVEST_MYTRANSFER) }
+					<tr height="39">
+						<td>${columnMap?.get(common.constants.ColumnKey.WEALTH_INVEST_MYTRANSFER)?.column_no}</td>
+						<td class="edit-text" maxlength="6">${columnMap?.get(common.constants.ColumnKey.WEALTH_INVEST_MYTRANSFER)?.name}</td>
+						<td>${columnMap?.get(common.constants.ColumnKey.WEALTH_INVEST_MYTRANSFER)?.back_name}</td>
+						<td>
+							<input type="hidden" name="hiddenvalue" value="${common.constants.ColumnKey.WEALTH_INVEST_MYTRANSFER}"/>
+							#{rightMng rightId:201002}
+							<a data-title="编辑" href="javascript:void(0);" class="iconfont back-column-edit">&#xe602;</a>
+							#{/rightMng}
+						</td>
+					</tr>
+				#{/if}
+				
+				<!-- 债权转让 -->
+				#{if columnMap?.get(common.constants.ColumnKey.WEALTH_INVEST_TRANSFER) }
+					<tr height="39">
+						<td>${columnMap?.get(common.constants.ColumnKey.WEALTH_INVEST_TRANSFER)?.column_no}</td>
+						<td class="edit-text" maxlength="6">${columnMap?.get(common.constants.ColumnKey.WEALTH_INVEST_TRANSFER)?.name}</td>
+						<td>${columnMap?.get(common.constants.ColumnKey.WEALTH_INVEST_TRANSFER)?.back_name}</td>
+						<td>
+							<input type="hidden" name="hiddenvalue" value="${common.constants.ColumnKey.WEALTH_INVEST_TRANSFER}"/>
+							#{rightMng rightId:201002}
+							<a data-title="编辑" href="javascript:void(0);" class="iconfont back-column-edit">&#xe602;</a>
+							#{/rightMng}
+						</td>
+					</tr>
+				#{/if}
+				
+				<!-- 自动投标 -->
+				#{if columnMap?.get(common.constants.ColumnKey.WEALTH_INVEST_AUTO) }
+					<tr height="39">
+						<td>${columnMap?.get(common.constants.ColumnKey.WEALTH_INVEST_AUTO)?.column_no}</td>
+						<td class="edit-text" maxlength="6">${columnMap?.get(common.constants.ColumnKey.WEALTH_INVEST_AUTO)?.name}</td>
+						<td>${columnMap?.get(common.constants.ColumnKey.WEALTH_INVEST_AUTO)?.back_name}</td>
+						<td>
+							<input type="hidden" name="hiddenvalue" value="${common.constants.ColumnKey.WEALTH_INVEST_AUTO}"/>
+							#{rightMng rightId:201002}
+							<a data-title="编辑" href="javascript:void(0);" class="iconfont back-column-edit">&#xe602;</a>
+							#{/rightMng}
+						</td>
+					</tr>
+				#{/if}
+				
+				<!-- 交易记录 -->
+				#{if columnMap?.get(common.constants.ColumnKey.WEALTH_DEAL) }
+					<tr height="39">
+						<td>${columnMap?.get(common.constants.ColumnKey.WEALTH_DEAL)?.column_no}</td>
+						<td class="edit-text" maxlength="6">${columnMap?.get(common.constants.ColumnKey.WEALTH_DEAL)?.name}</td>
+						<td>${columnMap?.get(common.constants.ColumnKey.WEALTH_DEAL)?.back_name}</td>
+						<td>
+							<input type="hidden" name="hiddenvalue" value="${common.constants.ColumnKey.WEALTH_DEAL}"/>
+							#{rightMng rightId:201002}
+							<a data-title="编辑" href="javascript:void(0);" class="iconfont back-column-edit">&#xe602;</a>
+							#{/rightMng}
+						</td>
+					</tr>
+				#{/if}
+				
+				<!-- 提现记录 -->
+				#{if columnMap?.get(common.constants.ColumnKey.WEALTH_DEAL_WITHDRAW) }
+					<tr height="39">
+						<td>${columnMap?.get(common.constants.ColumnKey.WEALTH_DEAL_WITHDRAW)?.column_no}</td>
+						<td class="edit-text" maxlength="6">${columnMap?.get(common.constants.ColumnKey.WEALTH_DEAL_WITHDRAW)?.name}</td>
+						<td>${columnMap?.get(common.constants.ColumnKey.WEALTH_DEAL_WITHDRAW)?.back_name}</td>
+						<td>
+							<input type="hidden" name="hiddenvalue" value="${common.constants.ColumnKey.WEALTH_DEAL_WITHDRAW}"/>
+							#{rightMng rightId:201002}
+							<a data-title="编辑" href="javascript:void(0);" class="iconfont back-column-edit">&#xe602;</a>
+							#{/rightMng}
+						</td>
+					</tr>
+				#{/if}
+				
+				<!-- 充值记录 -->
+				#{if columnMap?.get(common.constants.ColumnKey.WEALTH_DEAL_RECHARGE) }
+					<tr height="39">
+						<td>${columnMap?.get(common.constants.ColumnKey.WEALTH_DEAL_RECHARGE)?.column_no}</td>
+						<td class="edit-text" maxlength="6">${columnMap?.get(common.constants.ColumnKey.WEALTH_DEAL_RECHARGE)?.name}</td>
+						<td>${columnMap?.get(common.constants.ColumnKey.WEALTH_DEAL_RECHARGE)?.back_name}</td>
+						<td>
+							<input type="hidden" name="hiddenvalue" value="${common.constants.ColumnKey.WEALTH_DEAL_RECHARGE}"/>
+							#{rightMng rightId:201002}
+							<a data-title="编辑" href="javascript:void(0);" class="iconfont back-column-edit">&#xe602;</a>
+							#{/rightMng}
+						</td>
+					</tr>
+				#{/if}
+				
+				<!-- 兑换记录 -->
+				#{if columnMap?.get(common.constants.ColumnKey.WEALTH_DEAL_CONVERSION) }
+					<tr height="39">
+						<td>${columnMap?.get(common.constants.ColumnKey.WEALTH_DEAL_CONVERSION)?.column_no}</td>
+						<td class="edit-text" maxlength="6">${columnMap?.get(common.constants.ColumnKey.WEALTH_DEAL_CONVERSION)?.name}</td>
+						<td>${columnMap?.get(common.constants.ColumnKey.WEALTH_DEAL_CONVERSION)?.back_name}</td>
+						<td>
+							<input type="hidden" name="hiddenvalue" value="${common.constants.ColumnKey.WEALTH_DEAL_CONVERSION}"/>
+							#{rightMng rightId:201002}
+							<a data-title="编辑" href="javascript:void(0);" class="iconfont back-column-edit">&#xe602;</a>
+							#{/rightMng}
+						</td>
+					</tr>
+				#{/if}
+				
+				<!-- 会员信息 -->
+				#{if columnMap?.get(common.constants.ColumnKey.WEALTH_INFO) }
+					<tr height="39">
+						<td>${columnMap?.get(common.constants.ColumnKey.WEALTH_INFO)?.column_no}</td>
+						<td class="edit-text" maxlength="6">${columnMap?.get(common.constants.ColumnKey.WEALTH_INFO)?.name}</td>
+						<td>${columnMap?.get(common.constants.ColumnKey.WEALTH_INFO)?.back_name}</td>
+						<td>
+							<input type="hidden" name="hiddenvalue" value="${common.constants.ColumnKey.WEALTH_INFO}"/>
+							#{rightMng rightId:201002}
+							<a data-title="编辑" href="javascript:void(0);" class="iconfont back-column-edit">&#xe602;</a>
+							#{/rightMng}
+						</td>
+					</tr>
+				#{/if}
+				
+				<!-- 安全中心 -->
+				#{if columnMap?.get(common.constants.ColumnKey.WEALTH_SECURITY) }
+					<tr height="39">
+						<td>${columnMap?.get(common.constants.ColumnKey.WEALTH_SECURITY)?.column_no}</td>
+						<td class="edit-text" maxlength="6">${columnMap?.get(common.constants.ColumnKey.WEALTH_SECURITY)?.name}</td>
+						<td>${columnMap?.get(common.constants.ColumnKey.WEALTH_SECURITY)?.back_name}</td>
+						<td>
+							<input type="hidden" name="hiddenvalue" value="${common.constants.ColumnKey.WEALTH_SECURITY}"/>
+							#{rightMng rightId:201002}
+							<a data-title="编辑" href="javascript:void(0);" class="iconfont back-column-edit">&#xe602;</a>
+							#{/rightMng}
+						</td>
+					</tr>
+				#{/if}
+				
+				<!-- 我的奖励 -->
+				#{if columnMap?.get(common.constants.ColumnKey.WEALTH_REWARD) }
+					<tr height="39">
+						<td>${columnMap?.get(common.constants.ColumnKey.WEALTH_REWARD)?.column_no}</td>
+						<td class="edit-text" maxlength="6">${columnMap?.get(common.constants.ColumnKey.WEALTH_REWARD)?.name}</td>
+						<td>${columnMap?.get(common.constants.ColumnKey.WEALTH_REWARD)?.back_name}</td>
+						<td>
+							<input type="hidden" name="hiddenvalue" value="${common.constants.ColumnKey.WEALTH_REWARD}"/>
+							#{rightMng rightId:201002}
+							<a data-title="编辑" href="javascript:void(0);" class="iconfont back-column-edit">&#xe602;</a>
+							#{/rightMng}
+						</td>
+					</tr>
+				#{/if}
+					
+				<!-- 红包 -->
+				#{if columnMap?.get(common.constants.ColumnKey.WEALTH_REWARD_REDPACKET) }
+					<tr height="39">
+						<td>${columnMap?.get(common.constants.ColumnKey.WEALTH_REWARD_REDPACKET)?.column_no}</td>
+						<td class="edit-text" maxlength="6">${columnMap?.get(common.constants.ColumnKey.WEALTH_REWARD_REDPACKET)?.name}</td>
+						<td>${columnMap?.get(common.constants.ColumnKey.WEALTH_REWARD_REDPACKET)?.back_name}</td>
+						<td>
+							<input type="hidden" name="hiddenvalue" value="${common.constants.ColumnKey.WEALTH_REWARD_REDPACKET}"/>
+							#{rightMng rightId:201002}
+							<a data-title="编辑" href="javascript:void(0);" class="iconfont back-column-edit">&#xe602;</a>
+							#{/rightMng}
+						</td>
+					</tr>
+				#{/if}
+				
+				<!-- 体验金 -->
+				#{if columnMap?.get(common.constants.ColumnKey.WEALTH_REWARD_EXPERIENCE) }
+					<tr height="39">
+						<td>${columnMap?.get(common.constants.ColumnKey.WEALTH_REWARD_EXPERIENCE)?.column_no}</td>
+						<td class="edit-text" maxlength="6">${columnMap?.get(common.constants.ColumnKey.WEALTH_REWARD_EXPERIENCE)?.name}</td>
+						<td>${columnMap?.get(common.constants.ColumnKey.WEALTH_REWARD_EXPERIENCE)?.back_name}</td>
+						<td>
+							<input type="hidden" name="hiddenvalue" value="${common.constants.ColumnKey.WEALTH_REWARD_EXPERIENCE}"/>
+							#{rightMng rightId:201002}
+							<a data-title="编辑" href="javascript:void(0);" class="iconfont back-column-edit">&#xe602;</a>
+							#{/rightMng}
+						</td>
+					</tr>
+				#{/if}				
+				
+				<!-- CPS推广 -->
+				#{if columnMap?.get(common.constants.ColumnKey.WEALTH_REWARD_CPS) }
+					<tr height="39">
+						<td>${columnMap?.get(common.constants.ColumnKey.WEALTH_REWARD_CPS)?.column_no}</td>
+						<td class="edit-text" maxlength="6">${columnMap?.get(common.constants.ColumnKey.WEALTH_REWARD_CPS)?.name}</td>
+						<td>${columnMap?.get(common.constants.ColumnKey.WEALTH_REWARD_CPS)?.back_name}</td>
+						<td>
+							<input type="hidden" name="hiddenvalue" value="${common.constants.ColumnKey.WEALTH_REWARD_CPS}"/>
+							#{rightMng rightId:201002}
+							<a data-title="编辑" href="javascript:void(0);" class="iconfont back-column-edit">&#xe602;</a>
+							#{/rightMng}
+						</td>
+					</tr>
+				#{/if}
+				
+				<!-- 财富圈 -->
+				#{if columnMap?.get(common.constants.ColumnKey.WEALTH_REWARD_CIRCLE) }
+					<tr height="39">
+						<td>${columnMap?.get(common.constants.ColumnKey.WEALTH_REWARD_CIRCLE)?.column_no}</td>
+						<td class="edit-text" maxlength="6">${columnMap?.get(common.constants.ColumnKey.WEALTH_REWARD_CIRCLE)?.name}</td>
+						<td>${columnMap?.get(common.constants.ColumnKey.WEALTH_REWARD_CIRCLE)?.back_name}</td>
+						<td>
+							<input type="hidden" name="hiddenvalue" value="${common.constants.ColumnKey.WEALTH_REWARD_CIRCLE}"/>
+							#{rightMng rightId:201002}
+							<a data-title="编辑" href="javascript:void(0);" class="iconfont back-column-edit">&#xe602;</a>
+							#{/rightMng}
+						</td>
+					</tr>
+				#{/if}
+				
+				
+				
+			</table>
+		</div>
+	</div>
+</div>
+
+
+
+<!-- 页面js -->
+<script type="text/javascript">
+	require(['back'],function(){
+		require(["textedit"],function(textedit){
+			 $(".back-column tr").each(function(){
+				var btn = $(this).find(".back-column-edit"),
+					text = $(this).find(".edit-text"),
+					hid = btn.parent().children("input");
+				function fn(){
+					var ajaxPath = "@{back.webOperation.ColumnMngCtrl.updateColumnName()}",
+						ajaxData = {
+								   "_key" : hid.val(),
+								   "columnName" : text.children("input").val()
+							   };
+					textedit(btn, text, ajaxPath, ajaxData);
+				}
+				btn.click(fn);
+				text.on('keydown','.edit-input',function(event){
+					if(event.keyCode == "13"){
+						fn();
+					}
+				});
+
+			}); 
+		});
+	});
+</script>

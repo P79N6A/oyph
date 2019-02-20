@@ -1,0 +1,57 @@
+#{extends 'common/back/financeMain.html' /}
+	#{set title:'财务 | 担保人管理' /}
+	#{set smallclass:11 /}
+	#{set crumbs:'财务>担保人管理>担保人列表'/}
+
+<div class="back-main">
+	<!-- 头部筛选条件 -->
+	<div class="back-usertop">
+		<div class="left back-usermenu">
+			<a href="#" class="selected">所有</a>
+		</div>
+		
+		<!-- 右侧功能按钮 -->
+		<div class="right back-rightbtns">
+			<a href="@{back.finance.GuaranteeCtrl.toAddBondsmanPre()}" class="back-addmsg"><i class="iconfont">&#xe60f;</i>添加</a>
+		</div>
+	</div>
+	<!-- 左侧菜单 -->
+	#{if guarantees}
+	#{list items:guarantees,as:"guarantee"}
+	<div class="back-cont">
+		<div class="back-infor">
+			<h2 class="back-infor-head">
+				<span class="left">${guarantee?.name}</span>
+				<span class="right back-money-transfer">
+					#{rightMng rightId:509002}
+						<a href="@{back.finance.GuaranteeCtrl.showGuaranteeRechargePre(guarantee?.id)}" class="iconfont" data-title="充值" >&#xe635;</a>
+					#{/rightMng}
+					<!-- #{rightMng rightId:509003}
+						<a href="@{back.finance.MerchantMngCtrl.toMerchantWithdrawalPre(2)}" class="iconfont" data-title="提现" >&#xe636;</a>
+					#{/rightMng} -->
+				</span>
+			</h2>
+			<div class="back-infor-lcset">
+				<span class="lileft">账户可用余额:</span>
+				<div class="liright">
+					${guarantee?.amount}元
+				</div>
+				<span class="lileft">代偿待还余额:</span>
+				<div class="liright">
+					${guarantee?.compensate_amount}元
+				</div>
+			</div>
+		</div>
+	</div>
+	#{/list}
+	#{/if}	
+	#{else}	
+	<div class="back-cont">	
+		<div class="back-nodata">
+			<h2><i class="iconfont">&#xe613;</i>暂无记录</h2>
+		</div>
+	</div>			
+	#{/else}
+</div>
+
+

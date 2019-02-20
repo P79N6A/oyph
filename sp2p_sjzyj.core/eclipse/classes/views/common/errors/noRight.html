@@ -1,0 +1,79 @@
+#{extends menu /}
+	#{set title:title /}
+	#{set smallclass:-100 /}
+	#{set crumbs:crumbs /}
+	
+<div class="back-main back-cont">
+<div class="http-error">
+	<div class="http-main clearfix">
+		<img src="/public/front/images/http-404.png" height="288" width="365" alt="" class="left">
+		<div class="http-intro left">
+			<p class="c9">非常遗憾，您没有执行该项操作的权限</p>
+			
+		</div>
+	</div>
+</div>
+</div>
+<style>
+/* http errors */
+.http-error{
+	width: 920px;
+	margin: 0 auto;
+	position: relative;
+	padding-top: 150px;
+}
+.http-main>img{
+	margin-right: 67px;
+}
+.http-intro{
+	margin-top: 100px;
+}
+.http-intro h1{
+	font-size: 72px;
+	color: #292e45;
+	line-height: 100px;
+}
+.http-intro .c9{
+	font-size: 20px;
+	line-height: 42px;
+}
+.http-btns{
+	font-size: 0;
+	margin-top: 15px;
+}
+.http-btns a{
+	display: inline-block;
+	width: 110px;
+	height: 32px;
+	border-radius: 3px;
+	font-size: 14px;
+	color: #fff;
+	line-height: 32px;
+	text-align: center;
+	margin-right: 22px;
+	-webkit-transition: opacity .3s;
+	-o-transition: opacity .3s;
+	transition: opacity .3s;
+}
+.http-btns .refresh-btn{
+	background: #f88522;
+}
+.http-btns .refresh-btn:hover{
+	color: #fff;
+}
+.http-btns a:hover{
+	opacity: .85;
+	filter: alpha(opacity=85);
+}
+.http-intro .http-404{
+	font-size: 90px;
+}
+.borrow-unlogin{
+	margin-top: 20px;
+	border: 1px solid #F45046;
+	background: #FEEFEF;
+	padding: 0 20px;
+	line-height: 34px;
+	color: #f44e43;
+}
+</style>

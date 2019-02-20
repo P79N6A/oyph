@@ -1,0 +1,230 @@
+#{extends 'common/frontMain.html' /}
+#{set title: '首页'/}
+#{set AItem:2 /}
+	<link rel="stylesheet" type="text/css" href="/public/front/stylesheets/index1.css" />
+		<link rel="stylesheet" type="text/css" href="/public/front/stylesheets/borrowing_information.css"/>
+		<link rel="stylesheet" type="text/css" href="/public/front/stylesheets/validationEngine.jquery.css"/>
+		<!--banner图-->
+		<div class="banner-pic">
+			<div class="banner-size-box">
+				<h1>
+					<p class="le-line"></p>
+					<p> 惠房贷 </p>
+					<p class="rg-line"></p>
+				</h1>
+				<h2>
+					有房就能贷  轻松款下来
+				</h2>
+				<input class="banner-anniu" type="button" id="" value="快速申请" />
+			</div>
+			
+		</div>
+		<!--banner图-->
+		<div class="borrowing-information">
+			<div class="borrowing-information11">
+				
+			</div>
+			<ul class="borrowing-information-box">
+				<li>
+					<a href="">
+						<p class="top-jl">借款高</p>
+						<p class="text-small">企业用户最高可贷100万</p>
+					</a>
+				</li>
+				<li>
+					<a href="">
+						<p class="top-jl">放款快</p>
+						<p class="text-small">投标完成即可快速放款</p>
+					</a>
+				</li>
+				<li>
+					<a href="">
+						<p class="top-jl">门槛低</p>
+						<p class="text-small">有房就可以贷款</p>
+					</a>
+				</li>
+				<li>
+					<a href="">
+						<p class="top-jl">费率低</p>
+						<p class="text-small">最低的费率完成最高的效率</p>
+					</a>
+				</li>
+			</ul>
+		</div>
+		<!--资料填写-->
+		<div class="material">
+			<h2 class="material-tit">
+				<p>填写资料</p>
+			</h2>
+			<div class="material-lf">
+				<form id="registration" action="@{front.LoanCtrl.addLoanApplyInfo()}" method="post">
+					<ul class="material-list">
+						<li>
+							<img src="/public/front/images/material/1122_03.png" />
+							<input class="pla-box validate[required,custom[chinese]]" type="text" id="" value="" name="applyInfo.appli_name" placeholder="您的姓名" />
+						</li>
+						<li>
+							<img src="/public/front/images/material/1122_06.png" />
+							<input class="pla-box validate[required,minSize[11],custom[phone]]" type="text" id="" value="" name="applyInfo.appli_phone" placeholder="您的电话" maxlength="11"/>
+						</li>
+						<li>
+							<img src="/public/front/images/material/1122_08.png" />
+							<div class="danxuan">
+								<span>性别：</span>
+								<label>
+									<input  type="radio" name="applyInfo.appli_sex"  value="1"  checked="checked"> 
+									<span>先生</span>
+								</label>
+								<label>
+									<input  type="radio" name="applyInfo.appli_sex"  value="2" > 
+									<span>女士</span>
+								</label>
+							</div>
+						</li>
+						<li>
+							<img src="/public/front/images/material/1122_10.png" />
+							<input class="pla-box validate[required,custom[number]]" type="text" id="" value="" name="applyInfo.loan_amounts" placeholder="借款金额" maxlength="6"/>
+						</li>
+						<li>
+							<img src="/public/front/images/material/1122_12.png" />
+							<input class="pla-box validate[required]" type="text" id="" value="" name="applyInfo.appli_location" placeholder="所在地"/>
+						</li>
+						<li>
+							<img src="/public/front/images/material/Collateral.png" />
+							<div class="danxuan">
+								<span>有无抵押物：</span>
+								<label>
+									<input type="radio" name="applyInfo.is_havePawn" value="0" class="Collateral" checked="checked"> 
+									<span>否</span>
+								</label>
+								<label>
+									<input type="radio" name="applyInfo.is_havePawn" value="1" class="Collateral"> 
+									<span>是</span>
+								</label>
+							</div>
+						</li>
+						<li>
+							<img src="/public/front/images/material/type.png" />
+							<div class="danxuan">
+								<span>抵押物：</span>
+								<label>
+									<input type="radio" name="applyInfo.pawn_kind" value="1" class="type" checked="checked" disabled> 
+									<span>车</span>
+								</label>
+								<label>
+									<input type="radio" name="applyInfo.pawn_kind" value="2" class="type" disabled> 
+									<span>房</span>
+								</label>
+							</div>
+						</li>
+					</ul>
+					<input class="material-tijiao" type="submit" value="立即申请"/>
+				</form>
+				<p class="zi1">如有问题请电话咨询微贷客服</p>
+				<p class="zi2">400-901-8889</p>
+			</div>
+			<div class="material-rg">
+				<img src="https://image.ouyepuhui.com/images/jie1_03.png"/>
+				<h2 class="material-tit">
+					<p>借款流程</p>
+				</h2>
+				<ul class="flow-path">
+					<li>
+						<span class="flow-path-size">01</span>
+						<img  class="flow-path-jiantou" src="/public/front/images/material/jie2_03.png" />
+						<div class="flow-path-tubiao">
+							<img src="/public/front/images/material/deal-pic.png" />
+							<p>提交审核</p>
+						</div>
+					</li>
+					<li>
+						<span class="flow-path-size">02</span>
+						<img  class="flow-path-jiantou" src="/public/front/images/material/jie2_03.png" />
+						<div class="flow-path-tubiao">
+							<img src="/public/front/images/material/pneumatic -pic.png" />
+							<p>风控审核</p>
+						</div>
+					</li>
+					<li>
+						<span class="flow-path-size">03</span>
+						<img  class="flow-path-jiantou" src="/public/front/images/material/jie2_03.png" />
+						<div class="flow-path-tubiao">
+							<img src="/public/front/images/material/bids-pic.png" />
+							<p>线上招标</p>
+						</div>
+					</li>
+					<li>
+						<span class="flow-path-size">04</span>
+
+						<div class="flow-path-tubiao">
+							<img src="/public/front/images/material/credit-pic.png" />
+							<p>成功放款</p>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<!--资料填写-->
+		<div class="Business">
+				<!-- <h1>业务模式</h1>
+				<hr>
+				<h3>Risk control flow</h3> -->
+				<div class="h1"></div>
+				<div class="Legend">
+					<div class="Legend-box">
+						<div class="Bank left">
+							<img src="/public/front/images/Bank.gif">
+							<span>宜宾市商业银行</span>
+						</div>
+						<div class="in"></div>
+						<div class="Investor right">
+							<img src="/public/front/images/people.gif">
+							<span>&nbsp;&nbsp;出借人</span>
+						</div>
+					</div>
+					<div class='in-left'></div>
+					<div class="in-right"></div>
+					<div class="Legend-box">
+						<div class="Borrower left">
+							<img src="/public/front/images/people1.gif">
+							<span>&nbsp;&nbsp;&nbsp;&nbsp;借款人</span>
+						</div>
+						<div class="in xia"></div>
+						<div class="ouye right">
+							<img src="/public/front/images/ouye.gif">
+							<span>&nbsp;&nbsp;讴业普惠</span>
+						</div>
+					</div>
+				</div>
+		</div>
+
+	<script src="/public/front/javascripts/js1/jquery.validationEngine.js" type="text/javascript" charset="utf-8"></script>
+	<script src="/public/front/javascripts/js1/jquery.validationEngine-zh_CN.js" type="text/javascript" charset="utf-8"></script>
+		 <script type="text/javascript">
+			$(function() {
+				$('#registration').validationEngine({
+					promptPosition: 'bottomRight',
+					addPromptClass: 'formError-white',
+					onSuccess:function(){
+						alert("申请成功 ");
+					}
+				});
+				
+				 $('.banner-anniu').click(function(){
+
+					 $('html,body').animate({scrollTop: '630px'}, 800);
+
+				 });
+
+				 $('.Collateral').change(function(){
+					  var Collateral = $("input[name='applyInfo.is_havePawn']:checked").val();
+					  if(Collateral==1){
+						  $('.type').attr('disabled',false);
+					  }else{
+						  $('.type').attr('disabled',true);
+					  }
+					  
+				 })
+
+			});
+		</script>

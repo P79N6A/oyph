@@ -1,0 +1,42 @@
+#{extends 'common/back/activityMain.html' /}
+	#{set title:'活动 | 新手任务' /}
+	#{set smallclass:3 /}
+	#{set crumbs:'活动>新手任务'/}
+<div class="back-main">
+	<div class="back-usertop">
+		<b class="left font14">京东E卡</b>
+		<!-- 右侧功能按钮 -->
+		<div class="right back-rightbtns">
+			<a href='@{back.activity.shake.NewTaskCtrl.newTaskListPre()}'><i class="iconfont">&#xe60b;</i>返回</a>
+		</div>
+	</div>
+	<div class="back-cont">
+		<div class="back-infor">
+			<form action="@{back.activity.shake.NewTaskCtrl.editJdECard()}" method="POST" id="edit" name="">
+				<input type="hidden" name="id" value="${jdecard?.id}">
+				<h2 class="back-infor-head">
+					<span class="left">设置账号密码</span>
+				</h2>
+				<ul class="back-infor-set">
+					<li>
+						<span class="lileft">京东E卡账号</span>
+						<div class="liright">
+							<input type="text" class="width01 iffocus"  name="jd_number" value="" />
+							<span class="back-text-limit"></span>
+						</div>
+					</li>
+					<li>
+						<span class="lileft">京东E卡密码</span>
+						<div class="liright">
+							<input type="text" class="width01 iffocus"  name="jd_password" value="" />
+							<span class="back-text-limit"></span>
+						</div>
+					</li>
+					<li class="back-margin">
+						<input type="submit" class="setup" value="确认">
+					</li>
+				</ul>
+			</form>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,545 @@
+#{extends 'common/back/settingMain.html' /}
+	#{set title:'设置 | 平台设置' /}
+	#{set smallclass:0 /}
+	#{set crumbs:'设置>平台设置'/}
+
+
+<div class="back-main">
+	<div class="back-cont">
+		<div class="back-infor">
+			<form action="@{back.setting.PlateformSettingCtrl.editInfo()}" method="POST" id="info">
+				#{authenticityToken /}
+				<input type="hidden" name="imgChanged" value="0"/>
+				<h2 class="back-infor-head">
+					<span class="left">基本信息</span>
+					#{rightMng rightId:801002}
+					<a href="javascript:void(0);" class="right iconfont finance-edit" data-title="编辑" >&#xe602;</a>
+					#{/rightMng}
+				</h2>
+				<ul class="back-infor-set">
+					<li>
+						<span class="lileft"><i class="mustpoint">*</i>平台logo</span>
+						<div class="liright">
+							<span class="back-imgarea imgrequired">
+								#{if platform_logo_filename}
+									<img name="platform_logo_filename" src="${platform_logo_filename}" onerror="this.src='/public/common/default.jpg'" class="backupimg" height="77" width="300" alt="" title="" />
+								#{/if}
+								#{else}
+									<!-- 没有上传图片 -->
+									<span class="back-noimg" title="您还没有上传图片"></span>
+								#{/else}
+								<input type="hidden" name="platform_logo_filename" value="${platform_logo_filename}">
+							</span>
+							<span class="back-upimg">
+								<label class="back-upbtn">
+									<input type="file" id="platform_logo_filename" accept=".jpg,.jpeg,.png,.gif" name="imgFile" onchange="uploadLogo()" >
+									<i class="iconfont">&#xe608;</i>本地上传</input>
+								</label>
+								<p class="back-imginfor">300*77，jpg/png，大小不超过2M</p>
+								<div class="back-upload-imginfor">
+										<!-- 实际图片信息 -->
+									<div id="picNew" style="display: none;">
+										<span id="resolutionshow">&nbsp;</span><span id="formatshow">&nbsp;</span><span id="sizeshow">&nbsp;</span>
+									</div>
+								</div>
+							</span>
+						</div>
+					</li>
+					<li>
+						<span class="lileft"><i class="mustpoint">*</i>平台icon</span>
+						<div class="liright">
+							<span class="back-imgarea imgrequired">
+								#{if platform_icon_filename}
+									<img name="platform_icon_filename" src="${platform_icon_filename}" class="backupimg" height="100" width="100" alt="" title="" />
+								#{/if}
+								#{else}
+									<!-- 没有上传图片 -->
+								<span class="back-noimg" title="您还没有上传图片"></span>
+								#{/else}
+								<input type="hidden" name="platform_icon_filename" value="${platform_icon_filename}">
+							</span>
+							<span class="back-upimg">
+								<label class="back-upbtn">
+									<input type="file" name="imgFile" id="platform_icon_filename" accept=".jpg,.jpeg,.png,.gif" onchange="uploadICON()" />
+									<i class="iconfont">&#xe608;</i>本地上传
+								</label>
+								<p class="back-imginfor">16*16，jpg/png，大小不超过2M</p>
+								<div class="back-upload-imginfor">
+										<!-- 实际图片信息 -->
+									<div id="picNew2" style="display: none;">
+										<span id="resolutionshow2">&nbsp;</span><span id="formatshow2">&nbsp;</span><span id="sizeshow2">&nbsp;</span>
+									</div>
+								</div>
+							</span>
+						</div>
+					</li>
+					<li>
+						<span class="lileft"><i class="mustpoint">*</i>平台名称</span>
+						<div class="liright">
+							<input type="text" name="platform_name" minlength="1" maxlength="20" class="width01 iffocus required" value="${platform_name}" />
+							<span class="back-text-limit"></span>
+							<span class="back-text-limit">1~20个字符</span>
+						</div>
+					</li>
+					<li>
+						<span class="lileft"><i class="mustpoint">*</i>公司名称</span>
+						<div class="liright">
+							<input type="text" class="width01 iffocus required" minlength="1" maxlength="20" name="company_name" value="${company_name}" />
+							<span class="back-text-limit"></span>
+							<span class="back-text-limit">1~20个字符</span>
+						</div>
+					</li>
+					<li>
+						<span class="lileft"><i class="mustpoint">*</i>公司电话</span>
+						<div class="liright">
+							<input type="text" class="width01 iffocus required"  name="company_tel" value="${company_tel}" maxlength="16"/>
+							<span class="back-text-limit"></span>
+						</div>
+					</li>
+					<li>
+						<span class="lileft"><i class="mustpoint">*</i>邮箱</span>
+						<div class="liright">
+							<input type="text" class="width01 iffocus required" maxlength="64" name="company_email" value="${company_email}" />
+							<span class="back-text-limit"></span>
+						</div>
+					</li>
+					<li>
+						<span class="lileft"><i class="mustpoint">*</i>公司地址</span>
+						<div class="liright">
+							<input type="text" class="width01 iffocus required" minlength="1" maxlength="40" name="company_address" value="${company_address}" />
+							<span class="back-text-limit"></span>
+							<span class="back-text-limit">1~40个字符</span>
+						</div>
+					</li>
+					<li>
+						<span class="lileft"><i class="mustpoint">*</i>客服QQ1</span>
+						<div class="liright">
+							<input type="text" class="width01 iffocus"  name="company_qq1" maxlength="100"  oninput="$(this).ndigitInteger(10)" onpropertychange="$(this).ndigitInteger(10)" value="${company_qq1}" />
+							<span class="back-text-limit"></span>
+						</div>
+					</li>
+					<li>
+						<span class="lileft">客服QQ2</span>
+						<div class="liright">
+							<input type="text" class="width01 iffocus"  name="company_qq2"  maxlength="100"  oninput="$(this).ndigitInteger(10)" onpropertychange="$(this).ndigitInteger(10)" value="${company_qq2}" />
+							<span class="back-text-limit"></span>
+						</div>
+					</li>
+					<li>
+						<span class="lileft">客服QQ3</span>
+						<div class="liright">
+							<input type="text" class="width01 iffocus"  name="company_qq3"  maxlength="100"  oninput="$(this).ndigitInteger(10)" onpropertychange="$(this).ndigitInteger(10)" value="${company_qq3}" />
+							<span class="back-text-limit"></span>
+						</div>
+					</li>
+					<li>
+						<span class="lileft"><i class="mustpoint">*</i>备案号</span>
+						<div class="liright">
+							<input type="text" class="width01 iffocus required" minlength="1" maxlength="30" name="site_icp_number" value="${site_icp_number}" />
+							<span class="back-text-limit">1~30个字符</span>
+						</div>
+					</li>
+				</ul>
+			</form>
+		</div>
+		<div class="back-infor">
+			<form action="@{back.setting.PlateformSettingCtrl.editSEO()}" method="POST" id="seo">
+			 	#{authenticityToken /}
+				<h2 class="back-infor-head">
+					<span class="left">SEO设置</span>
+					#{rightMng rightId:801003}
+					<a href="javascript:void(0);" class="right iconfont finance-edit" data-title="编辑" >&#xe602;</a>
+					#{/rightMng}
+				</h2>
+				<ul class="back-infor-set">
+					<li>
+						<span class="lileft">百度统计代码</span>
+						<div class="liright">
+							<textarea class="back-textarea back-msgarea" maxlength="1024" name="baidu_code">${baidu_code}</textarea>
+							<span class="back-text-limit">1024个字符之内</span>
+						</div>
+					</li>
+					<li>
+						<span class="lileft">SEO title</span>
+						<div class="liright">
+							<textarea class="back-textarea back-msgarea" maxlength="1024" name="seo_title">${seo_title}</textarea>
+							<span class="back-text-limit">1024个字符之内</span>
+						</div>
+					</li>
+					<li>
+						<span class="lileft">SEO 描述</span>
+						<div class="liright">
+							<textarea class="back-textarea back-msgarea" maxlength="1024" name="seo_description">${seo_description}</textarea>
+							<span class="back-text-limit">1024个字符之内</span>
+						</div>
+					</li>
+					<li>
+						<span class="lileft">SEO 关键词</span>
+						<div class="liright">
+							<input type="text" class="width100 iffocus" maxlength="1024" name="seo_keywords" value="${seo_keywords}" />
+							<span class="back-text-limit">1024个字符之内</span>
+						</div>
+					</li>
+				</ul>
+			</form>
+		</div>
+		<div class="back-infor">
+			<form action="@{back.setting.PlateformSettingCtrl.editSecurity()}" method="POST" id="security">
+				#{authenticityToken /}
+				<h2 class="back-infor-head">
+					<span class="left">安全设置</span>
+					#{rightMng rightId:801004}
+					<a href="javascript:void(0);" class="right iconfont finance-edit" data-title="编辑" >&#xe602;</a>
+					#{/rightMng}
+				</h2>
+				<ul class="back-infor-set">
+					<li>
+						<span class="lileft">敏感词屏蔽</span>
+						<div class="liright">
+							<textarea class="back-textarea back-msgarea" maxlength="500" name="sensitive_words">${sensitive_words}</textarea>
+							<span class="back-text-limit">不大于500个字符，含有多个词，请使用逗号隔开</span>
+						</div>
+					</li>
+					<li>
+						<span class="lileft">登录错误次数限制</span>
+						<div class="liright">
+							<select class="width01" id="columnKey" disabled="disabled" name="security_lock_times" autofocus="autofocus">
+								#{list items:1..9,as:'i'}
+									<option #{if Integer.parseInt(security_lock_times) == i }selected="selected"#{/if} value="${i}">${i}<i class="unit">次</i></option>
+								#{/list}
+							</select>
+							
+						</div>
+					</li>
+					<li>
+						<span class="lileft">安全锁定时长</span>
+						<div class="liright">
+<!-- 							<label class="back-unitinput back-unitinput01">
+								<input type="text" class="width02 iffocus" name="security_lock_time" value="${security_lock_time}">
+								
+							</label>
+							 -->
+							<select class="width01" id="columnKey" disabled="disabled" name="security_lock_time" autofocus="autofocus">
+								#{list items:[5,15,30,60],as:'i'}
+									<option #{if Integer.parseInt(security_lock_time) == i }selected="selected"#{/if} value="${i}">${i}<i class="unit">分钟</i></option>
+								#{/list}
+							</select>
+							
+						</div>
+					</li>
+				</ul>
+			</form>
+		</div>
+		<div class="back-infor">
+			<form action="@{back.setting.PlateformSettingCtrl.editRegisterCode()}" method="POST" id="registerCode">
+				#{authenticityToken /}
+				<h2 class="back-infor-head">
+					<span class="left">正版授权</span>
+					#{rightMng rightId:801005}
+					<a href="javascript:void(0);" class="right iconfont finance-edit" data-title="编辑" id="registerCode_a">&#xe602;</a>
+					#{/rightMng}
+				</h2>
+				<ul class="back-infor-set">
+					<li>
+						<span class="lileft">请输入正版授权号</span>
+						<div class="liright">
+							<input type="text" class="width100 iffocus" minlength="1" maxlength="128" name="register_code" value="${register_code}" />
+							<span class="back-text-limit"></span>
+						</div>
+					</li>
+				</ul>
+			</form>
+		</div>
+		#{rightMng rightId:801006}
+		<div class="back-infor">
+			<h2 class="back-infor-head">
+				<span class="left">自动投标</span>
+				<label class="right">
+					<input id="autoInvestInput" type="checkbox" #{if isAutoInvestShow} checked="checked" #{/if} onclick="updateIsAutoInvestShow($(this))" />
+				</label>
+			</h2>
+		</div>
+		#{/rightMng}
+	</div>
+</div>
+		
+<!-- 页面js -->
+<script type="text/javascript">
+	require(["back"],function(back){
+		//js验证扩展
+		require(["validation/validateExt"]);
+		//上传功能的js
+		require(["ajaxfileupload"]);	
+
+		$(".back-infor").each( function() {
+			var that = this, 
+			editBtn = $(this).find( ".finance-edit"),
+			editText = $(this).find("select,input:not(.easyui-datetimebox),textarea");
+			editText.prop("disabled", true);
+			$("#autoInvestInput").prop("disabled", false);
+			editBtn.click(function() {
+				disable = editText.prop("disabled");
+				if (disable) {
+					editBtn.html("&#xe630;").data("title","保存");
+					
+					$(".titlebox").text( editBtn.data('title'));
+					editText.prop("disabled", !disable);
+					editText.eq(0).focus();
+				} else {
+					/*
+					alert(editText.val());
+					editBtn.html("&#xe602;").data("title", "编辑");
+					$(".titlebox").text( editBtn.data('title'));
+					editText.prop("disabled", !disable);
+					*/
+					
+					var infoForm = $(that).children("form[id='info']");
+					if(infoForm.eq(0).length != 0){
+						infoForm.submit();
+					}
+					
+					var seoForm = $(that).children("form[id='seo']");
+					if(seoForm.eq(0).length != 0){
+						seoForm.submit();
+					}
+					
+					var securityForm = $(that).children("form[id='security']");
+					if(securityForm.eq(0).length != 0){
+						securityForm.submit();
+					}
+						
+					var registerCodeForm = $(that).children("form[id='registerCode']");
+					if(registerCodeForm.eq(0).length != 0){
+						registerCodeForm.submit();
+					}
+				}
+			});
+		});
+		
+		//定位到正版授权的位置 
+		#{if flash?.noRegister}
+		$("#registerCode_a").click();
+		var height = $("body").height()-$(window).height();
+		$("html,body").animate({scrollTop: height+132});
+		#{/if}
+		
+		//***********************//
+		//基本信息
+		$("form[id='info']").validate({
+			errorPlacement: function(error, element) {
+				error.addClass('back-notice').insertAfter(element);
+			},
+			rules:{
+				"platform_name":{
+					required:true,
+					rangelength:[1,20]
+				},
+				"company_name":{
+					required:true,
+					rangelength:[1,20]
+				},
+				"company_tel":{
+					required:true
+				},
+				"company_email":{
+					required:true,
+					email:true
+				},
+				"company_address":{
+					required:true,
+					maxlength:40
+				},
+				"company_qq1":{
+					required:true,
+					digits:true,
+					rangelength:[5,10]
+				},
+				"company_qq2":{
+					digits:true,
+					rangelength:[5,10]
+				},
+				"company_qq3":{
+					digits:true,
+					rangelength:[5,10]
+				},
+				"site_icp_number":{
+					required:true,
+					rangelength:[1,30]
+				}
+			},
+			messages:{
+			},
+			submitHandler:function(form){
+				var platform_logo_filename = $(form).find("input[name='platform_logo_filename']");
+				var platform_icon_filename = $(form).find("input[name='platform_icon_filename']");
+				if(!platform_logo_filename.val().isNotBlank()){
+					alert("平台logo图片没有上传!");
+					return false;
+				}
+				if(!platform_icon_filename.val().isNotBlank()){
+					alert("平台ICON图片没有上传");
+					return false;
+				}
+				form.submit();
+			}
+		});
+		
+		
+		//***********************//
+		//SEO设置
+		$("form[id='seo']").validate({
+			errorPlacement: function(error, element) {
+				error.addClass('back-notice').insertAfter(element);
+			},
+			rules:{
+				"baidu_code":{
+					required:true,
+					maxlength:1024
+				},
+				"seo_title":{
+					maxlength:1024
+				},
+				"seo_description":{
+					maxlength:1024
+				},
+				"seo_keywords":{
+					maxlength:1024
+				}
+			}
+		});
+		
+		
+		//***********************//
+		$("form[id='security']").validate({
+			errorPlacement: function(error, element) {
+				if(element.parent().hasClass("back-unitinput")){
+					error.addClass('back-notice').insertAfter(element.parent());
+				} else {
+					error.addClass('back-notice').insertAfter(element);
+				}
+				
+			},
+			rules:{
+				"sensitive_words":{
+					maxlength:500
+				}
+			},
+			messages:{
+				"sensitive_words":{
+					maxlength:"敏感字符不超过500字，如果有多个用逗号隔开"
+				}
+			}
+		});
+		
+		//***********************//
+		$("form[id='registerCode']").validate({
+			errorPlacement: function(error, element) {
+				error.addClass('back-notice').insertAfter(element);
+			},
+			rules:{
+				"register_code":{
+					required:true,
+					rangelength:[1,128]
+				}
+			},
+			messages:{
+				"register_code":{
+					required:"请输入正版授权号"
+				}
+			}
+		});
+	});
+	
+ 	function uploadLogo(){
+ 		
+ 		var fileId = "platform_logo_filename";
+		var file = $("#" + fileId).val();
+		var pos = file.lastIndexOf("\\");
+		var fileName = file.substring(pos + 1);
+		
+		$.ajaxFileUpload({
+			url : '@{back.setting.PlateformSettingCtrl.uploadPlatformImage()}',
+			secureuri : false,
+			fileElementId : fileId,
+			data:{
+				"fileName":fileName
+			},
+			dataType : 'json',
+			success : function(result) {
+				if(result.code == 1){
+					var data = result.obj;
+					$("img[name='platform_logo_filename']").attr("src", data.staticFileName);
+					$("input[name='platform_logo_filename']").val(data.staticFileName);
+					
+					$("#resolutionshow").html(data.imageResolution+", ");
+					$("#formatshow").html(data.fileSuffix+", ");
+					$("#sizeshow").html(data.size+"kb");
+				
+					$("#picNew").css({ "display": "block"});
+				} else {
+					alert(result.msg);
+				}
+			}
+		})
+	} 
+	
+ 	function uploadICON(){
+ 		
+ 		var fileId = "platform_icon_filename";
+		var file = $("#" + fileId).val();
+		var pos = file.lastIndexOf("\\");
+		var fileName = file.substring(pos + 1);
+		
+		$.ajaxFileUpload({
+			url : '@{back.setting.PlateformSettingCtrl.uploadPlatformImage()}',
+			secureuri : false,
+			fileElementId : fileId,
+			data:{
+				"fileName":fileName
+			},
+			dataType : 'json',
+			success : function(result) {
+				if(result.code == 1){
+					var data = result.obj;
+					$("img[name='platform_icon_filename']").attr("src", data.staticFileName);
+					$("input[name='platform_icon_filename']").val(data.staticFileName);
+					
+					$("#resolutionshow2").html(data.imageResolution+", ");
+					$("#formatshow2").html(data.fileSuffix+", ");
+					$("#sizeshow2").html(data.size+"kb");
+				
+					$("#picNew2").css({ "display": "block"});
+				} else {
+					alert(result.msg);
+				}
+			}
+		})
+	} 
+ 	
+ 	function updateIsAutoInvestShow(obj) {
+		var flag = false;
+		if(obj.is(':checked')){
+				 flag = true;
+		}
+		$.ajax({
+				url : "@{back.setting.PlateformSettingCtrl.updateIsAutoInvestShow()}",
+				type : "POST",
+				data : {
+					"flag" : flag
+				},
+				dataType:"json",
+				success : function(result) {
+					var flag = interceptorCheck(result);
+					if(!flag){
+						return;
+					}
+					if(result.code < 1){
+						alert(result.msg);
+					} else {
+						weakDialog(result.msg);
+					}
+				}
+		});
+	}
+ 	
+</script>

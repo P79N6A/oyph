@@ -1,0 +1,52 @@
+#{extends 'common/back/riskMain.html' /}
+	#{set title:'风控 | 信用等级' /}
+	#{set smallclass:4 /}
+	#{set crumbs:'风控>信用等级'/}
+	
+<!-- 信用等级列表start -->
+<div class="back-main">
+	<div class="back-cont">
+		<div class="back-box">
+			<table width="100%" class="back-table table-fixed">
+				<tr height="40">
+					<th width="70">
+						编号
+					</th>
+					<th>等级</th>
+					<th>图标</th>
+					<th>信用积分</th>
+					<th width="140">操作</th>
+				</tr>
+				#{list list,as:'list'}
+					<tr height="40">
+						<td>${list?.order_no}</td>
+						<td>${list?.name}</td>
+						<td><img src='${list?.image_url}' onerror="this.src='/public/common/default.jpg'" id='image' name="image" width='50px' height='50px'></td>
+						<td>
+							#{if list.max_credit_score == 0}
+								${list?.min_credit_score}分以上
+							#{/if}
+							#{else}
+								${list?.min_credit_score}分 ~ ${list?.max_credit_score}分
+							#{/else}
+						</td>
+						<td class="back-handle">
+							 #{rightMng rightId:405002}
+							<a href="@{back.risk.CreditLevelMngCtrl.toEditCreditLevelPre(list?.sign)}" data-title="编辑" class="iconfont">&#xe602;</a>
+							#{/rightMng}
+						</td>
+					</tr>
+				#{/list}
+			</table>
+		</div>
+	</div>
+</div>
+<!-- 信用等级列表end -->
+
+<!-- 页面js -->
+<script type="text/javascript">
+	require(["back"],function(back){
+		// 表格排序、选中
+		require(["search","order","linechecked"]);
+	});
+</script>	

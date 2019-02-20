@@ -1,0 +1,54 @@
+ #{list items:page.page,as:"information"}
+<div class="news-box">
+	<h2 class="news-title">
+		<a href="@{front.InformationCtrl.informationDetailPre(information?.id)}" title=""  target="_blank">${information?.title}</a>
+	</h2>
+	<div class="news-cont">
+		<a href="@{front.InformationCtrl.informationDetailPre(information?.id)}" class="news-img left" target="_blank"> 
+		<img src="${information?.image_url}" onerror="this.src='/public/common/default.jpg'" width="398" height="196" alt="" />
+		</a>
+		<div class="news-intro">
+			<p class="c9 news-infor">
+				<span>${information?.source_from}</span><span>${common.utils.DateUtil.getTimeLine(information?.show_time)}</span>
+			</p>
+			<a href="@{front.InformationCtrl.informationDetailPre(information?.id)}"  target="_blank">
+			<div class="news-introword" id="content" limit="120">${information?.content.raw()}</div>
+			</a>
+			<div class="index-newhandle clearfix">
+				<span class="handle-btn left" title="浏览次数"> <i
+					class="icon haveseen-icon"></i> ${information?.read_count}
+				</span>
+				<!-- 点赞前 -->
+				<a href="javascript:void(0);" class="handle-btn praise-btn left" title="赞一个" >
+					<input type="hidden" value="${information?.id}" />
+					<i class="praise-icon icon"></i>
+					<i class="praise-count">${information?.support_count}</i>
+				</a>
+				<i class="handleplit left"></i> 
+				<a href="javascript:sinaShare('@@{front.InformationCtrl.informationDetailPre}?id=${information?.id}','${information?.title}','${information?.image_url}');" title="分享到新浪微博" class="shareto-sina handle-share left">
+					<i class="icon sina-icon"></i>
+				</a>
+				<div class="shareto-wechat handle-share left" title="分享到朋友圈">
+					<i class="icon wechat-icon"></i>
+					<div class="shareto-wechat-upbox">
+						<i></i>
+						<i></i>
+						<div class="code-area"></div>
+						<input type="hidden" class="code-url" value="@@{front.InformationCtrl.informationDetailPre}?id=${information?.id}">
+					</div>
+				</div>
+				<a href="javascript:qqZoneShare('@@{front.InformationCtrl.informationDetailPre}?id=${information?.id}','${information?.title}','${information?.image_url}');" class="handle-share shareto-qqspace left" title="分享到QQ空间">
+					<i class="icon qqspace-icon"></i>
+				</a>
+			</div>
+		</div>
+	</div>
+</div>
+#{/list}
+
+<script type="text/javascript">
+require(['front'],function(front){
+	require(['share']);
+
+});
+</script>

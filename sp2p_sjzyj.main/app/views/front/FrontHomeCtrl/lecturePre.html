@@ -1,0 +1,87 @@
+ #{extends 'common/frontMain.html' /} #{set title: '首页'/} #{set AItem:8/}
+<!DOCTYPE html>
+
+<link rel="stylesheet" type="text/css" href="/public/front/stylesheets/Forum.css" >
+<div class="Forum">
+    <img src="https://image.ouyepuhui.com/images/Forum3.png" class="hand" STYLE="display: none">
+    <div class="content1">
+        <span class="biaoti1">严格风控</span>
+        <span class="biaoti2">九项安全保障让您的资金更放心</span>
+        <input type="button" value="查看详情" class="but" onclick="location.href='@{front.FrontHomeCtrl.sainPre()}'">
+    </div>
+</div>
+<div class="Forum1">
+<img src="https://image.ouyepuhui.com/images/Forum5.png" class="building" style="display: none">
+    <div class="content2">
+        <span class="biaoti1">惠房贷</span>
+        <span class="biaoti2">有房就能贷&nbsp;轻松款下来</span>
+        <input type="button" value="查看详情" class="butt" onclick="location.href='@{front.LoanCtrl.toLoanPre()}'">
+    </div>
+</div>
+<div class="Forum2">
+    <img src="https://image.ouyepuhui.com/images/Forum4.png" class="vehicle" style="display: none">
+    <div class="content3">
+        <span class="biaoti1">惠车贷</span>
+        <span class="biaoti2">有车就能贷&nbsp;轻松款下来</span>
+        <input type="button" value="查看详情" class="but" onclick="location.href='@{front.LoanCtrl.toLoanPre()}'" >
+    </div>
+</div>
+
+<script src="/public/front/javascripts/jquery-1.8.3.min.js"></script>
+<script type="text/javascript">
+    $(window).scroll(function () {
+        var aa=$(this).scrollTop()
+        if(aa >=643){
+            $(".hand").fadeIn(1500);
+            $(".content1 .biaoti1").animate({
+                bottom : "0",
+                opacity:'1'
+            },200,function () {
+                $(".content1 .biaoti2").animate({
+                    bottom : "0",
+                    opacity:'1'
+                },200,function () {
+                    $(".content1 .but").animate({
+                        bottom : "0",
+                        opacity:'1'
+                    },200)
+                })
+            })
+        }
+        if(aa >= 1166){
+        	$(".building").fadeIn(1500);
+            $(".content2 .biaoti1").animate({
+                bottom : "0",
+                opacity:'1'
+            },200,function () {
+                $(".content2 .biaoti2").animate({
+                    bottom : "0",
+                    opacity:'1'
+                },200,function () {
+                    $(".content2 .butt").animate({
+                        bottom : "0",
+                        opacity:'1'
+                    },200)
+                })
+            })
+        }
+        if(aa >= 1679){
+            $(".vehicle").fadeIn(1500);
+            $(".content3 .biaoti1").animate({
+                bottom : "0",
+                opacity:'1'
+            },200,function () {
+                $(".content3 .biaoti2").animate({
+                    bottom : "0",
+                    opacity:'1'
+                },200,function () {
+                    $(".content3 .but").animate({
+                        bottom : "0",
+                        opacity:'1'
+                    },200)
+                })
+            })
+        }
+
+    })
+</script>

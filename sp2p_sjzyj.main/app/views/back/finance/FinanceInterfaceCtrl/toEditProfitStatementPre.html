@@ -1,0 +1,293 @@
+#{extends 'common/back/financeMain.html' /}
+	#{set title:'财务 | 财务信息表' /}
+	#{set smallclass:15 /}
+	#{set crumbs:'财务>财务信息表'/}
+<style>
+ 	.financialSurface{
+ 		width: 50%;
+ 		margin: 0 auto;
+ 	}
+ 	.financialSurface caption {
+		font-size: 30px;
+		font-weight: bold;
+		margin-bottom: 20px;
+	}
+	.financialSurface th{
+		width: 30%;
+	}
+	.financialSurface th.order{
+		width: 10%;
+	}
+	.financialSurface tr{
+		height: 40px;
+		text-align: center;
+	}
+	.financialSurface input{
+		outline: none;
+		border: none;
+		text-align: center;
+		background-color: transparent;
+	}
+	input::-webkit-outer-spin-button,
+	input::-webkit-inner-spin-button{
+    -webkit-appearance: none !important;
+    margin: 0; 
+	}
+	.tdblue{
+		background: #bcd6ee;
+	}
+</style>
+<div class="back-main">
+	<div class="back-usertop">
+		<div class="left back-usermenu">
+			<a href="@{back.finance.FinanceInterfaceCtrl.balanceSheetPre()}">资产负债表</a>
+			<a href="@{back.finance.FinanceInterfaceCtrl.profitStatementPre()}" class="selected">利润表</a>
+			<a href="@{back.finance.FinanceInterfaceCtrl.cashFlowSheetPre()}">现金流量表</a>
+			<a href="@{back.finance.FinanceInterfaceCtrl.financialOfficePre()}">金融办</a>
+			<a href="@{back.finance.FinanceInterfaceCtrl.financialStatementsPre()}">财务报表</a>
+		</div>
+	</div>
+	<div class="back-cont">
+		<div class="back-box">
+			<div class="controls">
+				<form action="@{back.finance.FinanceInterfaceCtrl.editProfitStatement()}"  method="POST" id="saveFinance">
+					<input type="hidden" value="${profit?.id}" name="profit.id">
+					<table border="1" class="financialSurface">
+						<caption>利润表    ${profit?.create_time?.format(common.constants.Constants.DATE_FORMATEMM)}月</caption>
+						<tr>
+							<th class="order">序号</th>
+							<th>项目</th>
+							<th>本月发生额</th>
+							<th>本年发生额</th>
+						</tr>
+						<tr>
+							<td>1</td>
+							<td>一、营业收入</td>
+							<td class="tdblue"><input type="number" name="profit.operating_receipt" readonly="readonly" id="businessIncomeMonth" value="${profit?.operating_receipt}"></td>
+							<td class="tdblue"><input type="number" name="profit.operating_receipt_year" readonly="readonly" id="businessIncomeYear" value="${profit?.operating_receipt_year}"></td>
+						</tr>
+						<tr>
+							<td>2</td>
+							<td>网贷中介服务收入</td>
+							<td><input type="number" name="profit.net_service_income" step="0.01" id="net_service_income" value="${profit?.net_service_income}"></td>
+							<td><input type="number" name="profit.net_service_income_year" step="0.01" id="net_service_income_year" value="${profit?.net_service_income_year}"></td>
+						</tr>
+						<tr>
+							<td>3</td>
+							<td>其他业务收入</td>
+							<td><input type="number" name="profit.other_operating_income" step="0.01" id="other_operating_income" value="${profit?.other_operating_income}"></td>
+							<td><input type="number" name="profit.other_operating_income_year" step="0.01" id="other_operating_income_year" value="${profit?.other_operating_income_year}"></td>
+						</tr>
+						<tr>
+							<td>4</td>
+							<td>营业成本</td>
+							<td><input type="number" name="profit.operating_costs" step="0.01" id="operating_costs" value="${profit?.operating_costs}"></td>
+							<td><input type="number" name="profit.operating_costs_year" step="0.01" id="operating_costs_year" value="${profit?.operating_costs_year}"></td>
+						</tr>
+						<tr>
+							<td>5</td>
+							<td>税金及附加</td>
+							<td><input type="number" name="profit.operating_tax" step="0.01" id="operating_tax" value="${profit?.operating_tax}"></td>
+							<td><input type="number" name="profit.operating_tax_year" step="0.01" id="operating_tax_year" value="${profit?.operating_tax_year}"></td>
+						</tr>
+						<tr>
+							<td>6</td>
+							<td>销售费用</td>
+							<td><input type="number" name="profit.sales_expense" step="0.01" id="sales_expense" value="${profit?.sales_expense}"></td>
+							<td><input type="number" name="profit.sales_expense_year" step="0.01" id="sales_expense_year" value="${profit?.sales_expense_year}"></td>
+						</tr>
+						<tr>
+							<td>7</td>
+							<td>管理费用</td>
+							<td><input type="number" name="profit.overhead_expense" step="0.01" id="overhead_expense" value="${profit?.overhead_expense}"></td>
+							<td><input type="number" name="profit.overhead_expense_year" step="0.01" id="overhead_expense_year" value="${profit?.overhead_expense_year}"></td>
+						</tr>
+						<tr>
+							<td>8</td>
+							<td>研发费用</td>
+							<td><input type="number" name="profit.dev_expense" step="0.01" id="dev_expense" value="${profit?.dev_expense}"></td>
+							<td><input type="number" name="profit.dev_expense_year" step="0.01" id="dev_expense_year" value="${profit?.dev_expense_year}"></td>
+						</tr>
+						<tr>
+							<td>9</td>
+							<td>财务费用</td>
+							<td><input type="number" name="profit.financial_cost" step="0.01" id="financial_cost" value="${profit?.financial_cost}"></td>
+							<td><input type="number" name="profit.financial_cost_year" step="0.01" id="financial_cost_year" value="${profit?.financial_cost_year}"></td>
+						</tr>
+						<tr>
+							<td>10</td>
+							<td>充值提现手续费</td>
+							<td><input type="number" name="profit.cash_handing_charges" step="0.01" id="cash_handing_charges" value="${profit?.cash_handing_charges}"></td>
+							<td><input type="number" name="profit.cash_handing_charges_year" step="0.01" id="cash_handing_charges_year" value="${profit?.cash_handing_charges_year}"></td>
+						</tr>
+						<tr>
+							<td>11</td>
+							<td>资产减值损失</td>
+							<td><input type="number" name="profit.assets_impairment_loss" step="0.01" id="assets_impairment_loss" value="${profit?.assets_impairment_loss}"></td>
+							<td><input type="number" name="profit.assets_impairment_loss_year" step="0.01" id="assets_impairment_loss_year" value="${profit?.assets_impairment_loss_year}"></td>
+						</tr>
+						<tr>
+							<td>12</td>
+							<td>加：公允价值变动损益</td>
+							<td><input type="number" name="profit.changes_val_profit" step="0.01" id="changes_val_profit" value="${profit?.changes_val_profit}"></td>
+							<td><input type="number" name="profit.changes_val_profit_year" step="0.01" id="changes_val_profit_year" value="${profit?.changes_val_profit_year}"></td>
+						</tr>
+						<tr>
+							<td>13</td>
+							<td>投资收益</td>
+							<td><input type="number" name="profit.investment_income" step="0.01" id="investment_income" value="${profit?.investment_income}"></td>
+							<td><input type="number" name="profit.investment_income_year" step="0.01" id="investment_income_year" value="${profit?.investment_income_year}"></td>
+						</tr>
+						<tr>
+							<td>14</td>
+							<td>二、营业利润</td>
+							<td class="tdblue"><input type="number" readonly name="profit.operating_profit" id="operatingProfitMonth" value="${profit?.operating_profit}"></td>
+							<td class="tdblue"><input type="number" readonly name="profit.operating_profit_year" id="operatingProfitYear" value="${profit?.operating_profit_year}"></td>
+						</tr>
+						<tr>
+							<td>15</td>
+							<td>营业外收入</td>
+							<td><input type="number" name="profit.non_operating_income" step="0.01" id="non_operating_income" value="${profit?.non_operating_income}"></td>
+							<td><input type="number" name="profit.non_operating_income_year" step="0.01" id="non_operating_income_year" value="${profit?.non_operating_income_year}"></td>
+						</tr>
+						<tr>
+							<td>16</td>
+							<td>政府补贴收入</td>
+							<td><input type="number" name="profit.gov_subsidy_income" step="0.01" id="gov_subsidy_income" value="${profit?.gov_subsidy_income}"></td>
+							<td><input type="number" name="profit.gov_subsidy_income_year" step="0.01" id="gov_subsidy_income_year" value="${profit?.gov_subsidy_income_year}"></td>
+						</tr>
+						<tr>
+							<td>17</td>
+							<td>营业外支出</td>
+							<td><input type="number" name="profit.non_operating_expense" step="0.01" id="non_operating_expense" value="${profit?.non_operating_expense}"></td>
+							<td><input type="number" name="profit.non_operating_expense_year" step="0.01" id="non_operating_expense_year" value="${profit?.non_operating_expense_year}"></td>
+						</tr>
+						<tr>
+							<td>18</td>
+							<td>三、利润总额</td>
+							<td class="tdblue"><input type="number" readonly name="profit.total_profit" id="totalProfitMonth" value="${profit?.total_profit}"></td>
+							<td class="tdblue"><input type="number" readonly name="profit.total_profit_year" id="totalProfitYear" value="${profit?.total_profit_year}"></td>
+						</tr>
+						<tr>
+							<td>19</td>
+							<td>所得税费用</td>
+							<td><input type="number" name="profit.income_tax_expense" step="0.01" id="income_tax_expense" value="${profit?.income_tax_expense}"></td>
+							<td><input type="number" name="profit.income_tax_expense_year" step="0.01" id="income_tax_expense_year" value="${profit?.income_tax_expense_year}"></td>
+						</tr>
+						<tr>
+							<td>20</td>
+							<td>四、净利润</td>
+							<td class="tdblue"><input type="number" readonly name="profit.retained_profits" id="netProfitMonth" value="${profit?.retained_profits}"></td>
+							<td class="tdblue"><input type="number" readonly name="profit.retained_profits_year" id="netProfitYear" value="${profit?.retained_profits_year}"></td>
+						</tr>
+						<tr>
+							<td>时间</td>
+							<td colspan="3"><input type="text" class="easyui-datetimebox"  name="create_time" value="${profit?.create_time?.format(common.constants.Constants.DATE_PLUGIN)}" /></td>
+						</tr>
+					</table>
+					<p class="back-audit-btns" style="padding-bottom: 20px;">
+						<input type="submit" id="page" value="保存" class="bbtn"/>
+						<input type="button" value="取消" class="bdbtn" onclick="window.location.href='@{back.finance.FinanceInterfaceCtrl.profitStatementPre()}'">
+				    </p>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+require(["back"],function(back){
+	// 搜索 排序 选中
+	require(["datatime"],function(){
+	});
+});
+	/*页面总计计算*/
+	var businessIncomeMonth = 0; //营业收入月
+	var businessIncomeYear = 0;  //营业收入年
+	var operatingProfitMonth = 0;//营业利润月
+	var operatingProfitYear = 0; //营业利润年
+	var totalProfitMonth = 0;	 //利润总额月
+	var totalProfitYearh = 0;	 //利润总额年
+	var netProfitMonth = 0;		 //净利润月
+	var netProfitYearh = 0;		 //净利润年
+	function sum(){
+		/*营业收入月*/
+		var net_service_income = judgeNull($('#net_service_income').val());
+		var other_operating_income = judgeNull($('#other_operating_income').val());
+		/*营业收入年*/
+		var net_service_income_year = judgeNull($('#net_service_income_year').val());
+		var other_operating_income_year = judgeNull($('#other_operating_income_year').val());
+		/*营业利润月*/
+		var operating_costs = judgeNull($('#operating_costs').val());
+		var operating_tax = judgeNull($('#operating_tax').val());
+		var sales_expense = judgeNull($('#sales_expense').val());
+		var overhead_expense = judgeNull($('#overhead_expense').val());
+		var financial_cost = judgeNull($('#financial_cost').val());
+		var assets_impairment_loss = judgeNull($('#assets_impairment_loss').val());
+		var changes_val_profit = judgeNull($('#changes_val_profit').val());
+		var investment_income = judgeNull($('#investment_income').val());
+		/*营业利润年*/
+		var operating_costs_year = judgeNull($('#operating_costs_year').val());
+		var operating_tax_year = judgeNull($('#operating_tax_year').val());
+		var sales_expense_year = judgeNull($('#sales_expense_year').val());
+		var overhead_expense_year = judgeNull($('#overhead_expense_year').val());
+		var financial_cost_year = judgeNull($('#financial_cost_year').val());
+		var assets_impairment_loss_year = judgeNull($('#assets_impairment_loss_year').val());
+		var changes_val_profit_year = judgeNull($('#changes_val_profit_year').val());
+		var investment_income_year = judgeNull($('#investment_income_year').val());
+		/*利润总额月*/
+		var non_operating_income = judgeNull($('#non_operating_income').val());
+		var non_operating_expense = judgeNull($('#non_operating_expense').val());
+		/*利润总额年*/
+		var non_operating_income_year = judgeNull($('#non_operating_income_year').val());
+		var non_operating_expense_year = judgeNull($('#non_operating_expense_year').val());
+		/*所得税费用月*/
+		var income_tax_expense = judgeNull($('#income_tax_expense').val());
+		/*所得税费用月*/
+		var income_tax_expense_year = judgeNull($('#income_tax_expense_year').val());
+		
+		
+		
+		businessIncomeMonth = net_service_income + other_operating_income;
+		businessIncomeYear = net_service_income_year + other_operating_income_year;
+		operatingProfitMonth = businessIncomeMonth - operating_costs - operating_tax - sales_expense - overhead_expense - financial_cost - assets_impairment_loss + changes_val_profit + investment_income;
+		operatingProfitYear = businessIncomeYear - operating_costs_year - operating_tax_year - sales_expense_year - overhead_expense_year - financial_cost_year - assets_impairment_loss_year + changes_val_profit_year + investment_income_year;
+		totalProfitMonth = operatingProfitMonth + non_operating_income - non_operating_expense;
+		totalProfitYear = operatingProfitYear + non_operating_income_year - non_operating_expense_year;
+		netProfitMonth = totalProfitMonth - income_tax_expense;
+		netProfitYear = totalProfitYear - income_tax_expense_year;
+		$('#businessIncomeMonth').val(businessIncomeMonth);
+		$('#businessIncomeYear').val(businessIncomeYear);
+		$('#operatingProfitMonth').val(operatingProfitMonth);
+		$('#operatingProfitYear').val(operatingProfitYear);
+		$('#totalProfitMonth').val(totalProfitMonth);
+		$('#totalProfitYear').val(totalProfitYear);
+		$('#netProfitMonth').val(netProfitMonth);
+		$('#netProfitYear').val(netProfitYear);
+	}
+	/*判断值是不是为空*/
+	function judgeNull (val){
+		if(val == ""){
+			val = 0;
+		}else{
+			val = parseFloat(val);
+		}
+		return val;
+	};
+	
+	$("#saveFinance input").keyup(function(){
+		sum();
+	});
+	$("#saveFinance input").change(function(){
+		sum();
+	});
+	
+</script>
+
+
+
+
+
+
+
+
+

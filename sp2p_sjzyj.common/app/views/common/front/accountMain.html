@@ -1,0 +1,665 @@
+#{extends 'common/frontMain.html' /}
+#{set AItem:7 /}
+		<link rel="stylesheet" type="text/css" href="/public/front/stylesheets/My_treasure.css" />
+		<link rel="stylesheet" type="text/css" href="/public/front/stylesheets/user-info.css" />
+		<link rel="stylesheet" type="text/css" href="/public/front/stylesheets/yanzheng-css/style.css"/>
+		<script src="/public/front/javascripts/js/taxon.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- main -->
+<!-- 二级导航 -->
+		<div id="treasure-box">
+				<!--左边栏-->
+				<div id="leftmenu">
+					<ul>
+						<li class="menu-title"><img src="/public/front/images/list-pic/treasure-pic.png" /><a class="btn-shouye" href="@{front.account.MyAccountCtrl.homesPre()}">账户首页</a></li>
+						<li class="button" id="Investment" value="0"><img src="/public/front/images/list-pic/admin-pic.png" /><a href="javascript:void(0);" id="Investmenta">账户信息<img class="jt-r" src="/public/front/images/pic/right-jt.png" /></a></li>
+						<li class="dropdown" style="display:none;">
+							<ul class="menu-left-box">
+								<li><a class="btn-licai" href="javascript:void(0);">出借项目</a></li>
+								<li><a class="btn-jiekuan" href="javascript:void(0);">我的借款</a></li>
+								<li><a class="btn-shourang" href="javascript:void(0);">我的受让</a></li>
+								<li><a class="btn-zhuanrang" href="javascript:void(0);">我的转让</a></li>
+								<!-- <li><a class="btn-toubiao" href="javascript:void(0);">自动投标</a></li> -->
+							</ul>
+						</li>
+						<li class="button" id="records" value="0"><img src="/public/front/images/list-pic/record-pic.png"/><a href="javascript:void(0);" id="recordss">交易记录<img class="jt-r" src="/public/front/images/pic/right-jt.png" /></a></li>
+						<li class="dropdown" style="display:none;">
+							<ul class="menu-left-box">
+								<li><a class="btn-jilu" href="javascript:void(0);">交易记录</a></li>
+								<li><a class="btn-chongzhi" href="javascript:void(0);">充值记录</a></li>
+								<li><a class="btn-tixian" href="javascript:void(0);">提现记录</a></li>
+								<li><a class="btn-duihuan" href="javascript:void(0);">兑换记录</a></li>
+							</ul>
+						</li>
+						<li class="menu-title"><img src="/public/front/images/list-pic/personage-pic.png" /><a class="btn-geren" href="@{front.account.MyInfoCtrl.toUserInfoPre()}">个人信息</a></li>
+						<li class="menu-title"><img src="/public/front/images/list-pic/centre-pic.png" /><a class="btn-anquan" href="@{front.account.MySecurityCtrl.securitysPre()}">安全中心</a></li>
+						<li class="button" id="reward" value="0"><img src="/public/front/images/list-pic/wodejiangli.png" /><a href="javascript:void(0);" id="rewards">我的奖励<img class="jt-r" src="/public/front/images/pic/right-jt.png" /></a></li>
+						<li class="dropdown" style="display:none;">
+							<ul class="menu-left-box">
+								<!-- <li><a class="btn-hongbao" href="javascript:void(0);">红包</a></li>
+								<li><a class="btn-jiaxi" href="javascript:void(0);">加息券</a></li> -->
+								<li><a class="btn-tiyan" href="javascript:void(0);">体验金</a></li>
+								<li><a class="btn-xinshou" href="javascript:void(0);">新手任务</a></li>
+								<li><a class="btn-tuiguang" href="javascript:void(0);">cps推广</a></li>
+								<!-- <li><a class="btn-caifu" href="javascript:void(0);">财富圈</a></li> -->
+							</ul>
+						</li>
+
+						<li class="menu-title"><img src="/public/front/images/list-pic/message-pic.png" /><a class="btn-xiaoxi" href="@{front.account.MyAccountCtrl.showNoticePre()}">我的消息</a></li>
+						<li class="menu-title"><img src= "/public/front/images/list-pic/activity-pic.png"/><a class="btn-huodong" href="@{front.activity.MyActivityCtrl.SyllabusPre()}" >讴业活动</a></li>
+					</ul>
+				</div>
+				<!--右边栏-->
+				<div class="treasure-box-rg">
+					<div class="rg-wraps" style="width: 960px; overflow: hidden;">
+						<div class="treasure-wrap">
+							<div class="treasure-top">
+								<div class="treasure-pic">
+									<img src="/public/front/images/pic/coverage-2.jpg" />
+								</div>
+								<div class="treasure-rg-top"> 
+									<h2>您好！<a href="@{front.account.MyInfoCtrl.toUserInfoPre()}" class="" title="设置基本信息"><span class="treasure-rg1">${currUser?.name}</span></a> <span id='vipIMG'></span>
+									#{if currUser!=null}
+										#{if currUser.payment_account != ""}
+									<!-- 已开通 -->
+									<span class="treasure-rg2">你已开通资金托管</span>
+										#{/if}
+									#{else}
+										<!-- 未开通 -->
+										<span class="treasure-rg2">您尚未开通资金托管,请</span> <span class="treasure-rg3"><a href="@{front.account.MySecurityCtrl.createAccountPre()}" target="_blank">尽快开通</a></span></h2>
+										#{/else}
+									#{/if}
+									
+								</div>
+								<div class="treasure-rg-bottom">
+									 <div class="left userapprove">
+						 				<span class="left">账号安全：</span>
+						 				<!-- 已认证添加类名 approved -->
+						 				<a href="@{front.account.MySecurityCtrl.securityPre()}" data-title="实名认证" class="icon name-approve #{if currUser?.is_real_name}approved#{/if}"></a>
+						 				<a href="@{front.account.MySecurityCtrl.securityPre()}" data-title="手机认证" class="icon phone-approve #{if currUser?.is_mobile}approved#{/if}"></a>
+						 				<a href="@{front.account.MySecurityCtrl.securityPre()}" data-title="邮箱认证" class="icon email-approve #{if currUser?.is_email_verified}approved#{/if}"></a>
+						 				<a href="@{front.account.MySecurityCtrl.securityPre()}" data-title="银行卡绑定" class="icon bank-bind #{if currUser?.is_bank_card}approved#{/if}"></a>
+				 					</div>
+										 <div class="left safelevel">
+							 				<span class="left" style="margin-top: 18px;">安全等级：</span>
+							 				<div class="left safelevel-bar">
+							 					<div class="safelevel-value" style="width: ${currUser?.schedule}%;"></div>
+							 				</div>
+										 </div><!-- 站内消息 -->						
+								</div>
+							</div>
+							
+						</div>
+					</div>
+
+				<!-- 资产状态 -->
+				<div class="userasset">
+					<div class="userasset-box" id="userasset">
+					</div>
+					<span class="userasset-control selected">资产状态<i class="icon"></i></span>
+				</div>
+				<!-- 资产状态end -->
+		
+				<!-- main Content start -->
+					#{doLayout /}
+				<!-- main Content start -->
+		
+				<!-- 开户弹窗 -->
+				
+				<div class="dialog open-dialog" id="account_main_register_dialog">
+					<div class="dialog-bg"></div>
+					<div class="dialog-cont trusteeship-dialog">
+						<h2 class="dialog-head">
+							<span class="left">平台提示</span>
+						</h2>
+						<div class="trusteeship-cont">
+							<div class="trusteeship-wrap">
+								<i class="trusteeship-icon"></i>
+								<p class="major">请在新页面完成资金托管开户。</p>
+								<a href="@{front.account.MySecurityCtrl.securityPre()}" class="bdbtn">开户成功</a>
+								<p class="trusteeship-help"><a href="@{front.FrontHomeCtrl.helpPre(models.common.entity.t_help_center.Column.FINANCIAL_KNOWLEDGE.code,1)}" class="c9">开户遇到问题></a></p>
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+		
+<script type="text/javascript">
+require(['front'],function(front){
+	//账户首页资产信息展开
+	#{if isHome}
+		$('.userasset-box').stop(true,true).slideDown(300);
+		$('.userasset-control').removeClass('selected');
+		getUserAsset();
+	#{/if}
+	getUserVIP();
+	//上传功能的js
+	require(["ajaxfileupload"]);
+	
+	//开户弹窗
+	$(".trusteeship-openbtn").click(function(){
+		$("#account_main_register_dialog").dialog();
+	});
+	
+	//账户资产状况收缩
+	$('body').on('click','.userasset-control',function(){
+		var userasset = $('.userasset-box');
+		if(userasset.is(':hidden')){
+			userasset.stop(true,true).slideDown(300);
+			$(this).removeClass('selected');
+			getUserAsset();
+		}else{
+			userasset.stop(true,true).slideUp(300);
+			$(this).addClass('selected');
+		}
+	});
+
+	//查询用户的未读消息数
+	getNoticeNum();
+});
+
+function upload(){
+	#{if isSimulated}
+			alert("模拟登录不能执行该操作");
+			return false;
+	#{/if}
+	#{else}
+		var fileId = "imgFile";
+		var file = $("#" + fileId).val();
+		var pos = file.lastIndexOf("\\");
+		var fileName = file.substring(pos + 1);
+		
+		$.ajaxFileUpload({
+			url : '@{front.account.MyAccountCtrl.updatePhoto()}',
+			secureuri : false,
+			fileElementId : fileId,
+			data:{
+				"fileName":fileName
+			},
+			dataType : 'json',
+			success : function(data) {
+				console.info(data);
+				var flag = interceptorCheck(data);
+				if(!flag){
+					return;
+				}
+				if(data.code == 1){
+					$("#image").attr("src", data.obj);
+					$("#imgFile").val('');
+				} else {
+				alert(data.msg);
+				}
+			}
+		})
+	#{/else}
+	
+}
+
+function getUserAsset(){
+	$.ajax({
+		url : "@{front.account.MyAccountCtrl.userHeadFundInfo()}",
+		type : "POST",
+		success : function(data) {
+			
+			var flag = interceptorCheck(data);
+			if(!flag){
+				return;
+			}
+			
+			$("#userasset").html(data);
+		}
+	});
+}
+
+function getNoticeNum() {
+	
+	$.ajax({
+		url : "@{front.account.MyAccountCtrl.getNoticeNum()}",
+		type : "POST",
+		dataType:"json",
+		success : function(data) {
+			var flag = interceptorCheck(data);
+			if(!flag){
+				return;
+			}
+			if(data.code < 1 ){
+				alert(data.msg);
+			} else {
+				$("#notic_num").html(data.obj);
+			}
+		}
+	});
+}
+
+</script>
+<script type="text/javascript">
+$(document).ready(function(){
+	$.easing.def = "easeOutBounce";
+	$('li.button a').click(function(e){
+		var dropDown = $(this).parent().next();
+		$('.dropdown').not(dropDown).slideUp('slow');
+		dropDown.slideToggle('slow');
+	
+		if($(this).attr('id')=='Investmenta'){
+			if($("#Investment").val()=="1"){
+				$("#Investment").val("0")
+			}else{
+				$("#Investment").val("1")
+			}
+		}else{
+			$("#Investment").val("0")
+		}
+		if($(this).attr('id')=='recordss'){
+			if($("#records").val()=="1"){
+				$("#records").val("0")
+			}else{
+				$("#records").val("1")
+			}
+		}else{
+			$("#records").val("0")
+		}
+		if($(this).attr('id')=='rewards'){
+			if($("#reward").val()=="1"){
+				$("#reward").val("0")
+			}else{
+				$("#reward").val("1")
+			}
+		}else{
+			$("#reward").val("0")
+		}
+		e.preventDefault();
+	});
+	var leftheight = $("#main").height();
+	
+	$("#leftmenu").height(leftheight);
+	
+	$("#leftmenu>ul>li").click(function() {
+        $(this).siblings("li").removeClass("addred");  
+        $(this).addClass("addred");                
+    });
+    $(".menu-left-box>li").click(function() {
+    	$("#leftmenu>ul>li").siblings("li").removeClass("addred");  
+        $(".menu-left-box>li").siblings("li").removeClass("addred");  
+        $(this).addClass("addred");              
+    });
+    var ot = document.getElementsByClassName("dropdown");
+    var otc = document.getElementsByClassName("button");
+    var otImg = document.getElementsByClassName("jt-r");
+    	otc[0].onclick = function(){
+			setInterval(function(){
+				if(ot[0].style.display == "list-item"){
+    				otImg[0].style.transform = "rotate(-93deg)";
+	    		}
+	    		else if(ot[0].style.display == "none"){
+	    			otImg[0].style.transform = "rotate(0deg)";
+	    		}
+			},200)
+    	}
+    	otc[1].onclick = function(){
+			setInterval(function(){
+				if(ot[1].style.display == "list-item"){
+    				otImg[1].style.transform = "rotate(-93deg)";
+	    		}
+	    		else if(ot[1].style.display == "none"){
+	    			otImg[1].style.transform = "rotate(0deg)";
+	    		}
+			},200)
+    	}
+    	otc[2].onclick = function(){
+			setInterval(function(){
+				if(ot[2].style.display == "list-item"){
+    				otImg[2].style.transform = "rotate(-93deg)";
+	    		}
+	    		else if(ot[2].style.display == "none"){
+	    			otImg[2].style.transform = "rotate(0deg)";
+	    		}
+			},200)
+    	}
+      
+});
+</script>
+<script type="text/javascript" charset="utf-8">
+/*出借项目*/
+function accountInvestPre(currPage, pageSize){
+	$.ajax({
+		url : "@{front.account.MyFundCtrl.accountInvestPre()}",
+		type : "GET",
+		data : {
+			"currPage" : currPage,
+			"pageSize" : pageSize
+		},
+		success : function(data) {
+			var flag = interceptorCheck(data);
+			if(!flag){
+				return;
+			}
+			$(".account-box").html(data);
+		}
+	});
+}
+function accountLoanPre(currPage, pageSize){
+	$.ajax({
+		url : "@{front.account.MyFundCtrl.accountLoanPre()}",
+		type : "GET",
+		data : {
+			"currPage" : currPage,
+			"pageSize" : pageSize
+		},
+		success : function(data) {
+			var flag = interceptorCheck(data);
+			if(!flag){
+				return;
+			}
+			$(".account-box").html(data);
+		}
+	});
+}
+function accountInDebtPre(currPage, pageSize){
+	$.ajax({
+		url : "@{front.account.MyFundCtrl.accountInDebtPre()}",
+		type : "GET",
+		data : {
+			"currPage" : currPage,
+			"pageSize" : pageSize
+		},
+		success : function(data) {
+			var flag = interceptorCheck(data);
+			if(!flag){
+				return;
+			}
+			$(".account-box").html(data);
+		}
+	});
+}
+function accountOutDebtPre(currPage, pageSize){
+	$.ajax({
+		url : "@{front.account.MyFundCtrl.accountOutDebtPre()}",
+		type : "GET",
+		data : {
+			"currPage" : currPage,
+			"pageSize" : pageSize
+		},
+		success : function(data) {
+			var flag = interceptorCheck(data);
+			if(!flag){
+				return;
+			}
+			$(".account-box").html(data);
+		}
+	});
+}
+function accountAutoInvestPre(){
+	$.ajax({
+		url : "@{front.account.MyFundCtrl.accountAutoInvestPre()}",
+		type : "GET",
+		success : function(data) {
+			var flag = interceptorCheck(data);
+			if(!flag){
+				return;
+			}
+			$(".account-box").html(data);
+		}
+	});
+}
+$("#Investment").click(function(){
+	var xx= $("#Investment").val();
+	console.log(xx)
+	if(xx==1){
+		accountInvestPre(1,5)
+		$(this).next().children(':first').children(':first').addClass("addred").siblings().removeClass("addred");
+	}
+})
+$("#records").click(function(){
+	var xx= $("#records").val();
+	console.log(xx)
+	if(xx==1){
+		listOfDealRecordsPre(1,5)
+		$(this).next().children(':first').children(':first').addClass("addred").siblings().removeClass("addred");
+	}
+})
+$("#reward").click(function(){
+	console.log(xx)
+	var xx= $("#reward").val();
+	if(xx==1){
+		showMyExperienceAccount()
+		$(this).next().children(':first').children(':first').addClass("addred").siblings().removeClass("addred");
+	}
+})
+$('.btn-licai').click(function(){
+	accountInvestPre(1,5);
+})
+$('.btn-jiekuan').click(function(){
+	accountLoanPre(1,5);
+})
+$('.btn-shourang').click(function(){
+	accountInDebtPre(1,5);
+})
+$('.btn-zhuanrang').click(function(){
+	accountOutDebtPre(1,5);
+})
+$('.btn-toubiao').click(function(){
+	accountAutoInvestPre(1,5);
+})
+/*交易记录*/
+function listOfDealRecordsPre(currPage, pageSize){
+	$.ajax({
+		url : "@{front.account.MyDealCtrl.listOfDealRecordsPre()}",
+		type : "GET",
+		data : {
+			"currPage" : currPage,
+			"pageSize" : pageSize
+		},
+		success : function(data) {
+			var flag = interceptorCheck(data);
+			if(!flag){
+				return;
+			}
+			$(".account-box").html(data);
+		}
+	 });
+}
+
+//充值记录
+function listOfRechargeRecordsPre(currPage, pageSize){
+	$.ajax({
+		url : "@{front.account.MyDealCtrl.listOfRechargeRecordsPre()}",
+		type : "GET",
+		data : {
+			"currPage" : currPage,
+			"pageSize" : pageSize
+		},
+		success : function(data) {
+			var flag = interceptorCheck(data);
+			if(!flag){
+				return;
+			}
+			$(".account-box").html(data);
+		}
+	 });
+}
+
+//提现记录
+function listOfWithdrawRecordsPre(currPage, pageSize){
+	$.ajax({
+		url : "@{front.account.MyDealCtrl.listOfWithdrawRecordsPre()}",
+		type : "GET",
+		data : {
+			"currPage" : currPage,
+			"pageSize" : pageSize
+		},
+		success : function(data) {
+			var flag = interceptorCheck(data);
+			if(!flag){
+				return;
+			}
+			$(".account-box").eq(0).html(data);
+		}
+	 });
+}
+
+//兑换记录
+function listOfConversionRecordsPre(currPage, pageSize){
+	$.ajax({
+		url : "@{front.account.MyDealCtrl.listOfConversionRecordsPre()}",
+		type : "GET",
+		data : {
+			"currPage" : currPage,
+			"pageSize" : pageSize
+		},
+		success : function(data) {
+			var flag = interceptorCheck(data);
+			if(!flag){
+				return;
+			}
+			$(".account-box").eq(0).html(data);
+		}
+	 });
+}
+$('.btn-jilu').click(function(){
+	listOfDealRecordsPre(1,5);
+})
+$('.btn-chongzhi').click(function(){
+	listOfRechargeRecordsPre(1,5);
+})
+$('.btn-tixian').click(function(){
+	listOfWithdrawRecordsPre(1,5);
+})
+$('.btn-duihuan').click(function(){
+	listOfConversionRecordsPre(1,5);
+})
+/*红包*/
+function showMyCoupons(){
+		$.ajax({
+			url : "@{front.account.MyCouponCtrl.showMyCouponsPre()}",
+			type : "GET",
+			success : function(data) {
+				var flag = interceptorCheck(data);
+				if(!flag){
+					return;
+				}
+				$(".account-box").html(data);
+			}
+	    });
+	}
+function showMyRedpackets(){
+	$.ajax({
+		url : "@{front.account.MyRedpacketCtrl.showMyRedpacketsPre()}",
+		type : "GET",
+		success : function(data) {
+			var flag = interceptorCheck(data);
+			if(!flag){
+				return;
+			}
+			$(".account-box").html(data);
+		}
+    });
+}
+function showMyWealthCircle(currPage){
+	$.ajax({
+		url : "@{front.account.MyWealthCircleCtrl.showMyWealthCirclePre()}",
+		type : "GET",
+		data : {
+			"currPage" : currPage
+		},
+		success : function(data) {
+			var flag = interceptorCheck(data);
+			if(!flag){
+				return;
+			}
+			$(".account-box").html(data);
+		}
+    });
+}
+function showMyCps(currPage){
+	$.ajax({
+		url : "@{front.account.MyCpsCtrl.showMyCpsPre()}",
+		type : "GET",
+		data : {
+			"currPage" : currPage,
+			'pageSize':5
+		},
+		success : function(data) {
+			var flag = interceptorCheck(data);
+			if(!flag){
+				return;
+			}
+			$(".account-box").html(data);
+		}
+    });
+}
+function showMyExperienceAccount(currPage){
+	$.ajax({
+		url : "@{front.spread.ExperienceBidFrontCtrl.showMyExperienceGoldPre()}",
+		type : "GET",
+		data : {
+			"currPage": currPage
+		},
+		success : function(data) {
+			var flag = interceptorCheck(data);
+			if(!flag){
+				return;
+			}
+			$(".account-box").html(data);
+		}
+	});
+}
+/*新手任务*/
+function newTaskList(currPage, pageSize){
+	$.ajax({
+		url : "@{front.activity.shake.NewTaskCtrl.newTaskListPre()}",
+		type : "GET",
+		data : {
+			"currPage": currPage,
+			"pageSize":pageSize
+		},
+		success : function(data) {
+			var flag = interceptorCheck(data);
+			if(!flag){
+				return;
+			}
+			$(".account-box").html(data);
+		}
+	});
+}
+$('.btn-jiaxi').click(function(){
+	showMyCoupons();
+	
+}) 
+$('.btn-tuiguang').click(function(){
+	showMyCps(1,5);
+})
+$('.btn-tiyan').click(function(){
+	showMyExperienceAccount();
+})
+$('.btn-hongbao').click(function(){
+	showMyRedpackets();
+})
+$('.btn-caifu').click(function(){
+	showMyWealthCircle(1);
+})
+$('.btn-xinshou').click(function(){
+	newTaskList(1,5);
+})
+function getUserVIP() {
+	$.ajax({
+		url : "@{front.account.MyAccountCtrl.getUserVip()}",
+		type : "POST",
+		success : function(data) {
+			
+			var flag = interceptorCheck(data);
+			if(!flag){
+				return;
+			}
+			
+			if (data != null) {
+				if(data.grade != 0 ){
+					$("#vipIMG").append("<img src='/public/front/images/vip"+data.grade+".png' class='vipimg'>");
+				}
+			}
+			
+		}
+	});
+}
+</script>

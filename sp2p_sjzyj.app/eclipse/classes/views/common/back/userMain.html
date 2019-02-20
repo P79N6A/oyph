@@ -1,0 +1,12 @@
+*{
+会员的Main页面
+}*
+
+#{extends 'common/supervisorMain.html' /}
+#{set AItem:2 /}
+<!-- 二级导航 -->
+<ul class="back-secnav">
+	<li><a href="@{back.UserMngCtrl.showUsersPre()}">平台会员</a></li>
+</ul>
+
+#{doLayout /}

@@ -1,0 +1,206 @@
+#{extends 'common/back/riskMain.html' /}
+	#{set title:'风控 | 合同模板 | 编辑合同模板' /}
+	#{set smallclass:5 /}
+	#{set crumbs:'风控>合同模板>编辑合同模板'/}
+	
+	
+<div class="back-main">
+	<div class="back-usertop">
+		<b class="left font14">${template?.id} ${template?.name} > 编辑</b>
+		<!-- 右侧功能按钮 -->
+		<div class="right back-rightbtns">
+			<a href="javascript:backAndRefresh('@{back.risk.PactMngCtrl.showPactsPre}');"><i class="iconfont">&#xe60b;</i>返回</a>
+		</div>
+	</div>
+	<!-- 搜索条件，默认隐藏 -->
+	<!-- 左侧菜单 -->
+	<div class="back-cont">
+		<form action="@{back.risk.PactMngCtrl.editPactTemp()}" method="POST" id="pact">
+			<div class="back-infor">
+				<h2 class="back-infor-head">
+					<span class="left">合同内容</span>
+				</h2>
+				<ul class="back-infor-set">
+				*{	<li>
+						<span class="lileft">素材字段</span>
+						<div class="liright">
+							<table width="100%" class="back-table back-dealtab table-fixed">
+								<tr height="39">
+									<td>借款人</td>
+									<td></td>
+									<td>借款人身份证</td>
+									<td></td>
+									<td>平台名称</td>
+									<td></td>
+								</tr>
+								<tr height="39">
+									<td>投资人</td>
+									<td></td>
+									<td>投资人身份证</td>
+									<td></td>
+									<td>签约日期</td>
+									<td></td>
+								</tr>
+								<tr height="39">
+									<td>借款本金</td>
+									<td></td>
+									<td>年利率</td>
+									<td></td>
+									<td>借款用途</td>
+									<td></td>
+								</tr>
+								<tr height="39">
+									<td>借款期限</td>
+									<td></td>
+									<td>应还金额</td>
+									<td></td>
+									<td>还款方式</td>
+									<td></td>
+								</tr>
+								<tr height="39">
+									<td>投资人序列</td>
+									<td></td>
+									<td></td>
+									<td></td>
+									<td></td>
+									<td></td>
+								</tr>
+							</table>
+						</div>
+					</li>}*
+					
+					<li>
+						<span class="lileft">合同名</span>
+						<div class="liright">
+							<input type="text"  class="width01 iffocus required" autofocus="autofocus" name="name" minlength="2" maxlength="20" value="${template?.name}" />
+							<input type="hidden" name="pactTempSign" value="${template?.sign}" >
+							<span class="back-text-limit">2~20个字符</span>
+						</div>
+					</li>
+					<li>
+						<span class="lileft">合同类型</span>
+						<div class="liright">
+							<input type="text" class="width01 iffocus required" readonly="readonly" minlength="2" maxlength="20" value="${template?.type?.value}" />
+							<span class="back-text-limit"></span>
+						</div>
+					</li>
+					
+					<li>
+						<span class="lileft">水印</span>
+						<div class="liright">
+							<span class="back-imgarea imgrequired">
+								<img src="${template?.image_url}" onerror="this.src='/public/common/default.jpg'" class="backupimg" height="120" width="240" id="image" name="image" alt="" title="" />
+								<input type="hidden" id="image_url" name="image_url" value="${template?.image_url}">
+							</span>
+							
+							<span class="back-upimg">
+								<label class="back-upbtn">
+									<input type="file" name="imgFile" id="imgFile" accept=".jpg,.jpeg,.png,.gif" onchange="upload()" />
+									<i class="iconfont">&#xe608;</i>本地上传
+									
+								</label>
+								<p class="back-imginfor-note">240*120，jpg/png，大小不超过2M</p>
+								<div class="back-upload-imginfor">
+										<!-- 实际图片信息 -->
+									<p class="back-imginfor" id="picOld" style="display: block;">${template?.image_resolution}，${template?.image_format}，大小 ${template?.image_size}kb</p>
+									<div id="picNew" style="display: none;">
+										<span id="resolutionshow">&nbsp;</span><span id="formatshow">&nbsp;</span><span id="sizeshow">&nbsp;</span>
+									</div>
+								</div>
+								<input type="hidden" id="imageResolution" name="imageResolution" value="${template?.image_resolution}">
+								<input type="hidden" id="imageSize" name="imageSize" value="${template?.image_size}">
+								<input type="hidden" id="imageFormat" name="imageFormat" value="${template?.image_format}">
+							</span>
+						</div>
+					</li>
+					<li>
+						<span class="lileft">合同内容</span>
+						<div class="liright">
+							<textarea id="inforTextarea" class="back-textarea" name="content">${template?.content}</textarea>
+							<span class="back-text-limit">请勿改动合同模板中英文单词!</span>
+						</div>
+					</li>
+					
+				</ul>
+			</div>
+			<p class="back-audit-btns">
+				<input type="submit" id="pageSave" value="保存" class="bgbtn">
+				<input type="button" onclick="backAndRefresh('@{back.risk.PactMngCtrl.showPactsPre}');" value="取消" class="bdbtn">
+			</p>
+		
+		</form>
+	</div>
+</div>
+
+
+
+<!-- 页面js -->
+<script type="text/javascript">
+require(["back"],function(back){
+	
+	require(["ajaxfileupload"]);
+	
+	var pact = null;
+	require(["editor"],function(editor){
+		pact = editor('#inforTextarea');//初始化富文本框
+	});
+	
+	//判断输入的内容是否合法
+	$("#pact").validate({
+		errorPlacement: function(error, element) {
+			error.addClass('back-notice').insertAfter(element);
+		},
+		rules:{
+			"name":{
+				required:true,
+				rangelength:[2,20]
+			}
+		},
+		messages:{
+		},
+		submitHandler:function(form){
+			if(!pact.isEmpty()){
+				form.submit();
+			}
+		}
+	});
+});
+	
+function upload(){
+	
+	var fileId = "imgFile";
+	var file = $("#" + fileId).val();
+	var pos = file.lastIndexOf("\\");
+	var fileName = file.substring(pos + 1);
+	
+	$.ajaxFileUpload({
+		url : '@{back.risk.PactMngCtrl.uploadPactTempImage()}',
+		secureuri : false,
+		fileElementId : fileId,
+		data:{
+			"fileName":fileName
+		},
+		dataType : 'json',
+		success : function(result) {
+			if(result.code == 1){
+				var data = result.obj;
+				console.info(data);
+				$("#image").attr("src", data.staticFileName);
+				
+				$("#image_url").val(data.staticFileName);//提交
+				$("#imageSize").val(data.size);//提交
+				$("#imageFormat").val(data.fileSuffix);//提交
+				$("#imageResolution").val(data.imageResolution);//提交
+				
+				$("#resolutionshow").html(data.imageResolution+", ");
+				$("#formatshow").html(data.fileSuffix+", ");
+				$("#sizeshow").html(data.size+"kb");
+				$("#picOld").css({ "display": "none"});
+				$("#picNew").css({ "display": "block"});
+			} else {
+				alert(result.msg);
+			}
+		}
+	})
+}
+</script>	

@@ -1,0 +1,27 @@
+<div class="back-infor">
+	<h2 class="back-infor-head">收费</h2>
+	<div class="back-finace-suggest" id="bid_service_fee_rule">
+	</div>
+</div>
+<script type="text/javascript">
+	require(["back"],function(back){
+		var service_fee_rule = "${tb?.service_fee_rule}";
+		var replacequot = service_fee_rule.replace(/(&quot;)/g, '');//去掉双引号
+		var ruleJson = eval("("+replacequot+")");
+		var period_unit = "${tb?.getPeriod_unit().code}";//借款期限单位
+		var loan_amount_rate = ruleJson.loan_amount_rate,
+		sub_period = ruleJson.sub_period,
+		sub_loan_amount_rate = ruleJson.sub_loan_amount_rate,
+		invest_amount_rate = ruleJson.invest_amount_rate,
+		overdue_amount_rate = ruleJson.overdue_amount_rate;
+		
+		if(${models.core.entity.t_product.PeriodUnit.DAY.code}==period_unit){//天标
+			$("#bid_service_fee_rule").html('借款服务费：'+${tb?.amount}+'（元）* '+loan_amount_rate+'%/360 * '+${tb?.period}+ ' = '+${tb?.loan_fee}+' 元<br/>'+
+					'理财服务费：'+${tb?.getLoanSumInterest()}+'（元）* '+invest_amount_rate+'% = '+${tb?.getInvestServiceFee()}+' 元<br/>');
+		}else if(${models.core.entity.t_product.PeriodUnit.MONTH.code}==period_unit){//月标
+			$("#bid_service_fee_rule").html('借款服务费：'+${tb?.amount}+'（元）* '+loan_amount_rate+'% + '+${tb?.amount}+'（元）*【'+${tb?.period}+'（期）- '+sub_period+'】* '+sub_loan_amount_rate+'% = '+${tb?.loan_fee}+' 元<br/>'+
+					'理财服务费：'+${tb?.getLoanSumInterest()}+'（元）* '+invest_amount_rate+'% = '+${tb?.getInvestServiceFee()}+' 元<br/>');
+		}
+		
+	});
+</script>	

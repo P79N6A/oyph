@@ -1,0 +1,360 @@
+#{extends 'common/front/accountMain.html' /}
+#{set title:'个人中心 | 安全中心' /}
+#{set smallclass:4 /}
+
+<!-- 账户主要表格 -->
+<div class="account-box">
+	<div class="account-infor">
+	<h1 class="azamoney-nav">安全中心</h1>
+		<table width="100%" class="account-safetable c3">
+			<tr height="100">
+				<td class="cell01" width="140">
+					<span class="account-safename"><i class="icon icon01"></i>开户</span>
+				</td>
+				<td class="cell02" width="110">
+					#{if userFund?.payment_account != null && userFund?.payment_account !=""}
+						<span class="major">已开户</span>
+					#{/if}
+					#{else}
+						<span class="c9">未开户</span>
+					#{/else}
+				</td>
+				<td class="cell03" width="470">
+					您在宜宾市商业银行开立的资金存管账户账号：#{if userFund?.payment_account != null && userFund?.payment_account !=""}${userFund?.payment_account}#{/if}#{else}----#{/else}
+				</td>
+				<td class="cell04" align="center">
+					#{if userFund?.payment_account != null && userFund?.payment_account !=""}
+						———
+					#{/if}
+					#{else}
+						<a href="javascript:void(0)" id="gocreateaccount" target="_blank" class="btn">去开户</a>
+					#{/else}
+				</td>
+			</tr>
+			<tr height="100">
+				<td class="cell01">
+					<span class="account-safename"><i class="icon icon02"></i>实名认证</span>
+				</td>
+				<td class="cell02">
+					#{if userInfo.reality_name != null && userInfo.reality_name != '' && userInfo.id_number != null && userInfo.id_number != ''}
+						<span class="major">已认证</span>
+					#{/if}
+					#{else}
+						<span class="c9">未认证</span>
+					#{/else}
+				</td>
+				<td class="cell03">
+					#{if userInfo.enterprise_name !=null && userInfo.enterprise_credit !=null && userInfo.enterprise_name !="" && userInfo.enterprise_credit !=""}
+					您的企业名称：${userInfo?.enterprise_name?:'----'}<br/>
+					您的企业信用代码：${userInfo?.enterprise_credit?:'----'}<br/>
+					平台不会泄露您的身份信息
+					#{/if}
+					#{else}
+					您的真实姓名：${userInfo?.reality_name?:'----'}<br/>
+					您的身份证号码：${userInfo?.id_number?:'----'}<br/>
+					平台不会泄露您的身份信息
+					#{/else}
+				</td>
+				<td class="cell04" align="center">
+					#{if userInfo.reality_name != null && userInfo.reality_name != '' && userInfo.id_number != null && userInfo.id_number != ''}
+						———
+					#{/if}
+					#{else}
+						<a href="javascript:void();" id="certification" target="" class="btn">实名认证</a>
+					#{/else}
+				</td>
+			</tr>
+			<tr height="100">
+				<td class="cell01">
+					<span class="account-safename"><i class="icon icon03"></i>个人手机绑定</span>
+				</td>
+				<td class="cell02">
+					#{if user?.mobile != null && user?.mobile != ''}
+						<span class="major">已绑定</span>
+					#{/if}
+					#{else}
+						<span class="c9">未绑定</span>
+					#{/else}
+				</td>
+				<td class="cell03">
+					当前绑定手机号码：${user?.mobile}<br/>
+					方便日后用户寻回密码以及接收平台发送重要信息。
+				</td>
+				<td class="cell04" align="center">
+					<a href="javascript:void(0)" id="changeMobile" class="btn">修改手机</a>
+				</td>
+			</tr>
+			<tr height="100">
+				<td class="cell01">
+					<span class="account-safename"><i class="icon icon04"></i>个人邮箱绑定</span>
+				</td>
+				#{if userInfo?.email == null || userInfo?.email == ""}
+					<td class="cell02">
+						<span class="c9">未绑定</span>
+					</td>
+					<td class="cell03">
+						当前绑定邮箱：----
+						<br/>
+						方便日后用户寻回密码以及接收讴业普惠重要信息。
+					</td>
+				#{/if}
+				#{else}
+					<td class="cell02">
+						<span class="major">已绑定</span>
+					</td>
+					<td class="cell03">
+						当前绑定邮箱：${userInfo?.email}
+						<br/>
+						方便日后用户寻回密码以及接收讴业普惠重要信息。
+					</td>
+				#{/else}
+				<td class="cell04" align="center">
+					<a href="javascript:void(0)" id="changeEmail" class="change-email btn" class="btn">绑定邮箱</a>
+				</td>
+			</tr>
+			<tr height="100">
+				<td class="cell01">
+					<span class="account-safename"><i class="icon icon05"></i>银行卡绑定</span>
+				</td>
+				<td class="cell02">
+					#{if cardList.size() <= 0}
+						<span class="c9">未绑定</span>
+					#{/if}
+					#{else}
+						<span class="major">已绑定</span>
+					#{/else}
+				</td>
+				<td class="cell03">
+					当前绑定银行卡 ${cardList.size()} 张<br/>
+					绑定银行卡不仅可以便于充值以及提现，也可作为账号持有者的有力证明。
+				</td>
+				<td class="cell04" align="center">
+					<a href="javascript:void(0)" id="changeCard" class="change-bankcard btn">绑定银行卡</a>
+				</td>
+			</tr>
+			<tr height="100">
+				<td class="cell01">
+					<span class="account-safename"><i class="icon icon06"></i>平台登录密码</span>
+				</td>
+				<td class="cell02">
+					<span class="major">已保护</span>
+				</td>
+				<td class="cell03">
+					建议定期修改密码，密码由6~15位字母或数字组合区分大小写。
+				</td>
+				<td class="cell04" align="center">
+					<a href="javascript:void(0)" id="changePass" class="change-password btn">修改密码</a>
+				</td>
+			</tr>
+			<tr height="100">
+				<td class="cell01">
+					<span class="account-safename"><i class="icon icon06"></i>平台交易密码</span>
+				</td>
+				<td class="cell02">
+					#{if userFund?.transaction_password == 0}
+						<span class="c9">未保护</span>
+					#{/if}
+					#{else}
+						<span class="major">已保护</span>
+					#{/else}
+				</td>
+				<td class="cell03">
+					建议定期修改密码，密码由6位数字组成。
+				</td>
+				<td class="cell04" align="center">
+					#{if userFund?.transaction_password == 0}
+						<a href="javascript:void(0)" id="setPass" class="change-password btn">设置交易密码</a>
+					#{/if}
+					#{else}
+						<a href="javascript:void(0)" id="amendPass" class="change-password btn">修改密码</a>&nbsp;
+						<a href="javascript:void(0)" id="resetPass" class="change-password btn">重置密码</a>
+					#{/else}
+					
+				</td>
+			</tr>
+			<tr height="100">
+				<td class="cell01">
+					<span class="account-safename"><i class="icon icon01"></i>用户信用等级</span>
+				</td>
+				<td class="cell02">
+					#{if credit == null}
+						<span class="c9">未测评</span>
+					#{/if}
+					#{else}
+						<span class="major">${credit?.type}</span>
+					#{/else}
+				</td>
+				<td class="cell03">
+					#{if credit != null}
+						出借待收金额为${credit?.residue_amounts}，每日限额为${credit?.day_quotaes}
+					#{/if}
+				</td>
+				<td class="cell04" align="center">
+					
+				</td>
+			</tr>
+			<tr height="100">
+				<td class="cell01" width="140">
+					<span class="account-safename"><i class="icon icon01"></i>用户注销</span>
+				</td>
+				<td class="cell02" width="110">
+				
+				</td>
+				<td class="cell03" width="470">
+					用户资金清零,保证最新绑定银行卡可用。
+				</td>
+				<td class="cell04" align="center">
+					#{if userFund?.payment_account != null && userFund?.payment_account !=""}
+						<a href="javascript:void(0)" id="custCancel" target="_blank" class="btn">用户注销</a>
+						
+					#{/if}
+					#{else}
+						———
+					#{/else}
+				</td>
+			</tr>
+			
+		</table>
+	</div>
+	<!-- 开户弹窗 -->
+	<div class="dialog open-dialog" id="security_register_dialog">
+		<div class="dialog-bg"></div>
+		<div class="dialog-cont trusteeship-dialog">
+			<h2 class="dialog-head">
+				<span class="left">平台提示</span>
+			</h2>
+			<div class="trusteeship-cont">
+				<div class="trusteeship-wrap">
+					<i class="trusteeship-icon"></i>
+					<p class="major">请在新页面完成资金托管开户。</p>
+					<a href="@{front.account.MySecurityCtrl.securityPre()}" class="bdbtn">开户成功</a>
+					<p class="trusteeship-help"><a href="@{front.FrontHomeCtrl.helpPre(models.common.entity.t_help_center.Column.FINANCIAL_KNOWLEDGE.code,1)}" class="c9">开户遇到问题></a></p>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+require(['front'],function(front){
+	require(['account']);
+	
+	//验证码按钮效果--前端静态模拟
+	require(['getCode']);
+	
+	//判断密码强度
+	require(['passwordLevel']);
+	
+	//开户弹窗
+	$("#gocreateaccount").click(function(){
+		#{if isSimulated}
+			alert("模拟登录不能执行该操作");
+			return false;
+		#{/if}
+		#{else}
+			window.open("@{front.account.MySecurityCtrl.createAccountPre()}"); 
+			$("#security_register_dialog").dialog();
+		#{/else}
+	});
+	
+	//实名认证
+	$("#certification").click(function(){
+		#{if isSimulated}
+			alert("模拟登录不能执行该操作");
+			return false;
+		#{/if}
+		#{else}
+			window.open("@{front.account.MySecurityCtrl.certificationPre()}"); 
+		#{/else}
+	});
+	
+	//更改绑定手机号
+	$("#changeMobile").click(function(){
+		#{if isSimulated}
+			alert("模拟登录不能执行该操作");
+			return false;
+		#{/if}
+		#{else}
+			window.open("@{front.account.MySecurityCtrl.updateUserMobilePre}"); 
+		#{/else}
+	});
+	
+	//更改绑定Email
+	$("#changeEmail").click(function(){
+		#{if isSimulated}
+			alert("模拟登录不能执行该操作");
+			return false;
+		#{/if}
+		#{else}
+			window.open("@{front.account.MySecurityCtrl.updateUserEmailPre}"); 
+		#{/else}
+	});
+	
+	//更改绑定银行卡
+	$("#changeCard").click(function(){
+		window.open("@{front.account.MySecurityCtrl.updateUserBankCardPre()}"); 
+	});
+	
+	//修改密码
+	$("#changePass").click(function(){
+		#{if isSimulated}
+			alert("模拟登录不能执行该操作");
+			return false;
+		#{/if}
+		#{else}
+			window.open("@{front.account.MySecurityCtrl.updateUserPasswordPre}"); 
+		#{/else}
+	});
+	
+	//设置交易密码
+	$("#setPass").click(function(){
+		#{if isSimulated}
+			alert("模拟登录不能执行该操作");
+			return false;
+		#{/if}
+		#{else}
+			window.open("@{front.account.MySecurityCtrl.setUserPasswordPre}"); 
+		#{/else}
+	});
+	
+	//修改交易密码
+	$("#amendPass").click(function(){
+		#{if isSimulated}
+			alert("模拟登录不能执行该操作");
+			return false;
+		#{/if}
+		#{else}
+			window.open("@{front.account.MySecurityCtrl.amendUserPasswordPre}"); 
+		#{/else}
+	});
+	
+	//重置交易密码
+	$("#resetPass").click(function(){
+		#{if isSimulated}
+			alert("模拟登录不能执行该操作");
+			return false;
+		#{/if}
+		#{else}
+			window.open("@{front.account.MySecurityCtrl.resetUserPasswordPre}"); 
+		#{/else}
+	});
+	
+	//用户注销 
+	 $("#custCancel").click(function(){
+		 #{if isSimulated}
+			alert("模拟登录不能执行该操作");
+			return false;
+		#{/if}
+		#{else}
+			confirm("您是否确认注销该用户？",function(){
+				
+				window.location.href = "@{front.account.MySecurityCtrl.custCancelWithdrawPre()}"; 
+				
+			});	
+			
+		#{/else}
+				 
+	});
+	 
+});
+
+</script>

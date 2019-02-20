@@ -1,0 +1,141 @@
+<!-- 
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">  
+<html xmlns="http://www.w3.org/1999/xhtml">  
+<head>  
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />  
+<script type="text/javascript" src="/public/front/javascripts/jquery-1.8.3.min.js" ></script>  
+<title>无标题文档</title>  
+<script type="application/javascript">  
+  
+$.fn.serializeObject = function()    
+{    
+   var o = {};    
+   var a = this.serializeArray();    
+   $.each(a, function() {    
+       if (o[this.name]) {    
+           if (!o[this.name].push) {    
+               o[this.name] = [o[this.name]];    
+           }    
+           o[this.name].push(this.value || '');    
+       } else {    
+           o[this.name] = this.value || '';    
+       }    
+   });    
+   return o;    
+};  
+  
+function onClik11(){  
+        //var data = $("#form1").serializeArray(); //自动将form表单封装成json  
+        //alert(JSON.stringify(data));  
+        var jsonuserinfo = $('#form1').serializeObject();  
+        alert(JSON.stringify(jsonuserinfo));  
+        document.getElementById("form1").submit();
+}  
+
+function onClik(){
+	
+	$.ajax({
+		
+		url : "@{front.account.MySecurityCtrl.ybRegist()}",
+		type : "POST", 
+		data: { 
+			'foo': 'foovalue', 
+			'bar': 'barvalue' 
+		}, 
+		dataType:"json",
+		success : function(data) {
+			if (data.code != 1) {
+				alert(data.code);
+				alert("失败！");
+			} else {
+				alert("成功！");
+			}
+		}
+	});
+	
+}
+
+
+</script>  
+</head>  
+  
+<body>  
+<form id="form1" name="form1" method="post" action="@{front.account.MySecurityCtrl.ybRegist()}">  
+  <p>进货人 :  
+    <label for="name"></label>  
+    <input type="text" name="name" id="name" />  
+  </p>  
+  <p>性别:  
+    <label for="sex"></label>  
+    <select name="sex" size="1" id="sex">  
+      <option value="1">男</option>  
+      <option value="2">女</option>  
+    </select>  
+  </p>  
+  <table width="708" border="1">  
+    <tr>  
+      <td width="185">商品名</td>  
+      <td width="205">商品数量</td>  
+      <td width="296">商品价格</td>  
+    </tr>  
+    <tr>  
+      <td><label for="pro_name"></label>  
+        <input type="text" name="pro_name" id="pro_name" /></td>  
+      <td><label for="pro_num"></label>  
+        <input type="text" name="pro_num" id="pro_num" /></td>  
+      <td><label for="pro_price"></label>  
+        <input type="text" name="pro_price" id="pro_price" /></td>  
+    </tr>  
+    <tr>  
+      <td><input type="text" name="pro_name2" id="pro_name2" /></td>  
+      <td><input type="text" name="pro_num2" id="pro_num2" /></td>  
+      <td><input type="text" name="pro_price2" id="pro_price2" /></td>  
+    </tr>  
+  </table>  
+  <p> </p>  
+  <input type="submit" name="login"  value="提交"/>  
+</form>  
+</body>  
+</html>   -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>测试宜宾开户</title>
+</head>
+<body>
+	<div style="width: 500px; height: 500px;margin: 0 auto; background-color: gray; padding: 50px;">
+		<form action="@{front.account.MySecurityCtrl.ybRegist()}" method="post">
+			<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;姓名:</span><input name="username"/><br>
+			<span>身份证号:</span><input name="identityNo" />
+			<input type="submit" value="确认开通" />
+		</form>
+	</div>
+</body>
+</html>

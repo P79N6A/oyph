@@ -1,0 +1,265 @@
+#{extends 'common/front/accountMain.html' /}
+#{set title:'个人中心 | 会员信息' /}
+#{set smallclass:3 /}
+
+<!-- 会员信息 -->
+<div class="account-box">
+<h1 class="azamoney-nav">个人信息</h1>
+	<div class="Myloan">
+		<div class="Myloan-mian">
+			<h6 class="Myloan-mian-size">讴业小提示：亲爱的用户，请您根据提示认真填写您的信息，方便以后的借款和收礼物呦！  </h6>
+			<div class="Myloan-mian-message">
+				<div class="education info-div">
+					<span class="education-hear"> <p>最高学历：</p></span>
+					<span class="clird">
+			    		<select class="gerensel" datatype="*"  nullmsg="请选择学历！" errormsg="请选择学历！" name="education" id="education"  disabled="disabled">
+							<option value="" #{if userInfo?.education?.code==null}selected="selected"#{/if}>请选择</option>
+							#{list items:common.enums.Education.values(), as:'options'}
+							<option value="${options.code}" #{if options.code==userInfo?.education?.code}selected="selected"#{/if}>${options.value}</option>
+							#{/list}
+						</select>
+					</span> 
+				</div>
+				<div class="education info-div">
+					<span class="education-hear"> <p>婚姻状况：</p></span>
+					<span class="clird">
+			    		<select class="gerensel" datatype="*"  nullmsg="请选择婚姻状况！" errormsg="请选择婚姻状况！" name="marital" id="marital"  disabled="disabled">
+							<option value="" #{if userInfo?.marital?.code==null}selected="selected"#{/if}>请选择</option>
+			  			#{list items:common.enums.Marital.values(), as:'options'}
+							<option value="${options.code}" #{if options.code==userInfo?.marital?.code}selected="selected"#{/if}>${options.value}</option>
+						#{/list}
+						</select>
+					</span>
+				</div>
+				<div class="education info-div">
+					<span class="education-hear"> <p>工作年限：</p></span>
+					<span class="clird">
+			    		<select class="gerensel" datatype="*" nullmsg="请选择工作年限！" errormsg="请选择工作年限！" name="workExperience" id="workExperience" disabled="disabled">
+							<option value="" #{if userInfo?.work_experience?.code==null}selected="selected"#{/if}>请选择</option>
+			  			#{list items:common.enums.WorkExperience.values(), as:'options'}
+							<option value="${options.code}" #{if options.code==userInfo?.work_experience?.code}selected="selected"#{/if}>${options.value}</option>
+						#{/list}
+						</select>
+					</span>
+				</div>
+				<div class="education info-div">
+					<span class="education-hear"> <p>年收入：</p></span>
+					<span class="clird">
+			    		<select class="gerensel" datatype="*" nullmsg="请选择您的收入！" errormsg="请选择您的收入！" name="annualIncome" id="annualIncome" disabled="disabled">
+							<option value="" #{if userInfo?.annual_income?.code==null}selected="selected"#{/if}>请选择</option>
+			  			#{list items:common.enums.AnnualIncome.values(), as:'options'}
+							<option value="${options.code}" #{if options.code==userInfo?.annual_income?.code}selected="selected"#{/if}>${options.value}</option>
+						#{/list}
+						</select>
+					</span>
+				</div>
+				<div class="education info-div">
+					<span class="education-hear"> <p>资产估值：</p></span>
+					<span class="clird">
+			    		<select name="netAsset" id="netAsset" class="gerensel" disabled="disabled">
+						<option value="" #{if userInfo?.net_asset?.code==null}selected="selected"#{/if}>请选择</option>
+			  			#{list items:common.enums.NetAssets.values(), as:'options'}
+							<option value="${options.code}" #{if options.code==userInfo?.net_asset?.code}selected="selected"#{/if}>${options.value}</option>
+						#{/list}
+	  				</select>
+					</span>
+				</div>
+				<div class="education info-div">
+					<span class="education-hear"> <p>车产：</p></span>
+					<span class="clird">
+			    		<select name="car" id="car" class="gerensel" disabled="disabled">
+						<option value="" #{if userInfo?.car?.code==null}selected="selected"#{/if}>请选择</option>
+			  			#{list items:common.enums.Car.values(), as:'options'}
+							<option value="${options.code}" #{if options.code==userInfo?.car?.code}selected="selected"#{/if}>${options.value}</option>
+						#{/list}
+	  				</select>
+					</span>
+				</div>
+				<div class="education info-div">
+					<span class="education-hear"> <p>房产：</p></span>
+					<span class="clird">
+			    		<select name="house" id="house" class="gerensel" disabled="disabled">
+						<option value="" #{if userInfo?.house?.code==null}selected="selected"#{/if}>请选择</option>
+			  			#{list items:common.enums.House.values(), as:'options'}
+							<option value="${options.code}" #{if options.code==userInfo?.house?.code}selected="selected"#{/if}>${options.value}</option>
+						#{/list}
+	  				</select>
+					</span>
+				</div>
+				<div class="education info-div">
+					<span class="education-hear"> <p>紧急联系人关系：</p></span>
+					<span class="clird">
+			    		<select name="emergencyContactType" id="emergencyContactType" class="gerensel" disabled="disabled">
+						<option value="-1" #{if userInfo?.emergency_contact_type?.code==null}selected="selected"#{/if}>请选择</option>
+			  			#{list items:common.enums.Relationship.values(), as:'options'}
+							<option value="${options.code}" #{if options.code==userInfo?.emergency_contact_type?.code}selected="selected"#{/if}>${options.value}</option>
+						#{/list}
+	  				</select>
+					</span>
+				</div>
+				<div class="education info-div">
+					<span class="education-hear"> <p>紧急联系人姓名：</p></span>
+					<span class="clird">
+			    		<input type="text" id="emergencyContactName" name="emergencyContactName" value="${userInfo?.emergency_contact_name}" class="text textTeight" disabled="" maxlength="10"/>
+					</span>
+				</div>
+				<div class="education info-div">
+					<span class="education-hear"> <p>紧急联系人电话：</p></span>
+					<span class="clird">
+			    		<input type="text" id="emergencyContactMobile" name="emergencyContactMobile" maxlength="11" value="${userInfo?.emergency_contact_mobile}" class="text textTeight" disabled="" oninput="$(this).ndigitInteger(11)" onpropertychange="$(this).ndigitInteger(11)"/>
+					</span>
+				</div>
+				
+				<input type="button" value="编  辑"  class="conserve-btn" type="submit" id="saveOrUpdateInformation"/>
+				 
+		</div>
+			
+		</div>
+	</div>					
+</div>
+<!-- main end-->
+<script type="text/javascript">
+	require(['front'],function(front){
+		require(['account']);
+		
+		//编辑用户信息
+		$("#saveOrUpdateInformation").click(function(){
+			var input = $(".info-div").find('input,select');
+			var disabled = input.prop('disabled');
+			if(disabled) {
+				$(this).attr("value","保  存");
+				input.prop('disabled',false);
+				$('.gerensel').css('background','url(http://ourjs.github.io/static/2015/arrow.png) no-repeat scroll right center transparent')
+			} else {
+				#{if isSimulated}
+					alert("模拟登录不能执行该操作");
+					return false;
+				#{/if}
+				#{else}
+				//基本信息
+				var education = $("#education").val();//学历
+				if(education == 0){
+					weakDialog('请选择学历状况')
+					return;
+				} else {
+					
+				}
+				
+				var marital = $("#marital").val();//婚姻
+				if(marital == 0){
+					weakDialog('请选择婚姻状况')
+					return;
+				} else {
+					
+				}
+				//资产信息
+				var workExperience = $("#workExperience").val();//工作年限
+				if(workExperience == 0){
+					weakDialog('请选择工作年限')
+					return;
+				} else {
+					
+				}
+				var annualIncome = $("#annualIncome").val();//年收入
+				if(annualIncome == 0){
+					weakDialog('请选择年收入状况')
+					return;
+				} else {
+					
+				}
+				var netAsset = $("#netAsset").val();//资产估值
+				if(netAsset==0){
+					weakDialog('请选择资产估值状况')
+					return;
+				} else {
+					
+				}
+				var car = $("#car").val();//车产
+				if(car == 0){
+					weakDialog('请选择车产状况')
+					return;
+				} else {
+					
+				}
+				var house = $("#house").val();//房产
+				if(house == 0){
+					weakDialog('请选择房产状况')
+					return;
+				} else {
+					
+				}
+				
+				//紧急联系人
+				var emergencyContactType = $("#emergencyContactType").val();//关系
+				if(emergencyContactType < 0){
+					weakDialog('请选择紧急联系人关系')
+					return;
+				} else {
+					
+				}
+				
+				var emergencyContactName = $("#emergencyContactName").val();//姓名
+				if(!emergencyContactName.isNotBlank()){
+					weakDialog('请填写紧急联系人姓名')
+					return;
+				} else {
+					
+				}
+				
+			
+				var emergencyContactMobile = $("#emergencyContactMobile").val();//手机号
+				if(!emergencyContactMobile.isNotBlank()){
+					weakDialog('请填写紧急联系人手机')
+					return;
+				} else if(!emergencyContactMobile.isMobileNum()){
+					weakDialog('紧急联系人手机号码格式错误')
+					return;
+				} else {
+					
+				}
+			
+				$.ajax({
+					url : "@{front.account.MyInfoCtrl.editUserInfomation()}",
+					type : "POST",
+					data : {
+						"education" : education,
+						"marital" : marital,
+						"workExperience" : workExperience,
+						"annualIncome" : annualIncome,
+						"netAsset" : netAsset,
+						"car" : car,
+						"house" : house,
+						"emergencyContactType" : emergencyContactType,
+						"emergencyContactName" : emergencyContactName,
+						"emergencyContactMobile" : emergencyContactMobile
+					},
+					dataType:"json",
+					success : function(data) {
+						var flag = interceptorCheck(data);
+						if(!flag){
+							return;
+						}
+						if(data.code < 1){
+							
+						}else {
+							input.prop('disabled',!disabled);
+							$('.gerensel').css('background','#ebebe4')
+							$("#saveOrUpdateInformation").attr("value","编  辑");
+							$("#emergencyContact-error,#assets-error,#basic-error").hide();
+							weakDialog(data.msg);
+						}
+					}
+				});
+				#{/else}
+			}
+		});
+		
+		
+		
+		$(function(){
+			$("#saveOrUpdateInformation").attr("value","编  辑");
+			$(".info-div").find('input,select').prop('disabled',true);
+		});
+	});
+	
+</script>

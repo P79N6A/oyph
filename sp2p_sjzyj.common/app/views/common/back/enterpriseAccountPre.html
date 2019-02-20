@@ -1,0 +1,13 @@
+*{
+设置的Main页面
+}*
+
+#{extends 'common/supervisorMain.html' /}
+#{set AItem:9 /}
+
+<!-- 二级导航 -->
+<ul class="back-secnav">
+	<li><a href="@{back.BackHomeCtrl.createAccountsPre()}">企业开户</a></li>
+</ul>
+
+#{doLayout /}

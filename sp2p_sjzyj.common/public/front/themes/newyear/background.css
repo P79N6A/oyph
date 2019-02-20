@@ -1,0 +1,98 @@
+/* 首页新手专项 */
+.newbie{
+	border-color: #FF7F44;
+}
+.newbie-img{
+	background: url(images/newbie.jpg) center center no-repeat;
+}
+.newbie-icon{
+	position: absolute;
+	right: 0;
+	top: -55px;
+	width: 228px;
+	height: 66px;
+	background: url(images/newbie_icon.gif) no-repeat;
+}
+/* 首页散标投资 */
+.disperse{
+	border-top-color: #FF5558;
+}
+.disperse-img{
+	background: url(images/disperse.jpg) center center no-repeat;
+}
+/* 首页转让专区 */
+.transfer{
+	border-top-color: #FFBA57;
+}
+.transfer-img{
+	background: url(images/transfer.jpg) center center no-repeat;
+}
+.disperse-more{
+	width: 106px;
+	height: 36px;
+	line-height: 36px;
+	border: none;
+	background: url(images/border.png) no-repeat;
+}
+.disperse-more:hover{
+	background: rgba(255,255,255,.1) url(images/border.png) no-repeat;
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#22ffffff,endColorstr=#22ffffff);
+}
+.duilian-left,
+.duilian-right{
+	display: none;
+	position: fixed;
+	width: 162px;
+	height: 669px;
+	top: 80px;
+	z-index: 1000;
+}
+.duilian-left{
+	left: 10px;
+}
+.duilian-right{
+	right: 10px;
+}
+.duilian-top{
+	height: 0px;
+	background: url(images/duilian-left.png) 0 0 no-repeat;
+}
+.duilian-btm{
+	height: 0px;
+	background: url(images/duilian-left.png) 0 -636px no-repeat;
+}
+.duilian-body{
+	display: none;
+	height: 669px;
+	background: url(images/duilian-left.png) 0 -33px no-repeat;
+}
+.duilian-right .duilian-body{
+	background: url(images/duilian-right.png) 0 -33px no-repeat;
+}
+.duilian-close{
+	display: none;
+	width: 20px;
+	height: 13px;
+	line-height: 13px;
+	text-align: center;
+	position: absolute;
+	top: 5px;
+	left: 50%;
+	margin-left: -10px;
+	color: #FDD422;
+	cursor: pointer;
+}
+.newyear-logo{
+	margin-top: 15px;
+	margin-left: 20px;
+}
+.navbox-innerbox.fixed .newyear-logo img{
+	height: 45px;
+}
+body{
+	background: #f3f3f3;
+}
+.navbox .logo{
+	padding-right: 210px;
+	background: url(images/logo-side.gif) 100% center no-repeat;
+}

@@ -1,0 +1,716 @@
+#{extends 'common/frontMain.html' /}
+#{set title: '首页|实时数据'/}
+#{set AItem:4/}
+<link rel="stylesheet" type="text/css" href="/public/front/stylesheets/announce.css"/>
+
+<div class="navBg">
+   <h1>讴业普惠已安全运营：<span>${jobs.IndexStatisticsJob.serviceTime}</span>天</h1>
+</div>
+<div style="background:#fff; overflow: hidden; ">
+<div class="tit">
+    <h4><span>平台交易数据</span></h4>
+    <strong>数据截止至：${dates?.format(common.constants.Constants.DATE_FORMATESS)}</strong>
+    #{if dises}
+    <div class="ulList">
+        <p>${dis?.year_time}</p>
+	    <ul class="ulList1">
+	    	#{list items:dises,as:'dises'}
+	        <li onclick="javascript:location.href='@{front.PublishMessageCtrl.toPublishMessagePre(dises?.id)}'">${dises?.year_time}</li>
+	        #{/list}
+	    </ul>
+	</div>
+	#{/if}
+</div>
+<div class="box">
+   <div class="items">
+       <span>历史成交量</span>
+       <i><strong>${dis?.total_amount}</strong>元</i>
+   </div>
+   <div class="items second">
+        <span>累计为用户赚取</span>
+        <i><strong>${dis?.total_earnings}</strong>元</i>
+        
+    </div>
+    <div class="items">
+        <span>累计交易人次</span>
+       <i><strong>${dis?.total_volume}</strong>人</i>
+    </div>
+</div>
+<div class="chart">
+    <div id="Monthly"> </div>
+	<div id="sum1"></div>
+	<div id="sum2"></div>
+</div>
+<div class="tit">
+   <h4><span>平台交易集中度情况</span></h4>
+   <strong>数据截止至：${dates?.format(common.constants.Constants.DATE_FORMATESS)}</strong>
+</div>
+#{if disInvest}
+<div class="centralize">
+    <div class="centralize-left">
+        <table class="ten">
+            <tbody><tr>
+                <th colspan="4">前十大借款人</th>
+            </tr>
+            <tr class="tops">
+                <td>&nbsp;</td>
+                <td>用户名</td>
+                <td>借贷金额(元)</td>
+                <td>占比</td>
+            </tr>
+            #{list items:disInvest,as:'mouthInvest'}
+            <tr class="front">
+                <td>No${mouthInvest_index}</td>
+                <td>#{asterisk str:mouthInvest?.name, start:2, end:2, count:4/}</td>
+                <td>#{formatShortMoney money:mouthInvest?.invest_amount /}元</td>
+                <td>${mouthInvest?.proportion}%</td>
+            </tr>
+            #{/list}
+        </tbody></table>
+    </div>
+    <div class="centralize-right">
+    	<div id="sum3"></div>
+    </div>
+    <div style="float: left;width: 100%;height: 100px;">
+    
+              <p style="text-align: right;line-height: 100px;">法人签字：<img style="width: 160px;height: 100px;" src="/public/front/images/name1.png"/></p>
+    </div>
+</div>
+#{/if}
+</div>
+
+<div class="tit">
+    <h4><span id="bg">用户信息</span></h4>
+    <strong>数据截止至：${dates?.format(common.constants.Constants.DATE_FORMATESS)}</strong>
+</div>
+<div class="box1">
+   <div class="items item1">
+       <span>累计借款金额</span>
+       <i><strong>${dis?.total_amount}</strong>元</i>
+   </div>
+   <div class="items item1 second1">
+        <span>累计成交笔数</span>
+        <i><strong>${dis?.total_count}</strong>个</i>
+    </div>
+   
+</div>
+<div class="chart1">
+	<div id="sum4"></div>
+	<div id="sum5"></div>
+</div>
+ <script type="text/javascript">
+ require.config({
+	 paths:{
+		 echarts:"js/echarts"
+	 }
+ })
+ require(['echarts'],function(echarts){
+	 var mon_amount = new Array();
+	 var mon_count = new Array();
+	 var mon_borrower = new Array();
+	 var mon_lender = new Array();
+	 var year_time = new Array();
+	 var month_time = new Array();
+	 
+	 $.ajax({
+		 url : "@{front.PublishMessageCtrl.toPublishMessage()}",
+			type : "post",
+			data : {
+				"disclosureId" : ${dis?.id},
+			},
+			dataType: 'json',
+			async: false,  
+			success : function(data) {
+				console.log(data)
+				var obj=eval(data)
+				for(var i=obj.length-1 ;i>=0;i--){
+					mon_amount.push( obj[i].mon_amount);
+					mon_count.push( obj[i].mon_count);
+					mon_borrower.push( obj[i].mon_borrower);
+					mon_lender.push( obj[i].mon_lender);
+					year_time.push( obj[i].year_time);
+					month_time.push( obj[i].month_time);
+				}
+			}
+	 })
+	 //月交易金额
+	 
+		 var myChart = echarts.init(document.getElementById('Monthly'));
+		 option = {
+		         title: {
+		             text: '单位：元',
+		             textStyle : {
+		                 color: '#999',
+		                 fontSize: '12',
+		                 fontWeight:'normal'
+
+		             }
+		         },
+		         tooltip : {
+		             trigger: 'axis',
+		             axisPointer: {
+		                 type: 'none'
+		             }
+		         },
+		         legend: {
+		             data:['月交易金额'],
+		             textStyle : {
+		                 color:'#333',
+		                 fontSize:'14'
+		             },
+		             icon:'none',
+		             selectedMode:false
+		         },
+		         toolbox: {
+		         },
+		         grid: {
+		             left: '2%',
+		             right: '3%',
+		             bottom: '3%',
+		             containLabel: true,
+		         },
+		         xAxis : [
+		             {
+		                 type : 'category',
+		                 boundaryGap : false,
+		                 data :year_time,
+		                 splitLine:{show: true},
+		                 axisLine:{
+		                     show: true,
+		                     lineStyle:{
+		                         color: '#ccc',
+		                         width: 1,
+		                         type: 'solid'
+		                     }
+		                 },
+		                 axisLabel : {
+		                     textStyle: {
+		                         color: '#666',
+		                     }
+		                 }
+		             }
+		         ],
+		         yAxis : [
+		             {
+		                 type : 'value',
+		                 splitLine:{show: true},
+		                 axisLine:{
+		                     show: true,
+		                     lineStyle:{
+		                         color: '#ccc',
+		                         width: 1,
+		                         type: 'solid'
+		                     }
+		                 },
+		                 axisLabel : {
+		                     textStyle: {
+		                         color: '#666',
+		                     }
+		                 }
+		             }
+		         ],
+		         series : [
+		             {
+		                 name:'月交易金额',
+		                 type:'line',
+		                 stack: '总量',
+		                 label: {
+		                     normal: {
+		                         show: false,
+		                         position: 'top'
+		                     }
+		                 },
+		                 areaStyle: {normal: {}},
+		                 itemStyle : {
+		                     normal : {
+		                         color:'#96d9f2',
+		                         label : {
+		                             show : true,
+		                             position : 'top',
+		                             textStyle : {
+		                                 show:false,
+		                                 fontWeight : '700',
+		                                 fontSize : '12',
+		                                 color:'#39a1ea'
+		                             }
+		                         },
+		                         lineStyle:{
+		                             color:'#39a1ea'
+		                         }
+		                     }
+		                 },
+		                 data:mon_amount
+		             }
+		         ]
+		     };
+		     myChart.setOption(option);
+	 
+	     //交易金额
+	     var myChart2 = echarts.init(document.getElementById('sum1'));
+	        option2 = {
+	            title : {
+	                text: '单位：元',
+	                textStyle : {
+	                    color: '#999',
+	                    fontSize: '12',
+	                    fontWeight:'normal'
+
+	                }
+	            },
+	            tooltip : {
+	                trigger: 'axis',
+	                axisPointer: {
+	                    type: 'none'
+	                }
+	            },
+	            legend: {
+	                data:['交易金额'],
+	                textStyle : {
+	                    color:'#333',
+	                    fontSize:'14'
+	                },
+	                icon:'none',
+	                selectedMode:false
+	            },
+	            toolbox: {
+	                show : false
+	            },
+	            grid: {
+	                left: '7%',
+	                right: '4%',
+	                bottom: '10%',
+	                containLabel: true,
+	            },
+	            xAxis : [
+	                {
+	                    type : 'category',
+	                    data : month_time,
+	                    splitLine:{show: true},
+	                    axisLine:{
+	                        show: true,
+	                        lineStyle:{
+	                            color: '#ccc',
+	                            width: 1,
+	                            type: 'solid'
+	                        }
+	                    },
+	                    axisLabel : {
+	                        interval:0,
+	                        textStyle: {
+	                            color: '#666',
+	                        }
+	                    }
+	                }
+	            ],
+	            yAxis : [
+	                {
+	                    type : 'value',
+	                    splitLine:{show: true},
+	                    axisLine:{
+	                        show: true,
+	                        lineStyle:{
+	                            color: '#ccc',
+	                            width: 1,
+	                            type: 'solid'
+	                        }
+	                    },
+	                    axisLabel : {
+	                        textStyle: {
+	                            color: '#666',
+	                        }
+	                    }
+	                }
+	            ],
+	            series : [
+	                {
+	                    name:'交易金额',
+	                    type:'bar',
+	                    data:mon_amount,
+	                    itemStyle:{
+	                        normal:{color:'#ffc258'}
+	                    }
+	                }
+	            ]
+	        };
+	        myChart2.setOption(option2);
+			//交易笔数
+	        var myChart3 = echarts.init(document.getElementById('sum2'));
+	        option3 = {
+	            title : {
+	                text: '单位：笔',
+	                textStyle : {
+	                    color: '#999',
+	                    fontSize: '12',
+	                    fontWeight:'normal'
+
+	                }
+	            },
+	            tooltip : {
+	                trigger: 'axis',
+	                axisPointer: {
+	                    type: 'none'
+	                }
+	            },
+	            legend: {
+	                data:['交易笔数'],
+	                textStyle : {
+	                    color:'#333',
+	                    fontSize:'14'
+	                },
+	                icon:'none',
+	                selectedMode:false
+	            },
+	            toolbox: {
+	                show : false
+	            },
+	            grid: {
+	                left: '3%',
+	                right: '1%',
+	                bottom: '10%',
+	                containLabel: true,
+	            },
+	            xAxis : [
+	                {
+	                    type : 'category',
+	                    data : month_time,
+	                    splitLine:{show: true},
+	                    axisLine:{
+	                        show: true,
+	                        lineStyle:{
+	                            color: '#ccc',
+	                            width: 1,
+	                            type: 'solid'
+	                        }
+	                    },
+	                    axisLabel : {
+	                        interval:0,
+	                        textStyle: {
+	                            color: '#666',
+	                        }
+	                    }
+	                }
+	            ],
+	            yAxis : [
+	                {
+	                    type : 'value',
+	                    splitLine:{show: true},
+	                    axisLine:{
+	                        show: true,
+	                        lineStyle:{
+	                            color: '#ccc',
+	                            width: 1,
+	                            type: 'solid'
+	                        }
+	                    },
+	                    axisLabel : {
+	                        textStyle: {
+	                            color: '#666',
+	                        }
+	                    }
+	                }
+	            ],
+	            series : [
+	                {
+	                    name:'交易笔数',
+	                    type:'bar',
+	                    data:mon_count,
+	                    itemStyle:{
+	                        normal:{color:'#2bbef5'}
+	                    }
+	                }
+	            ]
+	        };
+	        myChart3.setOption(option3);
+	      //平台交易集中度情况
+	        var myChar4 = echarts.init(document.getElementById('sum3'));
+	        option4 = {
+	            title : {
+	                text: '',
+	                textStyle : {
+	                    color: '#fff',
+	                    fontSize: '20',
+	                    fontWeight:'normal'
+
+	                },
+	                x:'center',
+	                y:'57%'
+	            },
+	            tooltip : {
+	                trigger: 'item',
+	                formatter: "{b} ({d}%)"
+	            },
+	            color:['#fe6700', '#ffc258'],
+	            legend: {
+	                orient : 'vertical',
+	                padding:[10,0],
+	                itemGap:20,
+	                x : 'left',
+	                data:['前十人借贷额占比','其它借贷额占比']
+	            },
+	            toolbox: {
+	                show : false,
+	                feature : {
+	                    mark : {show: true},
+	                    dataView : {show: true, readOnly: false},
+	                    magicType : {
+	                        show: true,
+	                        type: ['pie', 'funnel'],
+	                        option: {
+	                            funnel: {
+	                                x: '25%',
+	                                width: '50%',
+	                                funnelAlign: 'left',
+	                                max: 1548
+	                            }
+	                        }
+	                    },
+	                    restore : {show: true},
+	                    saveAsImage : {show: true}
+	                }
+	            },
+	            calculable : true,
+	            series : [
+	                {
+	                    name:'访问来源',
+	                    type:'pie',
+	                    radius : '55%',
+	                    center: ['50%', '60%'],
+	                    data:[
+	                        {value:${disMonth?.top_ten_amount}, name:'前十人借贷额占比'},
+	                        {value:${qita}, name:'其它借贷额占比'},
+	                    ]
+	                }
+	            ]
+	        };
+
+	        myChar4.setOption(option4);
+
+	      //每月借款人数
+	        var myChart5 = echarts.init(document.getElementById('sum5'));
+	        option5 = {
+	            title: {
+	                text: '单位：人',
+	                textStyle : {
+	                    color: '#999',
+	                    fontSize: '12',
+	                    fontWeight:'normal'
+
+	                }
+	            },
+	            tooltip : {
+	                trigger: 'axis',
+	                axisPointer: {
+	                    type: 'none'
+	                }
+	            },
+	            legend: {
+	                data:['每月借款人数'],
+	                textStyle : {
+	                    color:'#333',
+	                    fontSize:'14'
+	                },
+	                icon:'none',
+	                selectedMode:false
+	            },
+	            toolbox: {
+	            },
+	            grid: {
+	                left: '2%',
+	                right: '4%',
+	                bottom: '3%',
+	                containLabel: true,
+	            },
+	            xAxis : [
+	                {
+	                    type : 'category',
+	                    boundaryGap : false,
+	                    data : month_time,
+	                    splitLine:{show: true},
+	                    axisLine:{
+	                        show: true,
+	                        lineStyle:{
+	                            color: '#ccc',
+	                            width: 1,
+	                            type: 'solid'
+	                        }
+	                    },
+	                    axisLabel : {
+	                        textStyle: {
+	                            color: '#666',
+	                        }
+	                    }
+	                }
+	            ],
+	            yAxis : [
+	                {
+	                    type : 'value',
+	                    splitLine:{show: true},
+	                    axisLine:{
+	                        show: true,
+	                        lineStyle:{
+	                            color: '#ccc',
+	                            width: 1,
+	                            type: 'solid'
+	                        }
+	                    },
+	                    axisLabel : {
+	                        textStyle: {
+	                            color: '#666',
+	                        }
+	                    }
+	                }
+	            ],
+	            series : [
+	                {
+	                    name:'每月借款人数',
+	                    type:'line',
+	                    stack: '总量',
+	                    label: {
+	                        normal: {
+	                            show: false,
+	                            position: 'top'
+	                        }
+	                    },
+	                    areaStyle: {normal: {}},
+	                    itemStyle : {
+	                        normal : {
+	                            color:'#fadba6',
+	                            label : {
+	                                show : true,
+	                                position : 'top',
+	                                textStyle : {
+	                                    fontWeight : '700',
+	                                    fontSize : '12',
+	                                    color:'#fe6801'
+	                                }
+	                            },
+	                            lineStyle:{
+	                                color:'#fe6801'
+	                            }
+	                        }
+	                    },
+	                    data:mon_lender
+	                }
+	            ]
+	        };
+	        myChart5.setOption(option5);
+
+	        //每月出借人数
+	        var myChart6 = echarts.init(document.getElementById('sum4'));
+	        option6 = {
+	            title: {
+	                text: '单位：人',
+	                textStyle : {
+	                    color: '#999',
+	                    fontSize: '12',
+	                    fontWeight:'normal'
+
+	                }
+	            },
+	            tooltip : {
+	                trigger: 'axis',
+	                axisPointer: {
+	                    type: 'none'
+	                }
+	            },
+	            legend: {
+	                data:['每月出借人数'],
+	                textStyle : {
+	                    color:'#333',
+	                    fontSize:'14'
+	                },
+	                icon:'none',
+	                selectedMode:false
+	            },
+	            toolbox: {
+	            },
+	            grid: {
+	                left: '2%',
+	                right: '4%',
+	                bottom: '3%',
+	                containLabel: true,
+	            },
+	            xAxis : [
+	                {
+	                    type : 'category',
+	                    boundaryGap : false,
+	                    data : month_time,
+	                    splitLine:{show: true},
+	                    axisLine:{
+	                        show: true,
+	                        lineStyle:{
+	                            color: '#ccc',
+	                            width: 1,
+	                            type: 'solid'
+	                        }
+	                    },
+	                    axisLabel : {
+	                        textStyle: {
+	                            color: '#666',
+	                        }
+	                    }
+	                }
+	            ],
+	            yAxis : [
+	                {
+	                    type : 'value',
+	                    splitLine:{show: true},
+	                    axisLine:{
+	                        show: true,
+	                        lineStyle:{
+	                            color: '#ccc',
+	                            width: 1,
+	                            type: 'solid'
+	                        }
+	                    },
+	                    axisLabel : {
+	                        textStyle: {
+	                            color: '#666',
+	                        }
+	                    }
+	                }
+	            ],
+	            series : [
+	                {
+	                    name:'每月出借人数',
+	                    type:'line',
+	                    stack: '总量',
+	                    label: {
+	                        normal: {
+	                            show: false,
+	                            position: 'top'
+	                        }
+	                    },
+	                    areaStyle: {normal: {}},
+	                    itemStyle : {
+	                        normal : {
+	                            color:'#96d9f2',
+	                            label : {
+	                                show : true,
+	                                position : 'top',
+	                                textStyle : {
+	                                    fontWeight : '700',
+	                                    fontSize : '12',
+	                                    color:'#39a1ea'
+	                                }
+	                            },
+	                            lineStyle:{
+	                                color:'#39a1ea'
+	                            }
+	                        }
+	                    },
+	                    data:mon_borrower
+	                }
+	            ]
+	        };
+	        myChart6.setOption(option6);
+
+ })
+ $(".ulList").click(function(){
+	 $(".ulList1").show();
+	 return false
+ });
+ $(document).click(function(){
+	    $(".ulList1").hide();
+})
+ </script>

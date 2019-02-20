@@ -1,0 +1,154 @@
+#{extends 'common/back/proxyMain.html' /}
+	#{set title:'代理商 | 代理商首页' /}
+	#{set smallclass:0 /}
+	#{set crumbs:'代理商>代理商首页'/}
+	
+<!-- 以下代码区 -->	
+	<link rel="stylesheet" href="/public/back/stylesheets/style.css" type="text/css" media="all" />
+<div class="back-main">
+	<!-- 头部筛选条件 -->
+	<div class="back-usertop">
+		<div class="left back-usermenu">
+			<a href="javascript:void(0)" class="selected">代理商 --> 基本信息修改</a>
+			
+		</div>
+		<a  title="返回" style="float: right;" id="disp" href="@{back.proxy.BackProxyCtrl.backProxyHomePre()}"><i class="iconfont">&#xe607;</i> &nbsp;返回</a>
+	</div>
+	
+	<div class="back-cont">
+		<div class="back-box">
+			<!-- <div class="addAgentTitle">
+		    	<p><b>管理员</b></p><span><a href="" target="" data-title="编辑" class="iconfont">&#xe602;</a></span>
+			</div> -->
+			<div class="back-infor">
+				<form action="@{back.proxy.BackProxyCtrl.updateMobile()}" method="POST" id="mobileSetting">
+					<input type="hidden" name="proxyId" value="${proxyId}" />
+					<input type="hidden" name="proxyName" value="${proxyName}" />
+					<h2 class="back-infor-head">
+						<span class="left">管理员</span>
+					
+						<a href="javascript:void(0);" class="right iconfont proxy-edit" data-title="编辑" >&#xe602;</a>
+					
+					</h2>
+					<ul class="back-infor-set">
+						<li>
+							<span class="lileft">手机号码</span>
+							<div class="liright">
+								<input type="text" class="width01 iffocus" maxlength="11" name="proxyMobile" value="${proxyMobile}" />
+								<span class="back-text-limit"></span>
+							</div>
+						</li>
+						<li>
+							<span class="lileft">姓名</span>
+							<div class="liright">
+								<span class="">${proxyName}</span>
+							</div>
+						</li>
+					</ul>
+				</form>
+			</div>
+			<div class="back-infor">
+				<form action="@{back.proxy.BackProxyCtrl.updatePass()}" method="POST" id="pwdSetting">
+					<input type="hidden" name="proxyId" value="${proxyId}" />
+					<input type="hidden" name="proxyMobile" value="${proxyMobile}" />
+					<input type="hidden" name="proxyName" value="${proxyName}" />
+					<h2 class="back-infor-head">
+						<span class="left">登录密码</span>
+						
+						<a href="javascript:void(0);" class="right iconfont proxy-edit" data-title="编辑" >&#xe602;</a>
+						
+					</h2>
+					<ul class="back-infor-set">
+						<li>
+							<span class="lileft">密码</span>
+							<div class="liright">
+								<input type="password" class="width01 iffocus" maxlength="16" name="proxyPwd" value="" />
+								<span class="back-text-limit"></span>
+							</div>
+						</li>
+						<li>
+							<span class="lileft">确认密码</span>
+							<div class="liright">
+								<input type="password" class="width01 iffocus" maxlength="16" name="proxyPwd2" value="" />
+								<span class="back-text-limit"></span>
+							</div>
+						</li>
+					</ul>
+				</form>
+			</div>
+			
+		</div>
+	</div>
+</div>	
+<!-- 页面js -->
+<script type="text/javascript">
+	require(["back"],function(back){
+		//扩展的v
+		require(["validation/validateExt"]);
+		
+		$(".back-infor").each(function() {
+			var that = this, 
+			editBtn = $(this).find(".proxy-edit"), 
+			editText = $(this).find("select,input:not(.easyui-datetimebox),textarea");
+			editText.prop("disabled", true);
+			editBtn.click(function() {
+				disable = editText.prop("disabled");
+				if (disable) {
+					editBtn.html("&#xe630;").data("title", "保存");
+					
+					$(".titlebox").text(editBtn.data('title'));
+					editText.prop("disabled",!disable);
+					editText.eq(0).focus();
+				} else {
+					
+					var infoForm = $(that).children("form[id='mobileSetting']");
+					if(infoForm.eq(0).length != 0){
+						infoForm.submit();
+					}
+					
+					var infoForm = $(that).children("form[id='pwdSetting']");
+					if(infoForm.eq(0).length != 0){
+						infoForm.submit();
+					}
+				}
+			});
+		});
+		
+		//修改手机号
+		$("form[id='mobileSetting']").validate({
+			errorPlacement: function(error, element) {
+				error.addClass('back-notice').insertAfter(element);
+			},
+			rules:{
+				"proxyMobile":{
+					required:true,
+					rangelength:[11, 11]
+				}
+			},
+			messages:{
+				"proxyMobile":{
+					required:"请输入11位手机号"
+				}
+			}
+		});
+		
+		//修改密码
+		$("form[id='pwdSetting']").validate({
+			errorPlacement: function(error, element) {
+				error.addClass('back-notice').insertAfter(element);
+			},
+			rules:{
+				"proxyPwd":{
+					required:true,
+					rangelength:[6, 15]
+				}
+			},
+			messages:{
+				"proxyPwd":{
+					required:"请输入6 - 15位数字和字母组合"
+				}
+			}
+		});
+		
+	});
+</script>

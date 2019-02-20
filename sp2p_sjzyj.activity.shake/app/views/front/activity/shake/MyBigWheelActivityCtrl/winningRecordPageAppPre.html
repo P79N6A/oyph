@@ -1,0 +1,71 @@
+ <h1>中奖信息</h1>
+ <form id="winningRecordPagePre" action="@{front.activity.shake.MyBigWheelActivityCtrl.winningRecordPageAppPre()}" method="GET">
+    <input type="hidden" id="currPage" name="currPage" value="${pageBean?.currPage}" />
+  	<input type="hidden" id="pageSize" name="pageSize" value="${pageBean?.pageSize}" />
+  	<input type="hidden" id="showType" name="showType" value="${showType}" />
+ </form>  
+    <table id="prizeTable">
+        <tr>
+            <th>奖品</th>
+           
+            <th>到期时间</th>
+            <th>状态</th>
+        </tr>
+        #{if pageBean?.page}
+			#{list items:pageBean?.page, as:"winning"}
+            <tr>
+                <td>#{if winning?.award_id == 1}讴业普惠定制水杯#{/if}
+					#{if winning?.award_id == 2}100元话费#{/if}
+					#{if winning?.award_id == 3}2G流量#{/if}
+					#{if winning?.award_id == 4}50元话费#{/if}
+					#{if winning?.award_id == 5}1G流量#{/if}
+					#{if winning?.award_id == 6}10元话费#{/if}
+					#{if winning?.award_id == 7}500M流量#{/if}
+					#{if winning?.award_id == 8}10万积分#{/if}
+					#{if winning?.award_id == 9}5万积分#{/if}
+					#{if winning?.award_id == 10}iphone xs 256G#{/if}</td>
+				<td>${winning?.end_time?.format(common.constants.Constants.DATE_PLUGIN)}</td>
+                <td>#{if winning?.status == 0 && winning?.end_status == 1 }已过期#{/if}
+                #{elseif winning?.status == 0 && winning?.end_status == 0}<span style="color:red;cursor:pointer;" onclick="receive(${winning?.id},${winning?.award_id})">领取</span>#{/elseif}
+					#{else}已领取#{/else}</td> 
+			</tr>
+            #{/list}
+                <!-- 表格数据统计 -->
+				<tr height="40">
+					<td colspan="8" class="back-lasttd">				
+						<!-- 分页组件--pageTag -->
+						#{frontPageTag page:pageBean,showPage:"winningRecordPagePre"/}
+					</td>
+				</tr>
+		#{/if}
+		#{else}	
+			<!-- 暂无记录 -->
+			<tr height="58">
+			   <td colspan="8" class="back-nodata"><i class="iconfont">&#xe613;</i>暂无记录</td>
+			</tr>
+		#{/else}
+    </table>
+    <input value="关闭" type="button" class="close">
+<script type="text/javascript">
+	function winningRecordPagePre(currPage, pageSize) {
+		$.ajax({
+			url : "@{front.activity.shake.MyBigWheelActivityCtrl.winningRecordPageAppPre()}",
+			type : "GET",
+			data : {
+				"currPage" : currPage,
+				"pageSize" : pageSize
+			},
+			success : function(data) {
+				$(".winningDetails").html(data);
+			}
+		});
+		$("#currPage").val(currPage);
+		$("#pageSize").val(pageSize);
+		
+		$("#showWinningInfoPre").submit();
+	}
+	$('.close').click(function() {
+        $('.winningDetails').hide();
+        $('.black-bg').hide();
+    })
+</script>

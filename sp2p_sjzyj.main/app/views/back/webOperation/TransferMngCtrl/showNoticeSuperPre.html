@@ -1,0 +1,134 @@
+#{extends 'common/back/webOperationMain.html' /}
+#{set title:'运维 | 通知管理 ' /}
+#{set smallclass:8 /}
+#{set crumbs:'运维>通知管理' /}
+%{
+	java.lang.Integer type = controllers.common.BackBaseController.getCurrentSupervisorType();
+}%
+<div class="back-main">
+	<!-- 头部筛选条件 -->
+	<div class="back-usertop">
+		<!-- 搜索按钮，控制搜索条件的显示隐藏 -->
+		<div class="left back-usermenu">
+		<a href="@{back.webOperation.TransferMngCtrl.showNoticeSuperPre()}"  class="selected">通知管理</a>		
+		</div>
+		
+	</div>
+	
+	<div class="back-cont">
+		<form onsubmit="return jianyan();" action="@{back.webOperation.TransferMngCtrl.addNoticeSuper()}" method="POST" id="form_addDiff">		 
+			<div class="back-infor">
+				<h2 class="back-infor-head">
+					<span class="left">添加通知人</span>
+				</h2>				
+				<ul class="back-infor-set">	
+					<li>			   				 	
+						<span class="lileft">通知人姓名：</span>
+						<div class="liright">							
+							<input id="noticeName" name="noticeName" type="text">							
+						</div>
+					</li>
+					<li>			   				 	
+						<span class="lileft">通知人手机号：</span>
+						<div class="liright">							
+							<input id="noticeMobile" name="noticeMobile" type="text">
+							<input id="noticeType" name="noticeType" type="hidden" value="0">							
+						</div>
+					</li>
+					<li>			   				 	
+						<span class="lileft">通知类型：</span>
+						<div class="liright">							
+							<select name="notice_temp" style="width: 164px;">
+								<option value="0">转让</option>
+								<option value="1">还款</option>
+							</select>							
+						</div>
+					</li>							
+					<li>
+						<p class="back-audit-btns">
+							<input type="submit" id="pageSave" value="添加" class="bgbtn">
+							<input type="reset" value="取消" class="bdbtn dialog-console">
+						</p>
+					</li>				
+				</ul>
+			</div>						
+		</form>
+	</div>	
+	
+	<div class="back-cont">
+		<div class="back-box">
+			<table width="100%" class="back-table table-fixed">
+				<tr height="40">
+					<th width="70" class="align-left">
+						<span class="back-order">
+							序号
+						</span>
+					</th>
+					<th>姓名</th>
+					<th>
+						<span class="back-order">
+						    手机号
+						</span>
+					</th>
+					<th>是否通知</th>
+					<th>通知类型</th>
+					<th>操作</th>					
+				</tr>
+			#{if trList!=null}
+				#{set count=1}#{/set}
+				#{list trList,as:'trls'}
+				<tr height="40">
+					<td class="align-left">
+						<label>${count}</label>
+					</td>
+					<td data-title="">
+					${trls.notice_name}
+					</td>
+					<td>
+					${trls.notice_mobile}
+					</td>
+					<td>
+					#{if trls.notice_type==0}是#{/if}
+					#{else}否#{/else}
+					</td>
+					<td>
+					#{if trls.notice_temp==0}转让#{/if}
+					#{else}还款#{/else}
+					</td>
+					<td>
+						<a href="@{back.webOperation.TransferMngCtrl.toEditNoticeSuperPre(trls.id)}">编辑</a>
+						<a href="@{back.webOperation.TransferMngCtrl.deleteNoticeSuperPre(trls.id)}">删除</a>
+					</td>
+				</tr>
+				#{set count=count+1}#{/set}
+				#{/list}
+			#{/if}
+				<!-- 表格数据统计 -->
+
+			#{else}	
+					<!-- 暂无记录 -->
+					<tr height="58">
+						<td colspan="5" class="back-nodata"><i class="iconfont">&#xe613;</i>暂无记录</td>
+					</tr>
+				</table>
+			#{/else}
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript" >
+
+	function jianyan(){
+		var mobile=$("#noticeMobile").val().trim();
+		var name=$("#noticeName").val();
+		if(mobile == '' || name == ''){
+			alert("姓名或手机号不能为空");
+			return false;
+		}else if(!mobile.isMobileNum()){
+			alert("手机号格式不正确");
+			return false;
+		}else{
+			return true;
+		}
+	}
+</script>

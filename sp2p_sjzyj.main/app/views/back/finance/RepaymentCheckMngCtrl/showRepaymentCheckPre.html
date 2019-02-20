@@ -1,0 +1,41 @@
+#{extends 'common/back/financeMain.html' /}
+	#{set title:'财务 | 还款校对' /}
+	#{set smallclass:14 /}
+	#{set crumbs:'财务>还款校对'/}
+	
+<div class="back-main">
+	<div class="back-cont">
+		<form action="@{back.finance.RepaymentCheckMngCtrl.paymentCheck()}" method="POST">
+			<input type="hidden" name="id" value="${goods?.id}">
+		 	<input type="hidden" id="imageUrl" name="filename" value="${goods?.pic_path}" >	
+			#{authenticityToken /}
+			<div class="back-infor">
+				<ul class="back-infor-set">
+					<li style="display: block; height: 32px;">
+						<span class="lileft">标号:</span>
+						<div class="liright">
+							<input type="text" id="bid_id" name="bid_id" value=""/><br/>
+						</div>
+					</li>
+					<li style="display: block; height: 32px;">
+						<span class="lileft">借款账单标号:</span>
+						<div class="liright">
+							<input type="text" id="bill_id" name="bill_id" value=""/><br/>
+						</div>
+					</li>	
+					<li>
+						<span class="lileft">业务流水号:</span>
+						<div class="liright">
+							<input type="text" id="businessSeqNo" name="businessSeqNo" value=""/><br/>
+						</div>
+					</li>		
+				</ul>
+			</div>
+			
+			<p class="back-audit-btns">
+				<input type="submit" id="pageSave" value="校验" class="bgbtn">
+				<input type="button" value="取消" class="bdbtn" onclick="location.href='@{back.finance.RepaymentCheckMngCtrl.showRepaymentCheckPre}'">
+			</p>
+		</form>
+	</div>
+</div>

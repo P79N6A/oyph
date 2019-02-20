@@ -1,0 +1,244 @@
+#{extends 'common/back/proxyMain.html' /}
+	#{set title:'代理商 | 业务员收益规则' /}
+	#{set smallclass:1 /}
+	#{set crumbs:'代理商>业务员收益规则'/}
+	
+<!-- 以下代码区 -->
+<link rel="stylesheet" href="/public/back/stylesheets/profitRule.css" type="text/css" media="all"/>
+<div class="back-main" style="overflow: hidden;padding-bottom: 30px;">
+	<!-- 头部筛选条件 -->
+	<div class="back-usertop">
+		<div class="left back-usermenu">
+			<a href="javascript:void(0)" class="selected">代理商  -> 业务员收益规则</a>
+		</div>
+			<a  title="返回" style="float: right;" id="disp" href="javascript:window.history.back(-1)"><i class="iconfont">&#xe607;</i> &nbsp;返回</a>
+	</div>
+	
+	<div class="back-cont">
+			<div class="back-infor ReducedBox1" style="margin-top: 20px;">
+				<form action="@{back.proxy.BackProxyCtrl.addOrUpdateProfitRule(proxyId,2)}" method="post" id = "annualConvert">
+					<h2 class="back-infor-head">
+						<span class="left">年化折算设置</span>
+						<a href="javascript:void(0);" class="right iconfont finance-edit" data-title="编辑" >&#xe602;</a>
+					</h2>
+					<table class="ReducedForm" border="0" id="convert">
+						<tr>
+							#{if convert}
+							<th class="term">理财期限</th>
+							<th class="discount">折算率</th>
+							<th class="example">计算举例说明</th>
+							#{/if}
+							<th id="a" style="display:none">理财期限</th>
+							<th id="b" style="display:none">折算率</th>
+							<th id="c" style="display:none">计算举例说明</th>
+							<th><a id="zengj" style="float: right;display: none" href="javascript:addAnnualConvertRow()"><i class="iconfont">&#xe60f;</i>添加一行</a></th>
+						</tr>
+						#{set count:1 /}
+						#{list convert, as : 'convertList'}
+						<tr id="${convertList?.timeLimit}+a">
+							<td class="term">
+								<input class="monthBox qixian" type="text" disabled="disabled" value="${convertList?.timeLimit}"><span>个月</span>
+							</td>
+							<td class="discount">
+								<input class="monthBox zhesuan" type="text"  disabled="disabled" value="${convertList?.discountRate}"><span>%</span>
+							</td>
+							<td class="example">
+								<p class="formula">1万元*${convertList.discountRate}%=${convertList?.getSum1()}元</p>
+							</td>
+							<td>
+								<span class="delAnnual" onclick="delRow('${convertList?.timeLimit}+a')" style="display:none; cursor: pointer; float: right; ">删除</span>
+							</td>
+						</tr>
+						#{set count:count+1 /}
+						#{/list}
+						<input type="hidden" id="annual_convert" name="annual_discount_rate" value="">
+					</table>
+				</form>
+			</div>
+
+			<div class="ReducedBox2 back-infor">
+			<form action="@{back.proxy.BackProxyCtrl.addOrUpdateProfitRule(proxyId,2)}" method="post" id="salesManRule">
+				<h2 class="back-infor-head">
+					<span class="left">个人推广理财提成点设置</span>
+					<a href="javascript:void(0);" class="right iconfont finance-edit" data-title="编辑" >&#xe602;</a>
+				</h2>
+				
+					<table class="ReducedForm" border="0" id="manRule">
+						<tr>
+							<th colspan="2" width="560px"><a id="addSalesRule" style="float: right;display: none" href="javascript:addSaleManRuleRow()"><i class="iconfont">&#xe60f;</i>添加一行</a></th>
+						</tr>
+						#{set count:1 /}
+						#{list salesmanRule , as : 'rule'}
+						<tr id="${rule?.minAmount}+s">
+							<td width="430px">
+								<input class="generalize min" type="text" disabled="disabled" value="${rule?.minAmount}"><span>万~~</span><input class="generalize max" type="text" disabled="disabled" value="${rule?.maxAmount}"><span>万</span>:提成=推广客户理财总金额的<input class="generalize amount" type="text" disabled="disabled" value="${rule?.amount}"><span>‱</span>
+							</td>
+							<td width="70px">
+								<span class="delSales" onclick="delRow('${rule?.minAmount}+s')" style="display:none; cursor: pointer; float: right; ">删除</span>
+							</td>
+						</tr>
+						#{set count:count+1 /}
+						#{/list}
+						<input type="hidden" id="salesman_rule" name="salesman_rule_1" value="">
+					</table>
+				</form>
+			</div>
+		</div>
+
+</div>
+<script type="text/javascript" src="/public/back/javascripts/profitRule.js"></script>
+<script type="text/javascript">
+	require(["back"] , function (back) {
+		
+		require(["validation/validateExt"]);
+		
+		$(".back-infor").each( function() {
+			var that = this, 
+			editBtn = $(this).find( ".finance-edit"),
+			editText = $(this).find("select,input:not(.easyui-datetimebox),textarea");
+			editText.prop("disabled", true);
+			
+			editBtn.click(function() {
+				disable = editText.prop("disabled");
+				if (disable) {
+					editBtn.html("&#xe630;").data("title","保存");
+					if ($("#annualConvert").has($(this)).length>0) {
+						$("#zengj").show();
+						$(".delAnnual").show();
+						
+						if ($("#convert").find("th").length <= 4) {
+							$("#a").show();
+							$("#b").show();
+							$("#c").show();
+						}
+					}
+					
+					if ($("#salesManRule").has($(this)).length>0) {
+						$("#addSalesRule").show();
+						$(".delSales").show();
+					}
+					
+					editText.prop("disabled", !disable);
+					editText.css("background","white");
+				}else{
+					if ($("#annualConvert").has($(this)).length>0) {
+						$("#zengj").hide();
+						$(".delAnnual").hide();
+					}
+					
+					if ($("#salesManRule").has($(this)).length>0) {
+						$("#addSalesRule").hide();
+						$(".delSales").hide();
+					}
+					
+					var convertForm = $(that).children("form[id='annualConvert']");
+					if(convertForm.eq(0).length != 0) {
+						convertForm.submit();
+					}
+					
+					var salesManRuleForm = $(that).children("form[id='salesManRule']");
+					if (salesManRuleForm.eq(0).length != 0) {
+						salesManRuleForm.submit();
+					}
+				}
+			});
+		});
+		
+		$("form[id='annualConvert']").validate({
+			errorPlacement: function(error, element) {
+				error.addClass('back-notice').insertAfter(element);
+			},
+			rules:{
+				"annual_convert":{
+					required:true
+				},
+				"salesman_rule":{
+					required:true
+				}
+			},
+			messages:{
+				
+			},
+			submitHandler:function(form){
+				var qixians=[];
+				var zhesuans=[];
+				$(".qixian").each(function(){
+					qixians.push($(this).val());
+				});
+				$(".zhesuan").each(function(){
+					zhesuans.push($(this).val());
+				});
+				var json1 ="[";
+				   for(var i=0;i<$(".qixian").length;i++){
+						 var timeLimit =qixians[i];
+						 
+						 var discountRate =zhesuans[i];
+						 if(i==$(".qixian").length-1){
+							 json1 = json1+"{timeLimit:"+timeLimit+",discountRate:"+discountRate+"}";
+						 }else{
+							 json1 = json1+"{timeLimit:"+timeLimit+",discountRate:"+discountRate+"},";
+						 }
+					 }
+					   json1 = json1+"]";
+					   $("#annual_convert").val(json1);
+					   if(jiaoYan("annualConvert")==1){
+						   alert("请检查输入必须是数字，且小数点后最多两位");
+						   $(".delAnnual").show();
+						 
+					   }else{
+						   form.submit();
+					   }
+				}
+		});
+		
+		$("form[id='salesManRule']").validate({
+			errorPlacement: function(error, element) {
+				error.addClass('back-notice').insertAfter(element);
+			},
+			rules:{
+				"annual_convert":{
+					required:true
+				},
+				"salesman_rule":{
+					required:true
+				}
+			},
+			messages:{
+			},
+			submitHandler:function(form){
+				  var minAmounts = [];
+				  var maxAmounts = [];
+				  var amounts = [];
+				  $(".min").each(function(){
+					  minAmounts.push($(this).val());
+				  });
+				  $(".max").each(function(){
+					  maxAmounts.push($(this).val());
+				  });
+				  $(".amount").each(function(){
+					  amounts.push($(this).val());
+				  });
+				  var json1 ="[";
+				   for(var i=0;i<$(".amount").length;i++){
+					   var minAmount = minAmounts[i];
+					   var maxAmount = maxAmounts[i];
+					   var amount = amounts[i];
+					   if(i==$(".amount").length-1){
+					   json1 = json1+"{minAmount:"+minAmount+",maxAmount:"+maxAmount+",amount:"+amount+"}";
+					   }else{
+					   json1 = json1+"{minAmount:"+minAmount+",maxAmount:"+maxAmount+",amount:"+amount+"},";
+					   }
+				   }
+				   json1 = json1+"]";
+				   $("#salesman_rule").val(json1);
+				   if(jiaoYan("salesManRule")==1){
+					   alert("请检查输入必须是数字，且小数点后最多两位");
+					   $(".delSales").show();
+				   }else{
+					   form.submit();
+				   }
+			}
+		});	
+		
+	});
+</script>

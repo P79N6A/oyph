@@ -1,0 +1,29 @@
+*{
+运维的Main页面
+}*
+
+#{extends 'common/supervisorMain.html' /}
+#{set AItem:1 /}
+
+<!-- 二级导航 -->
+<ul class="back-secnav">
+	<li><a href="@{back.webOperation.ColumnMngCtrl.showColumnsPre()}">栏目设置</a></li>
+	<li><a href="@{back.webOperation.InformationMngCtrl.showInformationsPre()}">内容管理</a></li>
+	<li><a href="@{back.webOperation.AdvertisementMngCtrl.showAdsPre()}">广告图片</a></li>
+	<li><a href="@{back.webOperation.ConsultantMngCtrl.showConsultantsPre()}">理财顾问</a></li>
+	<li><a href="@{back.webOperation.PartnerMngCtrl.showPartnersPre()}">合作伙伴</a></li>
+	<li><a href="@{back.webOperation.HelpMngCtrl.showHelpsPre()}">帮助中心</a></li>
+	<li><a href="@{back.webOperation.NoticeMngCtrl.showNoticeScenesPre()}">通知模板</a></li>
+	<li><a href="@{back.webOperation.DevelopmentMngCtrl.showEventPre()}">发展历程</a></li>
+	<li><a href="@{back.webOperation.TransferMngCtrl.showNoticeSuperPre()}">通知管理</a></li>
+	<li><a href="@{back.webOperation.CompanyStyleCtrl.showCompanyPre()}">公司风采管理</a></li>
+	<li><a href="@{back.webOperation.VoteMngCtrl.showVotesPre()}">投票活动管理</a></li>
+	<li><a href="@{back.webOperation.RiskMngCtrl.showRiskReceptionPre()}">风控专员管理</a></li>
+	<li><a href="@{back.webOperation.BankQuotaCtrl.showBankQuotaCtrlPre()}">银行限额管理</a></li>
+	<li><a href="@{back.webOperation.UpdateContractCtrl.showContractCtrlPre()}">借款合同管理</a></li>
+	<li><a href="@{back.webOperation.PhotoSharingCtrl.showSelectPhotosPre()}">优选照片上传分享</a></li>
+</ul>
+
+#{doLayout /}
+		
+		

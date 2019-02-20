@@ -1,0 +1,322 @@
+#{extends 'common/back/webOperationMain.html' /}
+	#{set title:'运维 | 内容管理 | 编辑内容' /}
+	#{set smallclass:2 /}
+	#{set crumbs:'运维>内容管理>编辑内容' /}
+<div class="back-main">
+	<input type="hidden" name="location" id="location" value="7"/>
+	<!-- 头部筛选条件 -->
+	<div class="back-usertop">
+		<b class="left font14">${information?.id} ${information?.title}>编辑</b>
+		<!-- 右侧功能按钮 -->
+		<div class="right back-rightbtns">
+			<a href="javascript:backAndRefresh('@{back.webOperation.InformationMngCtrl.showInformationsPre}');"><i class="iconfont">&#xe60b;</i>返回</a>
+		</div>
+	</div>
+	<!-- 左侧菜单 -->
+	<form action="@{back.webOperation.InformationMngCtrl.editInformation()}" method="POST" id="editInfor">
+		<div class="back-cont">
+			<div class="back-infor">
+				<h2 class="back-infor-head">内容</h2>
+				<ul class="back-infor-set">
+					<li>
+						<span class="lileft">栏目</span>
+						<div class="liright">
+							<select class="width01" id="columnKey" name="information.column_key" autofocus="autofocus">
+								#{list items:barMenu,as:"bar"}
+									#{if bar?.code == information?.column_key}
+										<option selected="selected" value="${bar?.code}">${bar?.value}</option>
+									#{/if}
+									#{else}
+										<option value="${bar?.code}">${bar?.value}</option>
+									#{/else}
+								#{/list}
+							</select>
+						</div>
+					</li>
+					<li>
+						<span class="lileft">标题</span>
+						<div class="liright">
+							<input type="hidden" id="sign" name="sign" value="${information?.sign}">
+							<input type="text" minlength="1" maxlength="20" id="title" name="information.title" class="width05 required iffocus" value="${information?.title}" />
+							<span class="back-text-limit">1~20个字符</span>
+						</div>
+					</li>
+					<li>
+						<span class="lileft">内容</span>
+						<div class="liright">
+							<textarea id="inforTextarea" name="information.content" class="back-textarea" >${information?.content}</textarea>
+						</div>
+					</li>
+					<li>
+						<span class="lileft">关键词</span>
+						<div class="liright">
+							<input type="text" class="width100 iffocus" id="keywords" name="information.keywords" value="${information?.keywords}" />
+							<p class="back-textnote">0~30个字符，每个关键词用“，”号隔离，例如：讴业普惠，互联网金融第一品牌，深圳……</p>
+						</div>
+					</li>
+					<li>
+						<span class="lileft">图片</span>
+						<div class="liright">
+							<span class="back-imgarea imgrequired">
+								<!-- 上传图片后隐藏back-noimg显示img-->
+								<img src="${information?.image_url}" onerror="this.src='/public/common/default.jpg'" class="backupimg" height="100" width="200" id="image" name="image" alt="" title="" />
+								<input type="hidden" id="imageUrl" name="information.image_url" value="${information?.image_url}">
+							</span>
+							<span class="back-upimg">
+								<label class="back-upbtn">
+									<input type="file" class="upload_file" value="" accept=".jpg,.jpeg,.png,.gif" name="imgFile" id="imgFile" onchange="upload()"/>
+									<i class="iconfont">&#xe608;</i>本地上传
+								</label>
+								<label class="back-lib-upbtn back-cropbtn"  onclick="cropImg(img_width,img_height);"
+								#{if !information?.image_url} style="display: none;" #{/if} id="cropImgLabel">
+									<b class="iconfont">&#xe642;</b>裁剪
+								</label>
+								<!-- 图片要求 -->
+								<p class="back-imginfor-note" id="back_imginfor_note"></p>
+								<div class="back-upload-imginfor">
+									<!-- 实际图片信息 -->
+									<span id="resolutionshow">${information?.image_resolution}</span>&nbsp;<span id="formatshow">${information?.image_format}</span>&nbsp;<span id="sizeshow">${information?.image_size}</span>
+								</div>
+								
+								<!-- 图片参数，用于保存 -->
+								<input type="hidden" id="imageResolution" name="information.image_resolution" value="${information?.image_resolution}">
+								<input type="hidden" id="imageSize" name="information.image_size" value="${information?.image_size}">
+								<input type="hidden" id="imageFormat" name="information.image_format" value="${information?.image_format}">
+							</span>
+						</div>
+					</li>
+					<li>
+						<span class="lileft">发布时间</span>
+						<div class="liright">
+							<input type="text" class="easyui-datetimebox" id="showTime" name="showTime" value="${information?.show_time?.format(common.constants.Constants.DATE_PLUGIN)}" />
+						</div>
+					</li>
+					<li>
+						<span class="lileft">排序时间</span>
+						<div class="liright">
+							<input type="text" class="easyui-datetimebox width01" id="orderTime" name="orderTime" value="${information?.order_time?.format(common.constants.Constants.DATE_PLUGIN)}"/>					
+						</div>
+					</li>
+					<li>
+						<span class="lileft">来源</span>
+						<div class="liright">
+							<input type="text" minlength="1" maxlength="10" id="sourceFrom" name="information.source_from" class="width01 iffocus required" value="${information?.source_from}" />
+							<span class="back-text-limit">1~10个字符</span>
+						</div>
+					</li>
+				</ul>
+			</div>
+			<p class="back-audit-btns">
+				#{rightMng rightId:202003}
+					<input type="submit" id="pageSave" value="保存" class="bgbtn">
+				#{/rightMng}
+				<input type="button" value="取消" class="bdbtn" onclick="backAndRefresh('@{back.webOperation.InformationMngCtrl.showInformationsPre}');">
+			</p>
+		</div>
+	</form>
+</div>
+
+
+<!-- 图片裁切弹窗 begin -->
+<div class="dialog crop-dialog">
+	<div class="dialog-bg"></div>
+	<div class="dialog-cont">
+		<div class="dialog-head">
+			<span class="left">图片裁剪</span>
+			<a href="javascript:void(0);" class="dialog-close hover-green" id="dialogClose">×</a>
+		</div>
+		<div class="crop-box">
+			<div class="clearfix">
+				<div class="crop-img">
+					<img src="" id="cropimg" />
+				</div>
+				<div class="crop-right">
+					<div class="crop-preview">
+						<div class="preview-container">
+							<img src="" />
+						</div>
+					</div>
+					<ul class="crop-handle">
+						<li><label class=""><input type="radio" id="maxSize" name="cropsize" />最大尺寸</label></li>
+						<li><label class=""><input type="radio" id="standardSize" name="cropsize" />标准尺寸</label></li>
+					</ul>
+				</div>
+			</div>
+			<p class="back-audit-btns">
+				<input type="button" value="保存" class="bgbtn" onclick="saveCropImg(cropImgSuccess)">
+				<input type="button" value="取消" class="bdbtn dialog-console">
+			</p>
+			<input type="hidden" id="x"/>
+			<input type="hidden" id="y"/>
+			<input type="hidden" id="w"/>
+			<input type="hidden" id="h"/>
+			<input type="hidden" id="imageType" /><!-- 图片格式 -->
+		</div>
+	</div>
+</div>
+<!-- 图片裁切弹窗 end -->
+
+
+<script type="text/javascript">
+
+var img_width = 820;
+var img_height = 377;
+
+require(["back"],function(back){
+	require(["ajaxfileupload","datatime","cutImg"]);
+	
+	var infor_content = null;
+	require(["editor"],function(editor){
+		infor_content = editor('#inforTextarea');
+	}); 
+	
+	//当前栏目要求的尺寸 
+	setImgSize("${information?.column_key}");
+
+	//栏目切换时，重新设置要求尺寸 
+	$('#columnKey').change(function(){
+		var val = $("#columnKey").val();
+		setImgSize(val);
+	});
+	
+	
+	$(function(){
+		$("#imageUrl").val($("#image").attr("src"));
+	});
+	
+	//编辑资讯内容 
+	$("#editInfor").validate({
+		errorPlacement: function(error, element) {
+			error.addClass('back-notice').insertAfter(element);
+		},
+		rules:{
+			"information.column_key":{
+				required:true
+			},
+			"information.title":{
+				required:true,
+				rangelength:[1,20]
+			},
+			"information.keywords":{
+				required:false,
+				rangelength:[0,30]
+			},
+			"showTime":{
+				required:true
+			},
+			"orderTime":{
+				required:true
+			},
+			"information.source_from":{
+				required:true,
+				rangelength:[0,10]
+			}
+			
+		},
+		messages:{
+			"information.columnKey":{
+				remote:"栏目不能为空"
+			},
+			"information.title":{
+				required:"标题不能为空",
+				rangelength:"标题1-20个字符"
+			},
+			"information.keywords":{
+				required:"关键字不能为空",
+				rangelength:"关键字只能输入0到30个字符"
+			},
+			"showTime":{
+				required:"发布时间不能为空"
+			},
+			"orderTime":{
+				required:"排序时间不能为空"
+			},
+			"information.source_from":{
+				required:"来源不能为空",
+				rangelength:"来源只能输入1到10个字符"
+			}
+		},
+		submitHandler:function(form){
+			console.info(infor_content);
+			if(!infor_content.isEmpty()){
+				form.submit();
+			}
+		}
+	});
+		
+});
+
+// 图片要求尺寸 
+function setImgSize (barMenu) {
+	imgLimit = $("#back_imginfor_note");
+	switch(barMenu){
+		case "home_profile": {
+			img_width = 1920;
+			img_height = 400;
+			imgLimit.text(img_width+"*"+img_height+"，jpg/png，大小不超过2M");
+			break;
+		}
+		case "home_joinus":  {
+			img_width = 1920;
+			img_height = 400;
+			imgLimit.text(img_width+"*"+img_height+"，jpg/png，大小不超过2M");
+			break;
+		}
+		default: {
+			img_width = 820;
+			img_height = 377;
+			imgLimit.text(img_width+"*"+img_height+"，jpg/png，大小不超过2M");
+			break;
+		}	
+	}
+}
+
+// 图片裁剪成功，回调函数 
+var cropImgSuccess = function(data) {
+	$("#image").attr("src", data.staticFileName);
+	$("#imageUrl").val(data.staticFileName);
+	$("#imageSize").val(data.size + "kb");
+	$("#sizeshow").html(data.size + "kb");
+	$("#imageResolution").val(data.width + "*" + data.height);
+	$("#resolutionshow").html(data.width + "*" + data.height);
+}
+
+
+//图片上传 
+function upload(){
+	var fileId = "imgFile";
+	var file = $("#" + fileId).val();
+	var pos = file.lastIndexOf("\\");
+	var fileName = file.substring(pos + 1);
+	
+	$.ajaxFileUpload({
+		url : '@{back.webOperation.InformationMngCtrl.uploadInformationImage()}',
+		secureuri : false,
+		fileElementId : fileId,
+		data:{
+			"fileName":fileName
+		},
+		dataType : 'json',
+		success : function(result) {
+			if(result.code == 1){
+				var data = result.obj;
+				$("#image").attr("src", data.staticFileName);
+				$("#imageUrl").val(data.staticFileName);
+				
+				$("#imageSize").val(data.size+"kb");
+				$("#sizeshow").html(data.size+"kb");
+				
+				$("#imageFormat").val(data.fileSuffix);
+				$("#formatshow").html(data.fileSuffix);
+				
+				$("#imageResolution").val(data.imageResolution);
+				$("#resolutionshow").html(data.imageResolution);
+				
+				$("#cropImgLabel").show();
+			} else {
+				alert(result.msg);
+			}
+		}
+	})
+}
+</script>

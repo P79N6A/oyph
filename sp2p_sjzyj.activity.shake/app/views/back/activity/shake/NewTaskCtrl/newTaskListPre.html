@@ -1,0 +1,141 @@
+#{extends 'common/back/activityMain.html' /}
+	#{set title:'活动 | 新手任务' /}
+	#{set smallclass:3 /}
+	#{set crumbs:'活动>新手任务'/}
+<div class="back-main">
+	<!-- 头部筛选条件 -->
+	<div class="back-usertop">
+		<div class="left back-usermenu">
+			<a href="@{back.activity.shake.NewTaskCtrl.newTaskListPre()}" class="selected">京东E卡列表</a>
+		</div>
+		<!-- 搜索按钮，控制搜索条件的显示隐藏 -->
+		<div class="back-search left #{if appli_phone}selected#{/if}">
+			<i class="iconfont searchicon">&#xe60a;</i>搜索<i class="iconfont arrowicon">&#xe603;</i>
+		</div>
+	</div>
+	<!-- 搜索条件，默认隐藏 -->
+	<div class="back-search-option" #{if appli_phone}style="display: block;"#{/if}>
+		<form action="@{back.activity.shake.NewTaskCtrl.newTaskListPre()}" method="GET" id="showNewTask">
+				<input type="hidden" id="currPage" name="currPage"/>
+		  		<input type="hidden" id="pageSize" name="pageSize" value="${pagebean?.pageSize}"/>
+		  		<input type="text" class="iffocus" name="appli_phone" placeholder="手机号" value="${appli_phone}" maxlength="11"/>
+				<input type="submit" class="bgbtn" onclick="showNewTask(1,${page?.pageSize})" value="搜索" />
+		</form>
+	</div>
+	<div class="back-cont">
+		<div class="back-box">
+			
+			<table width="100%" class="back-table table-fixed">
+				<tr height="40">
+					<th width="70" class="align-left">编号</th>
+					<th>用户名</th>
+					<th>手机号</th>
+					<th>京东E卡面额</th>
+					<th>京东E卡账号</th>
+					<th>京东E卡密码</th>
+					<th>中奖方式</th>
+					<th>中奖时间</th>
+					<!-- <th>短信发送状态</th>
+					<th>短信发送时间</th> -->
+					<th>操作</th>
+				</tr>
+			#{if pageBean?.page}
+				#{list pageBean?.page}
+				<tr height="40">
+					<td class="align-left">
+						${_?.id}
+					</td>
+					<td>
+						${_?.user_name}
+					</td>
+					<td>
+						${_?.mobile}
+					</td>
+					<td>
+						${_?.denomination} 元
+					</td>
+					<td>
+						${_?.jd_number}
+					</td>
+					<td>
+						${_?.jd_password}
+					</td>
+					<td>
+						#{if _?.win_type==0}
+							新人任务
+						#{/if}
+						#{if _?.win_type==1}
+							邀请新人
+						#{/if}
+					</td>
+					<td>
+						${_?.time?.format(common.constants.Constants.DATE_PLUGIN)}
+					</td>
+					<!-- <td>
+						#{if _?.grant_status==0}
+							未发送
+						#{/if}
+						#{else}已发送#{/else}
+					</td>
+					<td>
+						${_?.sms_time?.format(common.constants.Constants.DATE_PLUGIN)}
+					</td> -->
+					<td>
+						<a href="@{back.activity.shake.NewTaskCtrl.toEditJdECardPre(_?.id)}" data-title="编辑" class="iconfont back-column-edit" onclick="">&#xe602;</a>
+						#{if _?.grant_status==0 && _?.jd_number != null && _?.jd_password!=null}
+							<a href="javascript:void(0)" data-title="发送短信" class="iconfont back-column-edit" onclick="sms(${_?.id})">&#xe614;</a>							
+						#{/if}
+						#{elseif _?.grant_status==0 && _?.jd_number == null && _?.jd_password==null}
+							<a href="javascript:void(0)" data-title="发送短信" class="iconfont unable">&#xe614;</a>
+						#{/elseif}
+						#{else}
+							<a href="javascript:void(0)" data-title="已发送" class="iconfont unable">&#xe614;</a>
+						#{/else}
+					</td> 
+				</tr>
+				#{/list}
+				<!-- 表格数据统计 -->
+				<tr height="40">
+					<td colspan="9" class="back-lasttd">				
+						<!-- 分页组件--pageTag -->
+						#{backPageTag page:pageBean,showPage:"showNewTask"/}
+					</td>
+				</tr>
+			#{/if}
+			#{else}	
+					<!-- 暂无记录 -->
+					<tr height="58">
+						<td colspan="11" class="back-nodata"><i class="iconfont">&#xe613;</i>暂无记录</td>
+					</tr>
+				</table>
+			#{/else}
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+require(["back"],function(back){
+	// 搜索、左侧菜单展开收缩、表格排序
+	require(["search","linechecked"],function(){
+
+	});
+		
+});
+function showNewTask(currPage, pageSize) {
+	$("#currPage").val(currPage);
+	$("#pageSize").val(pageSize);
+		
+	$("#showNewTask").submit();
+}
+function sms(id){
+	$.ajax({
+		url : '@{back.activity.shake.NewTaskCtrl.sendSmsNewTask()}',
+		type: 'POST',
+		data : {
+			id:id
+		},
+		success : function(data){
+			/* window.location.href="@{back.activity.shake.NewTaskCtrl.newTaskListPre(1,10)}";  */
+		}
+	});
+}
+</script>

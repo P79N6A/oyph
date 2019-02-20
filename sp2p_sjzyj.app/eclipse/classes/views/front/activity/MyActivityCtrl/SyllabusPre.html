@@ -1,0 +1,89 @@
+#{extends 'common/frontMain.html' /}
+<link rel="stylesheet" href="/public/front/stylesheets/activity.css" type="text/css">
+<div class="activity-nav">
+	<div class="activity-tab">
+		
+		<div class="activity-but selected-but" id="current">当前活动</div>
+		<div class="activity-but" id="past">往期活动</div>
+		<div class="activity-but" id="start">未开始活动</div>
+	</div>	
+</div>
+		
+		
+		<div class="activity-main1">
+			#{list items:shankeActivity,as:'shanke'}
+				#{if shanke.status == 3}
+			<div class="activity-list">
+				<img src="/public/front/activity/shake.png">
+				<div class="activity-main-footer">
+					<div class="activity-title">
+						${shanke.name}
+					</div>
+					<div class="activity-time">
+						活动时间:<span class="time">&nbsp;${shanke.stime.format(common.constants.Constants.DATE_PLUGIN)}</span>
+					</div>
+					<input class="details" type="button" value="查看详情" onclick="javascript:window.location.href='@{front.activity.shake.MyShakeActivityCtrl.activityDetailPre(shanke.id)}'">
+				</div>
+			</div>	
+			#{/if}
+			#{/list}
+		</div>
+
+		<div class="activity-main2" style="display: none;">
+			#{list items:shankeActivity,as:'shanke'}
+				#{if shanke.status == 4}
+			<div class="activity-list">
+				<img src="/public/front/activity/shake.png">
+				<div class="activity-main-footer">
+					<div class="activity-title">
+						${shanke.name}
+					</div>
+					<div class="activity-time">
+						活动时间:<span class="time">&nbsp;${shanke.stime.format(common.constants.Constants.DATE_PLUGIN)}</span>
+					</div>
+					<input class="details" type="button" value="查看详情"  onclick="javascript:window.location.href='@{front.activity.shake.MyShakeActivityCtrl.endShakeActivityPre(shanke.id)}'">
+				</div>
+			</div>	
+			#{/if}
+			#{/list}
+		</div>
+		
+		<div class="activity-main3" style="display: none;">
+			#{list items:shankeActivity,as:'shanke'}
+				#{if shanke.status == 2}
+			<div class="activity-list">
+				<img src="/public/front/activity/shake.png">
+				<div class="activity-main-footer">
+					<div class="activity-title">
+						${shanke.name}
+					</div>
+					
+					<input class="details" type="button" value="查看详情" onclick="javascript:window.location.href='@{front.activity.shake.MyShakeActivityCtrl.activityDetailPre(shanke.id)}'">
+				</div>
+			</div>	
+			#{/if}
+			#{/list}
+		</div>
+	
+<script>
+	$('.activity-but').click(function(){
+		console.log()
+		$(this).addClass('selected-but').siblings().removeClass("selected-but")
+	})
+
+	$('#current').click(function(){
+		$('.activity-main1').show()
+		$('.activity-main2').hide()
+		$('.activity-main3').hide()
+	})
+	$('#past').click(function(){
+		$('.activity-main1').hide()
+		$('.activity-main2').show()
+		$('.activity-main3').hide()
+	})
+	$('#start').click(function(){
+		$('.activity-main1').hide()
+		$('.activity-main2').hide()
+		$('.activity-main3').show()
+	})
+</script>

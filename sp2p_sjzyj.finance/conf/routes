@@ -1,0 +1,15 @@
+# This file defines all module routes (Higher priority routes first)
+#
+# import these routes in the main app as :
+# *     /                       module:sp2p_sjzyj.finance
+#
+# ~~~~
+
+*    /query/ALoanReceiptController				 		  		 	 finance.ALoanReceiptController.createIOU
+#向借款人还款明细表中插入数据
+*    /query/BorrowerRepaymentCtrl/saveBorrowerRepayment			 		finance.BorrowerRepaymentCtrl.saveBorrowerRepayment
+*    /query/BorrowerRepaymentCtrl/getBorrowerRepayment				finance.BorrowerRepaymentCtrl.getBorrowerRepayment
+* 	 /query/BorrowerRepaymentCtrl/createXml							 finance.BorrowerRepaymentCtrl.createXml	
+#向出借人收款明细表中插入数据
+*    /query/LenderCollectionCtrl				 		  		 	 finance.LenderCollectionCtrl.savaLenderCollection
+				

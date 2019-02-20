@@ -1,0 +1,22 @@
+
+<!-- 继承顶部 -->
+
+#{extends 'common/supervisorMain.html' /}
+#{set AItem:11 /}
+
+
+
+<!-- 二级导航 -->
+
+<ul class="back-secnav">
+	<li><a href="@{back.activity.ActivityCtrl.activityPre()}">活动首页</a></li>
+	<li><a href="@{back.activity.shake.ShakeActivityCtrl.shakeActivityListPre()}">摇一摇活动</a></li>
+	<li><a href="@{back.activity.shake.BigWheelActivityCtrl.awardManagerListPre()}">大转盘活动</a></li>
+	<li><a href="@{back.activity.shake.NewTaskCtrl.newTaskListPre()}">新手任务</a></li>
+</ul>
+
+
+
+<!-- 扩展内容 -->
+
+#{doLayout /}

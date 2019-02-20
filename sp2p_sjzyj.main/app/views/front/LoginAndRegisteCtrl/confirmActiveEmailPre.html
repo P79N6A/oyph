@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>邮箱激活成功${' | '+settings?.get(common.constants.SettingKey.SEO_TITLE)+' | '+settings?.get(common.constants.SettingKey.PLATFORM_NAME)}</title>
+		<meta name="keywords" content="${settings?.get(common.constants.SettingKey.PLATFORM_NAME)}" />
+		<meta name="description" content="${settings?.get(common.constants.SettingKey.PLATFORM_NAME)}" />
+		<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+		<link rel="shortcut icon" type="image/png" href="${settings?.get(common.constants.SettingKey.PLATFORM_ICON_FILENAME)}" />
+		<link rel="stylesheet" type="text/css" href="@{'/public/front/stylesheets/front.css'}" />
+		
+		<!-- 皮肤背景、颜色 -->
+		<link rel="stylesheet" type="text/css" href="@{'/public/front/themes/'+settings?.get(common.constants.SettingKey.THEME_NAME)+'/background.css'}" />
+		#{if settings?.get(common.constants.SettingKey.THEME_CUSTOMIZE).equals('0')}
+			<link rel="stylesheet" type="text/css" href="@{'/public/front/themes/'+settings?.get(common.constants.SettingKey.THEME_NAME)+'/color.css'}" />
+		#{/if}
+		#{else}
+			
+			#{set mainColor:'#'+settings?.get(common.constants.SettingKey.THEME_MAIN_COLOR) /}
+			#{set auxColor:'#'+settings?.get(common.constants.SettingKey.THEME_AUX_COLOR) /}
+			#{set thdColor:'#'+common.utils.StrUtil.colorByAlpha(settings?.get(common.constants.SettingKey.THEME_MAIN_COLOR)) /}
+			#{include 'common/front/colorCont.html' /}
+		#{/else}
+	</head>
+	<body>
+		<div class="login-body">
+			<!-- 登录注册head start -->
+			<div class="login-header">
+				<div class="container clearfix">
+					<a href="index.html" title="" class="left">
+						<img src="${settings?.get(common.constants.SettingKey.PLATFORM_LOGO_FILENAME)}" onerror="this.src='/public/common/default.jpg'" height="77"  />
+					</a>
+				</div>
+			</div>
+			<!-- 登录注册head end -->
+			<div class="success-box">
+				<span class="timeout-note major">
+					<i class="icon #{if flash?.msg != null} fail-icon#{/if}#{else} success-icon #{/else} login-notemsg"></i>
+					#{if flash?.msg != null}${flash.msg}#{/if}#{else}恭喜，邮箱激活成功！#{/else}
+				</span>
+				<p class="trusteeship-note c3"><a href="@{front.account.MyAccountCtrl.homePre()}" class="major trusteeship-openbtn">首页</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+				#{if currUser == null}
+					<a href="@{front.LoginAndRegisteCtrl.loginPre()}" class="major">去登录</a></p>
+				#{/if}
+				#{else}
+					<a href="@{front.account.MyAccountCtrl.homePre()}" class="major">个人中心</a></p>
+				#{/else}
+				
+			</div>
+			<!-- 登录注册footer start -->
+			<div class="footer-msg">
+				©2016&nbsp;${settings?.get(common.constants.SettingKey.PLATFORM_NAME)}&nbsp;All&nbsp;rights&nbsp;resered<i class="footer-split">|</i>${settings?.get(common.constants.SettingKey.COMPANY_NAME)}<i class="footer-split">|</i>${settings?.get(common.constants.SettingKey.SITE_ICP_NUMBER)}
+			</div>
+			<!-- 登录注册footer end -->
+		</div>
+	</body>
+</html>

@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="keywords" content="${setting?.keyword}">
+		<meta name="description" content="${setting?.describe1}">
+		<title>${setting?.title}</title>
+		<link rel="stylesheet" href="/public/front/stylesheets/newindex.css" />
+		<link rel="stylesheet" href="/public/front/stylesheets/luodiye.css" />
+		<link rel="shortcut icon" type="image/png" href="https://system-im.oss-cn-beijing.aliyuncs.com/data/attachments/238655735CA04F28996C5947C86F34C5.png?Expires=2151905787&amp;OSSAccessKeyId=LTAIvnDBZYK3DLbL&amp;Signature=raxJs2fbaNz%2FDoIvVjtA59gEJj0%3D">
+	</head>
+	<body>
+	<img src='//stats.ipinyou.com/adv.gif?a=XTs8T..UjIWeYwbjEFEcIcX8NqCMP&cm=1&v=2&e=ev%3Dvg' style='display:none;'/>
+	<div id = "error" style = "display:none;">${flash?.error}</div>
+		<div class="total-pc">
+			<div class="total-nav">
+				<div class="nav-main">
+					<img src="/public/front/images/logo.png" style="cursor:pointer;" onclick="window.location.href='https://www.ouyepuhui.com';">
+					<img src="/public/front/images/service.png" style="float: right;">
+				</div>
+			</div>
+			<div class="nav-bg">
+				<form id="lp-form" class="lp-form" action="@{front.account.LandingPageCtrl.register()}" method="post" >
+					<div class="form-list" style="margin-top: 180px;">
+						<input type="text" name="mobile" maxlength="11" placeholder="请输入11位手机号" id="lp-cell" class="lp-sr" autocomplete="off" onkeyup="this.value=this.value.replace(/[^\d]/g,'');"/>
+					</div>
+					<p class="verify1"></p>
+					<div class="form-list">
+						<input type="text" name="code" placeholder="请输入计算结果" maxlength="2" class="lp-yz" id="lp-auth" onkeyup="this.value=this.value.replace(/[^\d]/g,'');"/>
+						<input id="randomNum" name="randomId" value="${randomNum}" type="hidden"/>
+						<img src="@{common.CaptchaController.createCustomColorCaptcha(randomNum,'CD0000','ffc435')}" onclick="refreshCaptcha(true);" id ="captchaImage" class="ident" title="换一张"/>
+					</div>
+					<p class="verify2"></p>
+					<div class="form-list">
+						<input type="text" name="smsCode" placeholder="请输入短信验证码" maxlength="6" class="lp-yz" id="lp-code" onkeyup="this.value=this.value.replace(/[^\d]/g,'');"/>
+						<input type="hidden" id="scene" name="scene" value="${common.enums.JYSMSModel.MODEL_SEND_CODE.tplId}">
+						<input type="button" id="vCode" value="获取验证码" >
+					</div>
+					<p class="verify3"></p>
+					<div class="form-list">
+						<div class="suo"></div><input type="password" name="password" placeholder="8~15位字幕或数字组合区分大小写" class="lp-sr" id="lp-pwd" oncopy="return false" autocomplete="new-password"/>
+					</div>
+					<p class="verify4"></p>
+					<input type="submit" value="注册送888元红包" id="lp-sub" class="lp-sub"/>
+					<span class="lp-span">已有账户？<a href="@{front.LoginAndRegisteCtrl.loginPre()}" class="lp-a">立即登陆</a></span>
+				</form>
+			</div>
+			<div class="bg2">
+				<div class="lp-mian">
+					<h1>888元红包礼</h1>
+					<hr/>
+					<div class="redPacket">
+						<img class="redPacket-list"  src="/public/front/images/luoDiImg/are1.png" onclick='closes();'/>
+						<img class="redPacket-list lp-m"  src="/public/front/images/luoDiImg/are2.png" onclick='closes();'/>
+						<img class="redPacket-list"  src="/public/front/images/luoDiImg/are3.png" onclick='closes();'/>
+						<img class="redPacket-list"  src="/public/front/images/luoDiImg/are4.png" onclick='closes();'/>
+						<img class="redPacket-list lp-m"  src="/public/front/images/luoDiImg/are5.png" onclick='closes();'/>
+						<img class="redPacket-list"  src="/public/front/images/luoDiImg/are6.png" onclick='closes();'/>
+						<img class="redPacket-list"  src="/public/front/images/luoDiImg/are7.png" onclick='closes();'/>
+						<img class="redPacket-list lp-m"  src="/public/front/images/luoDiImg/are8.png" onclick='closes();'/>
+						<img class="redPacket-list"  src="/public/front/images/luoDiImg/are9.png" onclick='closes();'/>
+					</div>
+					<span style="color: #fe7c6e;margin-left: 50px;">注：8元红包锁定期为一个月，其他为永久；所有红包有效期均为三个月</span>
+					<h1>出借流程</h1>
+					<hr/>
+					<div class="flow">
+						<img src="/public/front/images/luoDiImg/flow.png"  class="flow-img"/>
+					</div>
+					<h1>为什么选择讴业普惠</h1>
+					<hr/>
+					<div class="ask">
+						<div class="ask-list">
+							<img class="ask-img" src="/public/front/images/luoDiImg/lp-style1.png"/>
+							<div class="ask-right">
+								<h2 onclick="closes()">平台实力</h2>
+								<span>稳健安全的平台，累计促成金额超3亿</span>
+							</div>
+						</div>
+						<div class="ask-list">
+							<img class="ask-img" src="/public/front/images/luoDiImg/lp-style2.png"/>
+							<div class="ask-right">
+								<h2 onclick="closes()">安全保障</h2>
+								<span>多年风控经验，专业的风控系统，保障交易真实、安全、透明</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<div class="lp-footer">
+				<span>
+					冀ICP备17012676号   冀公网安备 13010502001600号<br />
+					©2016 讴业普惠 All rights resered     石家庄菲尔德投资咨询有限公司
+				</span>
+				<a target="_blank" class="foot-a1"  rel="nofollow" href="https://v.pinpaibao.com.cn/cert/site/?site=www.ouyepuhui.com&amp;at=business">
+					<img style="width: 83px; height: 30px;" src="/public/front/images/lianmeng-pic.png">
+				</a>
+				<a target="_blank" class="foot-a1"  rel="nofollow" href="http://webscan.360.cn/index/checkwebsite/url/www.ouyepuhui.com">
+				 	<img style="width: 83px; height: 30px;" src="/public/front/images/download.png">
+				</a>
+				<a class="foot-a1" target="_blank" rel="nofollow" href="http://si.trustutn.org/info?sn=455170111000562229393&amp;certType=4">
+				 	<img style="width: 83px; height: 30px;" src="/public/front/images/internet_qualification.png">
+				</a>
+			</div>
+		</div>
+		<!--
+        	作者：157144230@qq.com
+        	时间：2018-06-24
+        	描述：移动端
+        -->
+		<div class="total-yd">
+			<img src="/public/front/images/luoDiImg/Copywriting.png" class="yd-bg">
+			<div class="yd-main">
+				<a href="http://www.ouyepuhui.com" class="yd-logo">
+					<img src="/public/front/images/luoDiImg/yd-logo.png"/>
+				</a>
+				<img class="yd-title" src="/public/front/images/luoDiImg/yd-title.png" />
+				<form class="yd-form" id="yd-form" action="@{front.account.LandingPageCtrl.register()}" method="post">
+					<div class="form-list">
+						<input type="text" maxlength="11" name="mobile" placeholder="请输入11位手机号" id="yd-cell" class="yd-sr" autocomplete="off" onkeyup="this.value=this.value.replace(/[^\d]/g,'');"/>
+					</div>
+					<p class="verify1"></p>
+					<div class="form-list">
+						<input type="text" name="code" placeholder="请输入计算结果" maxlength="2" class="yd-yz" id="yd-auth" onkeyup="this.value=this.value.replace(/[^\d]/g,'');"/>
+						<input id="yd-randomNum" name="randomId" value="${randomNum}" type="hidden"/>
+						<img src="@{common.CaptchaController.createCustomColorCaptcha(randomNum,'CD0000','ffc435')}" onclick="ybrefreshCaptcha(true);" id = "yd-captchaImage" class="ident" title="换一张"/>
+					</div>
+					<p class="verify2"></p>
+					<div class="form-list">
+						<input type="text" placeholder="请输入短信验证码" name="smsCode" maxlength="6" class="yd-yz" id="yd-code" onkeyup="this.value=this.value.replace(/[^\d]/g,'');"/>
+						<input type="hidden" id="yd-scene" name="scene" value="${common.enums.JYSMSModel.MODEL_SEND_CODE.tplId}">
+						<input type="button" id="yd-vCode" value="获取验证码" >
+					</div>
+					<p class="verify3"></p>
+					<div class="form-list">
+						<div class="suo"></div><input type="password" name="password" placeholder="8~15位字幕或数字组合区分大小写" class="yd-sr" id="yd-pwd" oncopy="return false" autocomplete="new-password"/>
+					</div>
+					<p class="verify4"></p>
+					<div class="form-list">
+						<img src="/public/front/images/luoDiImg/Receive.png" class="img-sub" id="yd-sub" />
+					</div>
+				</form>
+				<div class="yd-redPacket">
+					<div class="yd-redPacket-list">
+						<span class="yd-span">新手专享</span>
+						<div class="yd-hr"></div>
+						<div class="yd-money">
+							8￥
+						</div>
+						<div class="use-limit">
+							<span class="limit1">锁定期一个月</span>
+							<span class="limit2">出借满1000元可用</span>
+						</div>
+						<div class="yd-button" onclick='tops()'>
+							领红包
+						</div>
+					</div>
+					<div class="yd-redPacket-list">
+						<span class="yd-span">新手专享</span>
+						<div class="yd-hr"></div>
+						<div class="yd-money">
+							20￥
+						</div>
+						<div class="use-limit">
+							<span class="limit1">锁定期永久</span>
+							<span class="limit2">出借满3000元可用</span>
+						</div>
+						<div class="yd-button" onclick='tops()'>
+							领红包
+						</div>
+					</div>
+					<div class="yd-redPacket-list">
+						<span class="yd-span">新手专享</span>
+						<div class="yd-hr"></div>
+						<div class="yd-money">
+							30￥
+						</div>
+						<div class="use-limit">
+							<span class="limit1">锁定期永久</span>
+							<span class="limit2">出借满5000元可用</span>
+						</div>
+						<div class="yd-button" onclick='tops()'>
+							领红包
+						</div>
+					</div>
+					<div class="yd-redPacket-list">
+						<span class="yd-span">新手专享</span>
+						<div class="yd-hr"></div>
+						<div class="yd-money">
+							50￥
+						</div>
+						<div class="use-limit">
+							<span class="limit1">锁定期永久</span>
+							<span class="limit2">出借满10000元可用</span>
+						</div>
+						<div class="yd-button" onclick='tops()'>
+							领红包
+						</div>
+					</div>
+					<div class="yd-redPacket-list">
+						<span class="yd-span">新手专享</span>
+						<div class="yd-hr"></div>
+						<div class="yd-money">
+							80￥
+						</div>
+						<div class="use-limit">
+							<span class="limit1">锁定期永久</span>
+							<span class="limit2">出借满15000元可用</span>
+						</div>
+						<div class="yd-button" onclick='tops()'>
+							领红包
+						</div>
+					</div>
+					<div class="yd-redPacket-list">
+						<span class="yd-span">新手专享</span>
+						<div class="yd-hr"></div>
+						<div class="yd-money">
+							100￥
+						</div>
+						<div class="use-limit">
+							<span class="limit1">锁定期永久</span>
+							<span class="limit2">出借满20000元可用</span>
+						</div>
+						<div class="yd-button" onclick='tops()'>
+							领红包
+						</div>
+					</div>
+					<div class="yd-redPacket-list">
+						<span class="yd-span">新手专享</span>
+						<div class="yd-hr"></div>
+						<div class="yd-money">
+							160￥
+						</div>
+						<div class="use-limit">
+							<span class="limit1">锁定期永久</span>
+							<span class="limit2">出借满35000元可用</span>
+						</div>
+						<div class="yd-button" onclick='tops()'>
+							领红包
+						</div>
+					</div>
+					<div class="yd-redPacket-list">
+						<span class="yd-span">新手专享</span>
+						<div class="yd-hr"></div>
+						<div class="yd-money">
+							180￥
+						</div>
+						<div class="use-limit">
+							<span class="limit1">锁定期永久</span>
+							<span class="limit2">出借满50000元可用</span>
+						</div>
+						<div class="yd-button" onclick='tops()'>
+							领红包
+						</div>
+					</div>
+					<div class="yd-redPacket-list">
+						<span class="yd-span">新手专享</span>
+						<div class="yd-hr"></div>
+						<div class="yd-money">
+							260￥
+						</div>
+						<div class="use-limit" style="margin-bottom: 0;">
+							<span class="limit1">锁定期永久</span>
+							<span class="limit2">出借满100000元可用</span>
+						</div>
+						<div class="yd-button" onclick='tops()'>
+							领红包
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- PC注册弹窗 -->
+		<div class="pchbg">
+			<div class="pc-box">
+				<img src="/public/front/images/clear_normal.png" id="close">
+				<img src="/public/front/images/wealth.png" class="wealth">
+				<form  action="@{front.account.LandingPageCtrl.register()}" method="post" class="popup-form" id='popup-form'>
+					<div class="popup-list img">
+						<input type='text'  name="mobile" id="popup-cell" class="popup-input1" placeholder="请输入11位手机号" maxlength="11" autocomplete="off" onkeyup="this.value=this.value.replace(/[^\d]/g,'');">
+					</div>
+					<p class="error1"></p>
+					<div class="popup-list img1">
+						<input type='text'  name="code" id="popup-auth" class="popup-input2" placeholder="请输入计算结果" maxlength="2"  onkeyup="this.value=this.value.replace(/[^\d]/g,'');">
+						<input id="popup-randomNum" name="randomId" value="${randomNum}" type="hidden"/>
+						<img src="@{common.CaptchaController.createCustomColorCaptcha(randomNum,'CD0000','ffc435')}" onclick="popuprefreshCaptcha(true);" id = "popup-captchaImage" class="ident1" title="换一张"/>
+					</div>
+					<p class="error2"></p>
+					<div class="popup-list img2">
+						<input type='text' class="popup-input2" id="popup-code" name="smsCode" placeholder="请输入短信验证码" maxlength="6"  onkeyup="this.value=this.value.replace(/[^\d]/g,'');">
+						<input type="hidden" id="popup-scene" name="scene" value="${common.enums.JYSMSModel.MODEL_SEND_CODE.tplId}">
+						<input type="button" value="获取验证码" id="code1" class="code1">
+					</div>
+					<p class="error3"></p>
+					<div class="popup-list img3">
+						<input type="password" class="popup-input1" id="popup-pwd" name="password" placeholder="8~15位字母或者数字组合区分大小写" maxlength="16" oncopy="return false" autocomplete="new-password">
+					</div>
+					<p class="error4"></p>
+					<div class="popup-c">
+					<img src="/public/front/images/receive.png" class='popup-sub' id='popup-sub'>
+					</div>
+				</form>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="/public/front/javascripts/jquery.min.js" ></script>
+	<script type="text/javascript">
+	/*注册弹窗*/
+	function closes(){
+		$('.pchbg').show();
+	}
+	$('#close').click(function(){
+		$('.pchbg').hide();
+	})
+	/*点击领取调到顶部*/
+	function tops(){
+		$(window).scrollTop(0);
+	}
+	/*pc弹窗验证*/
+	$('#popup-sub').click(function(){
+		var cell = $("#popup-cell").val();
+		var auth = $("#popup-auth").val();
+		var code = $("#popup-code").val();
+		var pwd=$('#popup-pwd').val()
+		var reg=/^1[3|4|5|6|7|8][0-9]{9}$/;//手机号验证规则
+		if (cell == "") {
+			$(".error1").html("请输入手机号")
+			return false;
+		}else if(!reg.test(cell)){
+			$(".error1").html("手机号格式不正确")
+			return false;
+		}else{
+			$(".error1").html("")
+		};
+		if (auth == "") {
+			$(".error2").html("请输入图文验证码")
+			return false;
+		}else{
+			$(".error2").html("")
+		};
+		if (code == "") {
+			$(".error3").html("请输入验证码")
+			return false;
+		}else{
+			$(".error3").html("")
+		};
+		if (pwd == "") {
+			$(".error4").html("请输入密码")
+			
+		}else{
+			$(".error4").html("")
+		}
+		if(pwd.length<8 ||pwd.length>16){
+			$(".error4").html("请输入8--16以内的密码")
+			return false;
+		}else{
+			$(".error4").html("")
+		}
+		$('#popup-form').submit();
+	})
+	/* 验证码刷新 */
+	function popuprefreshCaptcha(isRefresh){
+		$.ajax({
+			url:"@{common.CaptchaController.flushCaptcha()}",
+			type:"post",
+			success:function(data) {
+				var arr=eval(data);
+				var randomid = arr.randomID;
+				var background = "CD0000";
+				var text = "ffc435";
+				$("#popup-captchaImage").attr("src","@{common.CaptchaController.createCustomColorCaptcha()}?uuid="+randomid+"&background="+background+"&text="+text)
+				$("#popup-randomNum").val(randomid);
+			}
+		});
+	}
+	$("#code1").click(function () {
+		var cell = $("#popup-cell").val();
+		var auth = $("#popup-auth").val();
+		var randomNum=$('#popup-randomNum').val();
+		var reg=/^1[3|4|5|6|7|8][0-9]{9}$/;
+		if (cell == "") {
+			$(".error1").html("请输入手机号")
+			return false;
+		}else if(!reg.test(cell)){
+			$(".error1").html("手机号格式不正确")
+			return false;
+		} else{
+			$(".error1").html("")
+		}
+		if (auth == "") {
+			$(".error2").html("请输入图文验证码")
+			return false;
+		}else{
+			$(".error2").html("")
+		}
+		
+		$.ajax({
+			url : "@{front.account.LandingPageCtrl.sendCodeOfRegister()}",
+			type : "POST",
+			data : {
+				"mobile" : cell,
+				"code" : auth,
+				"randomId" : randomNum,
+				"scene" : $("#popup-scene").val()
+			},
+			dataType:"json",
+			success : function(data) {
+				if(data.code < 1){
+					$(".error1").html(data.msg);
+					return false;
+				} else {
+					$(".error1").html('');
+					if($('#code1').val()=='获取验证码'){
+						var i=60;
+						$('#code1').val(i+'s').css('background','#ccc')
+						var time=setInterval(function(){
+							if(i==0){
+								$('#code1').val('获取验证码').css('background','#ffc435')
+								clearInterval(time)
+								return false;
+							}else{
+								i--;
+								$('#code1').val(i+'s')
+							}
+						},1000)
+					}else{
+						$('.error3').text('获取验证码失败');
+						return false;
+					}
+					
+				}
+			}
+		});
+	});
+	/* pc端  */
+	$("#lp-sub").click(function(){
+		var cell = $("#lp-cell").val();
+		var auth = $("#lp-auth").val();
+		var code = $("#lp-code").val();
+		var pwd=$('#lp-pwd').val()
+		var reg=/^1[3|4|5|6|7|8][0-9]{9}$/;//手机号验证规则
+		if (cell == "") {
+			$(".verify1").html("请输入手机号")
+			return false;
+		}else if(!reg.test(cell)){
+			$(".verify1").html("手机号格式不正确")
+			return false;
+		}else{
+			$(".verify1").html("")
+		};
+		if (auth == "") {
+			$(".verify2").html("请输入图文验证码")
+			return false;
+		}else{
+			$(".verify2").html("")
+		};
+		if (code == "") {
+			$(".verify3").html("请输入验证码")
+			return false;
+		}else{
+			$(".verify3").html("")
+		};
+		if (pwd == "") {
+			$(".verify4").html("请输入密码")
+			
+		}else{
+			$(".verify4").html("")
+		}
+		if(pwd.length<8 ||pwd.length>16){
+			$(".verify4").html("请输入8--16以内的密码")
+			return false;
+		}else{
+			$(".verify4").html("")
+		}
+		$('#lp-form').submit();
+	});
+	$("#vCode").click(function () {
+		var cell = $("#lp-cell").val();
+		var auth = $("#lp-auth").val();
+		var randomNum=$('#randomNum').val();
+		var reg=/^1[3|4|5|6|7|8][0-9]{9}$/;
+		if (cell == "") {
+			$(".verify1").html("请输入手机号")
+			return false;
+		}else if(!reg.test(cell)){
+			$(".verify1").html("手机号格式不正确")
+			return false;
+		} else{
+			$(".verify1").html("")
+		}
+		if (auth == "") {
+			$(".verify2").html("请输入图文验证码")
+			return false;
+		}else{
+			$(".verify2").html("")
+		}
+		
+		$.ajax({
+			url : "@{front.account.LandingPageCtrl.sendCodeOfRegister()}",
+			type : "POST",
+			data : {
+				"mobile" : cell,
+				"code" : auth,
+				"randomId" : randomNum,
+				"scene" : $("#scene").val()
+			},
+			dataType:"json",
+			success : function(data) {
+				if(data.code < 1){
+					$(".verify1").html(data.msg);
+					return false;
+				} else {
+					$(".verify1").html('');
+					if($('#vCode').val()=='获取验证码'){
+						var i=60;
+						$('#vCode').val(i+'s').css('background','#ccc')
+						var time=setInterval(function(){
+							if(i==0){
+								$('#vCode').val('获取验证码').css('background','#ffc435')
+								clearInterval(time)
+								return false;
+							}else{
+								i--;
+								$('#vCode').val(i+'s')
+							}
+						},1000)
+					}else{
+						$('.verify3').text('获取验证码失败');
+						return false;
+					}
+					
+				}
+			}
+		});
+	});
+	/* 移动端  */
+	$("#yd-sub").click(function(){
+		var cell = $("#yd-cell").val();
+		var auth = $("#yd-auth").val();
+		var code = $("#yd-code").val();
+		var pwd=$('#yd-pwd').val()
+		var reg=/^1[3|4|5|6|7|8][0-9]{9}$/;//手机号验证规则
+		if (cell == "") {
+			$(".verify1").html("请输入手机号")
+			return false;
+		}else if(!reg.test(cell)){
+			$(".verify1").html("手机号格式不正确")
+			return false;
+		}else{
+			$(".verify1").html("")
+		};
+		if (auth == "") {
+			$(".verify2").html("请输入图文验证码")
+			return false;
+		}else{
+			$(".verify2").html("")
+		};
+		if (code == "") {
+			$(".verify3").html("请输入验证码")
+			return false;
+		}else{
+			$(".verify3").html("")
+		};
+		if (pwd == "") {
+			$(".verify4").html("请输入密码")
+			
+		}else{
+			$(".verify4").html("")
+		}
+		if(pwd.length<8 ||pwd.length>16){
+			$(".verify4").html("请输入8--16以内的密码")
+			return false;
+		}else{
+			$(".verify4").html("")
+		}
+		$('#yd-form').submit();
+	});
+	/* 验证码刷新 */
+	function ybrefreshCaptcha(isRefresh){
+		$.ajax({
+			url:"@{common.CaptchaController.flushCaptcha()}",
+			type:"post",
+			success:function(data) {
+				var arr=eval(data);
+				var randomid = arr.randomID;
+				var background = "CD0000";
+				var text = "ffc435";
+				$("#yd-captchaImage").attr("src","@{common.CaptchaController.createCustomColorCaptcha()}?uuid="+randomid+"&background="+background+"&text="+text)
+				$("#yd-randomNum").val(randomid);
+			}
+		});
+	}
+
+	$("#yd-vCode").click(function () {
+		var cell = $("#yd-cell").val();
+		var auth = $("#yd-auth").val();
+		var randomNum=$('#yd-randomNum').val();
+		var reg=/^1[3|4|5|6|7|8][0-9]{9}$/;
+		if (cell == "") {
+			$(".verify1").html("请输入手机号")
+			return false;
+		}else if(!reg.test(cell)){
+			$(".verify1").html("手机号格式不正确")
+			return false;
+		} else{
+			$(".verify1").html("")
+		}
+		if (auth == "") {
+			$(".verify2").html("请输入图文验证码")
+			return false;
+		}else{
+			$(".verify2").html("")
+		}
+		
+		$.ajax({
+			url : "@{front.account.RegisterCtrl.sendCodeOfRegister()}",
+			type : "POST",
+			data : {
+				"mobile" : cell,
+				"code" : auth,
+				"randomId" : randomNum,
+				"scene" : $("#yd-scene").val()
+			},
+			dataType:"json",
+			success : function(data) {
+				if(data.code < 1){
+					$(".verify1").html(data.msg);
+					return false;
+				} else {
+					$(".verify1").html('');
+					if($('#yd-vCode').val()=='获取验证码'){
+						var i=60;
+						$('#yd-vCode').val(i+'s').css('background','#ccc')
+						var time=setInterval(function(){
+							if(i==0){
+								$('#vCode').val('获取验证码').css('background','#ff8a01')
+								clearInterval(time)
+								return false;
+							}else{
+								i--;
+								$('#yd-vCode').val(i+'s')
+							}
+						},1000)
+					}else{
+						return false;
+					}
+					
+				}
+			}
+		});
+	});
+	
+	window.onload = function () {
+		var error = $("#error").text();
+		if (error != "") {
+			alert(error);
+		}
+	}
+	</script>
+</html>

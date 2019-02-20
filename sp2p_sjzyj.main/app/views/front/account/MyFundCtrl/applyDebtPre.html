@@ -1,0 +1,183 @@
+<style>
+	.black-bg{
+		position: fixed;
+		left: 0;
+		top:0;
+		background: rgba(0,0,0,.5);
+		z-index: 99999;
+		width: 100%;
+		height: 100%;
+	}
+	#turntable{
+		width: 594px;
+	    height: 642px;
+	    position: relative;
+	    top: 50%;
+	    left: 50%;
+	    margin-top: -321px;
+	    margin-left: -292px;
+	    color: black;
+	    background: #fff;
+   		border-radius: 20px;
+   		text-align: center;
+	}
+	#turntable .sbg{
+		width: 100%;
+	}
+	#turntable p{
+		padding: 0 40px;
+    	text-indent: 34px;
+    	line-height: 30px;
+    	text-align: left;
+	}
+	#turntable .close{
+		width: 200px;
+		height: 43px;
+		background: #2693e7;
+		border-radius:20px;
+		color: #fff;
+		margin-top: 20px;
+	}  
+</style>
+<div class="black-bg">
+	<div id="turntable">
+		<img src="/public/front/images/sbg.png" class="sbg">
+		<p>禁止债权转让的情形：</p>
+		<p>1、出借时间不满一个月的；</p>
+		<p>2、已经进行过一次债权转让的（无论是转让人或受让人，都不能在同一个出借项目中再次进行债权转让）；</p>
+		<p>3、出借金额中使用了平台奖励红包和加息券等；</p>
+		<p>流动性风险提示：</p>
+		<p>1、您发起债权转让后，可能会出现没有受让人接受您所转让的债权，导致本次债权转让行为失败的结果；</p>
+		<p>2、您发起债权转让后，可能因您的转让行为而无法向债务人主张权利；</p>
+		<p>3、不排除债务人与受让人恶意串通的行为，您可能不能按时足额收回您的债权；</p>
+		<p>4、债权转让合同与原借贷合同具有同一性，由于您的债权转让行为，可能导致原合同的瑕疵也可能随之转移于受让人</p>
+		<input type="button" value="确定" class="close">
+	</div>
+</div>
+<script>
+	$('.close').click(function(){
+		$('.black-bg').hide();
+	})
+</script>
+<div class="account-box c3">
+	<h2 class="account-title">
+		<div class="left account-checktitle" style="color:#f8952b"><i class="icon transfer-icon"></i>转让申请</div>
+		<span class="right" style="color:#f8952b">${debtInvest?.bid_no}  ${debtInvest?.title}</span>
+	</h2>
+	<div class="account-transfer-box">
+		<div class="account-debttop c3" style='width:700px;'>
+			<p class="account-debtdata">
+				<span class="left">债权总额&nbsp;&nbsp;${debtInvest?.debt_amount?.format(common.constants.Constants.FINANCE_FORMATE_NORMAL)}元</span>
+				<span class="left">待收本金&nbsp;&nbsp;${debtInvest?.debt_principal?.format(common.constants.Constants.FINANCE_FORMATE_NORMAL)}元</span>
+				<span class="left">待收利息&nbsp;&nbsp;${debtInvest?.debt_interest?.format(common.constants.Constants.FINANCE_FORMATE_NORMAL)}元</span>
+				<span class="left">待收期数&nbsp;&nbsp;#{formatIntMoney money:debtInvest?.period /}期</span>
+			</p>
+		</div>
+		<ul class="borrow-list">
+			<form action="@{front.account.MyFundCtrl.applyDebtTransfer()}" method="POST" id="form_applayDept">
+				#{authenticityToken /}
+				<input type="hidden" name="uuidRepeat" value="${flash?.submitUuid}">
+				<li>
+					<span class="left c3 borrowleft"><i class="important-point">*</i>转让标题</span>
+					<div class="borrowright">
+						<input name="title" id="title" type="text" class="text" maxlength=20 />
+						<input name="sign" id="sign" type="hidden" value="${debtInvest?.sign}" />
+					</div>
+				</li>
+				<li>
+					<span class="left c3 borrowleft"><i class="important-point">*</i>转让期限</span>
+					<div class="borrowright">
+						<label class="unit-input">
+						<select class="select" name="period">
+							#{list items:1..7,as:'i'}
+								<option value="${i}">${i}</option>
+							#{/list}
+						</select>
+						<i class="unit selectunit">天</i>
+						</label>
+					</div>
+				</li>
+				<li>
+					<span class="left c3 borrowleft"><i class="important-point">*</i>转让底价</span>
+					<div class="borrowright">
+						<label class="unit-input">
+							<input type="text" class="text" oninput="$(this).ndigitInteger(9)" onpropertychange="$(this).ndigitInteger(9)" name="transfer_price" id="transfer_price" />
+							<i class="unit unit1">元</i>
+						</label>
+					</div>
+				</li>
+				<li>
+					<span class="left c3 borrowleft">&nbsp;</span>
+					<div class="borrowright">
+						<input type="button" id="form_applayDept_sub" value="立即申请" class="condition-btn btn" />
+					</div>
+				</li>
+			</form>
+		</ul>
+		<div class="borrow-note c9">
+			<span class="borrow-notehead"><i class="icon note-icon"></i>温馨提示：</span><br/>
+			1.债权转让可以折价转让，平价转让，转让底价的范围为转让本金的80%~本金的100%；<br/>
+			2.债权转让申请成功后，不允许取消，最长保留7天申购时间，申购时间到期未成交，则本次转让结束；<br/>
+			3.债权转让申请通过后方可在转让专区进行显示；<br/>
+			4.债权转让时，单个债权必须全额转让，不可拆分转让。<br/>
+		</div>
+		<p class="returnprev">
+			<a href="@{front.account.MyFundCtrl.accountManagePre(0)}" class="backpage"><i class="icon return-icon"></i>返回</a>
+		</p>
+	</div>
+
+<script type="text/javascript">
+require(["front"],function(front){
+	require(['validation/validateExt']);
+	$("#form_applayDept").validate({
+		errorPlacement: function(error, element) {
+			error.addClass('register-error').insertAfter(element);
+			if(element.parent().hasClass("unit-input")){
+				error.addClass('register-error').insertAfter(element.parent());
+			} else {
+				error.addClass('register-error').insertAfter(element);
+			}
+		},
+		rules:{
+			"title":{
+				required:true,
+				rangelength:[1,20]
+			},
+			"transfer_price":{
+				required:true,
+				digits:true,
+				min: 1,
+				range:[#{formatIntMoney money:half_principal /},#{formatIntMoney money:(debtInvest?.debt_principal) /}]
+			}
+		},
+		messages:{
+			"title":{
+				required:"请输入转让标题",
+				rangelength:"标题长度不超过20个字"
+			},
+			"transfer_price":{
+				required:"请输入转让的底价",
+				digits:"转让底价为正整数",
+				min:"底价必须大于0",
+				range:'底价在本金的80%~本金的100%'
+			}
+		},
+		submitHandler: function(form){
+			form.submit();
+		}
+	});
+	
+	$("#form_applayDept_sub").click(function(){
+		#{if isSimulated}
+			alert("模拟登录不能执行该操作");
+			return false;
+		#{/if}
+		#{else}
+			$("#form_applayDept").submit();
+		#{/else}
+		
+	})
+})
+
+
+</script>

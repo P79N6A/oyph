@@ -1,0 +1,32 @@
+<h3 class="exchange-1"><span class="exchange-tit">积分记录</span></h3>
+	<table width="100%" class="querylotusrecord-list">
+		<tbody>
+		<tr>
+			<th width="24%">日 期  </th>
+			<th>操作</th>
+			<th>积分</th>
+			<th>事件</th>
+		</tr>
+		#{list items:page.page, as:'record'}
+		<tr>
+			<td>${record?.time?.format('yyyy-MM-dd HH:mm:ss')}</td>
+			<td class="cored">#{if record?.type == 5}消费#{/if}#{else}赠送#{/else}</td>
+			<td>${record?.scroe}</td>
+			<td>${record?.description}</td>
+		</tr>
+		#{/list}
+	</tbody>
+	</table>
+	<form action="/MallCtrl/scroerecord.html" method="GET" id="toInvestPre">
+					<input type="hidden" id="currPage" name="currPage">
+					<input type="hidden" id="currPage" name="pageSize">
+	</form>
+
+<!-- 分页组件 -->
+
+	#{if page?.page}
+	  
+		#{frontPageTag page:page,showPage:"showPage"/}
+	#{/if}
+	
+	

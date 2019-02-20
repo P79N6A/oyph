@@ -1,0 +1,293 @@
+#{extends 'common/frontMain.html' /} 
+#{set title: '首页'/} #{set AItem:4/}
+<link rel="stylesheet" type="text/css" href="@{'/public/front/stylesheets/yearReport.css'}" />
+	<div class="reportBox1">
+		<div class="chooseBox">
+			<select class="selectStyle" id="testSelect">
+			    <option value="-1">年度报告</option>
+			    <option value="5">2017年度报告</option>
+		   		<option value="1">2016年度报告</option>
+		   		<option value="2">2015年度报告</option>
+		   		<option value="3">2014年度报告</option>
+		   		<option value="4">2013年度报告</option>
+		   </select>
+		</div>
+		<div class="contentBox">
+			<h1>2016年度报告</h1>
+			<div class="overview">
+				<div class="contentBox-title">
+			 	    基本信息
+			    </div>
+				<dl>
+					<dt class="item" id="uniscIdForColor1">统一社会信用代码/注册号：</dt>
+					<dd class="result" id="uniscId">911301050799558020</dd>
+				</dl>
+				<dl>
+					<dt class="item_right" id="entNameForColor1">企业名称：</dt>
+					<dd class="result" id="entName">石家庄菲尔德投资咨询有限公司</dd>
+				</dl>
+				<dl>
+					<dt class="item" id="addrForColor1">企业通信地址：</dt>
+					<dd class="result" id="addr">河北省石家庄市新华区民族路77号华强广场A座1605室</dd>
+				</dl>
+				<dl>
+					<dt class="item_right" id="postForColor1">邮政编码：</dt>
+					<dd class="result" id="postalCode">050000</dd>
+				</dl>
+				<dl>
+					<dt class="item" id="telForColor1">企业联系电话：</dt>
+					<dd class="result" id="tel">13832252526</dd>
+				</dl>
+				<dl>
+					<dt class="item_right" id="emailForColor1">企业电子邮箱：</dt>
+					<dd class="result" id="email">无</dd>
+				</dl>
+				<dl>
+					<dt class="item_right" id="empNumForColor1">从业人数：</dt>
+					<dd class="result" id="empNum">企业选择不公示</dd>
+				</dl>
+				<dl>
+					<dt class="item_right" id="womemPNumForColor1">其中女性从业人数:</dt>
+					<dd class="result" id="womemPNum">企业选择不公示</dd>
+				</dl>
+				<dl>
+					<dt class="item" id="busStForColor1">企业经营状态：</dt>
+					<dd class="result" id="busSt">开业</dd>
+				</dl>
+				<dl>
+					<dt class="item_right" id="holdingSmsgForColor1">企业控股情况:</dt>
+					<dd class="result" id="holdingSmsg">企业选择不公示</dd>
+				</dl>
+				<dl>
+					<dt class="item">是否有投资信息或购买其他公司股权：</dt>
+					<dd class="result" id="forInvestment">否</dd>
+				</dl>
+				<dl>
+					<dt class="item_right">是否有网站或网店：</dt>
+					<dd class="result" id="webIsOrNot">否</dd>
+				</dl>
+				<dl>
+					<dt class="item">是否有对外提供担保信息：</dt>
+					<dd class="result" id="forGuaranteeinfo">否</dd>
+				</dl>
+				<dl>
+					<dt class="item_right">有限责任公司本年度是否发生股东股权转让：</dt>
+					<dd class="result" id="alterStockInfo">否</dd>
+				</dl>
+				<dl style="width:70%">
+					<dt class="item">企业主营业务活动:</dt>
+					<dd class="result" id="mainBusiAct">投资信息咨询、企业管理咨询、经济贸易信息咨询、财务管理信息咨询、市场信息咨询</dd>
+				</dl>
+			    
+			<div class="websiteInformation">
+			    <h2 class="classify">网站或网店信息</h2>
+			    <p class="textStyle">暂无网站或网店信息</p>
+			</div> 
+			<div class="websiteInformation">
+			    <h2 class="classify">股东及出资信息</h2>
+			    <table class="needPaging_share">
+					<thead>
+						<tr role="row">
+							<th width="6%" class="sorting_disabled" rowspan="1" colspan="1">序号</th>
+							<th class="sorting_disabled" rowspan="1" colspan="1">股东</th>
+							<th class="sorting_disabled" rowspan="1" colspan="1">认缴出资额（万元）</th>
+							<th width="13%" class="sorting_disabled" rowspan="1" colspan="1">认缴出资时间</th>
+							<th class="sorting_disabled" rowspan="1" colspan="1">认缴出资方式</th>
+							<th class="sorting_disabled" rowspan="1" colspan="1">实缴出资额（万元）</th>
+							<th width="13%" class="sorting_disabled" rowspan="1" colspan="1">实缴出资时间</th>
+							<th class="sorting_disabled" rowspan="1" colspan="1">实缴出资方式</th>
+						</tr>
+					</thead>
+
+					<tbody>
+						<tr role="row" class="odd">
+							<td>1</td>
+							<td>董涛</td>
+							<td>9</td>
+							<td>2033年9月27日</td>
+							<td>货币</td>
+							<td></td>
+							<td></td>
+							<td>其他</td>
+						</tr>
+						<tr role="row" class="even">
+							<td>2</td>
+							<td>武镇海</td>
+							<td>1</td>
+							<td>2033年9月27日</td>
+							<td>货币</td>
+							<td></td>
+							<td></td>
+							<td>其他</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="websiteInformation">
+			    <h2 class="classify">对外投资信息</h2>
+			    <p class="textStyle">暂无对外投资信息</p>
+			</div>
+			<div class="websiteInformation">
+			    <h2 class="classify">企业资产状况信息</h2>
+			    <table class="display" id="needPaging_assert">
+					<tbody>
+						<tr>
+							<th>资产总额</th>
+							<td id="assGroDisIs">企业选择不公示</td>
+							<th>所有者权益合计</th>
+							<td id="totEquDisIs">企业选择不公示</td>
+						</tr>
+						<tr>
+							<th>营业总收入</th>
+							<td id="vendIncDisIs" style="background:#f7f8fa">企业选择不公示</td>
+							<th>利润总额</th>
+							<td id="proGroDisIs" style="background:#f7f8fa">企业选择不公示</td>
+						</tr>
+						<tr>
+							<th>营业总收入中主营业务收入</th>
+							<td id="maiBusIncDisIs">企业选择不公示</td>
+							<th>净利润</th>
+							<td id="netIncDisIs">企业选择不公示</td>
+						</tr>
+						<tr>
+							<th>纳税总额</th>
+							<td id="ratGroDisIs" style="background:#f7f8fa">企业选择不公示</td>
+							<th>负债总额</th>
+							<td id="liaGroDisIs" style="background:#f7f8fa">企业选择不公示</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="annual_AnnPbBase websiteInformation" id="annSocsecinfo_container">
+				<div class="classify" id="annualSocsecColor">
+					社保信息
+				</div>
+				<table class="display dataTable" id="needPaging_annSocsecinfo">
+					<tbody>
+						<tr>
+							<th width="25%" class="tr">城镇职工基本养老保险</th>
+							<td width="25%" class="tl" id="so110">0人</td>
+							<th width="25%" class="tr">失业保险</th>
+							<td width="25%" class="tl" id="so210">0人</td>
+						</tr>
+						<tr>
+							<th class="tr">职工基本医疗保险</th>
+							<td class="tl" id="so310">0人</td>
+							<th class="tr">工伤保险</th>
+							<td class="tl" id="so410">0人</td>
+						</tr>
+						<tr>
+							<th class="tr">生育保险</th>
+							<td class="tl" id="so510">0人</td>
+							<th></th>
+							<td></td>
+						</tr>
+					</tbody>
+				</table>
+				<table class="display dataTable" id="needPaging_annSocsecinfo1">
+					<tbody>
+						<tr>
+							<th rowspan="5" width="20%">单位缴费基数</th>
+							<th width="40%" class="tr">单位参加城镇职工基本养老保险缴费基数</th>
+							<td width="40%" class="tl" id="totalWagesSo110">企业选择不公示</td>
+						</tr>
+						<tr>
+							<th class="tr">单位参加失业保险缴费基数</th>
+							<td class="tl" id="totalWagesSo210">企业选择不公示</td>
+						</tr>
+						<tr>
+							<th class="tr">单位参加职工基本医疗保险缴费基数</th>
+							<td class="tl" id="totalWagesSo310">企业选择不公示</td>
+						</tr>
+					
+						<tr>
+							<th class="tr">单位参加生育保险缴费基数</th>
+							<td class="tl" id="totalWagesSo510">企业选择不公示</td>
+						</tr>
+					</tbody>
+				</table>
+				<table class="display dataTable" id="needPaging_annSocsecinfo2">
+					<tbody>
+						<tr>
+							<th rowspan="5" width="20%">本期实际缴费金额</th>
+							<th width="40%" class="tr">参加城镇职工基本养老保险本期实际缴费基数</th>
+							<td width="40%" class="tl" id="totalPaymentSo110">企业选择不公示</td>
+						</tr>
+						<tr>
+							<th class="tr">参加失业保险本期实际缴费基数</th>
+							<td class="tl" id="totalPaymentSo210">企业选择不公示</td>
+						</tr>
+						<tr>
+							<th class="tr">参加职工基本医疗保险本期实际缴费基数</th>
+							<td class="tl" id="totalPaymentSo310">企业选择不公示</td>
+						</tr>
+						<tr>
+							<th class="tr">参加工伤保险本期实际缴费基数</th>
+							<td class="tl" id="totalPaymentSo410">企业选择不公示</td>
+						</tr>
+						<tr>
+							<th class="tr">参加生育保险本期实际缴费基数</th>
+							<td class="tl" id="totalPaymentSo510">企业选择不公示</td>
+						</tr>
+					</tbody>
+				</table>
+				<table class="display dataTable" id="needPaging_annSocsecinfo3">
+					<tbody>
+						<tr>
+							<th rowspan="5" width="20%">单位累计欠缴金额</th>
+							<th width="40%" class="tr">单位参加城镇职工基本养老保险累计欠缴金额</th>
+							<td width="40%" class="tl" id="unPaidSocialInsSo110">企业选择不公示</td>
+						</tr>
+						<tr>
+							<th class="tr">单位参加失业保险累计欠缴金额</th>
+							<td class="tl" id="unPaidSocialInsSo210">企业选择不公示</td>
+						</tr>
+						<tr>
+							<th class="tr">单位参加职工基本医疗保险累计欠缴金额</th>
+							<td class="tl" id="unPaidSocialInsSo310">企业选择不公示</td>
+						</tr>
+						<tr>
+							<th class="tr">单位参加工伤保险累计欠缴金额</th>
+							<td class="tl" id="unPaidSocialInsSo410">企业选择不公示</td>
+						</tr>
+						<tr>
+							<th class="tr">单位参加生育保险累计欠缴金额</th>
+							<td class="tl" id="unPaidSocialInsSo510">企业选择不公示</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="websiteInformation">
+			    <h2 class="classify"> 对外提供保证担保信息</h2>
+			    <p class="textStyle">暂无 对外提供保证担保信息</p>
+			</div>
+			<div class="websiteInformation">
+			    <h2 class="classify">  股权变更信息</h2>
+			    <p class="textStyle">暂无修改信息</p>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+     //选中的值
+     $('#testSelect').change(function(){
+    	 var testSelect =$('#testSelect option:selected') .val();
+    	  if(testSelect==1){
+    		
+    		 window.location.href ="@{front.YearReportCtrl.yearReportOnePre()}"
+    	 }
+    	 if(testSelect==2){
+    		 window.location.href ="@{front.YearReportCtrl.yearReportTwoPre()}"
+    	 }
+    	 if(testSelect==3){
+    		 window.location.href ="@{front.YearReportCtrl.yearReportThreePre()}"
+    	 }
+    	 if(testSelect==4){
+    		 window.location.href ="@{front.YearReportCtrl.yearReportFourPre()}"
+    	 } 
+    	 if(testSelect==5){
+    		 window.location.href ="@{front.YearReportCtrl.yearReportFivePre()}"
+    	 }
+     })
+     
+</script>

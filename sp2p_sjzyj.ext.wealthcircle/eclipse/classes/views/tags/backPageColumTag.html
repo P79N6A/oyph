@@ -1,0 +1,17 @@
+*{
+	_orderType:排序的类型
+	_currOrderType:当前栏目的排序类型值
+	_orderValue:升序还是降序(0:降序，1:升序)
+	_orderBy:排序的js方法名称
+}*
+#{if _orderType==_currOrderType}
+	#{if _orderValue==1}
+		<i class="iconfont " data-title="降序" onclick="${_orderBy}(${_currOrderType},0)">&#xe606;</i>
+	#{/if}
+	#{else}
+		<i class="iconfont " data-title="升序" onclick="${_orderBy}(${_currOrderType},1)">&#xe603;</i>
+	#{/else}
+#{/if}
+#{else}
+	<i class="iconfont " data-title="升序" onclick="${_orderBy}(${_currOrderType},1)">&#xe628;</i>
+#{/else}

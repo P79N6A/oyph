@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>${selectTheme?.name}</title>
+		 <link rel="stylesheet" type="text/css" href="/public/front/stylesheets/photoAlbum.css"/>
+		 
+		 <link rel="stylesheet" href=" " type="text/css" media="screen" />
+		 <script src="/public/front/javascripts/js/jquery-1.8.3.min.js" type="text/javascript" charset="utf-8"></script>
+    	 <script src="/public/front/javascripts/js/rem.js" type="text/javascript" charset="utf-8"></script>
+		 <script src="/public/front/javascripts/js/jquery.lightbox.js" type="text/javascript"></script>
+		 <script type="text/javascript">
+			$(document).ready(function(){
+				$(".lightbox").lightbox({
+				    fitToScreen: true,
+				    imageClickClose: false
+			    });
+				$(".lightbox-2").lightbox({
+				    fitToScreen: true,
+				    scaleImages: true,
+				    xScale: 1.2,
+				    yScale: 1.2,
+				    displayDownloadLink: false,
+					imageClickClose: false
+			    });
+			});
+		 </script> 
+	</head>
+	<body>
+		<p class="titleimg" >
+			<img src="${selectTheme?.code_url}" />
+		</p>
+		<div class="">
+			<h1 class="headline">
+				<p>${selectTheme?.name}</p>
+				<p>${selectTheme?.order_time.format(common.constants.Constants.DATE_FORMATESS)}</p>
+			</h1>
+			<p class="messageBox"><img class="imgsmall" src="/public/front/images/share/pic-num.png"/> <span class="smallText">${count}</span>
+			 <img class="imgsmall" src="/public/front/images/share/browse.png"/> <span class="smallText">${selectTheme?.read_count}</span></p>
+		</div>
+		
+		<div class="photoBox">
+			<div class="timeBox">
+			</div>
+			<div class="photoSum">
+				#{list items:selectPhotosList,as:'selectPhotos'}
+				<a href="${selectPhotos?.image_url}" class="lightbox-2" rel="flowers" >
+				  <img src="${selectPhotos?.image_url}" height="80"/>
+				</a>
+				#{/list}
+			</div>
+		</div>
+		<input type="hidden" value=""  id="newWidth"/>
+		<input type="hidden" value=""  id="newHeight"/>
+        <style type="text/css">
+			body{ color: #333; font: 13px 'Lucida Grande', Verdana, sans-serif;	}
+		</style>
+	</body>
+	
+</html>

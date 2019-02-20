@@ -1,0 +1,101 @@
+#{extends 'common/back/financeMain.html' /}
+	#{set title:'财务 | 财务信息表' /}
+	#{set smallclass:15 /}
+	#{set crumbs:'财务>财务信息表'/}
+<div class="back-main">
+	<div class="back-usertop">
+		<div class="left back-usermenu">
+			<a href="@{back.finance.FinanceInterfaceCtrl.balanceSheetPre()}" class="selected">资产负债表</a>
+			<a href="@{back.finance.FinanceInterfaceCtrl.profitStatementPre()}">利润表</a>
+			<a href="@{back.finance.FinanceInterfaceCtrl.cashFlowSheetPre()}">现金流量表</a>
+			<a href="@{back.finance.FinanceInterfaceCtrl.financialOfficePre()}">金融办</a>
+			<a href="@{back.finance.FinanceInterfaceCtrl.financialStatementsPre()}">财务报表</a>
+		</div>
+		<!-- 右侧功能按钮 -->
+		<div class="right back-rightbtns">
+			<a href="@{back.finance.FinanceInterfaceCtrl.toAddBalanceSheetPre()}"><i class="iconfont">&#xe60f;</i>添加</a>
+		</div>
+	</div>
+	<form action="@{back.finance.FinanceInterfaceCtrl.balanceSheetPre()}" method="GET" id="balanceSheetPre">
+			<input type="hidden" id="currPage" name="currPage"/>
+	  		<input type="hidden" id="pageSize" name="pageSize" value="${page?.pageSize}"/>
+	  		<input type="hidden" id="showType" name="showType" value="${showType}"/>
+	</form>
+	<div class="back-cont">
+		<div class="back-box">
+			<table width="100%" class="back-table table-fixed">
+				<tr height="40">
+					<th width="70" class="align-left">编号</th>
+					<th>资产类总计(初)</th>
+					<th>资产类总计(末)</th>
+					<th>负债类总计(初)</th>
+					<th>负债类总计(末)</th>
+					<th>所有者权益类(初)</th>
+					<th>所有者权益类(末)</th>
+					<th>负债和所有者权益总计(初)</th>
+					<th>负债和所有者权益总计(末)</th>
+					<th>时间</th>
+					<th width="120">操作</th>
+				</tr>
+			#{if page.page}
+			  #{list items:page.page,as:"assets"}
+				<tr height="40">
+						<td class="align-left">
+							${assets?.id}
+						</td>
+						<td>
+							${assets?.initial_assets_total}
+						</td>
+						<td>
+							${assets?.ending_assets_total}
+						</td>
+						<td>
+							${assets?.total_lias}
+						</td>
+						<td>
+							${assets?.total_lias_end}
+						</td>
+						<td>
+							${assets?.total_liabilities_equity}
+						</td>
+						
+						<td>
+							${assets?.total_liabilities_equity_end}
+						</td>
+						<td>
+							${assets?.total_owners_equity}
+						</td>
+						<td>
+							${assets?.total_owners_equity_end}
+						</td>
+						<td>${assets?.create_time?.format(common.constants.Constants.DATE_PLUGIN)}</td>
+						<td class="back-handle">
+							<a href="@{back.finance.FinanceInterfaceCtrl.toEditBalanceSheetPre(assets?.id)}" target="" data-title="编辑" class="iconfont">&#xe602;</a>
+						</td>
+					</tr>
+					
+			#{/list}
+			<tr height="39">
+					<td colspan="11" class="back-lasttd">
+						#{backPageTag page:page,showPage:"showHelps"/}
+						
+					</td>
+				</tr>
+			#{/if}
+			#{else}
+				<tr height="58">
+					<td colspan="11" class="back-nodata"><i class="iconfont">&#xe613;</i>暂无记录</td>
+				</tr>
+			#{/else}
+			</table>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	function showHelps(currPage, pageSize) {
+		$("#currPage").val(currPage);
+		$("#pageSize").val(pageSize);
+			
+		$("#balanceSheetPre").submit();
+	}
+</script>

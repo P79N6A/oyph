@@ -1,0 +1,66 @@
+#{extends 'common/frontMain.html' /}
+#{set title:'项目' /}#{set AItem:1/}
+
+
+		<link rel="stylesheet" type="text/css" href="/public/front/stylesheets/My_treasure.css" />
+		<link rel="stylesheet" type="text/css" href="/public/front/stylesheets/My-management.html.css" />
+
+<!-- main -->
+<div class="ityBox" >
+  <img src="https://image.ouyepuhui.com/images/amenityimg.png"/>
+</div>
+<div class="container clearfix">
+
+	<!-- 理财左侧列表 start -->
+	<div class="financial-left left">
+		<!-- 散标投资 start  -->
+		<div class="strd" >
+		<p>项目公告</p>
+		</div>
+			<div class="strd-content" id="financial_bid">
+			</div>
+		
+		<!-- 散标投资 end  -->
+		
+		<!-- 转让专区 start  -->
+		<div class="strd">
+			<p>转让专区</p>
+		</div>
+		<div class="strd-content" id="financial_transfer">
+		</div>
+		<!-- 转让专区 end  -->
+     </div>
+</div>
+
+<script type="text/javascript">
+require(['front'],function(front){
+	showPage(1);
+	#{if countDebtInAuction>0}
+		showTransfer(1);
+	#{/if}
+});
+function showPage (currPage) {
+	$.ajax({
+		url : "@{front.invest.InvestCtrl.showBidsPre()}",
+		type : "GET",
+		data : {
+			"currPage" : currPage
+		},
+		success : function(data){
+			$("#financial_bid").html(data);
+		}
+	});
+}
+function showTransfer(currPage){
+	$.ajax({
+		url : "@{front.invest.InvestCtrl.showTransfersPre()}",
+		type : "GET",
+		data : {
+			"currPage" : currPage
+		},
+		success : function(data){
+			$("#financial_transfer").html(data);
+		}
+	});
+}
+</script>

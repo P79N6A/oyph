@@ -1,0 +1,84 @@
+#{extends 'common/front/accountMain.html' /}
+#{set title:'个人中心 | 账户首页 | 消息' /}
+#{set smallclass:0 /}
+
+
+
+<!-- 账户主要表格 -->
+<div class="account-box">
+	<h2 class="account-title">
+		
+		<div class="right tab-menu account-menu">
+			<a href="javascript:void(0);" id="notice">&nbsp;${columns?.get(common.constants.ColumnKey.WEALTH_ACCOUNT_MSG)?:'消息'}&nbsp;</a>
+			<a href="javascript:void(0);" id="setting">&nbsp;${columns?.get(common.constants.ColumnKey.WEALTH_ACCOUNT_MSGMG)?:'消息设置'}&nbsp;</a>
+		</div>
+	</h2>
+	<!-- 消息 -->
+	<div class="tab-cont none" id="notice_content"></div>
+
+	<!-- 消息设置 -->
+	<div class="tab-cont none" id="setting_content"></div>
+	
+</div>
+<!--底部-->
+
+<!--底部-->
+<!-- main end-->
+	
+<script type="text/javascript">
+require(['front'],function(front){
+	
+	$(".tab-menu").children("a[id='notice']").click(function(){
+		var tab = $("#notice_content");
+		var flag = tab.children("table").length == 0;
+		if(flag){
+			
+			listOfNoticsPre(1);
+		}
+	});
+	$(".tab-menu").children("a[id='notice']").click(function(){
+		var tab = $("#setting_content");
+		var flag = tab.children("table").length == 0;
+		if(flag){
+			showUserNoticSettingsPre();
+		}
+	});
+	
+	$(".tab-menu").children("a[id='notice']").click();
+});
+
+function listOfNoticsPre(currPage){
+	$.ajax({
+		url : "@{front.account.MyAccountCtrl.listOfNoticsPre()}",
+		type : "GET",
+		data : {
+			"currPage" : currPage
+		},
+		success : function(data) {
+			var flag = interceptorCheck(data);
+			if(!flag){
+				return;
+			}
+			
+			$(".tab-cont").eq(0).html(data);
+		}
+	 });
+}
+
+function showUserNoticSettingsPre(){
+	$.ajax({
+		url : "@{front.account.MyAccountCtrl.showUserNoticSettingsPre()}",
+		type : "GET",
+		data : {
+		},
+		success : function(data) {
+			var flag = interceptorCheck(data);
+			if(!flag){
+				return;
+			}
+			
+			$(".tab-cont").eq(1).html(data);
+		}
+	 });
+}
+</script>

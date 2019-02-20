@@ -1,0 +1,79 @@
+#{extends 'front/proxy/proxyMainPre.html' /}
+<!-- 业务员管理 -->
+<div class="search-bar">
+	<span>业务员搜索</span>
+	<!-- 分页表单 -->
+		<form action="@{front.proxy.ProxyCtrl.salesManManagePre()}" method="GET" id="showSalesMan" class="search-query">
+			<input type="hidden" id="currPage" name="currPage" value="${page?.currPage}" />
+	  		<input type="hidden" id="pageSize" name="pageSize" value="${page?.pageSize}"/>
+	  		<input type="text" name="saleName" value="${flash?.saleName}" placeholder="按姓名查找"/>
+	  		<input type="text" name="saleMobile" value="${flash?.saleMobile}"  placeholder="按手机号查找"/>
+	  		<button>查询</button>
+	 	</form>
+</div>
+<div class="search-main">
+	<div class="search-main-title">
+		<span>业务员管理</span>
+		<div class="ioc-add" onclick="window.location.href='@{front.proxy.ProxyCtrl.addSalesManPre()}'">添加</div>
+		<div class="ioc-query"></div>
+	</div>
+	<div class="search-main-table">
+		<table width="100%">
+			<tr height="45">
+				<th width="60" style="font-weight: bold;">序号</th>
+				<th width="60" style="font-weight: bold;">推广码</th>
+				<th width="40" style="font-weight: bold;">真实姓名</th>
+				<th width="60" style="font-weight: bold;">手机号</th>
+				<th width="60" style="font-weight: bold;">推广会员人数</th>
+				<th width="60" style="font-weight: bold;">理财会员人数</th>
+				<th width="60" style="font-weight: bold;">当月理财金额</th>
+				<th width="60" style="font-weight: bold;">当月年化折算</th>
+				<th width="60" style="font-weight: bold;">当月提成</th>
+				<th width="60" style="font-weight: bold;">推广理财总金额</th>
+				<th width="60" style="font-weight: bold;">名下会员</th>
+				<th width="60" style="font-weight: bold;">操作</th>
+			</tr>
+						<!-- 业务员列表 -->
+			#{if page?.page}
+				#{list page?.page}
+					<tr height="45" class="table-main">
+						<th width="60">${_?.id}</th>
+						<th width="60">D${_?.id}</th>
+						<th width="40">${_?.sale_name}</th>
+						<th width="60">${_?.sale_mobile}</th>
+						<th width="60">${_?.total_user}</th>
+						<th width="60">${_?.total_invest_user}</th>
+						<th width="60">${_?.cur_invest_amount}</th>
+						<th width="60">${_?.cur_year_convert}</th>
+						<th width="60">${_?.cur_profit}</th>
+						<th width="60">${_?.total_amount}</th>
+						<th width="60"><a href="@{front.proxy.ProxyCtrl.salesManUsersPre(_?.id, 1, 10, '', '')}" style="color: #5e7088;cursor: pointer;">查看</a></th>
+						<th width="60"><span><a href="@{front.proxy.ProxyCtrl.salesManEidtPre(_?.id)}" style="color: #5e7088;cursor: pointer;">编辑</a></span></th>
+					</tr>
+				#{/list}		
+			#{/if}
+			#{else}	
+				<!-- 暂无记录 -->
+				<!-- <tr height="58">
+					<td colspan="10" class="table-main"><i class="iconfont">&#xe613;</i>暂无记录</td>
+				</tr> -->
+			#{/else}
+		</table>
+		
+		
+	</div>
+	<div class="table-bottom">
+			<span>共${page?.totalCount}个业务员</span>
+			#{backPageTag page:page,showPage:"showProxy"/}
+	</div>
+	
+</div>
+<script type="text/javascript">	
+	$('.ManManage').addClass('text-color').siblings().removeClass("text-color");
+	/* 分页组建 */
+	function showProxy(currPage, pageSize) {
+		$("#currPage").val(currPage);
+		$("#pageSize").val(pageSize);
+		$("#showSalesMan").submit();
+	}
+</script>

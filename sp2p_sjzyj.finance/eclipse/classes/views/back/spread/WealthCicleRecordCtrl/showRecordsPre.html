@@ -1,0 +1,133 @@
+#{extends 'back/spread/wealthCircleMain.html' /}
+	#{set title:'推广 | 财富圈 | 推广记录' /}
+	#{set smallclass:2 /}
+	#{set crumbs:'推广>财富圈>推广记录'/}
+
+
+<div class="back-main">
+	<!-- 头部筛选条件 -->
+	<div class="back-usertop">
+		<div class="left back-usermenu">
+			<a href="@{back.spread.WealthCicleRecordCtrl.showRecordsPre()}" class="selected">所有</a>
+		</div>
+		
+		<!-- 搜索按钮，控制搜索条件的显示隐藏 -->
+		<div class="back-search left #{if userName}selected#{/if}">
+			<i class="iconfont searchicon">&#xe60a;</i>搜索<i class="iconfont arrowicon">&#xe603;</i>
+		</div>
+		
+		
+		<!-- 右侧功能按钮 -->
+		<div class="right back-rightbtns">
+			<a href="javascript:exportList(1)"><i class="iconfont">&#xe612;</i>导出</a>
+		</div>
+	</div>
+	<!-- 搜索条件，默认隐藏 -->
+	<div class="back-search-option" #{if userName}style="display: block;"#{/if}>
+		<form action="@{back.spread.WealthCicleRecordCtrl.showRecordsPre()}" method="GET" id="form_showWcRecords">
+			<input type="hidden" id="orderType" name="orderType" value="${orderType}" /><!-- 排序的类型 -->
+			<input type="hidden" id="orderValue" name="orderValue" value="${orderValue}" /><!-- 排序的值(0:降序，1:升序) -->
+			<input type="hidden" id="currPage" name="currPage"/>
+	  		<input type="hidden" id="pageSize" name="pageSize" value="${page?.pageSize}"/>
+	  		<input type="hidden" id="exports" name="exports"/>
+	  		
+			<input type="text" class="iffocus" name="userName" value="${userName}" placeholder="会员" maxlength="13"/>
+			<input type="submit" class="bgbtn" value="搜索" />
+		</form>
+	</div>
+	<div class="back-cont">
+		<div class="back-box">
+			<table width="100%" class="back-table table-fixed">
+				<tr height="40">
+					<th width="70" class="align-left">
+						<span class="back-order">
+							编号
+							#{backPageColumTag orderType:orderType,currOrderType:0,orderValue:orderValue,orderBy:'orderBy' /}
+						</span>
+					</th>
+					<th>会员</th>
+					<th>邀请人</th>
+					<th>
+						<span class="back-order">
+							累计理财
+							#{backPageColumTag orderType:orderType,currOrderType:3,orderValue:orderValue,orderBy:'orderBy' /}
+						</span>
+					</th>
+					<th>
+						<span class="back-order">
+							累计返佣
+							#{backPageColumTag orderType:orderType,currOrderType:4,orderValue:orderValue,orderBy:'orderBy' /}
+						</span>
+					</th>
+					<th>邀请时间</th>
+				</tr>
+		#{if page?.page}
+			#{list items:page.page,as:"wCircle"}
+				<tr height="40">
+					<td class="align-left"><input type="checkbox" class="back-tdcheck" />${wCircle?.user_id}</td>
+					<td>${wCircle?.user_name}</td>
+					<td>${wCircle?.spreader_name}</td>
+					<td>${wCircle?.total_invest?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}</td>
+					<td>${wCircle?.total_rebate?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}</td>
+					<td>${wCircle?.active_time?.format(common.constants.Constants.DATE_TIME_FORMATE)}</td>
+				</tr>
+			#{/list}
+				<!-- 表格数据统计 -->
+				<tr height="40">
+					<td colspan="6" class="back-lasttd">
+						<span class="back-choose left">
+							<input type="button" id="chooseAll" value="全选" />
+							<input type="button" id="chooseReverse" value="反选" />
+						</span>
+						<p class="back-table-totle left">
+							合计&nbsp;累计理财&nbsp;<span>${totalAmt?.total_invest?.format(common.constants.Constants.FINANCE_FORMATE_NORMAL)}元&nbsp;&nbsp;,累计返佣&nbsp;<span>${totalAmt?.total_rebate?.format(common.constants.Constants.FINANCE_FORMATE_NORMAL)}元</span>
+						</p>
+					<!-- 分页组件 -->
+					#{backPageTag page:page,showPage:"showPage"/}
+					</td>
+				</tr>
+		#{/if}
+		#{else}
+				<!-- 暂无记录 -->
+				<tr height="58">
+					<td colspan="6" class="back-nodata"><i class="iconfont">&#xe613;</i>暂无记录</td>
+				</tr>
+		#{/else}
+			</table>
+		</div>
+	</div>
+</div>
+
+<!-- 页面js -->
+<script type="text/javascript">
+	require(["back"],function(back){
+		// 搜索 排序 选中
+		require(["search","order","linechecked"],function(){
+		});
+	});
+	
+function showPage(currPage, pageSize){
+	$("#currPage").val(currPage);
+	$("#pageSize").val(pageSize);
+		
+	$("#form_showWcRecords").submit();
+}
+
+//排序
+function orderBy(orderType,orderValue){
+	$("#form_showWcRecords input[name='orderType']").val(orderType);
+	$("#form_showWcRecords input[name='orderValue']").val(orderValue);
+	
+	$("#form_showWcRecords input[name='currPage']").val(1);
+	
+	$("#form_showWcRecords").submit();
+}
+
+//导出
+function exportList(expor){
+	$("#exports").val(expor);
+	
+	$("#form_showWcRecords").submit();
+	$("#exports").val(0);
+}
+</script>

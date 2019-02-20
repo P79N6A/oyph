@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>投票活动${' | '+settings?.get(common.constants.SettingKey.SEO_TITLE)+' | '+settings?.get(common.constants.SettingKey.PLATFORM_NAME)}</title>
+	<meta name="keywords" content="${settings?.get(common.constants.SettingKey.SEO_KEYWORDS)}" />
+	<meta name="description" content="${settings?.get(common.constants.SettingKey.SEO_DESCRIPTION)}" />
+	
+	<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+
+	<link rel="stylesheet" type="text/css" href="@{'/public/front/stylesheets/front1.css'}"/>
+	<link rel="stylesheet" type="text/css" href="@{'/public/front/stylesheets/tu.css'}"/>
+    <link rel="stylesheet" type="text/css" href="@{'/public/front/stylesheets/activity.css'}"/>
+    <link rel="stylesheet" type="text/css" href="@{'/public/front/stylesheets/index.css'}"/>
+	
+	<script type="text/javascript" data-main="/public/front/javascripts/front.js" src="@{'public/front/javascripts/require.js'}" ></script>
+	<script type="text/javascript" src="/public/front/javascripts/jquery-1.8.3.min.js" ></script>
+	<script type="text/javascript" src="/public/front/javascripts/activity/scroll.js" ></script>
+	<style type="text/css">
+	.wrap .tabshow .tabtagboxes li#tag01 {
+		background:url(/public/front/activity/首页（未选中）.png) no-repeat;
+	}
+	.wrap .tabshow .tabtagboxes li#tag01.current {
+		background: url(/public/front/activity/首页（选中）.png) no-repeat;
+	}
+	.wrap .tabshow .tabtagboxes li#tag02 {
+		background:url(/public/front/activity/活动-介绍（未选中）.png) no-repeat 15px 10px;
+	}
+	.wrap .tabshow .tabtagboxes li#tag02.current {
+		background: url(/public/front/activity/活动-介绍（选中）.png) no-repeat 15px 10px;
+	}
+	.wrap .tabshow .tabtagboxes li#tag03 {
+		background:url(/public/front/activity/我的-信息（未选中）.png) no-repeat 25px 10px;
+	}
+	.wrap .tabshow .tabtagboxes li#tag03.current {
+		background: url(/public/front/activity/我的-信息（选中）.png) no-repeat 25px 10px;
+	}
+	.wrap .tabshow .tabtagboxes li#tag04 {
+		background:url(/public/front/activity/中奖-公布（未选中）.png) no-repeat 35px 10px;
+	}
+	.wrap .tabshow .tabtagboxes li#tag04.current {
+		background: url(/public/front/activity/中奖-公布（选中）.png)no-repeat 35px 10px ;
+	}
+	.wrap .tabshow .tabcon {
+		position:absolute;
+		top:0;
+		left: 220px;
+		border:solid 1px #C00F15;
+		width:1059px;
+		overflow:hidden;
+	}
+	.share{
+		width: 33px;
+		height: 33px;
+		position: absolute;
+		top:40px;
+		left: 35px;
+		background:url(/public/front/activity/share.png) ;
+	}
+	.wrap .tabshow .tabcon-wrap{
+		position: relative;
+		width: 323px;
+		height: 440px;
+		float: left;
+		padding:20px  15px;
+	}
+	.wrap .tabshow .tabcon-wrap>img{
+		width: 250px;
+		height: 220px;
+		background: #bbb;
+		margin-top: 5px;
+		z-index: -9999;
+	}
+	.wrap .tabshow .tabcon-wrap1{
+		position: absolute;
+		width: 323px;
+		height: 440px;
+		top:0px;
+		background: url(/public/front/activity/照片框.png) no-repeat;
+		left: 0px;
+	}
+	.participant{
+		width: 80px;
+		height: 60px;
+		margin-top: 300px;
+		margin-left: 12px;
+	}
+	.participant p{
+		text-align: center;
+		padding-top: 5px;
+		font-size: 16px;
+		overflow: hidden;
+	    text-overflow: ellipsis;
+	    white-space: nowrap;
+	    width: 80px;
+	}
+	.vote-wrap{
+		width: 323px;
+		height: 60px;
+		margin-top: 20px;
+	}
+	.vote-ranking{
+		width: 92px;
+		height: 60px;
+		float: left;
+		margin-left: 20px;
+	}
+	.vote-ranking>p{
+		text-align: center;
+		font-size: 16px;
+		color: #fdb76b;
+		line-height: 30px;
+	}
+	.vote-wish{
+		width: 130px;
+		height: 60px;
+		float: left;
+		margin-left: 60px;
+		border-radius: 10px;
+	}
+	.vote-wish>input{
+		width: 130px;
+		height: 60px;
+		float: left;
+		outline:none;
+		border-radius: 10px;
+		/*border: none;*/
+		background: url(/public/front/activity/为他们祝福-拷贝.png);
+	}
+	.vote-wish>input:hover{
+		cursor: pointer;
+	}
+	.paging{
+		width: 600px;
+		height: 60px;
+		margin-top:1930px;
+		margin-left: 200px;
+	}
+	.paging-shang{
+		width: 100px;
+		height: 60px;
+		color: #FFF;
+		float: left;
+		border-radius: 10px;
+		text-align: center;
+		line-height: 60px;
+		background: #fdb76b;
+	}
+	.paging-shang:hover{
+		cursor: pointer;
+	}
+	.paging-center{
+		width: 400px;
+		height: 60px;
+		float: left;
+	}
+	.paging-center>li{
+		float: left;
+		width: 10px;
+		height: 10px;
+		padding:12px;;
+		border-radius: 50px;
+		background: #FFF;
+		text-align: center;
+		margin-left: 27px;
+		margin-top: 12px;
+	}
+	.paging-center>li:hover{
+		cursor: pointer;
+	}
+	.paging-xia{
+		width: 100px;
+		height: 60px;
+		float: left;
+		color: #FFF;
+		text-align: center;
+		background: #fdb76b;
+		line-height: 60px;
+		border-radius: 10px;
+	}
+	.paging-xia:hover{
+		cursor: pointer;
+	}
+	.regards{
+		font-size: 24px;
+		margin-left: 30px;
+		color: #db7efd;
+		margin-top: 20px;
+		font-weight: 400;
+	}
+	.regards>span{
+		font-size: 30px;
+		line-height: 40px;
+		padding: 0 10px;
+		font-weight: 600;
+		margin-top: 20px;
+	}
+	.regards1{
+		text-align: center;
+		font-size: 40px;
+		color: #fa3e83;
+	}
+	.regards1>span{
+		font-size: 30px;
+	}
+	.regards2{
+		text-align: center;
+		font-size: 40px;
+		padding: 10px 0;
+		color: #f25648;
+		margin-bottom: 80px;
+	}
+	.intro{
+		width: 1036px;
+		height: 216px;
+		margin: auto;
+	}
+	.intro>p{
+		font-size: 30px;
+		font-family: "宋体";
+		text-indent: 2em;
+		line-height: 45px;
+	}
+	.headline{
+		font-size: 40px;
+		color: #dd1e9f;
+		margin-top: 50px;
+		margin-bottom: 30px;
+		font-weight: 400;
+	}
+	.text-wrap{
+		width: 100%;
+	}
+	.text-wrap>p{
+		font-size: 28px;
+		line-height: 50px;
+		font-family: "宋体";
+	}
+	.text-wrap>img{
+		margin-left: 40px;
+	}
+	.information{
+		width: 1050px;
+		height: 650px;
+		margin: auto;
+	}
+	.information>p{
+		font-size: 35px;
+		line-height: 60px;
+		font-family: "宋体";
+	}
+	.information-pic{
+		width: 500px;
+		height: 500px;
+		float: left;
+		/*border: 1px solid #ddd;*/
+		 margin: 0 50px;
+	}
+	.slogan{
+		width: 300px;
+		height: 300px;
+		float: right;
+		margin-top: 100px;
+	    margin-right: 60px;
+	}
+	.slogan>p{
+		font-size:24px ;
+		margin-top: 25px;
+		line-height: 30px;
+		color: #db7efd;
+	}
+	.slogan>p>input{
+		border: none;
+		height: 40px;
+		outline: none;
+	}
+	.information-wrap{
+		width: 100%;
+		height: 500px;
+	}
+	.print{
+		width: 500px;
+		height: 400px;
+		border: 1px solid teal;
+	}
+	.pic-kuang{
+		width: 200px;
+		height: 80px;
+		margin-top: 20px;
+		margin-left: 130px;
+		background: #f8b551;
+	}
+	.pic-kuang>p{
+		font-size: 40px;
+		text-align: center;
+		line-height: 80px;
+		color: #FFF;
+	}
+	.affirm{
+		width: 300px;
+		height: 40px;
+		margin-top: 40px;
+	}
+	#anniu1{
+		width: 60px;
+		height: 40px;
+		color: #FFF;
+		margin-left: 70px;
+		background: #f8b551;
+	}
+	#anniu2{
+		width: 60px;
+		height: 40px;
+		color: #FFF;
+		margin-left: 20px;
+		background: #f8b551;
+	}
+	.text-big>p{
+		font-size: 20px;
+	}
+	.text-big>img{
+		width: 552px;
+		height: 340px;
+	}
+	.over-wrap{
+		width: 100%;
+		height: 650px;
+	}
+	.over-lf{
+		width:500px;
+		height: 400px;
+		float: left;
+		margin-top: 130px;
+		margin-left: 20px;
+	}
+	.over-1{
+		border: 1px solid #ddd;
+	}
+	table{
+		margin: 20px auto;
+		border: none;
+		width: 400px;
+		height: 300px;
+		font-size: 20px;
+		color: #db7efd;
+		text-align: center;
+	}
+	table tr{
+		border: none;
+	}
+	table tr td{
+		border: none;
+	}
+	.sky>p{
+		margin-left: 50px;
+		font-size: 30px;
+		color: #db7efd;
+	}
+	.bcon {
+		width:200px;
+		border: 1px solid #eee;
+		float: left;
+		margin-left: 55px;
+		margin-top: 90px;
+	}
+	
+	.bcon h1 {
+		border-bottom: 1px solid #eee;
+		text-align: center;
+		color: ;
+	}
+	.bcon h2>b{
+		color: #db7efd;
+		padding: 0 15px;
+	}
+	.list_lh {
+		height: 400px;
+		overflow: hidden;
+	}
+	
+	.list_lh li {
+		padding: 10px;
+	}
+	
+	.list_lh li.lieven {
+		background: #F0F2F3;
+	}
+	
+	.list_lh li p {
+		height: 24px;
+		line-height: 24px;
+		font-size: 12px;
+		
+	}
+	.list_lh li p span{
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		height: 24px;
+	    width: 60px;
+	    display: block;
+	    float: left;
+	    text-align: center;
+	}
+	
+	.btn_lh:hover {
+		color: #fff;
+		text-decoration: none;
+	}
+	.btm p {
+		font: normal 12px/24px 'Microsoft YaHei';
+		text-align: center;
+	}
+	
+	.tabcon .page-wrap {
+	    text-align: center;
+	    padding: 5px 0 35px;
+	}
+	.tabcon .page-btn {
+	    color: #999;
+	    margin: 0 15px;
+	}
+	.tabcon .page-num.selected {
+	    color: #FBA053;
+	}
+	.tabcon .page-wrap a {
+	    display: inline-block;
+	    font-size: 16px;
+	}
+	
+	.guanbi {
+	    position: fixed;
+	    top: 30%;
+	    left: 30%;
+	    width: 500px;
+	    height: 500px;
+	    display: none;
+	    background-image: url(/public/front/images/fenXiang.png);
+	    z-index: 999;
+	}
+	</style>
+</head>
+<body>
+<div id="banner">
+	<img src="/public/front/activity/banner.png" />
+	<a href="@{front.FrontHomeCtrl.frontHomePre()}">
+	<img src="/public/front/activity/logo.png"/>
+	</a>
+</div>
+<div class="infobar-box">
+	<div class="infobar-lf">
+		
+	    <p><img src="/public/front/activity/幸福情侣.png" /></p>
+	    <span>${partNum}</span>
+	</div>
+	<div class="infobar-lf">
+	    <p><img src="/public/front/activity/祝福总数.png" /></p>
+	    <span>${voteNum}</span>
+	</div>
+	<div class="infobar-lf">
+	    <p><img src="/public/front/activity/爱情关注量.png" /></p>
+	    <span>${voteActivity?.visit_num}</span>
+	</div>
+</div>
+
+<div class="sort-box">
+	<select class="sort" onchange="orderType()"> 
+		<option #{if orderType==0} class="default-order"#{/if} value="0" >默认排序</option>
+		<option value="3" >由低到高</option>
+		<option value="4" >由高到低</option>
+	</select>
+	<div class="sort-wish">
+		#{if votes}
+			<p>${votes?.users?.name}为${votes?.part?.name}祝福了一下!</p>
+		#{/if}
+	</div>
+	<form method="GET" action="@{front.ActivityCtrl.frontActivityPre()}" id="activityCtrl">
+		<div class="sort-seek-box">
+		<input class="btn-search" id="anniu" type="submit" value="搜索">
+        <input class="input-search" type="text" id="searchTitle" name="searchTitle" #{if searchTitle} value="${searchTitle}" #{/if}#{else} value="输入名称"#{/else} maxlength="100" autocomplete="off" onfocus="input_search()" onblur="output_search()">
+        <input type="hidden" id="orderType" name="orderType" value="${orderType}"/>
+        <input type="hidden" id="currPage" name="currPage"/>
+		</div>
+	</form>
+</div>
+<!--内容-->
+<div class="wrap">
+	<div class="tabshow">
+		<div class="tabtagboxes">
+			<ul class="tabTagList">
+				<a href="javascript:activityIndex()"><li id="tag01" class="current"></li></a>
+				<a href="javascript:activityIntroduction()"><li id="tag02"></li></a>
+				<a href="javascript:myInformation()"><li id="tag03"></li></a>
+				<a href="javascript:awardPublish()"><li id="tag04"></li></a>
+			</ul>
+			
+		</div>
+		<div class="tabcon" style="margin-left: 30px;">
+			#{if pageBean && pageBean.page}
+				#{set count=1 /}
+				#{list items:pageBean.page, as:'goods'}
+				<div class="tabcon-wrap">
+					<img src="${goods?.img_url}" />
+					<div class="tabcon-wrap1">
+						<div class="participant">
+							<p title="${goods?.name}">${goods?.name}</p>
+							<p title="${goods?.slogan}">${goods?.slogan}</p>
+						</div>
+						<div class="vote-wrap">
+							<div class="vote-ranking">
+								<p><span><em id="zhiChi${goods?.id}">${goods?.poll_num}</em></span>&nbsp;票</p>
+				                   <p>排名 :<span>${goods?.orderNum}</span></p>
+							</div>
+							<div class="vote-wish">
+								<input type="button" onclick="javascript:touPiao(${goods?.id})" />
+							</div>
+						</div>
+					</div>
+					<div class="share" onclick="fenXiang(${goods?.id})" id="fenxiang${goods?.id}"></div>
+					<div class="guanbi" id="erweima${goods?.id}">
+						<input type="button" onclick="guanBi(${goods?.id})" id="guanbi${goods?.id}" value="关闭" />
+					</div>
+				</div>
+				#{set count=count+1 /}
+				#{/list}
+			#{/if}
+			#{else}
+			    <div style="border: 2px solid #FBA053; width: 275px;font-size: 30px; color: #fba053; width: 1055px; height: 300px; text-align: center; line-height: 300px;">很抱歉，查询无结果</div>
+			#{/else}
+			<div class="clear"></div>
+			#{if pageBean?.page}
+				#{frontPageTag page:pageBean,showPage:"showPage"/}
+			#{/if}
+		</div>
+	</div>
+<!--内容-->
+	#{if voteRankList}
+	<div class="roll-box">
+		<div class="bcon">
+			<h1><img src="/public/front/activity/祝福排行榜.png" /></h1>
+			<h2>&nbsp;<b>排&nbsp;名</b><b>姓&nbsp;名</b><b>票&nbsp;数</b></h2>
+			<div class="list_lh">
+				<ul>
+					#{list items:voteRankList,as:'voteRankList'}
+					<li>
+						<p>
+						<span>No${voteRankList_index}</span> 
+						<span>${voteRankList?.name}</span> 
+						<span>${voteRankList?.poll_num}</span>
+						</p>
+					</li>
+					#{/list}
+				</ul>
+			</div>
+		</div>
+	</div>
+	#{/if}
+</div>
+
+<!-- <div class="wrap">
+	<div class="tabshow">
+		<div class="tabtagboxes">
+			<ul class="tabTagList">
+				<li id="tag01" class="current"></li>
+				<a href="javascript:activityIndex()"><li id="tag01" class="current"></li></a>
+				<a href="javascript:activityIntroduction()"><li id="tag02"></li></a>
+				<a href="javascript:myInformation()"><li id="tag03"></li></a>
+				<a href="javascript:awardPublish()"><li id="tag04"></li></a>
+			</ul>
+			
+		</div>
+		<div class="tabcon" style="margin-left: 30px;">
+			#{if pageBean && pageBean.page}
+				#{set count=1 /}
+				#{list items:pageBean.page, as:'goods'}
+				<div class="tabcon-wrap">
+					<img src="${goods?.img_url}" />
+					<div class="tabcon-wrap1">
+						<div class="participant">
+							<p title="${goods?.name}">${goods?.name}</p>
+							<p title="${goods?.slogan}">${goods?.slogan}</p>
+						</div>
+						<div class="vote-wrap">
+							<div class="vote-ranking">
+								<p><span><em id="zhiChi${goods?.id}">${goods?.poll_num}</em></span>&nbsp;票</p>
+				                   <p>排名 :<span>${goods?.orderNum}</span></p>
+							</div>
+							<div class="vote-wish">
+								<input type="button" onclick="javascript:touPiao(${goods?.id})" />
+							</div>
+						</div>
+					</div>
+					<div class="share" onclick="fenXiang(${goods?.id})" id="fenxiang${goods?.id}"></div>
+					<div class="guanbi" id="erweima${goods?.id}">
+						<input type="button" onclick="guanBi(${goods?.id})" id="guanbi${goods?.id}" value="关闭" />
+					</div>
+				</div>
+				#{set count=count+1 /}
+				#{/list}
+			#{/if}
+			#{else}
+			    <div style="border: 2px solid #FBA053; width: 275px;font-size: 30px; color: #fba053; width: 900px; height: 300px; text-align: center; line-height: 300px;">很抱歉，查询无结果</div>
+			#{/else}
+			<div class="clear"></div>
+			#{if pageBean?.page}
+				#{frontPageTag page:pageBean,showPage:"showPage"/}
+			#{/if}
+		</div>
+	</div>
+内容
+	#{if voteRankList}
+	<div class="roll-box">
+		<div class="bcon">
+			<h1><img src="/public/front/activity/祝福排行榜.png" /></h1>
+			<h2>&nbsp;<b>排&nbsp;名</b><b>姓&nbsp;名</b><b>票&nbsp;数</b></h2>
+			<div class="list_lh">
+				<ul>
+					#{list items:voteRankList,as:'voteRankList'}
+					<li>
+						<p>
+						<span>No${voteRankList_index}</span> 
+						<span>${voteRankList?.name}</span> 
+						<span>${voteRankList?.poll_num}</span>
+						</p>
+					</li>
+					#{/list}
+				</ul>
+			</div>
+		</div>
+	</div>
+	#{/if}
+</div> -->
+
+</body>
+<script type="text/javascript">
+function showPage(currPage){
+  var orderType=$("#orderType").val();
+  $.ajax({
+		url : "@{front.ActivityCtrl.activityListPre()}",
+		type : "GET",
+		data : {
+			"currPage" : currPage,
+			"orderType": orderType
+		},
+		success : function(data){
+			$(".tabcon").html(data);
+		}
+	});
+}
+function input_search () {
+	$(".input-search").attr("value",null);
+}
+
+function output_search () {
+	var zhi = $("#searchTitle").val();
+	if(zhi=="输入名称") {
+		$(".input-search").attr("value","输入名称");
+	}else if(zhi==""){
+		$(".input-search").attr("value","输入名称");
+	}else {
+		$(".input-search").attr("value",zhi);
+	}
+	
+}
+function orderType() {
+	var zhi = $(".sort").val();
+	$("#orderType").attr("value", zhi);
+	$("#activityCtrl").submit();
+}
+
+//首页
+function activityIndex() {
+	var orderType=$("#orderType").val();
+	var currPage=$("#currPage").val();
+	$.ajax({
+		url : "@{front.ActivityCtrl.activityIndexPre()}",
+		type : "GET",
+		data : {
+			"orderType" : orderType,
+			"currPage" : currPage
+		},
+		success : function(data){
+			$(".tabcon").html(data);
+		}
+	});
+	$(".tabTagList li").attr("class", "");
+	$("#tag01").attr("class", "current");
+}
+
+//活动介绍
+function activityIntroduction() {
+	var orderType=$("#orderType").val();
+	var currPage=$("#currPage").val();
+	$.ajax({
+		url : "@{front.ActivityCtrl.activityIntroductionPre()}",
+		type : "GET",
+		data : {
+			"orderType" : orderType,
+			"currPage" : currPage
+		},
+		success : function(data){
+			$(".tabcon").html(data);
+		}
+	});
+	$(".tabTagList li").attr("class", "");
+	$("#tag02").attr("class", "current");
+}
+
+//我要参加
+function joinActivity() {
+	//判断用户是否登陆
+	if("${currUser}"==""){
+		window.location.href="/loginAndRegiste/login.html";
+		return;
+	}
+	var orderType=$("#orderType").val();
+	var currPage=$("#currPage").val();
+	$.ajax({
+		url : "",
+		type : "GET",
+		data : {
+			"orderType" : orderType,
+			"currPage" : currPage
+		},
+		success : function(data){
+			$(".tabcon").html(data);
+		}
+	});
+	$(".tabTagList li").attr("class", "");
+	$("#joinActivity").attr("class", "current");
+}
+
+//我的信息
+function myInformation() {
+	//判断用户是否登陆
+	if("${currUser}"==""){
+		window.location.href="/loginAndRegiste/login.html";
+		return;
+	}
+	var orderType=$("#orderType").val();
+	var currPage=$("#currPage").val();
+	$.ajax({
+		url : "@{front.ActivityCtrl.myInformationPre()}",
+		type : "GET",
+		data : {
+			"orderType" : orderType,
+			"currPage" : currPage
+		},
+		success : function(data){
+			$(".tabcon").html(data);
+		}
+	});
+	$(".tabTagList li").attr("class", "");
+	$("#tag03").attr("class", "current");
+}
+
+//中奖公布
+function awardPublish() {
+	//判断用户是否登陆
+	if("${currUser}"==""){
+		window.location.href="/loginAndRegiste/login.html";
+		return;
+	}
+	var orderType=$("#orderType").val();
+	var currPage=$("#currPage").val();
+	$.ajax({
+		url : "@{front.ActivityCtrl.awardPublishPre()}",
+		type : "GET",
+		data : {
+			"orderType" : orderType,
+			"currPage" : currPage
+		},
+		success : function(data){
+			$(".tabcon").html(data);
+		}
+	});
+	$(".tabTagList li").attr("class", "");
+	$("#tag04").attr("class", "current");
+}
+
+//投票
+function touPiao(ids) {
+	//判断用户是否登陆
+	if("${currUser}"==""){
+		window.location.href="/loginAndRegiste/login.html";
+		return;
+	}
+	#{if isSimulated}
+		alert("模拟登录不能执行该操作");
+		return false;
+	#{/if}
+	$.post(
+   		"@{front.ActivityCtrl.submitTouPiao()}",
+   		{"participationId":ids},
+   		function(data){
+   			if(data.code==-1){
+   				alert("条件不符合要求");
+   				return;
+   			}	
+   			if(data.code==-2) {
+   				alert("今日祝福次数已满");
+   				return;
+   			}
+   			if(data.code==1) {
+   				location.reload();
+   				return;
+   			}
+   		})
+}
+
+function fenXiang(ids) {
+	var fen = $("#erweima"+ids).css("display","block"); 
+}
+
+function guanBi(ids) {
+	var fen = $("#erweima"+ids).css("display","none");
+}
+
+$(document).ready(function(){
+	$('.list_lh li:even').addClass('lieven');
+})
+$(function(){
+	$("div.list_lh").myScroll({
+		speed:40, 
+		rowHeight:45
+	});
+});
+</script>
+</html>

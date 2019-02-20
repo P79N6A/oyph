@@ -1,0 +1,55 @@
+#{extends 'common/back/webOperationMain.html' /}
+	#{set title:'运维 | 通知模板' /}
+	#{set smallclass:6 /}
+	#{set crumbs:'运维>通知模板' /}
+	
+
+<div class="back-main">
+	<div class="back-cont">
+		<div class="back-box">
+			<table width="100%" class="back-table table-fixed">
+				<tr height="39">
+					<th class="align-left" width="70">
+						<span class="back-order">编号</span>
+					</th>
+					<th>标题</th>
+					<th width="200">操作</th>
+				</tr>
+				
+				#{if scenes}
+					#{list items:scenes,as:'scene'}
+						<tr height="39">
+							<td class="align-left">
+								${scene?.code}
+							</td>
+							<td>
+								${scene?.value}
+							</td>
+							<td class="back-handle">
+								#{rightMng rightId:207002}
+								<a href="@{back.webOperation.NoticeMngCtrl.toEditNoticeScenePre(scene.code)}" data-title="编辑" class="iconfont">&#xe602;</a>
+								#{/rightMng}
+							</td>
+						</tr>
+					#{/list}
+				#{/if}
+				#{else}
+					<!-- 暂无记录 -->
+					<tr height="58">
+						<td colspan="3" class="back-nodata"><i class="iconfont">&#xe613;</i>暂无记录</td>
+					</tr>
+				#{/else}
+				
+			</table>
+		</div>
+	</div>
+</div>
+
+
+<!-- 页面js -->
+<script type="text/javascript">
+	require(["back"],function(back){
+		// 表格排序选中
+		require(["order","linechecked"]);
+	});
+</script>	

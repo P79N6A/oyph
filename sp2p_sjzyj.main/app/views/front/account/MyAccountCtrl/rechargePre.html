@@ -1,0 +1,209 @@
+#{extends 'common/front/accountMain.html' /}
+#{set title:'个人中心 | 账户首页 | 充值' /}
+#{set smallclass:0 /}
+
+
+<!-- 账户主要表格 -->
+<div class="account-box">
+	<h2 class="account-title">
+		<div class="right account-menu">
+			<a href="@{front.account.MyAccountCtrl.withdrawPre()}">&nbsp;提现&nbsp;</a>
+			<a href="@{front.account.MyAccountCtrl.rechargePre()}" class="selected">账户直充</a>
+			*{<a href="quickRecharge.html">闪电快充</a>}*
+		</div>
+	</h2>
+	<div class="withdraw-box clearfix">
+		
+			#{if userInfo.enterprise_name !=null && userInfo.enterprise_credit !=null && userInfo.enterprise_name !="" && userInfo.enterprise_credit !=""}
+			<form action="@{front.account.MyAccountCtrl.recharge()}" method="post" target="_blank">
+				<div class="chongBox">
+			      <div class="education ">
+						<span class="education-hear"> <span class="choixCard choixCard1">充值金额：</span></span>
+						<span class="clird">
+				    		
+				    		<input type="text" id="rechargeAmt" name="rechargeAmt"  oninput="$(this).ndigitInteger(8)" onpropertychange="$(this).ndigitInteger(8)">
+				    		<i class="etc">元</i>
+				    		
+						</span>
+					</div>
+			    </div>
+			    <div class="chongBox">
+			   	   <div class="education ">
+						<span class="education-hear"> <span class="choixCard choixCard1">充值方式：</span></span>
+						<span class="chanXuan">
+						  <input class="radio-distance1" value="3" type="radio" checked="checked" name="rrecharges" >
+						  <i>个人网银充值</i>
+						</span>
+				    	<span class="chanXuan">
+						  <input class="radio-distance2" value="4" type="radio" name="rrecharges" >
+						  <i>企业网银充值</i>
+						</span>
+					</div>
+			    </div>
+			    
+			    <input type="submit" class="chongsub" value="立即充值">
+			</form>
+			#{/if}
+			#{else}
+			<form  action="@{front.account.MyAccountCtrl.recharge()}" method="post" id="rechargeform" target="_blank">
+			<div id="chongBox" class="chongBox">
+		    	<input type="hidden" name="uuidRepeat" value="${flash?.submitUuid}">
+		    	<div class="education ">
+					<span class="education-hear"> <span class="choixCard">选择银行卡：</span></span>
+					<span class="clird">
+			    		<select class="selProvince" id="bankname" style=" outline: none; font-size: 14px;border-radius:4px;" name="bankId">
+							#{list bankList}
+							<option value='${_?.id}' name="${_?.bank_name}">${_?.account} &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;${_?.bank_name}</option>
+							#{/list}
+						</select>
+					</span>
+				</div>
+				 <p class="contingent Quota">
+					<span class="xiane ">单笔 <b id="single" style="color:#F77B0F;font-size:16px;"></b> 元</span>
+					<span class="contingent-ri xiane" >单日 <b id="everyday" style="color:#F77B0F;font-size:16px;"></b> 元</span>
+				</p> 
+		   </div>
+		   <div class="chongBox">
+		      <div class="education ">
+					<span class="education-hear"> <span class="choixCard choixCard1">充值金额：</span></span>
+					<span class="clird">
+			    		<input type="text" id="rechargeAmt" name="rechargeAmt"  oninput="$(this).ndigitInteger(8)" onpropertychange="$(this).ndigitInteger(8)">
+			    		<i class="etc">元</i>
+			    		
+					</span>
+					<span class="jinetishi" id="jinetishis">单笔最低充值金额为${rechargeLowest}元 </span>
+				</div>
+		   </div>
+		   <div class="chongBox">
+		   	   <div class="education ">
+					<span class="education-hear"> <span class="choixCard choixCard1">充值方式：</span></span>
+					<span class="chanXuan">
+					  <input id="rad-btn" class="radio-distance1" value="2" id="BankRecharge" type="radio" name="rrecharge" >
+					  <input value="2" type="hidden" name="rrecharges" >
+					  <i>网银充值</i>
+					</span>
+			    	<span class="chanXuan">
+					  <input id="rad-btn1" class="radio-distance2" value="1" id="OnlineRecharge" checked="checked" type="radio" name="rrecharge" >
+					  <i>闪电快充</i>
+					  <span style="color: red;" class="tishikuang" id="chanXuan-ti"></span>
+					</span>
+					<span class="jinetishid" id="jinetishid"> </span>
+				</div>
+		   </div>
+		   
+		   <input type="submit" class="chongsub" id="account_recharge" value="立即充值">
+		   </form>
+			#{/else}
+		
+		<div class="bankcard-addnote c9 left">
+			<div class="sug">
+			     <p id="sug-tlt">温馨提示：</p>
+			     <p>1.出借人充值过程全程免费，不收取任何手续费；</p>
+			     <p>2.个人用户当日网银充值资金当日不可取现（快捷充值不受限制）；</p>
+			     <p>3.充值必须为银行借记卡，不支持存折、信用卡充值；</p>
+			     <p>4.严禁利用充值功能进行信用卡套现、转账、洗钱等行为，一经发现，将封停账号30天；</p>
+			     <p>5.充值需开通银行卡网上支付功能，如有疑问请咨询开户行客服；</p>
+			     <p>6.充值期间，请勿关闭浏览器，待充值成功并返回首页后，所充资金才能入账，如有疑问，请及时联系客服。</p>
+			</div>
+		</div>
+	</div>
+	<p class="returnprev">
+		<a href="@{front.account.MyAccountCtrl.homePre()}" class="backpage"><i class="icon return-icon"></i>返回</a>
+	</p>
+	
+	<!-- 充值弹窗 -->
+	<div class="dialog" id="account_recharge_dialog">
+		<div class="dialog-bg"></div>
+		<div class="dialog-cont trusteeship-dialog">
+			<h2 class="dialog-head">
+				<span class="left">平台提示</span>
+			</h2>
+			<div class="trusteeship-cont">
+				<div class="trusteeship-wrap">
+					<i class="trusteeship-icon"></i>
+					<p class="major">请在新页面完成充值。</p>
+					<a href="@{front.account.MyAccountCtrl.homePre()}" class="bdbtn">充值成功</a>
+					<p class="trusteeship-help"><a href="@{front.FrontHomeCtrl.helpPre(models.common.entity.t_help_center.Column.FINANCIAL_KNOWLEDGE.code,1)}" class="c9">充值遇到问题></a></p>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+$(function(){
+	 $("#rechargeform").submit(function(){
+   	
+   		var sommeval = parseInt($("#rechargeAmt").val());
+   		var single=parseInt($('#single').text())
+   		var index=$('input:radio[name="rrecharge"]:checked').val();
+   		var radbtnval = $(".radio-distance1");
+   		var radbtnval2 = $(".radio-distance2");
+   		var plurield = $("#checkbtn");
+   		if(radbtnval.prop('checked') || radbtnval2.prop('checked')){
+   			$("#jinetishid").html(""); 
+   		}else{
+   			$("#jinetishid").css("color","red").html("您还没选中充值方式"); 
+	    		  return false;
+   		}
+   		if(isNaN(sommeval)){
+   			$('#jinetishis').css("color","red").html("请输入正确的充值金额");
+               return false
+   		}
+   		if(sommeval< ${rechargeLowest}){
+		    	$("#jinetishis").css("color","red").html("最低充值不得小于${rechargeLowest}元");
+		    	return false;
+		    }
+   		if(sommeval> ${rechargeHighest}){
+		    	$("#jinetishis").css("color","red").html("充值金额不能大于${rechargeHighest}元");
+		    	return false;
+		    }
+   		
+   		if(sommeval>single && index==1){
+	    	$("#jinetishis").css("color","red").html("充值金额不能大于单笔限额");
+	  	  	 return false;
+	    }	
+   		
+	 });	
+	 $("#rechargeAmt").focus(function(){
+		 $(".clird>input").addClass("bor-line");
+	 })
+	  $("#rechargeAmt").blur(function(){
+		  $(".clird>input").removeClass("bor-line");
+	 })
+});
+//仓
+function quota(){
+	var aaa=$('#bankname option:selected').attr('name');
+	console.log(aaa)
+	$.ajax({
+		url : '@{front.account.MyAccountCtrl.rechargeBankQuota()}',
+		type : "POST",
+		data : {
+			bankname:aaa,
+		},
+		success : function(data){
+			$('#single').text(data.single_quota);
+			$('#everyday').text(data.day_quota)
+		},
+		error : function(){
+			alert('糟糕!出错啦，请重新刷新页面');
+		}
+	});
+}
+quota();
+$('#bankname').change(function(){
+	quota();
+})
+$('#BankRecharge').click(function(){
+	$('.Quota').show()
+})
+$('#OnlineRecharge').click(function(){
+	$('.Quota').hide()
+	var index=$('input:radio[name="rrecharge"]:checked').val();
+	if(index==2){
+		$("#jinetishis").css("display","none").html("");
+	}
+})
+
+</script>

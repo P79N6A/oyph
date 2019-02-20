@@ -1,0 +1,24 @@
+#{extends 'common/frontMain.html' /}
+#{set title: '首页|信息披露'/}
+#{set AItem:4/}
+<link rel="stylesheet" type="text/css" href="/public/front/stylesheets/publishIndex.css"/>
+<div class="publishBox">
+    <h1>信息披露</h1>
+    <div class="publishSynopsis">
+       <h2>《网络借贷信息中介机构业务活动管理暂行办法》第四条、第九条、第三十条、第三十一条均对于网络借贷信息中介机构的
+		信息披露义务进行了规定。根据《网络借贷信息中介机构业务活动信息披露指引》、《中国互联网金融协会信息披露自律管
+		理规范》及《中国互联网金融协会标准：互联网金融信息披露——个体网络借贷》（T/NIFA 1-2016）的规定，讴业普惠平台
+		从从业机构备案信息、组织信息、审核信息、经营信息、项目信息等方面进行信息披露， 供用户查看监督。
+		</h2>
+    </div>
+    <ul class="synopsisList">
+       <li><a href="@{front.PublishMessageCtrl.recordsInformationPre()}">备案信息</a></li>
+       <li><a href="@{front.PublishMessageCtrl.tissueInformationPre()}">组织信息</a></li>
+       <li><a href="@{front.PublishMessageCtrl.auditInformationPre()}">审核信息</a></li>
+       <li><a href="@{front.PublishMessageCtrl.archivalInformationPre()}">经营信息</a></li>
+       <li><a href="@{front.PublishMessageCtrl.riskEducationPre(4)}">风险教育</a></li>
+       <li><a href="@{front.PublishMessageCtrl.toPublishMessagePre()}">实时数据</a></li>
+	   <li><a href="@{front.YearReportCtrl.yearReportOnePre()}">年度报告</a></li>
+	   <li><a href="@{front.PublishMessageCtrl.policyRegulationsPre()}">法律法规</a></li>
+    </ul>
+</div> 

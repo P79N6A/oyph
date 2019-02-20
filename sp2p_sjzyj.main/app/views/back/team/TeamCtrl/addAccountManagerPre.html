@@ -1,0 +1,102 @@
+#{extends 'common/back/teamMain.html' /}
+	#{set title:'团队长 | 业务室主任' /}
+	#{set smallclass:0 /}
+	#{set crumbs:'团队长 >业务室主任'/}
+	
+<div class="back-main">
+	<!-- 搜索条件，默认隐藏 -->
+	<div class="back-search-option" #{if loanName}style="display: block;"#{/if}>
+		<form action="@{back.team.TeamCtrl.addAccountManagerPre()}" method="GET" id="showReleaseListPre">
+			<input type="hidden" id="currPage" name="currPage"/>
+	  		<input type="hidden" id="pageSize" name="pageSize" value="${pageBean?.pageSize}"/>
+	  		<input type="hidden" id="showType" name="showType" value="${showType}"/><!-- 筛选类型 -->
+	  		<input type="hidden" id="orderType" name="orderType" value="${orderType}" /><!-- 排序的类型 -->
+			<input type="hidden" id="orderValue" name="orderValue" value="${orderValue}" /><!-- 排序的值(0:降序，1:升序) -->
+	  		<input type="hidden" id="exports" name="exports"/><!--是否导出  -->
+			<input type="text" class="iffocus" name="loanName" value="${loanName}" placeholder="借款人" maxlength="13"/>
+			<input type="submit" class="bgbtn" value="搜索" />
+		</form>
+	</div>
+	<div class="back-cont">
+		<div class="back-box">添加客户经理
+			<table width="100%" class="back-table table-fixed">
+				<tr height="40">
+					<th width="70" class="align-left">
+						<span class="back-order">
+							序号
+						</span>
+					</th>
+					<th>帐号</th>
+					<th>
+						<span class="back-order">
+						    真实姓名
+						</span>
+					</th>
+					<th>手机</th>
+				</tr>
+			#{if page?.page}
+				#{list page?.page}
+				<tr height="40">
+					<td class="align-left">
+						<label><input type="checkbox" value="${_?.supervisor_id}" name="test" class="back-tdcheck" />${_index}</label>
+					</td>
+					<td data-title="">
+						${_?.name}
+					</td>
+					<td>
+						${_?.realName}
+					</td>
+					<td>
+						${_?.mobile}
+					</td>
+				</tr>
+				#{/list}
+							<tr height="40">
+						<td colspan="4" class="back-lasttd">
+							<!-- 分页组件--pageTag -->
+							#{backPageTag page:page,showPage:"showReleaseListPre"/}
+						</td>
+					</tr>
+			#{/if}
+			#{else}	
+					<!-- 暂无记录 -->
+					<tr height="58">
+						<td colspan="4" class="back-nodata"><i class="iconfont">&#xe613;</i>暂无记录</td>
+					</tr>
+				</table>
+			#{/else}
+		</div>
+		     <form action="@{back.team.TeamCtrl.addAccountManager()}" method="post" id="addAccountManager" >
+		     <input type="hidden" name="ids" id="ids" >
+			</form>
+				<p class="back-audit-btns">
+					<input type="button" id="pageSave" value="添加" class="bgbtn" onclick="fun()"/>
+				</p>
+	</div>
+		
+</div>
+
+
+<script type="text/javascript">
+function fun(){
+	obj = document.getElementsByName("test");
+	check_val = [];
+	for(k in obj){
+		if(obj[k].checked)
+			check_val.push(obj[k].value);
+	}
+	if(check_val==""){
+		alert("请选择客户经理");
+		return;
+	}
+	$("#ids").val(check_val);
+	$("#addAccountManager").submit();
+}
+
+function showReleaseListPre(currPage, pageSize) {
+	$("#currPage").val(currPage);
+	$("#pageSize").val(pageSize);
+	
+	$("#showReleaseListPre").submit();
+}
+</script>

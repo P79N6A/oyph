@@ -1,0 +1,62 @@
+<table class="account-table" width="100%">
+	<tr height="46">
+		<th class="message-title" width="19%"></th>
+		<th width="27%">短信</th>
+		<th width="27%">邮件</th>
+		<th width="27%">消息</th>
+	</tr>
+	#{list items:noticSettings,as:'setting'}
+		<tr height="46">
+			<td class="message-title major">
+				${setting.scene?.value}
+			</td>
+			<td>
+				<input type="checkbox" #{if setting.sms} checked="checked"  #{/if} onclick="updateNoticeSetting(${setting.scene?.code},1,$(this))" />
+			</td>
+			<td>
+				<input type="checkbox" #{if setting.email} checked="checked"  #{/if} onclick="updateNoticeSetting(${setting.scene?.code},3,$(this))" />
+			</td>
+			<td>
+				<input type="checkbox" #{if setting.msg} checked="checked"  #{/if} onclick="updateNoticeSetting(${setting.scene?.code},2,$(this))" />
+			</td>
+		</tr>
+	#{/list}
+</table>
+
+<script type="text/javascript">
+function updateNoticeSetting(sceneCode,type,obj){
+
+	#{if isSimulated}
+		alert("模拟登录不能执行该操作");
+		
+		return false;
+	#{/if}
+	#{else}
+	var flag = false;
+	if(obj.is(':checked')){
+		 flag = true;
+	}
+	$.ajax({
+		url : "@{front.account.MyAccountCtrl.editNoticeSetting()}",
+		type : "POST",
+		data : {
+			"sceneCode" : sceneCode,
+			"noticeType" : type,
+			"noticeflag" : flag
+		},
+		dataType:"json",
+		success : function(data) {
+			var flag = interceptorCheck(data);
+			if(!flag){
+				return;
+			}
+			if(data.code > 0){
+				weakDialog(data.msg);
+			}else {
+				alert(data.msg);
+			}
+		}
+	});
+	#{/else}
+}
+</script>

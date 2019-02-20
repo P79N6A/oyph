@@ -1,0 +1,173 @@
+#{if page.page}
+	<table class="account-table" width="100%">
+		<tr height="46">
+			<th class="message-title" width="40%">标题</th>
+			<th width="30%">时间</th>
+			<th width="30%">操作</th>
+		</tr>
+	
+		#{list items:page.page,as:'msg'}
+			<tr height="46">
+				<td class="message-title major">
+					${msg?.title}
+					#{if !msg?.is_read}<b class="assistant">•</b>#{/if}
+					<input type="hidden" name="is_read" value="${msg?.is_read}" />
+					<input type="hidden" name="sign" value="${msg?.sign}" />
+				</td>
+				<td>${common.utils.DateUtil.getTimeLine(msg?.time)}</td>
+				<td><a href="javascript:void(0);" class="major" onclick="deleteUserMsg('${msg?.title}', '${msg.sign}')">删除</a></td>
+			</tr>
+			<tr class="account-bill">
+				<td colspan="3">
+					<div class="message-box none">
+						<table width="100%">
+							<tr>
+								<td class="message-title" colspan="2">${msg?.content}</td>
+							</tr>
+						</table>
+					</div>
+				</td>
+			</tr>
+		#{/list}
+	</table>
+#{/if}
+#{else}
+	<div class="norecord-box c9">
+	暂无记录
+	</div>
+#{/else}
+
+#{if page.page}
+	<div class="major account-rednote">
+		<span>
+			未读消息总数&nbsp;&nbsp;&nbsp;<span id="unreadMsgCount">${unreadMsgCount}</span>	条
+			<a id="markRead" href="javascript:void(0);" #{if unreadMsgCount > 0} onclick="markMsgAsRead();"#{/if}  class="account-debtbtn">标记为已读&gt;
+			</a>
+		</span>
+	</div>
+	#{frontPageTag page:page,showPage:'listOfNoticsPre' /}
+#{/if}
+<script type="text/javascript">
+	require(['front'],function(front){
+		//消息详情下拉
+		$('.message-title').click(function(){
+			var box = $(this).parent().next().find('.message-box'),
+				siblings = $('.message-box:visible');
+			if(box.is(":hidden")){
+				#{if !isSimulated}
+				var is_read = $(this).children("input[name='is_read']");
+				if(is_read.val() == "false"){
+						var read = $(this).children(".assistant");
+						var sign = $(this).children("input[name='sign']").val();
+						$.ajax({
+							url : "@{front.account.MyAccountCtrl.editUserMsgStatus()}",
+							type : "POST",
+							data : {
+								"sign" : sign
+							},
+							dataType:"json",
+							success : function(data) {
+								var flag = interceptorCheck(data);
+								if(!flag){
+									return;
+								}
+								
+								if(data.code == 1){
+									is_read.val(true);
+									read.remove();
+									$("#notic_num").html($("#notic_num").html()-1);
+									$("#unreadMsgCount").html($("#unreadMsgCount").html()-1);
+									if($("#unreadMsgCount").html() == 0) {
+									$("#markRead").removeAttr("onclick");
+								}
+							}
+						}
+					});
+				}
+				#{/if}
+				
+				box.slideDown(300);
+				siblings.slideUp(300);
+			}else{
+				box.slideUp(300);
+			}
+		});
+	})
+
+	
+	//删除信息
+	function deleteUserMsg(title, sign){
+		#{if isSimulated}
+			alert("模拟登录不能执行该操作");
+			return false;
+		#{/if}
+		#{else}
+		confirm("\""+title+"\"，执行删除",function(){
+			$.ajax({
+				url : "@{front.account.MyAccountCtrl.delUserMsg()}",
+				type : "POST",
+				data : {
+					"sign" : sign
+				},
+				dataType:"json",
+				success : function(data) {
+					var flag = interceptorCheck(data);
+					if(!flag){
+						return;
+					}
+					if(data.code > 0){
+						listOfNoticsPre(1);
+						if(!data.obj){//如果消息未读
+							$("#notic_num").html($("#notic_num").html()-1);
+							$("#unreadMsgCount").html($("#unreadMsgCount").html()-1);
+							if($("#unreadMsgCount").html() == 0) {
+								$("#markRead").removeAttr("onclick");
+							}
+						}
+					}else {
+						alert(data.msg);
+					}
+				}
+			});
+		});		
+		#{/else}
+	}
+	
+	//标记为已读
+	function markMsgAsRead() {
+		#{if isSimulated}
+			alert("模拟登录不能执行该操作");
+			return false;
+		#{/if}
+		#{else}
+		if($("#unreadMsgCount").html() == 0) {
+			return false;
+		}
+		confirm("标记为已读，确定执行",function(){
+			$.ajax({
+				url : "@{front.account.MyAccountCtrl.markMsgAsRead()}",
+				type : "POST",
+				dataType:"json",
+				success : function(data) {
+					var flag = interceptorCheck(data);
+					if(!flag){
+						return;
+					}
+					if(data.code > 0){
+						$("b.assistant").remove();
+						$('#markRead').removeAttr('onclick');
+						$("#unreadMsgCount").html(0);
+						$("#notic_num").html(0);
+						$("input[name='is_read']").val(true);
+						weakDialog(data.msg);
+					}else {
+						alert(data.msg);
+					}
+				}
+			});
+		});	
+		#{/else}	
+	} 
+</script>
+
+

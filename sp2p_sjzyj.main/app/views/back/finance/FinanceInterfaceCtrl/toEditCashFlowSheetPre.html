@@ -1,0 +1,380 @@
+#{extends 'common/back/financeMain.html' /}
+	#{set title:'财务 | 财务信息表' /}
+	#{set smallclass:15 /}
+	#{set crumbs:'财务>财务信息表'/}
+<style>
+ 	.financialSurface{
+ 		width: 50%;
+ 		margin: 0 auto;
+ 	}
+ 	.financialSurface caption {
+		font-size: 30px;
+		font-weight: bold;
+		margin-bottom: 20px;
+	}
+	.financialSurface th{
+		width: 30%;
+	}
+	.financialSurface th.order{
+		width: 10%;
+	}
+	.financialSurface tr{
+		height: 40px;
+		text-align: center;
+	}
+	.financialSurface input{
+		outline: none;
+		border: none;
+		text-align: center;
+		background-color: transparent;
+	}
+	input::-webkit-outer-spin-button,
+	input::-webkit-inner-spin-button{
+    -webkit-appearance: none !important;
+    margin: 0; 
+	}
+	.tdblue{
+		background: #bcd6ee;
+	}
+</style>
+<div class="back-main">
+	<div class="back-usertop">
+		<div class="left back-usermenu">
+			<a href="@{back.finance.FinanceInterfaceCtrl.balanceSheetPre()}">资产负债表</a>
+			<a href="@{back.finance.FinanceInterfaceCtrl.profitStatementPre()}">利润表</a>
+			<a href="@{back.finance.FinanceInterfaceCtrl.cashFlowSheetPre()}" class="selected">现金流量表</a>
+			<a href="@{back.finance.FinanceInterfaceCtrl.financialOfficePre()}">金融办</a>
+			<a href="@{back.finance.FinanceInterfaceCtrl.financialStatementsPre()}">财务报表</a>
+		</div>
+	</div>
+	<div class="back-cont">
+		<div class="back-box">
+			<div class="controls">
+				<form action="@{back.finance.FinanceInterfaceCtrl.editCashFlowSheet()}"  method="POST" id="saveFinance">
+					<input type="hidden" value="${cashFlow?.id}" name="cashFlow.id"/>
+					<table border="1" class="financialSurface">
+						<caption>现金流量表  ${cashFlow?.create_time?.format(common.constants.Constants.DATE_YY)}年  
+								 #{if cashFlow?.create_time?.format(common.constants.Constants.DATE_MM)=='03' || cashFlow?.create_time?.format(common.constants.Constants.DATE_MM)=='02' || cashFlow?.create_time?.format(common.constants.Constants.DATE_MM)=='01'}第一季#{/if}
+								 #{if cashFlow?.create_time?.format(common.constants.Constants.DATE_MM)=='06' || cashFlow?.create_time?.format(common.constants.Constants.DATE_MM)=='04' || cashFlow?.create_time?.format(common.constants.Constants.DATE_MM)=='05'}第二季#{/if}
+								  #{if cashFlow?.create_time?.format(common.constants.Constants.DATE_MM)=='09' || cashFlow?.create_time?.format(common.constants.Constants.DATE_MM)=='07' || cashFlow?.create_time?.format(common.constants.Constants.DATE_MM)=='08'}第三季#{/if}
+								   #{if cashFlow?.create_time?.format(common.constants.Constants.DATE_MM)=='12' || cashFlow?.create_time?.format(common.constants.Constants.DATE_MM)=='10' || cashFlow?.create_time?.format(common.constants.Constants.DATE_MM)=='11'}第四季#{/if}
+						</caption>
+						<tr>
+							<th class="order">序号</th>
+							<th>项目</th>
+							<th>本期金额</th>
+							<th>上期金额</th>
+						</tr>
+						<tr>
+							<td>1</td>
+							<td>一、经营活动产生的现金流量</td>
+							<td style="background: #d8d8d8;"></td>
+							<td style="background: #d8d8d8;"></td>
+						</tr>
+						<tr>
+							<td>2</td>
+							<td>提供平台服务收到资金增加额</td>
+							<td><input type="number" step="0.01" name="cashFlow.platform_service_fee" class="total_cash_inflow" value="${cashFlow?.platform_service_fee}"></td>
+							<td><input type="number" readonly value="${cashFlowUp?.platform_service_fee}"></td>
+						</tr>
+						<tr>
+							<td>3</td>
+							<td>收取会员充值提现手续费的资金</td>
+							<td><input type="number" step="0.01" name="cashFlow.withdraw_fee" class="total_cash_inflow" value="${cashFlow?.withdraw_fee}"></td>
+							<td><input type="number" readonly value="${cashFlowUp?.withdraw_fee}"></td>
+						</tr>
+						<tr>
+							<td>4</td>
+							<td>收取平台合作机构保证金的资金</td>
+							<td><input type="number" step="0.01" name="cashFlow.cash_deposit" class="total_cash_inflow" value="${cashFlow?.cash_deposit}"></td>
+							<td><input type="number" readonly value="${cashFlowUp?.cash_deposit}"></td>
+						</tr>
+						<tr>
+							<td>5</td>
+							<td>收到其他与经营活动有关的现金</td>
+							<td><input type="number" step="0.01" name="cashFlow.other_activities" class="total_cash_inflow" value="${cashFlow?.other_activities}"></td>
+							<td><input type="number" readonly value="${cashFlowUp?.other_activities}"></td>
+						</tr>
+						<tr>
+							<td>6</td>
+							<td>经营活动现金流入小计</td>
+							<td class="tdblue"><input type="number" readonly name="cashFlow.total_cash_inflow" id="total_cash_inflow" value="${cashFlow?.total_cash_inflow}"></td>
+							<td class="tdblue"><input type="number" readonly value="${cashFlowUp?.total_cash_inflow}"></td>
+						</tr>
+						<tr>
+							<td>7</td>
+							<td>支付给职工以及为职工支付的现金</td>
+							<td><input type="number" step="0.01" name="cashFlow.staff_pay" class="total_cash_outflow" value="${cashFlow?.staff_pay}"></td>
+							<td><input type="number" readonly value="${cashFlowUp?.staff_pay}"></td>
+						</tr>
+						<tr>
+							<td>8</td>
+							<td>支付的各项税费</td>
+							<td><input type="number" step="0.01" name="cashFlow.tax_payments" class="total_cash_outflow" value="${cashFlow?.tax_payments}"></td>
+							<td><input type="number" readonly value="${cashFlowUp?.tax_payments}"></td>
+						</tr>
+						<tr>
+							<td>9</td>
+							<td>支付业务保证金</td>
+							<td><input type="number" step="0.01" name="cashFlow.withdraw_payment" class="total_cash_outflow" value="${cashFlow?.withdraw_payment}"></td>
+							<td><input type="number" readonly value="${cashFlowUp?.withdraw_payment}"></td>
+						</tr>
+						<tr>
+							<td>10</td>
+							<td>支付其他与经营活动有关的现金</td>
+							<td><input type="number" step="0.01" name="cashFlow.other_payment" class="total_cash_outflow"  value="${cashFlow?.other_payment}"></td>
+							<td><input type="number" readonly value="${cashFlowUp?.other_payment}"></td>
+						</tr>
+						<tr>
+							<td>11</td>
+							<td>经营活动现金流出小计</td>
+							<td class="tdblue"><input type="number" readonly="readonly" name="cashFlow.total_cash_outflow" id="total_cash_outflow" value="${cashFlow?.total_cash_outflow}"></td>
+							<td class="tdblue"><input type="number" readonly value="${cashFlowUp?.total_cash_outflow}"></td>
+						</tr>
+						<tr>
+							<td>12</td>
+							<td>经营活动产生的现金流量净额</td>
+							<td class="tdblue"><input type="number" readonly="readonly" name="cashFlow.net_cash_flow" id="net_cash_flow" value="${cashFlow?.net_cash_flow}"></td>
+							<td class="tdblue"><input type="number" readonly value="${cashFlowUp?.net_cash_flow}"></td>
+						</tr>
+						<tr>
+							<td>13</td>
+							<td>二、投资活动产生的现金流量</td>
+							<td style="background: #d8d8d8;"></td>
+							<td style="background: #d8d8d8;"></td>
+						</tr>
+						<tr>
+							<td>14</td>
+							<td>收回投资收到的现金</td>
+							<td><input type="number" step="0.01" name="cashFlow.recouping_capital" class="total_invest_inflow" value="${cashFlow?.recouping_capital}"></td>
+							<td><input type="number" readonly value="${cashFlowUp?.recouping_capital}"></td>
+						</tr>
+						<tr>
+							<td>15</td>
+							<td>取得投资收益收到的现金</td>
+							<td><input type="number" step="0.01" name="cashFlow.income_invest" class="total_invest_inflow" value="${cashFlow?.income_invest}"></td>
+							<td><input type="number" readonly value="${cashFlowUp?.income_invest}"></td>
+						</tr>
+						<tr>
+							<td>16</td>
+							<td>处置固定资产、无形资产和其他长期资产收回的现金净额</td>
+							<td><input type="number" step="0.01" name="cashFlow.net_cash" class="total_invest_inflow" value="${cashFlow?.net_cash}"></td>
+							<td><input type="number" readonly value="${cashFlowUp?.net_cash}"></td>
+						</tr>
+						<tr>
+							<td>17</td>
+							<td>收到其他与投资活动有关的现金</td>
+							<td><input type="number" step="0.01" name="cashFlow.other_invest_cash" class="total_invest_inflow" value="${cashFlow?.other_invest_cash}"></td>
+							<td><input type="number" readonly value="${cashFlowUp?.other_invest_cash}"></td>
+						</tr>
+						<tr>
+							<td>18</td>
+							<td>投资活动现金流入小计</td>
+							<td class="tdblue"><input type="number" readonly="readonly" name="cashFlow.total_invest_inflow" id="total_invest_inflow" value="${cashFlow?.total_invest_inflow}"></td>
+							<td class="tdblue"><input type="number" readonly value="${cashFlowUp?.total_invest_inflow}"></td>
+						</tr>
+						<tr>
+							<td>19</td>
+							<td>购建固定资产、无形资产和其他长期资产支付的现金</td>
+							<td><input type="number" step="0.01" name="cashFlow.long_term_assets_payment" class="total_invest_outflow" value="${cashFlow?.long_term_assets_payment}"></td>
+							<td><input type="number" readonly value="${cashFlowUp?.long_term_assets_payment}"></td>
+						</tr>
+						<tr>
+							<td>20</td>
+							<td>投资支付的现金</td>
+							<td><input type="number" step="0.01" name="cashFlow.invest_payment" class="total_invest_outflow" value="${cashFlow?.invest_payment}"></td>
+							<td><input type="number" readonly value="${cashFlowUp?.invest_payment}"></td>
+						</tr>
+						<tr>
+							<td>21</td>
+							<td>支付其他与投资活动有关的现金</td>
+							<td><input type="number" step="0.01" name="cashFlow.other_invest_cash_payment" class="total_invest_outflow" value="${cashFlow?.other_invest_cash_payment}"></td>
+							<td><input type="number" readonly value="${cashFlowUp?.other_invest_cash_payment}"></td>
+						</tr>
+						<tr>
+							<td>22</td>
+							<td>投资活动现金流出小计</td>
+							<td class="tdblue"><input type="number" readonly="readonly" name="cashFlow.total_invest_outflow" id="total_invest_outflow" value="${cashFlow?.total_invest_outflow}"></td>
+							<td class="tdblue"><input type="number" readonly value="${cashFlowUp?.total_invest_outflow}"></td>
+						</tr>
+						<tr>
+							<td>23</td>
+							<td>投资活动产生的现金流量净额</td>
+							<td class="tdblue"><input type="number" readonly="readonly" name="cashFlow.net_invest_flow" id="net_invest_flow" value="${cashFlow?.net_invest_flow}"></td>
+							<td class="tdblue"><input type="number" readonly value="${cashFlowUp?.net_invest_flow}"></td>
+						</tr>
+						<tr>
+							<td>24</td>
+							<td>三、筹资活动产生的现金流量</td>
+							<td style="background: #d8d8d8;"></td>
+							<td style="background: #d8d8d8;"></td>
+						</tr>
+						<tr>
+							<td>25</td>
+							<td>吸收投资收到的现金</td>
+							<td><input type="number" step="0.01" name="cashFlow.receipts_equity_securties" class="total_finance_inflow" value="${cashFlow?.receipts_equity_securties}"></td>
+							<td><input type="number" readonly value="${cashFlowUp?.receipts_equity_securties}"></td>
+						</tr>
+						<tr>
+							<td>26</td>
+							<td>取得借款收到的现金</td>
+							<td><input type="number" step="0.01" name="cashFlow.receipts_loan" class="total_finance_inflow" value="${cashFlow?.receipts_loan}"></td>
+							<td><input type="number" readonly value="${cashFlowUp?.receipts_loan}"></td>
+						</tr>
+						<tr>
+							<td>27</td>
+							<td>发行债券收到的现金</td>
+							<td><input type="number" step="0.01" name="cashFlow.float_bonds" class="total_finance_inflow" value="${cashFlow?.float_bonds}"></td>
+							<td><input type="number" readonly value="${cashFlowUp?.float_bonds}"></td>
+						</tr>
+						<tr>
+							<td>28</td>
+							<td>收到其他与筹资活动有关的现金</td>
+							<td><input type="number" step="0.01" name="cashFlow.receive_other_finance" class="total_finance_inflow" value="${cashFlow?.receive_other_finance}"></td>
+							<td><input type="number" readonly value="${cashFlowUp?.receive_other_finance}"></td>
+						</tr>
+						<tr>
+							<td>29</td>
+							<td>筹资活动现金流入小计</td>
+							<td class="tdblue"><input type="number" readonly="readonly" name="cashFlow.total_finance_inflow" id="total_finance_inflow" value="${cashFlow?.total_finance_inflow}"></td>
+							<td class="tdblue"><input type="number" readonly value="${cashFlowUp?.total_finance_inflow}"></td>
+						</tr>
+						<tr>
+							<td>30</td>
+							<td>偿还债务支付的现金</td>
+							<td><input type="number" step="0.01" name="cashFlow.dedt_payment" class="total_finance_outflow" value="${cashFlow?.dedt_payment}"></td>
+							<td><input type="number" readonly value="${cashFlowUp?.dedt_payment}"></td>
+						</tr>
+						<tr>
+							<td>31</td>
+							<td>分配股利、利润或偿付利息支付的现金</td>
+							<td><input type="number" step="0.01" name="cashFlow.interest_payment" class="total_finance_outflow" value="${cashFlow?.interest_payment}"></td>
+							<td><input type="number" readonly value="${cashFlowUp?.interest_payment}"></td>
+						</tr>
+						<tr>
+							<td>32</td>
+							<td>支付其他与筹资活动有关的现金</td>
+							<td><input type="number" step="0.01" name="cashFlow.pay_other_finance" class="total_finance_outflow" value="${cashFlow?.pay_other_finance}"></td>
+							<td><input type="number" readonly value="${cashFlowUp?.pay_other_finance}"></td>
+						</tr>
+						<tr>
+							<td>33</td>
+							<td>筹资活动现金流出小计</td>
+							<td class="tdblue"><input type="number" readonly="readonly" name="cashFlow.total_finance_outflow" id="total_finance_outflow" value="${cashFlow?.total_finance_outflow}"></td>
+							<td class="tdblue"><input type="number" readonly value="${cashFlowUp?.total_finance_outflow}"></td>
+						</tr>
+						<tr>
+							<td>34</td>
+							<td>筹资活动产生的现金流量净额</td>
+							<td class="tdblue"><input type="number" readonly="readonly" name="cashFlow.net_finance_flow" id="net_finance_flow" value="${cashFlow?.net_finance_flow}"></td>
+							<td class="tdblue"><input type="number" readonly value="${cashFlowUp?.net_finance_flow}"></td>
+						</tr>
+						<tr>
+							<td>35</td>
+							<td>四、汇率变动对现金的影响额</td>
+							<td><input type="number" step="0.01" name="cashFlow.exchange_rate_flu" id="exchange_rate_flu" value="${cashFlow?.exchange_rate_flu}"></td>
+							<td><input type="number" readonly value="${cashFlowUp?.exchange_rate_flu}"></td>
+						</tr>
+						<tr>
+							<td>36</td>
+							<td>五、现金及现金等价物净增加额</td>
+							<td class="tdblue"><input type="number" readonly="readonly" name="cashFlow.cash_equ_add" id="cash_equ_add" value="${cashFlow?.cash_equ_add}"></td>
+							<td class="tdblue"><input type="number" readonly value="${cashFlowUp?.cash_equ_add}"></td>
+						</tr>
+						<tr>
+							<td>37</td>
+							<td>期初现金及现金等价物余额</td>
+							<td><input type="number" step="0.01" name="cashFlow.init_cash_equ_balance" id="init_cash_equ_balance" value="${cashFlow?.init_cash_equ_balance}"></td>
+							<td><input type="number" readonly value="${cashFlowUp?.init_cash_equ_balance}"></td>
+						</tr>
+						<tr>
+							<td>38</td>
+							<td>六、期末现金及现金等价物余额</td>
+							<td class="tdblue"><input type="number" name="cashFlow.end_cash_equ_balance" readonly="readonly" id="end_cash_equ_balance" value="${cashFlow?.end_cash_equ_balance}"></td>
+							<td class="tdblue"><input type="number" readonly value="${cashFlowUp?.end_cash_equ_balance}"></td>
+						</tr>
+						<tr>
+							<td>时间</td>
+							<td colspan="3"><input type="text" class="easyui-datetimebox"  name="create_time" value="${cashFlow?.create_time?.format(common.constants.Constants.DATE_PLUGIN)}" /></td>
+						</tr>
+					</table>
+					<p class="back-audit-btns" style="padding-bottom: 20px;">
+						<input type="submit" id="page" value="保存" class="bbtn"/>
+						<input type="button" value="取消" class="bdbtn" onclick="window.location.href='@{back.finance.FinanceInterfaceCtrl.cashFlowSheetPre()}'">
+				    </p>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+/*加载时间框模块*/
+require(["back"],function(back){
+	require(["datatime"]);
+});
+	/*判断值是不是为空*/
+	function judgeNull (val){
+		if(val == ""){
+			val = 0;
+		}else{
+			val = parseFloat(val);
+		}
+		return val;
+	};
+	/*页面部分总计计算*/
+	function totalSum (name) {
+		var sum=0;//当前合计初始值
+		$("."+name).each(function(){//父级class
+			sumval=judgeNull($(this).val());
+			sum+=sumval;
+		});
+		$("#"+name).val(sum);//小计ID
+		return sum;
+	}
+	/*自动计算*/
+	function autoSum () {
+		var net_cash_flow;		  //经营活动产生的现金流量净额
+		var net_invest_flow;	  //投资活动产生的现金流量净额
+		var net_finance_flow;	  //筹资活动产生的现金流量净额
+		var cash_equ_add;		  //现金及现金等价物净增加额
+		var end_cash_equ_balance;//期末现金及现金等价物余额
+		
+		var total_cash_inflow = totalSum('total_cash_inflow');	  		  		 //经营活动现金流入小计
+		var total_cash_outflow = totalSum('total_cash_outflow');   		 		 //经营活动现金流出小计
+		var total_invest_inflow = totalSum('total_invest_inflow');  	 		 //投资活动现金流入小计
+		var total_invest_outflow = totalSum('total_invest_outflow');	 		 //投资活动现金流出小计
+		var total_finance_inflow = totalSum('total_finance_inflow'); 	 		 //筹资活动现金流入小计
+		var total_finance_outflow = totalSum('total_finance_outflow');	 		 //筹资活动现金流出小计
+		var exchange_rate_flu = judgeNull($('#exchange_rate_flu').val());		 //汇率变动对现金的影响额
+		var init_cash_equ_balance = judgeNull($('#init_cash_equ_balance').val());//期初现金及现金等价物余额
+		
+		net_cash_flow = total_cash_inflow - total_cash_outflow;
+		net_invest_flow = total_invest_inflow - total_invest_outflow;
+		net_finance_flow = total_finance_inflow - total_finance_outflow;
+		cash_equ_add = net_cash_flow + net_invest_flow + net_finance_flow + exchange_rate_flu;
+		end_cash_equ_balance = cash_equ_add + init_cash_equ_balance;
+		/*赋值*/
+		$("#net_cash_flow").val(net_cash_flow);
+		$("#net_invest_flow").val(net_invest_flow);
+		$("#net_finance_flow").val(net_finance_flow);
+		$("#cash_equ_add").val(cash_equ_add);
+		$("#end_cash_equ_balance").val(end_cash_equ_balance);
+	}
+	$("#saveFinance input").keyup(function(){
+		autoSum();
+	});
+	$("#saveFinance input").change(function(){
+		autoSum();
+	});
+</script>
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,202 @@
+#{extends 'common/back/settingMain.html' /}
+	#{set title:'设置 | 权限管理' /}
+	#{set smallclass:3 /}
+	#{set crumbs:'设置>权限管理'/}
+
+<object
+  id="eims"
+  classid="clsid:2D37D5F7-B18B-4E8E-8B3C-F26171922C16"
+  codebase="/public/ActiveLoginProj1.ocx#version=1,0,0,0"
+  width=0
+  height=0
+  align=center
+  hspace=0
+  vspace=0 >
+</object>
+
+<div class="back-main">
+	<!-- 头部筛选条件 -->
+	<div class="back-usertop">
+		<div class="left back-usermenu">
+			<a href="javascript:void(0)" class="selected">所有</a>
+		</div>
+		<!-- 右侧功能按钮 -->
+		
+		<!-- 搜索按钮，控制搜索条件的显示隐藏 -->
+		<div class="back-search left #{if userName}selected#{/if}">
+			<i class="iconfont searchicon">&#xe60a;</i>搜索<i class="iconfont arrowicon">&#xe603;</i>
+		</div>
+		
+		<div class="right back-rightbtns">
+			#{rightMng rightId:804002}
+			<a href="@{back.setting.RightMngCtrl.toAddSupervisorPre()}"><i class="iconfont">&#xe60f;</i>添加</a>
+			#{/rightMng}
+		</div>
+		<div class="right back-rightbtns">
+			#{if status == 0}
+				<a id="disp" href="javascript:void(0);" onclick="displayLock()"><i class="iconfont">&#xe627;</i>显示锁定会员</a>
+			#{/if}
+			#{else}
+				<a id="disp" href="javascript:void(0);" onclick="displayLock()"><i class="iconfont">&#xe63c;</i>显示正常会员</a>
+			#{/else}
+		</div>
+	</div>
+	<!-- 搜索条件，默认隐藏 -->
+	<div class="back-search-option">
+		<form action="@{back.setting.RightMngCtrl.showAllSupervisorsPre()}" method="GET" id="form_showAllSupervisors">
+			<input type="text" class="iffocus" name="userName" placeholder="姓名" value="${userName}" maxlength="13"  />
+			<input type="hidden" id="currPage" name="currPage" value="${page?.currPage}"/>
+	  		<input type="hidden" id="pageSize" name="pageSize" value="${page?.pageSize}"/>
+	  		<input type="hidden"  id="status" name="status" value="${status}"/>
+			<input type="submit" class="bgbtn" value="搜索" />
+		</form>
+	</div>
+	<div class="back-cont">
+		<div class="back-box">
+			<table width="100%" class="back-table table-fixed">
+				<tr height="40">
+					<th width="70" class="align-left">编号</th>
+					<th>管理员账号</th>
+					<th>姓名</th>
+					<th>手机号码</th>
+					<th>创建时间</th>
+					<th width="120">状态</th>
+					<th width="120">操作</th>
+				</tr>
+				
+				#{if page?.page}
+					#{list items:page.page,as:'supervisor'}
+						
+						
+						<tr height="40">
+						<td class="align-left">
+							<label><input type="checkbox" class="back-tdcheck" />${supervisor?.id}</label>
+						</td>
+						<td>${supervisor?.name}</td>
+						<td>${supervisor?.reality_name}</td>
+						<td>${supervisor?.mobile}</td>
+						<td>${supervisor?.time?.format(common.constants.Constants.DATE_TIME_FORMATE)}</td>
+						<td>${supervisor?.lock_status?.value}</td>
+						
+						<td class="back-handle">
+							#{rightMng rightId:804003}
+							<a href="@{back.setting.RightMngCtrl.toEditSupervisorPre(supervisor?.sign)}" data-title="编辑" class="iconfont">&#xe602;</a>
+							#{/rightMng}
+							
+							#{rightMng rightId:804004}
+							#{if models.common.entity.t_supervisor.LockStatus.STATUS_0_NORMAL.equals(supervisor?.lock_status)}
+								<a href="javascript:void(0);" data-title="锁定" class="iconfont" onclick="lockOrUnlock('${supervisor?.sign}',false)">&#xe627;</a>
+							#{/if}
+							#{else}
+								<a href="javascript:void(0);" data-title="解锁" class="iconfont" onclick="lockOrUnlock('${supervisor?.sign}',true)">&#xe63c;</a>
+							#{/else}
+							#{/rightMng}
+							
+							#{rightMng rightId:804005}
+							<a href="@{back.setting.RightMngCtrl.toRightMngPre(supervisor?.sign)}" data-title="权限分配" class="iconfont">&#xe638;</a>
+							#{/rightMng}
+							#{if common.constants.ConfConst.IS_CHECK_UKEY}
+							#{rightMng rightId:804006}
+							<a href="javascript:makeKey('${supervisor?.id}')" data-title="制盾" class="iconfont">&#xe637;</a>
+							#{/rightMng}
+							#{/if}
+						</td>
+					</tr>
+					
+					
+						
+					#{/list}
+					
+					<!-- 表格数据统计 -->
+					<tr height="40">
+						<td colspan="7" class="back-lasttd">
+							<span class="back-choose left">
+								<input type="button" id="chooseAll" value="全选" />
+								<input type="button" id="chooseReverse" value="反选" />
+							</span>
+							
+							<!-- 分页组件 -->
+							#{backPageTag page:page,showPage:'showPage' /}
+						</td>
+					</tr>
+				#{/if}
+				#{else}
+					<!-- 暂无记录 -->
+					<tr height="58">
+						<td colspan="7" class="back-nodata"><i class="iconfont">&#xe613;</i>暂无记录</td>
+					</tr>
+				#{/else}
+				
+			</table>
+		</div>
+	</div>
+</div>
+
+
+<!-- 页面js -->
+<script type="text/javascript">
+	require(["back"],function(back){
+		// 搜索 排序 选中
+		require(["search","linechecked"],function(){
+			//$(".back-search").click();//搜索展开
+		});
+	});
+</script>
+<script type="text/javascript">
+	//分页方法
+	function showPage(currPage, pageSize) {
+		$("#form_showAllSupervisors input[name='currPage']").val(currPage);
+		$("#form_showAllSupervisors input[name='pageSize']").val(pageSize);
+
+		$("#form_showAllSupervisors").submit();
+	}
+
+	//解锁/锁定用户
+	function lockOrUnlock(sign, flag) {
+			$.ajax({
+				url : "@{back.setting.RightMngCtrl.lockAUnlockSupervisor()}",
+				type : "POST",
+				data : {
+					"sign" : sign,
+					"flag" : flag
+				},
+				dataType : "json",
+				success : function(result) {
+					var flag = interceptorCheck(result);
+					if (!flag) {
+						return;
+					}
+
+					if (result.code < 1) {
+						alert(result.msg);
+					} else {
+						document.location.reload();
+					}
+				}
+			});
+	}
+
+	//制盾 
+	function makeKey(adminIds) {
+		window.confirm("在制作U盾之前请先确定USB接口只有你要制作的盾", function(){
+			document.getElementById("eims").makeUkey(adminIds);
+		});
+	}
+	//显示锁定会员
+	function displayLock() {
+		
+		var status = $("#status").val();
+		if (status == 0) {
+			$("#status").val("2");
+			$("#disp").html("显示锁定会员");
+		} else {
+			$("#status").val("0");
+			$("#disp").html("显示正常会员");
+		}
+
+		$("#form_showAllSupervisors input[name='currPage']").val(currPage);
+		$("#form_showAllSupervisors input[name='pageSize']").val(pageSize);
+
+		$("#form_showAllSupervisors").submit();
+	}
+</script>

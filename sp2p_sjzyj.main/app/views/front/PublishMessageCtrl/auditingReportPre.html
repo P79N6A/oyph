@@ -1,0 +1,178 @@
+#{extends 'common/frontMain.html' /}
+#{set title: '首页|审计报告'/}
+<link rel="stylesheet" type="text/css" href="/public/front/stylesheets/publishIndex.css"/>
+<style type="text/css">
+	.list-img{
+		width: 180px;
+		height:257px;
+		float: left;
+		margin: 28px;	
+		border:1px solid #ccc; 
+	}
+	.list-img img{
+		width: 100%;
+	}
+	.column1{
+		width: 1200px;
+		height:300px;
+	}
+	.column2,.column3{
+		width: 1200px;
+		height:600px;
+	}
+</style>
+<div class="manageBox publishBox">
+    <h1 class="lineStrip">审计报告 <a href="@{front.PublishMessageCtrl.publishIndexPre()}" style="float: right;margin-right: 50px;"><img src="/public/front/images/return-img.png" /></a></h1>
+    <h1>律所合规报告</h1>
+    <div class="column1">
+	    <div class="list-img">
+	    	<img src="https://image.ouyepuhui.com/images/%E5%AE%A1%E8%AE%A1%E6%8A%A5%E5%91%8A/audit1.jpg">
+	    </div>
+	    <div class="list-img">
+	    	<img src="https://image.ouyepuhui.com/images/%E5%AE%A1%E8%AE%A1%E6%8A%A5%E5%91%8A/audit15.jpg">
+	    </div>
+    </div>
+    <h1>上一年度财务审计报告</h1>
+    <div class="column2">
+	    <div class="list-img">
+	    	<img src="https://image.ouyepuhui.com/images/%E5%AE%A1%E8%AE%A1%E6%8A%A5%E5%91%8A/audit16.jpg">
+	    </div>
+	    <div class="list-img">
+	    	<img src="https://image.ouyepuhui.com/images/%E5%AE%A1%E8%AE%A1%E6%8A%A5%E5%91%8A/audit17.jpg">
+	    </div>
+	    <div class="list-img">
+	    	<img src="https://image.ouyepuhui.com/images/%E5%AE%A1%E8%AE%A1%E6%8A%A5%E5%91%8A/audit18.jpg">
+	    </div>
+	    <div class="list-img">
+	    	<img src="https://image.ouyepuhui.com/images/%E5%AE%A1%E8%AE%A1%E6%8A%A5%E5%91%8A/audit21.jpg">
+	    </div>
+	    <div class="list-img">
+	    	<img src="https://image.ouyepuhui.com/images/%E5%AE%A1%E8%AE%A1%E6%8A%A5%E5%91%8A/audit22.jpg">
+	    </div>
+	    <div class="list-img">
+	    	<img src="https://image.ouyepuhui.com/images/%E5%AE%A1%E8%AE%A1%E6%8A%A5%E5%91%8A/audit23.jpg">
+	    </div>
+	    <div class="list-img">
+	    	<img src="https://image.ouyepuhui.com/images/%E5%AE%A1%E8%AE%A1%E6%8A%A5%E5%91%8A/audit24.jpg">
+	    </div>
+	    <div class="list-img">
+	    	<img src="https://image.ouyepuhui.com/images/%E5%AE%A1%E8%AE%A1%E6%8A%A5%E5%91%8A/audit25.jpg">
+	    </div>
+    </div>
+    <h1>经营合规重点环节审计报告</h1>
+    <div class="column3">
+	    <div class="list-img">
+	    	<img src="https://image.ouyepuhui.com/images/%E5%AE%A1%E8%AE%A1%E6%8A%A5%E5%91%8A/audit26.jpg">
+	    </div>
+	    <div class="list-img">
+	    	<img src="https://image.ouyepuhui.com/images/%E5%AE%A1%E8%AE%A1%E6%8A%A5%E5%91%8A/audit27.jpg">
+	    </div>
+	    <div class="list-img">
+	    	<img src="https://image.ouyepuhui.com/images/%E5%AE%A1%E8%AE%A1%E6%8A%A5%E5%91%8A/audit31.jpg">
+	    </div>
+	    <div class="list-img">
+	    	<img src="https://image.ouyepuhui.com/images/%E5%AE%A1%E8%AE%A1%E6%8A%A5%E5%91%8A/audit37.jpg">
+	    </div>
+	    <div class="list-img">
+	    	<img src="https://image.ouyepuhui.com/images/%E5%AE%A1%E8%AE%A1%E6%8A%A5%E5%91%8A/audit38.jpg">
+	    </div>
+	    <div class="list-img">
+	    	<img src="https://image.ouyepuhui.com/images/%E5%AE%A1%E8%AE%A1%E6%8A%A5%E5%91%8A/audit39.jpg">
+	    </div>
+	    <div class="list-img">
+	    	<img src="https://image.ouyepuhui.com/images/%E5%AE%A1%E8%AE%A1%E6%8A%A5%E5%91%8A/audit40.jpg">
+	    </div>
+	    <div class="list-img">
+	    	<img src="https://image.ouyepuhui.com/images/%E5%AE%A1%E8%AE%A1%E6%8A%A5%E5%91%8A/audit41.jpg">
+	    </div>
+    </div>
+    <h1>资金存管协议</h1>
+    	<div class="list-img">
+	    	<img src="https://image.ouyepuhui.com/images/%E5%AE%A1%E8%AE%A1%E6%8A%A5%E5%91%8A/audit43.jpg">
+	    </div>
+	    <div class="list-img">
+	    	<img src="https://image.ouyepuhui.com/images/%E5%AE%A1%E8%AE%A1%E6%8A%A5%E5%91%8A/audit44.jpg">
+	    </div>
+	    <div class="list-img">
+	    	<img src="https://image.ouyepuhui.com/images/%E5%AE%A1%E8%AE%A1%E6%8A%A5%E5%91%8A/audit45.jpg">
+	    </div>
+	    <div class="list-img">
+	    	<img src="https://image.ouyepuhui.com/images/%E5%AE%A1%E8%AE%A1%E6%8A%A5%E5%91%8A/audit46.jpg">
+	    </div>
+	    <div class="list-img">
+	    	<img src="https://image.ouyepuhui.com/images/%E5%AE%A1%E8%AE%A1%E6%8A%A5%E5%91%8A/audit47.jpg">
+	    </div>
+	    <div class="list-img">
+	    	<img src="https://image.ouyepuhui.com/images/%E5%AE%A1%E8%AE%A1%E6%8A%A5%E5%91%8A/audit48.jpg">
+	    </div>
+	    <div class="list-img">
+	    	<img src="https://image.ouyepuhui.com/images/%E5%AE%A1%E8%AE%A1%E6%8A%A5%E5%91%8A/audit49.jpg">
+	    </div>
+	    <div class="list-img">
+	    	<img src="https://image.ouyepuhui.com/images/%E5%AE%A1%E8%AE%A1%E6%8A%A5%E5%91%8A/audit50.jpg">
+	    </div>
+	    <div class="list-img">
+	    	<img src="https://image.ouyepuhui.com/images/%E5%AE%A1%E8%AE%A1%E6%8A%A5%E5%91%8A/audit51.jpg">
+	    </div>
+	    <div class="list-img">
+	    	<img src="https://image.ouyepuhui.com/images/%E5%AE%A1%E8%AE%A1%E6%8A%A5%E5%91%8A/audit52.jpg">
+	    </div>
+	    <div class="list-img">
+	    	<img src="https://image.ouyepuhui.com/images/%E5%AE%A1%E8%AE%A1%E6%8A%A5%E5%91%8A/audit53.jpg">
+	    </div>
+	    <div class="list-img">
+	    	<img src="https://image.ouyepuhui.com/images/%E5%AE%A1%E8%AE%A1%E6%8A%A5%E5%91%8A/audit54.jpg">
+	    </div>
+	    <div class="list-img">
+	    	<img src="https://image.ouyepuhui.com/images/%E5%AE%A1%E8%AE%A1%E6%8A%A5%E5%91%8A/audit55.jpg">
+	    </div>
+	    <div class="list-img">
+	    	<img src="https://image.ouyepuhui.com/images/%E5%AE%A1%E8%AE%A1%E6%8A%A5%E5%91%8A/audit56.jpg">
+	    </div>
+	    <div class="list-img">
+	    	<img src="https://image.ouyepuhui.com/images/%E5%AE%A1%E8%AE%A1%E6%8A%A5%E5%91%8A/audit57.jpg">
+	    </div>
+	    <div class="list-img">
+	    	<img src="https://image.ouyepuhui.com/images/%E5%AE%A1%E8%AE%A1%E6%8A%A5%E5%91%8A/audit58.jpg">
+	    </div>
+	    <div class="list-img">
+	    	<img src="https://image.ouyepuhui.com/images/%E5%AE%A1%E8%AE%A1%E6%8A%A5%E5%91%8A/audit59.jpg">
+	    </div>
+	    <div class="list-img">
+	    	<img src="https://image.ouyepuhui.com/images/%E5%AE%A1%E8%AE%A1%E6%8A%A5%E5%91%8A/audit60.jpg">
+	    </div>
+	    <div class="list-img">
+	    	<img src="https://image.ouyepuhui.com/images/%E5%AE%A1%E8%AE%A1%E6%8A%A5%E5%91%8A/audit61.jpg">
+	    </div>
+	    <div class="list-img">
+	    	<img src="https://image.ouyepuhui.com/images/%E5%AE%A1%E8%AE%A1%E6%8A%A5%E5%91%8A/audit62.jpg">
+	    </div>
+	    <div class="list-img">
+	    	<img src="https://image.ouyepuhui.com/images/%E5%AE%A1%E8%AE%A1%E6%8A%A5%E5%91%8A/audit63.jpg">
+	    </div>
+	    <div class="list-img">
+	    	<img src="https://image.ouyepuhui.com/images/%E5%AE%A1%E8%AE%A1%E6%8A%A5%E5%91%8A/audit64.jpg">
+	    </div>
+	    <div class="list-img">
+	    	<img src="https://image.ouyepuhui.com/images/%E5%AE%A1%E8%AE%A1%E6%8A%A5%E5%91%8A/audit65.jpg">
+	    </div>
+	    <div class="list-img">
+	    	<img src="https://image.ouyepuhui.com/images/%E5%AE%A1%E8%AE%A1%E6%8A%A5%E5%91%8A/audit66.jpg">
+	    </div>
+	    <div class="list-img">
+	    	<img src="https://image.ouyepuhui.com/images/%E5%AE%A1%E8%AE%A1%E6%8A%A5%E5%91%8A/audit67.jpg">
+	    </div>
+	    <div class="list-img">
+	    	<img src="https://image.ouyepuhui.com/images/%E5%AE%A1%E8%AE%A1%E6%8A%A5%E5%91%8A/audit68.jpg">
+	    </div>
+	    <div style="float: left;width: 100%;height: 100px;">
+              <p style="text-align: right;line-height: 100px;">法人签字：<img style="width: 160px;height: 100px;" src="/public/front/images/name1.png"/></p>
+        </div>
+</div>
+<script type="text/javascript">
+	$('.list-img').click(function(){
+		var Src=$(this).children().attr('src');
+		console.log(Src)
+		window.open(Src);
+	})
+</script>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		
+		<title></title>
+		<link rel="stylesheet" href="/public/front/stylesheets/Hmain.css" type="text/css"/>
+		<link rel="stylesheet" type="text/css" href="/public/front/stylesheets/Htotal.css"/>
+		<script type="text/javascript" src="/public/front/javascripts/jquery1.11.3-jquery.min.js" ></script>
+	</head>
+	<body>
+		<div class="login">
+	    	<div class="login1" style="background-image: url(/public/front/images/proxyBg.png);"></div>
+	    	<div class="centerBox">
+	    		<div class="bgBox">
+	    			
+	    			<div class="beginBox">
+					<div style="height: 40px; line-height: 40px;">
+	    				<label style="color: red;">
+	    				#{if flash.error != null}
+							${flash.error}
+						#{/if}
+	    				</label>
+	    				<label style="color: green;">
+	    				#{if flash != null}
+							${flash.success}
+						#{/if}
+	    				</label>
+	    			</div>	    				
+	    				<form action="@{front.proxy.LoginCtrl.logining()}" method="post" id="sumBtn">
+	    					<div class="importBox">
+	    						<label class="imgVessel"><img src="/public/front/images/zhanghao.png"/></label>
+	    						<input class="importText" name="mobile" type="text" id="import" value="${flash?.mobile}" placeholder="请输入账号" maxlength="11" onkeyup="this.value=this.value.replace(/[^\d]/g,'');" autocomplete="off"/>
+	    						<p class="verify verify1"></p>
+	    					</div>
+	    					<div class="importBox">
+	    						<label class="imgVessel vessel1"><img src="/public/front/images/mima.png"/></label>
+	    						<input class="importText" name="password" type="password" id="importText" value="" placeholder="请输入密码" oncopy="return false" maxlength="16" autocomplete="off"/>
+	    						<p class="verify verify2"></p>
+	    					</div>
+	    					<div class="importBox">
+	    						<input class="importText importText1" name="veriCode" type="text" id="auth" value="" placeholder="请输入图文验证码" maxlength="2" onkeyup="this.value=this.value.replace(/[^\d]/g,'');" autocomplete="off"/>
+	    						<img class="ident" src="@{common.CaptchaController.createCaptcha(randomNum)}" id="captchaImage" onclick="refreshCaptcha(true);" alt="" title="换一张" />
+	    						      
+	    						<p class="verify verify3"></p>
+	    					</div>
+	    					<div class="ker">
+	    						<a href="@{front.proxy.LoginCtrl.forgetPwdPre()}">忘记密码</a>
+	    					</div>	
+	    					<input type="submit" id="present" class="submitBtn" value="立即登录"/>
+	    					<input type="hidden" name="randomNum" value="${randomNum}"/>
+	    				</form>
+	    			</div>
+	    		</div>
+	    	</div>
+	    </div>
+	</body>
+	
+	<!--  -->
+	<script type="text/javascript">
+		$("#present").click(function(){
+			var imp = $("#import").val();
+			var importText = $("#importText").val();
+			var auth = $("#auth").val();
+			
+			if (imp == "") {
+				$(".verify1").html("请输入账号")
+				return false;
+			} 
+			if (importText == "") {
+				$(".verify2").html("请输入密码")
+				return false;
+			} 
+			if (auth == "") {
+				$(".verify3").html("请输入图文验证码")
+				return false;
+			} 
+		});
+		
+		/* 验证码刷新 */
+		function refreshCaptcha(isRefresh){
+			$.post("@{common.CaptchaController.flushCaptcha()}",function(data){
+				var arr=eval(data);
+				var randomid = arr.randomID;
+				$("#captchaImage").attr("src","@{common.CaptchaController.createCaptcha()}?uuid="+randomid);	
+				$("#randomId").val(randomid);
+			});
+			if(isRefresh){
+				$("#code").next("p").remove();
+				$("#code").removeClass("text-error focus");
+			}
+			$("#code").removeClass("focus");
+			$("#code").val("");
+		}
+	</script>
+	
+</html>

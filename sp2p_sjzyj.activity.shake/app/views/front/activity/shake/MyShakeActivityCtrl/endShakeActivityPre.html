@@ -1,0 +1,99 @@
+<link rel="stylesheet" type="text/css" href="@{'/public/front/stylesheets/activityStyle.css'}" />
+<script type="text/javascript" src="/public/front/javascripts/jquery-1.8.3.min.js" ></script>
+<script type="text/javascript" src="/public/front/javascripts/activity/scroll.js" ></script>
+<script>
+ $(document).ready(function(){
+	$('.list_lh li:even').addClass('lieven');
+})
+$(function(){
+	$("div.list_lh").myScroll({
+		speed:18, 
+		rowHeight:44
+	});
+}); 
+</script>
+
+<div class="activityBg" >
+<input type="hidden" value ="${activityId}" id="activityId" >
+	
+	   <div class="btnBox1">
+		</div>
+   <div class="detailBg">
+      <!-- 倒计时 -->
+      <div class="timeBox">
+		<div class="warp">
+			<strong class="a">60</strong>秒 <strong class="b">00</strong>毫秒
+		</div>
+	  </div>
+      <div class="bconBox">
+		   <div class="bcon">
+				<div class="list_lh">
+					<ul id="list">
+						#{list items:shakeRecord,as:'shake'}
+						<li>
+						<p>
+						<span> #{asterisk str:shake?.user_mobile, start:3, end:3, count:4/}</span>
+						<span>
+							#{if shake?.type == 1}
+								红包
+							#{/if}
+							#{if shake?.type == 2}
+								加息券
+							#{/if}
+							#{if shake?.type == 3}
+								积分
+							#{/if}
+							#{if shake?.type == 5}
+								一等奖
+							#{/if}
+							#{if shake?.type == 6}
+								二等奖
+							#{/if}
+							#{if shake?.type == 7}
+								三等奖
+							#{/if}
+							#{if shake?.type == 8}
+								纪念奖
+							#{/if}
+						</span>
+						<span>
+						#{if shake.type == 1}${shake?.amount}元#{/if}
+						#{elseif shake.type == 2}${shake?.amount/100}%#{/elseif}
+						#{elseif shake.type == 3}${shake?.amount}#{/elseif}
+						#{else}${shake?.prize_name}#{/else}
+						</span>
+						</p>
+						</li>
+						#{/list}
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="information">
+		   <p><b>中奖信息</b></p>
+		   
+		</div>
+		
+   </div>  
+   <div class="regulation">
+        <h1>活动规则</h1>
+       <ul class="introduce">
+	     <li>1、通过讴业普惠APP中摇一摇的功能来进行抽奖。（需要提前下载和注册）</li>
+	     <li>2、摇一摇功能仅限于2019年1月12号年会现场使用，场外中奖作废。</li>
+	     <li>3、现场中奖后，凭本人在讴业普惠注册的账号上台领奖。</li>
+	     <li>4、中奖后只在现场颁奖，过期作废。</li>
+	     <li>5、凡在活动期间获得的奖品，您可以登录手机app在app首页的-我的奖励里面查到。</li>
+	     <li>6、本活动最终解释权归讴业普惠所有。</li>
+	   </ul>
+   </div>
+   <div class="ewmBox">
+      <img src="/public/front/activity/kehuduanewm.png"/>
+      <img class="downloadImg" src="/public/front/activity/downloadtext.png"/>
+   </div>
+  <!--  弹出框 -->
+  <div class="popBox">
+     <img class="tu1" src="/public/front/activity/close1.png"/>
+     <img title="关闭" onclick="close()" class="tu2" src="/public/front/activity/close.png"/>
+  </div>
+  
+</div>

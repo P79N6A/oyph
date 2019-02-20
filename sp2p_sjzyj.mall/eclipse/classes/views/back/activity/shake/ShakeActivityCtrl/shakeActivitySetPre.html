@@ -1,0 +1,349 @@
+#{extends 'common/back/activityMain.html' /}
+	#{set title:'活动 | 摇一摇活动' /}
+	#{set smallclass:2 /}
+	#{set crumbs:'活动>摇一摇活动'/}
+	
+<div class="back-main">
+	<!-- 头部筛选条件 -->
+	<div class="back-usertop">
+		<div class="left back-usermenu">
+			<a href="@{back.activity.shake.ShakeActivityCtrl.shakeActivityListPre(0)}" #{if showType==0} class="selected"#{/if}>活动列表</a>
+			<a href="@{back.activity.shake.ShakeActivityCtrl.shakeActivitySetPre(1)}" #{if showType==1} class="selected"#{/if}>活动设置</a>
+			<a href="@{back.activity.shake.ShakeActivityCtrl.shakeActivityRecordPre(2)}" #{if showType==2} class="selected"#{/if}>中奖记录</a>
+		</div>
+	</div>
+	
+	<!-- 红包设置 -->
+	<div class="back-cont">
+	
+		
+
+		<!-- 红包设置 -->
+		<div class="back-infor">
+			<form action="" method="POST" id="recharge">
+				<h2 class="back-infor-head"><span class="left">红包设置</span>
+					<a href="javascript:void(0);" class="right iconfont finance-edit" data-title="编辑" >&#xe602;</a>
+				</h2>
+				
+				<table style="width: 867px; height: 50px; margin: 0 auto; font-weight: bold;">
+				
+				<tr style="height: 34px;">
+							<td style="width: 67px;"></td>
+							<td></td>
+							<td style="width: 67px;"></td>
+							<td></td>
+							<td></td>
+				</tr>
+					#{if redPacketList}
+						#{list items:redPacketList,as:'redPacket'} 
+						<tr style="height: 34px;">
+							<td style="width: 67px;">红包大小：</td>
+							<td><input name="amount" style="width: 180px; height: 25px; padding-left: 15px;" value="${redPacket?.amount} 元" disabled="disabled" /></td>
+							<td style="width: 67px;">红包数量：</td>
+							<td><input name="number" style="width: 180px; height: 25px; padding-left: 15px;" value="${redPacket?.number} 个" disabled="disabled"  /></td>
+							<td style="width: 67px;">使用条件：</td>
+							<td><input name="use_rule" style="width: 180px; height: 25px; padding-left: 15px;" value="${redPacket?.use_rule} 元" disabled="disabled" /></td>
+							<td><input onclick="deleteShakeSet(${redPacket?.id})" type="button" value="删除" style="height: 29px; width: 50px; margin-bottom: 3px;" /></td>
+						</tr>
+						#{/list}					
+					#{/if}
+					#{else}
+						<tr height="58">
+							<td colspan="5" class="back-nodata"><i class="iconfont">&#xe613;</i>暂无设置</td>
+						</tr>
+					#{/else}
+					
+					<tr style="height: 34px;">
+							<td style="width: 67px;"></td>
+							<td></td>
+							<td style="width: 67px;"></td>
+							<td></td>
+							<td></td>
+					</tr>
+				</table>				
+			</form>
+			
+			<form action="@{back.activity.shake.ShakeActivityCtrl.saveShakeSet()}" method="POST" id="redPacket">
+				<input name="activityId" value="${activityId}" type="hidden" />
+				<input name="type" value="1" type="hidden" />
+			
+				<table style="width: 867px; height: 50px; margin: 0 auto; font-weight: bold;">
+					<tr style="height: 34px;">
+						<td style="width: 67px;">红包大小：</td>
+						<td><input name="amount" style="width: 180px; height: 25px; padding-left: 15px;"  /></td>
+						<td style="width: 67px;">红包数量：</td>
+						<td><input name="number" style="width: 180px; height: 25px; padding-left: 15px;"  /></td>
+						<td style="width: 67px;">使用条件：</td>
+						<td><input name="use_rule" style="width: 180px; height: 25px; padding-left: 15px;"  /></td>
+						<td><input type="submit" value="添加" style="height: 29px; width: 50px; margin-bottom: 3px;" /></td>
+					</tr>
+				</table>
+			</form>	
+			
+		</div>
+		
+		<!-- 加息券设置 -->
+		<div class="back-infor">
+			<form action="" method="POST" id="recharge">
+				<h2 class="back-infor-head"><span class="left">加息券设置</span>
+					<a href="javascript:void(0);" class="right iconfont finance-edit" data-title="编辑" >&#xe602;</a>
+				</h2>
+				<table style="width: 904px; height: 50px; margin: 0 auto; font-weight: bold;">
+					<tr style="height: 34px;">
+							<td style="width: 67px;"></td>
+							<td></td>
+							<td style="width: 67px;"></td>
+							<td></td>
+							<td></td>
+					</tr>
+					#{if addRateTicketList}
+						#{list addRateTicketList,as:'ticket'} 
+						<tr style="height: 34px;">
+							<td style="width: 80px;">加息券大小：</td>
+							<td><input name="amount" style="width: 180px; height: 25px; padding-left: 15px;" value="${ticket?.amount / 100} %" disabled="disabled" /></td>
+							<td style="width: 80px;">加息券数量：</td>
+							<td><input name="number" style="width: 180px; height: 25px; padding-left: 15px;" value="${ticket?.number} 个" disabled="disabled"  /></td>
+							<td style="width: 80px;">使用条件：</td>
+							<td><input name="use_rule" style="width: 180px; height: 25px; padding-left: 15px;" value="${ticket?.use_rule} 元" disabled="disabled"  /></td>
+							<td><input onclick="deleteShakeSet(${ticket?.id})" type="button" value="删除" style="height: 29px; width: 50px; margin-bottom: 3px;" /></td>
+						</tr>
+						#{/list}					
+					#{/if}
+					#{else}
+						<tr height="58">
+							<td colspan="5" class="back-nodata"><i class="iconfont">&#xe613;</i>暂无设置</td>
+						</tr>
+					#{/else}
+					
+					<tr style="height: 34px;">
+							<td style="width: 67px;"></td>
+							<td></td>
+							<td style="width: 67px;"></td>
+							<td></td>
+							<td></td>
+					</tr>
+				</table>		
+			</form>
+			
+			<form action="@{back.activity.shake.ShakeActivityCtrl.saveShakeSet()}" method="POST" id="mall">
+				<input name="activityId" value="${activityId}" type="hidden" />
+				<input name="type" value="2" type="hidden" />
+			
+				<table style="width: 904px; height: 50px; margin: 0 auto; font-weight: bold;">
+					<tr style="height: 34px;">
+					<td style="width: 80px;">加息券大小：</td>
+						<td><input name="amount" style="width: 180px; height: 25px; padding-left: 15px;"  /></td>
+						<td style="width: 80px;">加息券数量：</td>
+						<td><input name="number" style="width: 180px; height: 25px; padding-left: 15px;"  /></td>
+						<td style="width: 70px;">使用条件：</td>
+						<td><input name="use_rule" style="width: 180px; height: 25px; padding-left: 15px;"  /></td>
+						<td><input type="submit" value="添加" style="height: 29px; width: 50px; margin-bottom: 3px;" /></td>
+					</tr>
+				</table>
+			</form>	
+		</div>
+		
+		<!-- 积分设置 -->
+		<div class="back-infor">
+			<form action="@{back.activity.shake.ShakeActivityCtrl.deleteShakeSet()}" method="POST" id="mall">
+				
+				<input name="activityId" value="${activityId}" type="hidden" />
+			
+				<h2 class="back-infor-head"><span class="left">积分设置</span>
+					<a href="javascript:void(0);" class="right iconfont finance-edit" data-title="编辑" >&#xe602;</a>
+				</h2>
+				<table style="width: 600px; height: 50px; margin: 0 auto; font-weight: bold;">
+					<tr style="height: 34px;">
+							<td style="width: 67px;"></td>
+							<td></td>
+							<td style="width: 67px;"></td>
+							<td></td>
+							<td></td>
+					</tr>
+					#{if mallList}
+						#{list mallList,as:'mall'} 
+						<tr style="height: 34px;">
+							<td style="width: 67px;">红包大小：</td>
+							<td><input name="amount" style="width: 180px; height: 25px; padding-left: 15px;" value="${mall?.amount} 积分" disabled="disabled" /></td>
+							<td style="width: 67px;">红包数量：</td>
+							<td><input name="number" style="width: 180px; height: 25px; padding-left: 15px;" value="${mall?.number} 个" disabled="disabled"  /></td>
+							<td>
+							<input onclick="deleteShakeSet(${mall?.id})" type="button" value="删除" style="height: 29px; width: 50px; margin-bottom: 3px;" />
+							</td>
+						</tr>
+						#{/list}					
+					#{/if}
+					#{else}
+						<tr height="58">
+							<td colspan="5" class="back-nodata"><i class="iconfont">&#xe613;</i>暂无设置</td>
+						</tr>
+					#{/else}
+					
+					<tr style="height: 34px;">
+							<td style="width: 67px;"></td>
+							<td></td>
+							<td style="width: 67px;"></td>
+							<td></td>
+							<td></td>
+					</tr>
+				</table>		
+			</form>
+			
+			<form action="@{back.activity.shake.ShakeActivityCtrl.saveShakeSet()}" method="POST" id="mall">
+				<input name="activityId" value="${activityId}" type="hidden" />
+				<input name="type" value="3" type="hidden" />
+			
+				<table style="width: 600px; height: 50px; margin: 0 auto; font-weight: bold;">
+					<tr style="height: 34px;">
+					<td style="width: 67px;">积分大小：</td>
+						<td><input name="amount" style="width: 180px; height: 25px; padding-left: 15px;"  /></td>
+						<td style="width: 67px;">积分数量：</td>
+						<td><input name="number" style="width: 180px; height: 25px; padding-left: 15px;"  /></td>
+						<td><input type="submit" value="添加" style="height: 29px; width: 50px; margin-bottom: 3px;" /></td>
+					</tr>
+				</table>
+			</form>	
+		</div>
+		
+		<!-- 中奖率设置 -->
+		<div class="back-infor">
+			<form action="" method="POST" id="recharge">
+				<h2 class="back-infor-head"><span class="left">中奖率设置</span>
+					<a href="javascript:void(0);" class="right iconfont finance-edit" data-title="编辑" >&#xe602;</a>
+				</h2>
+				
+				<!-- <table style="width: 700px; height: 50px; margin: 0 auto; font-weight: bold;">
+				
+				<tr style="height: 34px;">
+							<td style="width: 67px;"></td>
+							<td></td>
+							<td style="width: 67px;"></td>
+							<td></td>
+							<td></td>
+							<td></td>
+				</tr>
+					#{if activity}
+						
+						<tr style="height: 34px;">
+							<td style="width: 67px;">参与人数：</td>
+							<td><input name="number" style="width: 180px; height: 25px; padding-left: 15px;" value="${activity?.number} 人" disabled="disabled" /></td>
+							<td style="width: 82px;">摇一摇时间：</td>
+							<td><input name="amount" style="width: 180px; height: 25px; padding-left: 15px;" value="${activity?.shake_time} 秒" disabled="disabled"  /></td>
+							<td></td>
+							<td>&nbsp;中奖率：${activity.winrate}</td>
+						</tr>
+										
+					#{/if}
+					#{else}
+						<tr height="58">
+							<td colspan="5" class="back-nodata"><i class="iconfont">&#xe613;</i>暂无设置</td>
+						</tr>
+					#{/else}
+					
+					<tr style="height: 34px;">
+							<td style="width: 67px;"></td>
+							<td></td>
+							<td style="width: 67px;"></td>
+							<td></td>
+							<td></td>
+							<td></td>
+					</tr>
+				</table>				 -->
+			</form>
+			
+			<form action="@{back.activity.shake.ShakeActivityCtrl.saveShakeActivityWinRate()}" method="POST" id="winRate">
+				<input name="activityId" value="${activityId}" type="hidden" />
+				
+			
+				<table style="width: 615px; height: 50px; margin: 0 auto; font-weight: bold;">
+					<tr style="height: 34px;">
+							<td style="width: 67px;"></td>
+							<td></td>
+							<td style="width: 67px;"></td>
+							<td></td>
+							<td></td>
+							<td></td>
+					</tr>
+					
+					<tr style="height: 34px;">
+					<td style="width: 67px;">参与人数：</td>
+						<td><input name="number" style="width: 180px; height: 25px; padding-left: 15px;" value="${activity?.number}"  /></td>
+						<td style="width: 82px;">摇一摇时间：</td>
+						<td><input name="shakeTime" style="width: 180px; height: 25px; padding-left: 15px;" value="${activity?.shake_time}" /></td>
+						<td><input type="submit" value="修改" style="height: 29px; width: 50px; margin-bottom: 3px;" /></td>
+					</tr>
+					
+					<tr style="height: 34px;">
+						<td style="width: 67px; margin: 0 auto;" colspan="5">
+							奖项数量 / ( 活动持续时间 / 摇一摇时间 * 参与人数 ) = ${activity?.prize_count} / ( ${activity?.ctime * 60} / ${activity?.shake_time} * ${activity?.number} ) = <span style="color: red;">${activity?.winrate}</span> 分之一
+						</td>
+					</tr>
+					<tr style="height: 34px;">
+							<td style="width: 67px;"></td>
+							<td></td>
+							<td style="width: 67px;"></td>
+							<td></td>
+							<td></td>
+							<td></td>
+				</tr>
+				</table>
+			</form>
+		</div>
+		
+		<!-- 删除设置 -->
+		<form action="@{back.activity.shake.ShakeActivityCtrl.deleteShakeSet()}" id="shakeSetForm" method="post">
+			<input id="activityId" name="activityId" value="${activityId}" type="hidden" />
+			<input id="shakeSetId" name="shakeSetId" type="hidden" />
+		</form>
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="back-infor">
+		<h2 class="back-infor-head"><span class="left">生成奖项</span>
+			<a href="javascript:void(0);" class="right iconfont finance-edit" data-title="编辑" >&#xe602;</a>
+		</h2>
+		<form action="@{back.activity.shake.ShakeActivityCtrl.saveShakeRecord()}" method="POST" id="winRate">
+			<input id="activityId" name="activityId" value="${activityId}" type="hidden" />
+			<table style="width: 700px; height: 50px; margin: 0 auto; font-weight: bold;">
+				
+				<tr style="height: 34px; text-align: center;">
+					<td colspan="6"><input type="submit" value="生成奖项" style="width: 100px; height: 35px;" /></td>	
+				</tr>
+
+			</table>			
+		</form>
+	
+	</div>
+	
+	
+	
+	
+</div>
+
+
+
+<script type="text/javascript">
+	//删除设置
+	
+	function deleteShakeSet(shakeSetId) {
+
+		$("#shakeSetId").val(shakeSetId); 
+		$("#shakeSetForm").submit();
+	}
+
+
+</script>
+
+
+
+
+
+
+
+

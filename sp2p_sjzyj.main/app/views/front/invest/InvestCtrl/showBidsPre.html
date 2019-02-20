@@ -1,0 +1,84 @@
+<div class="invent_list ">
+				
+					<ul class="fix cl">
+						#{list pageBean?.page}
+						<li  onclick="javascript:location.href='@{front.invest.InvestCtrl.investPre(_?.id)}'">
+							<div class="animate-up">
+								<p class="title ">
+									<a href="javascript:void(0)"  class="f18">${_?.getBid_no()}&nbsp;&nbsp;${_?.title}</a>
+									<span class="yellow-tip ml5">${_?.repayment_type?.key}</span>
+
+								</p>
+								<div class="invent-data">
+									<div class="per-box i-b-d">
+										<div class="mb10">
+											<span class="f40 g-orange2 fa rel">${_?.apr}</span>
+											<span class="g-orange2 f14 rel">%</span>
+											<!-- 年化利率风险提示 -->
+											<span class="g9 rel showtips-box f12"> 预期年化利率
+	                                        	<span class="lv-we-showtips-box left-75">
+		                                            <span class="lv-we-showtips lv-showtips-prom">本平台所有项目预期年化利率是在参考同类型项目历史数据得出，并不代表实际收益，市场有风险，借贷需谨慎。<i class="lv-arrow-tip"></i></span>
+												</span>
+											</span>
+											<!-- 年化利率风险提示 -->
+										</div>
+										<span class="g9 ml5  f12 ">最低限额：${_?.min_invest_amount}元</span>
+									</div>
+									<div class="date i-b-d ">
+										<div class="mb10  mb15">
+											<span class=" f26 g6 rel t2">${_?.period}</span>
+											<span class="g9 f12">${_?.period_unit?.getShowValue()} </span>
+											<span class="g9 f12">/${_?.repayment_type?.key}</span>
+										</div>
+										<span class="g9 db f12">可投金额：#{formatIntMoney money:(_?.amount-_?.has_invested_amount)}#{/formatIntMoney}元</span>
+									</div>
+									<div class="ibd">
+										<p>锁定期限</p>
+										<p>${_?.lock_deadline}个月</p>
+									</div>
+									<div class="submit i-b-d">
+									#{if models.core.entity.t_bid.Status.FUNDRAISING.equals(_?.status)}
+										#{if now.compareTo(_?.pre_release_time) == 1}
+										<a class="join td-btn-1   td-btn-1-or jiek_action" href="javascript:void(0);">马上加入</a>
+										#{/if}
+									#{else}
+									<a class="join td-btn-1   td-btn-1-gar jiek_action" href="javascript:void(0);">预发售</a>
+									#{/else}
+					
+									#{/if}
+									#{else}
+									<a class="join td-btn-1   td-btn-1-gar jiek_action" href="javascript:void(0);">已满额</a>
+									#{/else}
+									</div>
+								</div>
+							</div>
+						</li>
+							#{/list}				
+					</ul>
+				
+				</div>
+				
+<form action="@{front.invest.InvestCtrl.toInvestPre()}" method="GET" id="toInvestPre">
+<input type="hidden" id="currPage" name="currPage"/>
+<input type="hidden" id="currPage" name="pageSize"/>
+</form>
+
+#{if pageBean?.page}
+	#{frontPageTag page:pageBean,showPage:"showPage"/}
+#{/if}
+
+<script type="text/javascript">
+	function toInvestPre(currPage, pageSize){
+		$.ajax({
+			url : "@{front.invest.InvestCtrl.toInvestPre()}",
+			type : "GET",
+			data : {
+				"currPage" : currPage,
+				"pageSize" : pageSize
+			},
+			success : function(data){
+			}
+		});
+	}
+	
+</script>

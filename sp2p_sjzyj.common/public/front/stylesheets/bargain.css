@@ -1,0 +1,67 @@
+body, h1, h2, h3, h4, h5, h6, hr, p, blockquote, dl, dt, dd, ul, ol, li, pre, form, fieldset, legend, button, input, textarea, th, td { margin:0; padding:0; }
+body, button, input, select, textarea { font:12px/1.5tahoma, arial, \5b8b\4f53; }
+h1, h2, h3, h4, h5, h6{ font-size:100%; }
+address, cite, dfn, em, var { font-style:normal; }
+code, kbd, pre, samp { font-family:couriernew, courier, monospace; }
+small{ font-size:12px; }
+ul, li, ol { list-style:none; }
+a { text-decoration:none; color: #333;}
+a:hover { text-decoration:none; }
+fieldset, img { border:0; }
+button, input, select, textarea { font-size:100%; }
+table { border-collapse:collapse; border-spacing:0; }
+body{
+	font-size: 14px;
+    color: #666;
+    font-family: "Microsoft YaHei","微软雅黑";
+    min-width: 1200px;
+    word-break: break-all;
+    background: #f0f0f0;
+}
+.wrap-size{
+    background-color: #FFF;
+    height: auto;
+    min-height: 300px;
+    width: 850px;
+    padding: 50px;
+    border: 1px solid #e8ecef;
+    position: relative;
+    margin: 20px auto 0;
+    }
+.wrap-size:hover{
+	box-shadow: 0 0 5px #3491ef;
+}    
+table{
+	
+}
+table td{
+	text-align: center;
+}
+.xiazai-wrap{
+	width: 950px;
+	margin: auto;
+	margin-bottom: 50px;
+}
+.xiazai{
+	width: 180px;
+	height: 36px;
+	line-height: 36px;
+    font-size: 14px;
+    color: #FFF;
+    float: right;
+    text-align: center;
+	background-color: #F77B0F;
+	border-radius: 4px;
+	margin-bottom: 50px;
+}
+.xiazai>a{
+	color: #FFF;
+}
+.xiazai:hover{
+	background:  #FC9845;
+	cursor: pointer;
+}
+h1{
+	text-align: center;
+	font-size: 18px;
+}

@@ -1,0 +1,53 @@
+#{extends 'front/proxy/proxyMainPre.html' /}
+#{set AItem:1 /}
+
+<!-- 业务员收益规则 -->
+<div class="message_container">
+    <div class="income_vessel">
+		<h3>业务员收益规则</h3>
+	    <div class="table_title">
+	    	    <p class="titText">推广会员资金年化折算</p>
+	    		<div class="Commission-list additionStyle annual">
+		    		<b>理财期限</b>
+		    		#{list annualConvert}
+		    		<span><i class="wide1">${_?.timeLimit}</i>个月</span>		    		
+		    		#{/list}
+		    	</div>
+		    	<div class="Commission-list additionStyle annual">
+		    		<b>折算率</b>
+		    		#{list annualConvert}
+		    		<span><i class="wide1">${_?.discountRate}</i>%</span>
+		    		#{/list}
+		    	</div>
+		    	<div class="Commission-list additionStyle annual">
+		    		<b>计算举例说明</b>
+		    		#{list annualConvert}
+		    		<span><em class="declare">1万元*${_?.discountRate}%=${_?.getSum1()}元</em></span>
+		    		#{/list}
+		    	</div>
+	    </div>
+	    <div class="table_title desertification">
+	    	 <p class="titText">个人推广理财提成点</p>
+	    	<div style="overflow: hidden;margin-top: 40px;">
+	    		<div class="Commission-list additionStyle">
+	    			#{list sales}
+		    		<span><i class="wide1">${_?.minAmount}</i>万~~</span>
+		    		#{/list}
+		    	</div>
+		    	<div class="Commission-list additionStyle Annualized">
+		    		#{list sales}
+		    		<span><i class="wide1">${_?.maxAmount}</i>万:提成=推广客户理财总金额的</span>
+		    		#{/list}
+		    	</div>
+		    	<div class="Commission-list additionStyle distance">
+		    		#{list sales}
+		    		<span><em class="declare1">${_?.amount}</em>‱</span>
+		    		#{/list}
+		    	</div>
+		    </div>
+	    </div>
+	</div>
+</div>
+<script type="text/javascript">	
+		$('.ManRule').addClass('text-color').siblings().removeClass("text-color");
+</script>

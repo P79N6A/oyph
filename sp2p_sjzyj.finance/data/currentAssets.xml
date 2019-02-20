@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Document>
+    <HeaderInfo>
+        <SenderID>报文发起方</SenderID>
+        <ReceiverID>报文接收方</ReceiverID>
+        <ReportSender>报文发起人</ReportSender>
+        <ReportReceiver>报文接收人</ReportReceiver>
+        <ReportSendDate>报文发起日期</ReportSendDate>
+        <ReportSendTime>报文发起时间</ReportSendTime>
+		<ReportType>报文类型</ReportType>
+		<MesgID>通信级标识号</MesgID>
+    </HeaderInfo>
+    <ReportInfo >
+        <ReportBasicInfo>
+        	<FillingAgency>填报机构</FillingAgency>
+        	<ReportDate>填表日期</ReportDate>
+        	<Draftsman>填表人</Draftsman>
+        	<Reviewer>复核人</Reviewer>
+        	<LeadingOfficial>负责人</LeadingOfficial>
+        </ReportBasicInfo>
+        <!-- 资产负债表报文 -->
+        <Reports>
+            <Report>
+            	<Item1>...</Item1>
+             	<Item2>...</Item2>
+             	<Item3>...</Item3>
+            </Report>
+            <Report>
+            </Report>
+        </Reports>
+    </ReportInfo>
+</Document>

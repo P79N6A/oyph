@@ -1,0 +1,178 @@
+#{extends 'common/back/mallMain.html' /}
+	#{set title:'积分商城 | 商品列表' /}
+	#{set smallclass:0 /}
+	#{set crumbs:'积分商城>商品列表'/}
+	<div class="back-main">
+	*{
+	    #{form @back.mall.GoodsCtrl.goodsListPre(), id:'submit'}
+    <!-- 搜索 -->
+    <div class="xf_ht_search">
+      <div class="xf_ht_search_l">
+        <input type="hidden" id="orderType" name="orderType">
+        <input type="hidden" id="orderStatus" name="orderStatus"/>
+        <input type="hidden" id="currPage" name="currPage"/>
+        <input type="hidden" id="pageSize" name="pageSize"/>
+		<span id="div_0"><a id="tab_0" onClick="conditonSearch(0)">默认排序</a></span>
+		<span id="div_1"><a id="tab_1" onClick="conditonSearch(1)">商品总数<a id="sp1">↑</a></a></span>
+		<span id="div_2"><a id="tab_3" onClick="conditonSearch(2)">商品剩余数<a id="sp2">↑</a></a></span>
+		<span id="div_3"><a id="tab_5" onClick="conditonSearch(3)">兑换积分<a id="sp3">↑</a></a></span>
+		<span id="div_4"><a id="tab_6" onClick="conditonSearch(4)">添加时间<a id="sp4">↑</a></a></span>
+      </div>
+     </div>
+     <div class="xf_ht_search_inon">
+       <div class="xf_ht_search_r">
+         <div class="xf_ht_search_xl">
+           <select name="status" class="xf_membill_selectAge">
+           	<option value="0" selected="selected">请选择</option>
+           	<option value="1" #{if page.conditions?.status == 1} selected="selected" #{/if}>开启</option>
+           	<option value="2" #{if page.conditions?.status == 2} selected="selected" #{/if}>暂停</option>
+           </select>
+         </div>
+         <div class="xf_ht_search_xl">
+           <input name="name" type="text" class="search_w"  value="${page.conditions?.name}" />
+         </div>
+         <div class="xf_ht_search_xl">
+           <input type="submit" class="search_button" value="搜索">
+         </div>
+       </div>
+     </div>
+	#{/form}
+	}*
+	<!-- 头部筛选条件 -->
+	<div class="back-usertop">
+		<!-- 搜索按钮，控制搜索条件的显示隐藏 -->
+		<div class="left back-usermenu">
+		<a href="@{back.mall.GoodsCtrl.goodsListPre()}"  class="selected" >商品列表</a>
+		<a href="@{back.mall.GoodsCtrl.editGoodsPre(0,1)}" >新增商品</a>
+		<a href="@{back.mall.GoodsCtrl.virtualGoodsPre(0,1)}" >虚拟商品</a>
+		<a href="@{back.mall.GoodsCtrl.editGoodsTypePre()}" >新增商品分类</a>
+		<a href="@{back.mall.GoodsCtrl.goodsTypeListPre()}" >商品类型列表</a>
+		
+		</div>
+		<!-- 右侧功能按钮 -->
+		
+	<div class="back-search-option" >
+		<form action="@{back.mall.GoodsCtrl.goodsListPre()}" method="GET" id="submit">
+			<input type="hidden" id="currPage" name="currPage"/>
+	  		<input type="hidden" id="pageSize" name="pageSize" value="${pageBean?.pageSize}"/>
+	  		<input type="hidden" id="exports" name="exports"/><!--是否导出  -->
+			<input type="submit" class="bgbtn" value="搜索" />
+		</form>
+	</div>
+	
+	</div>
+	<div class="back-cont">
+		<div class="back-box">
+			<table width="100%" class="back-table table-fixed">
+				<tr height="40">
+					<th width="70" class="align-left">
+						<span class="back-order">
+							序号
+						</span>
+					</th>
+				 <th>商品类型</th>
+			     <th>商品名称</th>
+			     <th>图片</th>
+			     <th>商品总数</th>
+			     <th>最大可兑换数</th>
+			     <th>剩余数量</th>
+			     <th>兑换积分</th>
+			   <!--   <th>市场价</th> -->
+			     <th>兑换状态</th>
+			     <th>添加时间</th>
+			     <th>操作</th>
+				</tr>
+			#{if page?.page}
+				#{list page?.page, as:'content'}
+				<tr height="40">
+					<td class="align-left">
+						<label><input type="checkbox" class="back-tdcheck" />${(page?.currPage-1)*page?.pageSize + content_index}</label>
+					</td>
+					 <td>${content?.type_name}</td>
+				     <td>${content?.name}</td>
+				     <td><img alt="商品图片" title="${content?.name}" src="${content?.pic_path}" width="50px"/></td>
+				     <td>#{if content?.total == -1}无数量限制 #{/if}#{else}${content?.total}#{/else}</td>
+				     <td>#{if content?.max_exchange_count == -1}无数量限制 #{/if}#{else}${content?.max_exchange_count}#{/else}</td>
+				     <td>#{if content?.total == -1}无数量限制 #{/if}#{else}${content?.total + content?.surplus -content?.max_exchange_count}#{/else}</td>
+				     <td>${content?.exchange_scroe}</td>
+				   <!--   <td>元</td> -->
+				     <td>#{if content?.status == 2} 暂停中 #{/if}
+				          	#{else}
+				          		#{if content?.surplus > 0 || content?.surplus == -1} 兑换中 #{/if}
+				          		#{else} 兑换完毕 #{/else}
+				          	#{/else}	</td>
+				          	<td>${content?.time?.format('yyyy-MM-dd HH:mm:ss')}</td>
+				          	<td>         
+				          	   <span><a class="xf_ta_onclick" href="@{back.mall.GoodsCtrl.deleteGoods(content?.id)}">删除</a></span>
+				          	#{if content?.type == 0}<span><a class="xf_ta_onclick" href="@{back.mall.GoodsCtrl.editGoodsPre(content?.id,2)}">编辑</a></span>#{/if}
+				            #{else}<span><a class="xf_ta_onclick" href="@{back.mall.GoodsCtrl.virtualGoodsPre(content?.id,2)}">编辑</a></span>#{/else}
+				            #{if content?.status == 1}<span><a class="xf_ta_onclick" href="@{back.mall.GoodsCtrl.stopGoods(content?.id,2)}">暂停</a></span>#{/if}
+				            #{else}<span><a class="xf_ta_onclick" href="@{back.mall.GoodsCtrl.stopGoods(content?.id,1)}">启用</a></span>#{/else}
+				          	
+				          	</td>
+								</tr>
+								#{/list}
+									<!-- 表格数据统计 -->
+								<tr height="40">
+									<td colspan="11" class="back-lasttd">
+										<span>
+											<a href="@{back.mall.GoodsCtrl.startGoods()}" />启用</a>
+											<a href="@{back.mall.GoodsCtrl.endGoods()}" />暂停</a>
+										</span>
+										<!-- 分页组件--pageTag -->
+										#{backPageTag page:page,showPage:"showPage"/}
+									</td>
+								</tr>
+								<!-- 表格数据统计 -->
+							#{/if}
+							#{else}	
+					<!-- 暂无记录 -->
+					<tr height="58">
+						<td colspan="11" class="back-nodata"><i class="iconfont">&#xe613;</i>暂无记录</td>
+					</tr>
+				</table>
+			#{/else}
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+  $(function() {
+	  var orderType = "${page?.conditions?.orderType}";
+	    $("#orderType").val(orderType);
+	    var orderStatus = "${page?.conditions?.orderStatus}";
+	    $("#orderStatus").val(orderStatus);
+	    var order = $("#div_" + orderType);
+		
+	    /* 初始为默认搜索 */
+		if(orderType == ''){
+			$("#div_0").attr("class", "xf_sea_isshow");
+		}else {
+		  order.attr("class", "xf_sea_isshow");
+		  if(orderStatus == 1){
+		     $("#sp"+orderType).html("↑");
+		  }else{
+		    $("#sp"+orderType).html("↓");
+		  }
+		}
+  })
+  function showPage(currPage, pageSize){
+	    $("#currPage").val(currPage);
+	    $("#pageSize").val(pageSize);
+	    $("#submit").submit();
+	  }
+  
+   function conditonSearch(order){
+	   var orderStatus = "${page?.conditions?.orderStatus}";
+	   var orderType = "${page?.conditions?.orderType}";
+		
+		if(orderStatus == 1 && orderType == order){
+			$("#orderStatus").val(0);
+		}else{
+			$("#orderStatus").val(1);
+		}
+		
+		$("#orderType").val(order);
+		$("#submit").submit();
+   }
+
+</script>

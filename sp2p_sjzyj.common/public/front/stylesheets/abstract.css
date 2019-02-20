@@ -1,0 +1,209 @@
+.head-center-bottom1{
+	width: 100%;
+	height: 60px;
+	overflow: hidden;
+	background: #FFF;
+}
+.head-center-bottom-rg1{
+	width: 1200px;
+    height: 60px;
+    margin: auto;
+}
+body{
+	background: #FFF;
+}
+.head-center-bottom-rg1>li>a{
+    font-size: 18px;
+    line-height: 60px;
+    float: left;
+    padding: 0 30px;
+}
+.bum-steady{
+	color: #e8871e;
+    border-bottom: 2px solid red;
+}
+.head-center-bottom-rg1>li>a:hover span{
+    color: #e8871e;
+  
+}
+.col-4{
+	color: black;
+}
+.list-1{
+	color: #e8871e;
+}
+.abstract-1{
+	width: 100%;
+	height: 766px;
+	background: url(../images/abstract/aboutus_4.png);
+}
+.banner-top-tit{
+	width: 1200px;
+	height: 736px;
+	margin: auto;
+}
+.banner-tit{
+	width: 1200px;
+	height: 290px;
+	position: relative;
+}
+.banner-tit>h2{
+	width: 340px;
+	height: 290px;
+	margin: auto;
+	color: #FFF;
+	line-height: 290px;
+	letter-spacing:2px;
+	font-weight: 400;
+	text-align: center;
+	font-size: 70px;
+}
+.banner-tit>h2>span{
+	display: block;
+	width: 210px;
+	height: 5px;
+	position: absolute;
+	top:210px;
+	left: 41%;
+	margin: auto;
+	background: #FFF;
+}
+.banner-size{
+	width: 1200px;
+}
+.banner-size>p{
+	font-size: 32px;
+	color: #FFF;
+	line-height: 60px;
+	text-align: center;
+}
+/*保障*/
+.ensuring{
+	width: 100%;
+	height: 275px;
+	background: #FFF;
+}
+.ensuring-list{
+	width: 1200px;
+	height: 275px;
+	margin: auto;
+}
+.ensuring-list>li{
+	float: left;
+	text-align: center;
+	line-height: 60px;
+	font-size: 35px;
+	padding: 32px 130px;
+}
+/*jianjie*/
+.intro{
+    width: 100%;
+	height: 335px;
+	background:url(/public/front/images/abstract/setting-tree-bg.png);
+}
+.intro-center{
+	width: 1200px;
+	margin: auto;
+	height: 335px;
+}
+.intro-lf{
+	width: 600px;
+	float: left;
+	padding: 52px 0;
+}
+.intro-lf>P{
+	text-align: center;
+	font-size: 25px;
+	color: #FFF;
+	line-height: 46px;
+	font-family: "宋体";
+}
+.intro-rg{
+	padding: 27px 50px;
+	float: right;
+}
+/*sidazui*/
+.tit-box{
+	width: 1200px;
+	margin: auto;
+	font-family: "宋体";
+	background: #FFF;
+}
+.tit-1{
+	width:1200px;
+	height: 290px;
+	margin: auto;
+}
+.tit-size{
+	text-align: center;
+	font-size: 50px;
+	font-family: "宋体";
+	padding-top: 60px;
+}
+.tit-1>p{
+	text-align: center;
+	font-size: 50px;
+	line-height:80px;
+	font-family: "宋体";
+}
+.tit-1>span{
+	display: block;
+	width: 390px;
+	height: 3px;
+    margin:10px auto;
+	background: #e8871e;
+}
+.yizui{
+	width: 1000px;
+	margin:40px auto;
+}
+.lll{
+	text-align: right;
+}
+.iii{
+	text-align: left;
+}
+.yizui>p{
+	font-size: 35px;
+	font-family: "宋体";
+}
+.yizui>img{
+	margin: 44px 255px;
+}
+.tuandui{
+	width: 100%;
+	height: 910px;
+	background: url(/public/front/images/abstract/aether-bg.png) ;
+}
+.details{
+	width: 1000px;
+	height: 910px;
+	margin: auto;
+}
+.long-box{
+	width: 800px;
+	height: 80px;
+	padding: 50px;
+	margin: auto;
+}
+.details-size{
+	width: 800px;
+	margin: auto;
+}
+.details-size>p{
+	font-size: 35px;
+	color: #FFF;
+	font-family: "宋体";
+	line-height: 60px;
+	text-indent: 2em;
+}
+.capacity{
+	width: 1000px;
+	margin: auto;
+}
+.capacity>p{
+	font-size: 35px;
+	text-indent: 2em;
+	font-family: "楷体";
+	font-weight: 400;
+}

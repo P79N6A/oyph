@@ -1,0 +1,54 @@
+#{extends 'common/back/riskMain.html' /}
+	#{set title:'风控 | 审核科目 | 编辑审核科目' /}
+	#{set smallclass:3 /}
+	#{set crumbs:'风控>审核科目>编辑审核科目'/}
+	
+		<div class="back-main">
+			<!-- 头部筛选条件 -->
+			<div class="back-usertop">
+				<b class="left font14">${tas?.id}&nbsp;${tas?.name}>编辑</b>
+				<!-- 右侧功能按钮 -->
+				<div class="right back-rightbtns">
+					<a href="javascript:backAndRefresh('@{back.risk.AuditSubjectMngCtrl.showAuditSubjectsPre}');"><i class="iconfont">&#xe60b;</i>返回</a>
+				</div>
+			</div>
+			<form action="@{back.risk.AuditSubjectMngCtrl.editAuditSubject()}" method="POST">
+			#{authenticityToken /}
+			<input type="hidden" name="uuidRepeat" value="${flash?.submitUuid}">
+			<div class="back-cont">
+				<div class="back-infor">
+					<h2 class="back-infor-head">
+						审核科目
+					</h2>
+					<ul class="back-infor-set">
+						<li>
+							<input type="hidden" name="id" value=${tas?.id} />
+							<span class="lileft">科目</span>
+							<div class="liright">
+								<input type="hidden" name="name" value='${tas?.name}'/>
+								${tas?.name}
+							</div>
+						</li>
+						<li>
+							<span class="lileft">要求</span>
+							<div class="liright">
+								<input type="text" class="width06 iffocus required" value="${tas?.description}" maxlength="30" name="description"/>
+								<span class="back-text-limit">5~30个字符</span>
+							</div>
+						</li>
+					</ul>
+				</div>
+				<p class="back-audit-btns">
+					<input type="submit" id="pageSave" value="保存" class="bgbtn">
+					<input type="button" value="取消" class="bdbtn" onclick="backAndRefresh('@{back.risk.AuditSubjectMngCtrl.showAuditSubjectsPre}');">
+				</p>
+			</div>
+			</form>
+		</div>
+		<!-- 页面js -->
+		<script type="text/javascript">
+			require(["back"],function(back){
+				//保存提醒
+				require(["saveerror"]);
+			});
+		</script>

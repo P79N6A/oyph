@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+
+<head>
+    <meta name="viewport" content="width=640" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>转盘抽奖</title>
+    <script type="text/javascript" src="/public/javascripts/jquery-1.6.4.min.js"></script>
+    <script type="text/javascript" src="/public/javascripts/jQueryRotate.js"></script>
+    <script src="/public/front/javascripts/js/taxon.js" type="text/javascript" charset="utf-8"></script>
+    <link type="text/css" rel="stylesheet" href="/public/stylesheets/bigdraw.css">
+</head>
+
+<body>
+    <div class="turntable-bg">
+        <div class="draw">
+                                     可抽奖次数：<span class="frequency">${goldResult}</span>次<span class="scroe">积分剩余<span id="Scroe">${Scroe}</span></span>
+        </div>
+        <div class="winningRecord">
+	        <u id="winningRecord">中奖记录</u>
+	        <div class="adds">
+	        	0.5元话费券累计：<span id="onetelCountNum">${onetelCountNum}</span>次 
+	        	<u id="exchange">兑换</u>
+	        </div>
+        </div>
+        <div class="turntable-main">
+            <div class="turntable"></div>
+            <img src="/public/images/start.png" class="start">
+        </div>	
+        <div class="activityRules">
+			<p>1、新用户注册即送1金币，注册起7天之内投资再送1金币（只有首投可送）；</p>
+			<p>2、老用户邀请新用户注册，开户，投资后即可送1金币；</p>
+			<p>3、分享注册链接到朋友圈微信群即可获得一金币（一天只可获得一金币）；</p>
+			<p>4、单笔投资五万以上（包含五万）即可获得一金币；</p>
+			<p>5、一金币只可抽一次奖；</p>
+			<p>6、积分兑换抽奖金币，八万积分兑换一金币，没有兑换次数限制；</p>
+			<p>7、抽中0.5元话费积累满10元方可兑换；</p>
+			<p>8、中奖后须填写详细正确的电话和联系地址（有效期为1天，1天之内未填写即失效）</p>
+			<p>9、本活动最终解释权归讴业普惠所有</p>
+        </div>
+    </div>
+    <!--遮罩层-->
+    <div class="black-bg">
+        <div class="popup">
+            <span class="mssage"></span>
+            <div id='button'></div>
+        </div>
+        <form id="winningRecordPagePre" action="@{front.activity.shake.MyBigWheelActivityCtrl.winningRecordPagePre()}">
+            <input type="hidden" id="currPage" name="currPage" value="${pageBean?.currPage}" />
+  		    <input type="hidden" id="pageSize" name="pageSize" value="${pageBean?.pageSize}" />
+  		    <input type="hidden" id="showType" name="showType" value="${showType}" />
+  		</form>   
+        <div class="winningDetails">
+            <h1>中奖信息</h1>
+            <table id="prizeTable">
+                <tr>
+                    <th>奖品</th>
+                    <th>领取时间</th>
+                    <th>到期时间</th>
+                    <th>状态</th>
+                </tr>
+              #{if pageBean?.page}
+				#{list items:pageBean?.page, as:"winning"}
+                <tr>
+                    <td>#{if winning?.award_id == 1}讴业普惠定制水杯#{/if}
+								#{if winning?.award_id == 2}100元话费#{/if}
+								#{if winning?.award_id == 3}2G流量#{/if}
+								#{if winning?.award_id == 4}50元话费#{/if}
+								#{if winning?.award_id == 5}1G流量#{/if}
+								#{if winning?.award_id == 6}10元话费#{/if}
+								#{if winning?.award_id == 7}500M流量#{/if}
+								#{if winning?.award_id == 8}10万积分#{/if}
+								#{if winning?.award_id == 9}5万积分#{/if}
+								#{if winning?.award_id == 10}iphone xs 256G#{/if}
+								#{if winning?.award_id == 18}0.5元话费#{/if}
+								#{if winning?.award_id == 19}继续努力#{/if}</td> 
+							<td>${winning?.time?.format(common.constants.Constants.DATE_PLUGIN)}</td>
+					<td>${winning?.end_time?.format(common.constants.Constants.DATE_PLUGIN)}</td>
+                    <td>#{if winning?.end_status == 1 && winning?.status == 0}已过期#{/if}
+                    #{elseif winning?.status == 0 && winning?.end_status == 0}<span style="color:red;cursor:pointer;" onclick="receive(${winning?.id},${winning?.award_id})">领取</span>#{/elseif}
+						#{else}已领取#{/else}
+						</td> 
+				</tr>
+              #{/list}
+                <tr height="40">
+					<td colspan="9" class="back-lasttd">				
+						#{frontPageTag page:pageBean,showPage:"winningRecordPagePre"/}
+					</td>
+				</tr>
+				
+			#{/if}
+			#{else}	
+				<tr height="58">
+					<td colspan="10" class="back-nodata"><i class="iconfont">&#xe613;</i>暂无记录</td>
+				</tr>
+				
+			#{/else}
+            </table>
+            <input value="关闭" type="button" class="close">
+        </div>
+        <div class="basicInfo">
+            <h1>填写信息</h1>
+            <input type="text" class="tel" name="phone" placeholder="电话：" maxlength="11" id="tel" value="${tel}">
+            <textarea placeholder="请填写详细收货地址：" name="ship_address" id="ship_address">${ship_address}</textarea>
+            <span id="error"></span>
+            <input type="button" id="sub" value="提交">
+            <img src="/public/images/close.png" class="close-info">
+        </div>
+        <div class="emptyTimes">
+        	抽奖次数用完了</br>
+        	下次再来吧
+        	<img src="/public/images/close.png" class="close-ci">
+        </div>
+        <div class="telinfo">
+        	<input type="number" name="phone" class="telt" placeholder="请输入兑换的手机号" maxlength="11">
+        	<input type="button" value="确认" id="phoneSub">
+        </div>
+    </div>
+    <input type="hidden" value="0" id="rotate">
+    <input type="hidden" value="" id="nub">
+    <script type="text/javascript">
+        var turn_id;
+        var nub;
+        var ci = ${goldResult};
+        var Scroe = ${Scroe};
+        $(".start").click(function() {
+        	$('#nub').val('');
+        	var shu = $('#rotate').val();
+            if (shu == 1) {
+                return false;
+            }
+            if (ci <= 0) {
+        		if(Scroe<80000){
+        			$('.black-bg').show();
+                	$('.emptyTimes').show();
+                	return false;
+        		}else{
+        			if(window.confirm('你确定要消耗积分抽奖吗？')){
+        				 	Scroe = Scroe-80000;
+        		        	$('#Scroe').text(Scroe);
+                     }else{
+                        return false;
+                    }
+        		}
+        		
+        	}
+            $('#rotate').val(1);
+            if(ci > 0){
+        		ci--;
+        	}
+           
+            $('.frequency').text(ci);
+            
+            $.ajax({
+        		url : "@{front.activity.shake.DrawLotteryCtrl.drawLottery()}",
+        		type : "POST",
+        		
+        		success : function(data) {
+        			var data = JSON.parse(data);
+        			var result = data.objs;
+        			nub = result[0];
+        			turn_id = result[1];
+        			if(data.code == -1){
+        				window.location.href="@{front.LoginAndRegisteCtrl.loginPre()}";
+        				return false;
+        			}
+        			if(data.code == -2){
+        				$('.black-bg').show();
+                        $('.emptyTimes').show();
+                        return false;
+        			}
+        			var mssage;
+		            switch (nub) {
+		                case 1:
+		                    mssage = "定制水杯";
+		                    break;
+		                case 2:
+		                    mssage = "100元话费";
+		                    break;
+		                case 3:
+		                    mssage = "2G流量";
+		                    break;
+		                case 4:
+		                    mssage = "50元话费";
+		                    break;
+		                case 5:
+		                    mssage = "1G流量";
+		                    break;
+		                case 6:
+		                    mssage = "10元话费";
+		                    break;
+		                case 7:
+		                    mssage = "500M流量";
+		                    break;
+		                case 8:
+		                    mssage = "10万积分";
+		                    break;
+		                case 9:
+		                    mssage = "5万积分";
+		                    break;
+		                case 10:
+		                    mssage = "iPhone Xs";
+		                    break;
+		                case 18:
+		                    mssage = "0.5元话费";
+		                    break;
+		                case 19:
+		                    mssage = "继续努力";
+		                    break;
+		                    
+		            }
+		            $(".turntable").rotate({
+		                duration: 4000,
+		                angle: 0,
+		                animateTo: 1440 + nub * 36,
+		                easing: $.easing.easeOutSine,
+		                callback: function() {
+		                    $('#rotate').val(0);
+		                    $('.mssage').text(mssage);
+		                    $('#nub').val(nub);
+		                    $('.black-bg').show();
+		                    $('.popup').show();
+		                }
+		
+		            })
+        		},
+        		error:function(){
+        			
+        		}
+        	 });
+            
+        });
+        $('#button').click(function() {
+            var mssage = $('.mssage').text();
+            if (mssage == '0.5元话费' || mssage == "继续努力") {
+            	if(mssage == "0.5元话费"){
+            		var onetelCountNum = $('#onetelCountNum').text();
+            		$('#onetelCountNum').text(parseInt(onetelCountNum)+1);
+            	}
+                $('.popup').hide();
+                $('.black-bg').hide();
+            } else {
+                $('.popup').hide();
+                $('.basicInfo').show();
+            }
+
+        });
+        $('#winningRecord').click(function() {
+        	$('.winningDetails').show();
+            $('.black-bg').show();
+            /* 当前页和每页显示数 */
+        	winningRecordPagePre(1,5);
+            
+        });
+        $('#sub').click(function() {
+        	var phone = $('#tel').val();
+        	var ship_address = $('#ship_address').val();
+        	    $('#error').text('');
+        		$.ajax({
+            		url : "@{front.activity.shake.MyBigWheelActivityCtrl.addShipAddress()}",
+            		type : "POST",
+            		data : {
+            			"turn_id":turn_id,
+            			"phone" : phone,
+            			"ship_address" : ship_address
+            		},
+            		success : function(result) {
+            			var data = JSON.parse(result)
+            			if(data.code==0){
+            				$('.basicInfo').hide();
+        	                $('.black-bg').hide();
+            			}else{
+            				$('#error').text(data.msg);
+            			}
+            		}
+            	 });
+        });
+        
+        function winningRecordPagePre(currPage, pageSize){
+        	$.ajax({
+        		url : "@{front.activity.shake.MyBigWheelActivityCtrl.winningRecordPagePre()}",
+        		type : "GET",
+        		data : {
+        			"currPage" : currPage,
+        			"pageSize" : pageSize
+        		},
+        		success : function(data) {
+        			$(".winningDetails").html(data);
+        		}
+        	});
+        	
+        }
+        /*关闭填写框*/
+        $('.close-info').click(function(){
+        	$('.basicInfo').hide();
+        	$('.black-bg').hide();
+        });
+        $('.close').click(function() {
+            $('.winningDetails').hide();
+            $('.black-bg').hide();
+        })
+        $('.close-ci').click(function() {
+            $('.emptyTimes').hide();
+            $('.black-bg').hide();
+        })
+        /*奖品领取*/
+        function receive(id,award_id){
+        	if(award_id==8 || award_id==9){
+        		$.ajax({
+            		url : "@{front.activity.shake.MyBigWheelActivityCtrl.addRecore()}",
+            		type : "POST",
+            		data:{
+            			turn_id:id,
+            			nub:award_id
+            		},
+            		success : function(result) {
+            			var data = JSON.parse(result);
+            			console.log(data);
+            			if(data.code==0){
+            				winningRecordPagePre($('#currPage').val(),5);
+            			}else{
+            				return false;
+            			}
+            		}
+            	 });
+        	}else{
+        		turn_id=id;
+        		$('.winningDetails').hide();
+        		$('.basicInfo').show();
+        	}
+        }
+       
+        /*兑换*/
+       	$('#exchange').click(function(){
+       		var nub = $('#onetelCountNum').text();
+       		if(nub>=20){
+       			$('.black-bg').show();
+       			$('.telinfo').show();
+       			
+       		}else{
+       			alert('累计次数不足')
+       		}
+       	});
+       	$('#phoneSub').click(function() {
+       		var phone = $('.telt').val();
+       		var turn_id = ${onetelCountId};
+       			$.ajax({
+       	    		url : "@{front.activity.shake.MyBigWheelActivityCtrl.insert()}",
+       	    		type : "POST",
+       	    		data : {
+       	    			"turn_id":turn_id,
+       	    			"phone" : phone,
+       	    		},
+       	    		success : function(result) {
+       	    			var data = JSON.parse(result)
+       	    			if(data.code==0){
+       	    				$('.telinfo').hide();
+       		                $('.black-bg').hide();
+	       		            var onetelCountNum = $('#onetelCountNum').text();
+	                 		$('#onetelCountNum').text(parseInt(onetelCountNum)-20);
+       	    			}else{
+       	    				alert(data.msg);
+       	    			}
+       	    		}
+       	    	 });
+       	})
+    </script>
+   
+</body>
+
+</html>

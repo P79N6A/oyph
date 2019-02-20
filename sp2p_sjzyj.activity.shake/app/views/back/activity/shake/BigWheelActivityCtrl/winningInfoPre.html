@@ -1,0 +1,124 @@
+#{extends 'common/back/activityMain.html'/}
+	#{set title:'活动 | 大转盘活动|中奖信息'/}
+	#{set smallclass:2 /}
+	#{set crumbs:'活动>大转盘活动>中奖信息'/}
+<div class="back-main">
+	<!-- 头部筛选条件 -->
+	<div class="back-usertop">
+		<div class="left back-usermenu">
+			<a href="@{back.activity.shake.BigWheelActivityCtrl.awardManagerListPre()}">奖品列表</a>
+			<a href="@{back.activity.shake.BigWheelActivityCtrl.winningInfoPre()}" class="selected">中奖信息列表</a>
+			<a href="@{back.activity.shake.BigWheelActivityCtrl.activitySettingPre()}">活动设置</a>
+		</div>
+	</div>
+	
+	<div class="back-cont">
+		<div class="back-box">
+			<form id="showWinningInfoPre" action="@{back.activity.shake.BigWheelActivityCtrl.winningInfoPre()}">
+			    <input type="hidden" id="currPage" name="currPage" value="${pageBean?.currPage}" />
+  		        <input type="hidden" id="pageSize" name="pageSize" value="${pageBean?.pageSize}" />
+  		        <input type="hidden" id="showType" name="showType" value="${showType}" />
+  		    </form>
+				<table width="100%" class="back-table table-fixed">
+					<tr height="40">
+						<th width="70" class="align-left">编号</th>
+						<th>用户</th>
+						<th>奖品名称</th>
+						<th>收货地址</th>
+						<th>电话(收货/充值)</th>
+						<th>是否已领取</th>
+						<th>是否到期</th>
+						<th>实物发放状态</th>
+						<th>获奖时间</th>
+						<th>到期时间</th>
+						<th>操作</th>
+					</tr>
+					<!-- 循环遍历表中的数据 ，pageBean为后台传的值-->
+					#{if pageBean.page}
+						#{list items:pageBean.page, as:"winning"}
+						<tr height="40">
+							<td>${winning?.id}</td>
+							<td>${winning?.user_name}</td>
+							<td>#{if winning?.award_id == 1}讴业普惠定制水杯#{/if}
+							    #{if winning?.award_id == 2}100元话费#{/if}
+							    #{if winning?.award_id == 3}2G流量#{/if}
+							    #{if winning?.award_id == 4}50元话费#{/if}
+							    #{if winning?.award_id == 5}1G流量#{/if}
+							    #{if winning?.award_id == 6}10元话费#{/if}
+							    #{if winning?.award_id == 7}500M流量#{/if}
+							    #{if winning?.award_id == 8}10万积分#{/if}
+							    #{if winning?.award_id == 9}5万积分#{/if}
+							    #{if winning?.award_id == 10}iphone xs 256#{/if}
+							    #{if winning?.award_id == 18}0.5元话费#{/if}
+							    #{if winning?.award_id == 19}继续努力#{/if}</td>
+							<td title="${winning?.ship_address}">${winning?.ship_address}</td>
+							<td>${winning?.tel}</td>
+							<td>#{if winning?.status == 0}未领取#{/if}
+							    #{if winning?.status == 1}已领取#{/if}</td>
+							<td>#{if winning?.end_status == 0}未到期#{/if}
+							    #{if winning?.end_status == 1}到期#{/if}</td>
+							<td>
+								<select disabled="disabled" name="is_grant">
+									<option value="0" #{if winning?.is_grant == 0}selected#{/if}>未发放</option>
+									<option value="1" #{if winning?.is_grant == 1}selected#{/if}>已发放</option>
+								</select>
+							</td>
+							
+							<td>${winning?.time?.format(common.constants.Constants.DATE_PLUGIN)}</td>
+							<td>${winning?.end_time?.format(common.constants.Constants.DATE_PLUGIN)}</td>
+							<td ><a href="javascript:void(0)" data-title="编辑" class="iconfont" onclick="edit($(this),${winning?.id})">&#xe602;</a></td>
+				
+						</tr>
+					#{/list}
+					<!-- 表格数据统计 -->
+				<tr height="40">
+					<td colspan="11" class="back-lasttd">				
+						<!-- 分页组件--pageTag -->
+						#{backPageTag page:pageBean,showPage:"showWinningInfoPre"/}
+					</td>
+				</tr>
+				
+			#{/if}
+			#{else}	
+						
+					<!-- 暂无记录 -->
+					<tr height="58">
+						<td colspan="11" class="back-nodata"><i class="iconfont">&#xe613;</i>暂无记录</td>
+					</tr>
+				</table>
+			#{/else}
+				</table>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+function showWinningInfoPre(currPage, pageSize) {
+	
+	$("#currPage").val(currPage);
+	$("#pageSize").val(pageSize);
+	
+	$("#showWinningInfoPre").submit();
+}
+function edit($this,id){
+	var prev = $this.parent().prev().prev().prev().children();
+	if(prev.attr('disabled')){
+		$this.html("&#xe630;").data('title','保存');
+		prev.attr('disabled',false)
+	}else{
+		$this.html("&#xe602;").data('title','编辑');
+		prev.attr('disabled',true);
+		$.ajax({  
+		     url: '@{back.activity.shake.BigWheelActivityCtrl.editGrant()}',
+		     type: 'POST',  
+		     data:{
+		    	 id:id,
+		    	 is_grant:prev.val()
+		     },       
+		     success:function(result)  {   
+		    	 location.reload();
+		    
+		    	}  
+		}); 
+	}
+}
+</script>

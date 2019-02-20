@@ -1,0 +1,81 @@
+#{extends 'common/back/webOperationMain.html' /}
+    #{set title:'运维 | 投票活动管理 |审核参与信息' /}
+    #{set smallclass:10 /}
+    #{set crumbs:'运维>投票活动管理>审核参与信息' /}
+<div class="back-main">
+    <!-- 头部筛选条件 -->
+    <div class="back-usertop">
+        <span>${vote?.title}>${participation?.name}</span>
+    </div>
+    <div  class="back-cont">
+        <div class="back-infor">
+            <h2 class="back-infor-head">参与信息</h2>
+            <div class="back-finace-suggest">
+                <div class="left">
+                    <img style="width: 200px; height: 250px;" src="${participation?.img_url}" onerror="this.src='/public/back/images/noimg.jpg'"/>
+                </div>
+                <ul class="back-infor-set left">
+                    <li>
+                        <span class="lileft">名称</span>
+                        <div class="liright">
+                            ${participation?.name}
+                        </div>
+                    </li>
+                    <li>
+                        <span class="lileft">参赛口号</span>
+                        <div class="liright">
+                            ${participation?.slogan}
+                        </div>
+                    </li>
+                    <li>
+                        <span class="lileft">照片信息</span>
+                        <div class="liright">
+                            ${participation?.description}
+                        </div>
+                    </li>
+                    <li>
+                        <span class="lileft">参与人</span>
+                        <div class="liright">
+                            ${participation?.user?.name}
+                        </div>
+                    </li>
+                    <li>
+                        <span class="lileft">参赛时间</span>
+                        <div class="liright">
+                            ${participation?.time?.format(common.constants.Constants.DATE_TIME_FORMATE)}
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="back-cont">
+        <form action="@{back.webOperation.VoteMngCtrl.checkParts()}" method="POST" id="checkPartsForm">
+            <input type="hidden" name="voteId" id="voteId" value="${vote?.id}"/>
+		    <input type="hidden" name="partId" value="${participation?.id}" id="partId"/>
+		    <input type="hidden" name="partStatus" value="${participation?.status}" id="partStatus"/>
+		    <div class="back-infor">
+		        <h2 class="back-infor-head">审核建议</h2>
+		        <div class="back-finace-suggest">
+		            <textarea class="required"  minlength="20" name="partContent" id="partContent"></textarea>
+		            <span class="back-text-limit">如：经审核您上传的照片不符合活动主题,请您及时修改！</span>
+		        </div>
+		    </div>
+		    <p class="back-audit-btns">
+		        <input type="button" id="pageSave" value="通过" class="bgbtn" onclick="checkParts(1)"/>
+		        <input type="button" id="notPass" value="不通过" class="bdbtn" onclick="checkParts(2)"/>
+		        <input type="button" id="notPass" value="取消" class="bdbtn" onclick="backAndRefresh('@{back.webOperation.VoteMngCtrl.showVotesPre}');"/>
+		    </p>
+	    </form>
+    </div>
+</div>
+<script type="text/javascript">
+
+function checkParts(num){
+	
+	$("#partStatus").val(num);
+	$("#checkPartsForm").submit();
+	
+}
+
+</script>	

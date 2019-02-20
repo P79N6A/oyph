@@ -1,0 +1,106 @@
+/*
+	主色调：#ea5504
+	辅色调：#f44e43
+*/
+.major,
+a:hover,
+.nav a:hover,
+.nav .selected,
+.index-daynew a:hover,
+.bdbtn,
+.getcode-btn,
+.findpassword-step .selected .step-name,
+.findpassword-step .done .step-name,
+.news-nav .selected,
+.detail-tabmenu .selected,
+.detail-tabmenu li:hover,
+.detail-menu .click,
+.detailtxt,
+.exit-btn,
+.account-btos a{
+	color: #F77B0F;
+}
+.assistant{
+	color: #f44e43;
+}
+.btn,
+.box_skitter .info_slide .image_number.image_number_select,
+.box_skitter .info_slide .image_number.image_number_select:hover,
+.bdbtn:hover,
+
+.recticon,
+.getcode-btn:hover,
+.dialog-head,
+.findpassword-step .selected .step-circle,
+.findpassword-step .done .step-circle,
+.findpassword-step .done .step-split,
+.page-num:hover,
+.page-num.selected,
+.progress-bar,
+.detail-intitle i,
+.second-navbox,
+.help-rightbar-head i,
+.safe-check h3,
+.safe-protect h3,
+.joinus-tab th,
+.userapprove .approved,
+.safelevel-value,
+.userasset-table,
+.userasset-control:hover,
+.userasset-control.selected,
+.account-menu .selected,
+.account-autohandle .selected,
+.index-progressbar,
+.help-question .askicon,
+.fade-handle .selected,
+/*微信端*/
+.bill-title,
+.account-btos a:first-child,
+.account-earn,
+.bank-ul li{
+	background-color: #F77B0F;
+	
+}
+.btn:hover,
+
+.rightbar-kflist{
+	background-color: #ff9f22;
+	
+}
+.bdbtn,
+.getcode-btn,
+.financial-buylist,
+.news-top,
+.help-list .selected,
+.title-dialog,
+.account-autostatus,
+.account-autohandle,
+.account-infortitle .left,
+.bank-list li:hover,.bank-list .selected,
+.index-progress,
+.index-progressvalue,
+.progress,
+/*微信端*/
+.detail-menu,
+.detail-menu a,
+.account-btos a{
+	border-color: #F77B0F;
+}
+.top a:hover,
+.mobile-app:hover{
+	color: #FBA053;
+}
+.index-daynew{
+	background-color: #FBA053;
+}
+.detail-tabmenu .selected,
+.index-progressvalue i:first-child{
+	border-top-color: #F77B0F;
+}
+.help-nav .selected{
+	border-left-color: #F77B0F;
+}
+.title-dialog i:first-child,
+.account-title{
+	border-bottom-color: #F77B0F;
+}

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>注册成功${' | '+settings?.get(common.constants.SettingKey.SEO_TITLE)+' | '+settings?.get(common.constants.SettingKey.PLATFORM_NAME)}</title>
+		<meta name="keywords" content="${settings?.get(common.constants.SettingKey.PLATFORM_NAME)}" />
+		<meta name="description" content="${settings?.get(common.constants.SettingKey.PLATFORM_NAME)}" />
+		<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+		<link rel="shortcut icon" type="image/png" href="${settings?.get(common.constants.SettingKey.PLATFORM_ICON_FILENAME)}" />
+		<link rel="stylesheet" type="text/css" href="@{'/public/front/stylesheets/front.css'}" />
+		<!-- 皮肤背景、颜色 -->
+		
+		<!-- 皮肤背景、颜色 -->
+		<link rel="stylesheet" type="text/css" href="@{'/public/front/themes/'+settings?.get(common.constants.SettingKey.THEME_NAME)+'/background.css'}" />
+		#{if settings?.get(common.constants.SettingKey.THEME_CUSTOMIZE).equals('0')}
+			<link rel="stylesheet" type="text/css" href="@{'/public/front/themes/'+settings?.get(common.constants.SettingKey.THEME_NAME)+'/color.css'}" />
+		#{/if}
+		#{else}
+			
+			#{set mainColor:'#'+settings?.get(common.constants.SettingKey.THEME_MAIN_COLOR) /}
+			#{set auxColor:'#'+settings?.get(common.constants.SettingKey.THEME_AUX_COLOR) /}
+			#{set thdColor:'#'+common.utils.StrUtil.colorByAlpha(settings?.get(common.constants.SettingKey.THEME_MAIN_COLOR)) /}
+			#{include 'common/front/colorCont.html' /}
+		#{/else}
+		
+	</head>
+	<body>
+		<div class="login-body">
+		 <div class="login1" style="background-image: url(/public/front/images/denglu-bg.jpg);"></div>
+			<!-- 登录注册head start -->
+			<div class="login-header">
+				<div class="container1 clearfix">
+					<a href="@{front.FrontHomeCtrl.frontHomePre()}" title="" class="left">
+						<img src="${settings?.get(common.constants.SettingKey.PLATFORM_LOGO_FILENAME)}" height="77" />
+					</a>
+				</div>
+			</div>
+			<!-- 登录注册head end -->
+			<div class="success-box">
+				<span class="timeout-note major"><i class="icon success-icon"></i>注册成功</span>
+				<p style="text-align: left;width: 520px;line-height: 30px;margin: 20px auto; color: black;background: rgba(255,255,255,0.7)">
+				尊敬的用户您好：</br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;平台已正式接入宜宾市商业银行存管，为了不影响您的正常使用，</br>
+				请激活您的银行存管账户，并及时绑定您的银行卡，给您带来的不便，</br>
+				敬请谅解！如有疑问请联系在线客服或拨打客服热线：400-901-8889。
+				</p>
+				<a href="@{front.account.MySecurityCtrl.createAccountPre()}" target="_blank" title="" class="major trusteeship-openbtn">去开户></a>
+			</div>
+			<p class="timeout-return">你也可以<a href="/" class="major">进入首页</a></p>
+			<!-- 登录注册footer start -->
+			<div class="footer-msg">
+				©2016&nbsp;${settings?.get(common.constants.SettingKey.PLATFORM_NAME)}&nbsp;All&nbsp;rights&nbsp;resered<i class="footer-split">|</i>${settings?.get(common.constants.SettingKey.COMPANY_NAME)}<i class="footer-split">|</i>${settings?.get(common.constants.SettingKey.SITE_ICP_NUMBER)}
+			</div>
+			<!-- 登录注册footer end -->
+		</div>
+		<!-- 开户弹窗 -->
+		<div class="dialog" id="register_success_dialog">
+			<div class="dialog-bg"></div>
+			<div class="dialog-cont trusteeship-dialog">
+				<h2 class="dialog-head">
+					<span class="left">平台提示</span>
+				</h2>
+				<div class="trusteeship-cont">
+					<div class="trusteeship-wrap">
+						<i class="trusteeship-icon"></i>
+						<p class="major">请在新页面完成资金托管开户。</p>
+						<a href="@{front.account.MySecurityCtrl.securityPre()}" class="bdbtn">开户成功</a>
+						<p class="trusteeship-help"><a href="@{front.FrontHomeCtrl.helpPre(models.common.entity.t_help_center.Column.FINANCIAL_KNOWLEDGE.code,1)}" class="c9">开户遇到问题></a></p>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- 页面js -->
+		<script type="text/javascript" data-main="/public/front/javascripts/front.js" src="@{'public/front/javascripts/require.js'}" ></script>
+		<script type="text/javascript">
+			require(['front'],function(front){
+				$(".trusteeship-openbtn").click(function(){
+					$("#register_success_dialog").dialog();
+				});
+			})
+		</script>
+	</body>
+</html>

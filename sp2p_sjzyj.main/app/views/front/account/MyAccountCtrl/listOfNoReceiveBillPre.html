@@ -1,0 +1,39 @@
+<h2 class="account-title"><span class="left c3">${columns?.get(common.constants.ColumnKey.WEALTH_ACCOUNT_SECTION)?:'最近回款计划'}</span></h2>
+<table class="account-table" width="100%">
+	<tr height="46">
+		<th>账单编号</th>
+		<th>项目标号</th>
+		<th>期数</th>
+		<th>应收本息</th>
+		<th>本金</th>
+		<th>利息</th>
+		<th>服务费</th>
+		<th>预计到账</th>
+		<th>到期时间</th>
+		<th>状态</th>
+	</tr>
+	#{if investReceive?.page != null}
+		#{list items:investReceive?.page,as:'page'}
+			<tr height="56">
+				<td>${page?.bill_invest_no}</td>
+				<td>${page?.getBid_no()}</td>
+				<td>${page?.period}/${page?.totalPeriod}</td>
+				<td>${page?.corpus_interest?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}</td>
+				<td>${page?.receive_corpus?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}</td>
+				<td>${page?.receive_interest?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}</td>
+				<td>${page?.loan_fee?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}</td>
+				<td>${page?.expected_arrival?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}</td>
+				<td>${page?.receive_time?.format(common.constants.Constants.DATE_FORMATE)}</td>
+				<td>${page?.status?.value}</td>
+			</tr>
+		#{/list}
+	#{/if}
+</table>
+#{if investReceive?.page}
+	#{frontPageTag page:investReceive,showPage:'listOfNoReceiveBillPre' /}
+#{/if}
+#{if investReceive?.page == null}
+<div class="norecord-box c9">
+	暂无记录
+</div>
+#{/if}

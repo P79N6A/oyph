@@ -1,0 +1,84 @@
+#{extends 'common/front/accountMain.html' /}
+#{set title:'个人中心 | 安全中心 | 绑定邮箱' /}
+#{set smallclass:4 /}
+
+<!-- 账户主要表格 -->
+<div class="account-box">
+	<div class="account-infor">
+		<!-- 修改邮箱step -->
+		<div class="account-setemail">
+			<h2 class="account-title">
+				<span class="left bankcard-title c3"><i class="icon emil-icon"></i>绑定邮箱</span>
+			</h2>
+			<p class="setemail-note">请填写你要修改的邮箱地址，平台将会发送验证邮件给你，登录邮箱打开邮件点击链接，即可完成对新邮箱的绑定。</p>
+			<form action="@{front.account.MySecurityCtrl.updateEmailSuccess()}" method="post" id="updateemail">
+				#{authenticityToken /}
+				<ul class="register-list">
+					<li class="clearfix mb30">
+						<span class="register-left left">
+							<i class="important-point">*</i>邮箱地址
+						</span>
+						<div class="register-wrap left">
+							<input type="text" class="text" id="email" name="email" value="" placeholder="输入有效的邮箱地址" maxlength="30">
+							<input type="hidden" id="userName" name="userName" value="${currUser?.name}">
+						</div>
+					</li>
+					<li class="clearfix">
+						<span class="register-left left">
+							&nbsp;
+						</span>
+						<input type="submit" value="下一步" class="condition-btn btn left">
+					</li>
+				</ul>
+			</form>
+			<p class="returnprev">
+				<a href="@{front.account.MySecurityCtrl.securityPre()}" class="backpage"><i class="icon return-icon"></i>返回</a>
+			</p>
+		</div>
+	</div>
+</div>
+<script type="text/javascript" data-main="/public/front/javascripts/front.js" src="@{'public/front/javascripts/require.js'}" ></script>
+<script type="text/javascript">
+require(['front'],function(){
+	require(["validation/validateExt"]);
+	
+	$("#updateemail").validate({
+		errorPlacement: function(error, element) {
+			if(element.is("#email")){
+				$("p[id='email-error']").remove();
+				$("input[id='email']").removeClass("focus").addClass("text-error");
+				error.addClass('error register-error').appendTo(element.parent());
+			}
+		},
+		success:function(label){
+			label.removeClass('error register-error');
+			$(label).parent().children("input").eq(0).addClass("focus");
+		},
+		errorElement:'p',
+		rules:{
+			"email":{
+				required:true,
+				isEmail:true,
+				remote:{//后端返回的只能是true或者false
+					 url: "@{front.FrontAjaxValideCtrl.checkEmail()}",
+					 type: "post",
+					 dataType: "json",
+					 data: {
+						 email: function() {
+							return $("input[name='email']").val();
+						}
+					}
+				}
+			}
+		},
+		messages:{
+			"email":{
+				required:"邮箱地址不能为空",
+				isEmail:"邮箱格式不正确",
+				remote:"邮箱地址已存在"
+			}
+		}
+	})
+	
+})
+</script>

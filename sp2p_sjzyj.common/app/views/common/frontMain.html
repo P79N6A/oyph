@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>${settings?.get(common.constants.SettingKey.SEO_TITLE)}</title>
+		
+		<meta name="keywords" content="${settings?.get(common.constants.SettingKey.SEO_KEYWORDS)}" />
+		<meta name="description" content="${settings?.get(common.constants.SettingKey.SEO_DESCRIPTION)}" />
+		
+		<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+		<link rel="shortcut icon" type="image/png" href="${settings?.get(common.constants.SettingKey.PLATFORM_ICON_FILENAME)}" />
+		<link rel="stylesheet" type="text/css" href="@{'/public/front/stylesheets/front.css'}" />
+		<link rel="stylesheet" type="text/css" href="@{'/public/front/stylesheets/lanrenzhijia.css'}" />
+		<link rel="stylesheet" type="text/css" href="/public/front/stylesheets/index1.css"/>
+		<!-- 皮肤背景、颜色 -->
+		<link rel="stylesheet" type="text/css" href="@{'/public/front/themes/'+settings?.get(common.constants.SettingKey.THEME_NAME)+'/background.css'}" />
+		#{if settings?.get(common.constants.SettingKey.THEME_CUSTOMIZE).equals('0')}
+			<link rel="stylesheet" type="text/css" href="@{'/public/front/themes/'+settings?.get(common.constants.SettingKey.THEME_NAME)+'/color.css'}" />
+		#{/if}
+		#{else}
+			#{set mainColor:'#'+settings?.get(common.constants.SettingKey.THEME_MAIN_COLOR) /}
+			#{set auxColor:'#'+settings?.get(common.constants.SettingKey.THEME_AUX_COLOR) /}
+			#{set thdColor:'#'+common.utils.StrUtil.colorByAlpha(settings?.get(common.constants.SettingKey.THEME_MAIN_COLOR)) /}
+			#{include 'common/front/colorCont.html' /}
+		#{/else}
+		
+		#{get 'moreStyles' /}
+		<!-- 页面js -->
+		<script type="text/javascript" src="/public/front/javascripts/jquery-1.8.3.min.js" ></script>
+		
+		<script type="text/javascript" src="/public/front/javascripts/jquery.hhService.js" ></script>
+		<script type="text/javascript" data-main="/public/front/javascripts/front.js" src="@{'public/front/javascripts/require.js'}" ></script>
+		
+		
+		<script src="/public/front/javascripts/js/index.js" type="text/javascript" charset="utf-8"></script> 
+		
+		#{get 'moreScripts' /}
+</head>
+	<body>
+	<img src='//stats.ipinyou.com/adv.gif?a=XTs8T..UjIWeYwbjEFEcIcX8NqCMP&cm=1&v=2&e=ev%3Dvg' style='display:none;'/>
+	<!-- header start -->
+		<div class="header">
+			<div class="top">
+				<div class="container">
+					<div class="left" style="margin-left:20px;">
+						
+						<div class="phone-app left">
+							<i class="icon phoneicon tubiaoa"></i><a>客户热线：400-901-8889</a>
+						</div>
+					</div>
+					<div class="right">
+					      <!--   <a class="left" rel="nofollow" href="https://ouyepuhui.cn/">
+						    <img alt="" src="/public/front/images/general.png">
+						    </a> -->
+							<i class="left split-line"></i>
+						#{if currUser == null}
+							<!-- <i class="left split-line"></i> -->
+							<a style="color:#F77B0F;" class="left" href="@{front.LoginAndRegisteCtrl.loginPre()}" target="" title="">登录</a>
+							<i class="left split-line"></i>
+							<a style="color:#F77B0F;" class="left" href="@{front.LoginAndRegisteCtrl.registerPre()}" target="" title="">注册</a>
+						#{/if}
+						#{else}
+							<!-- <i class="left split-line"></i> -->
+							<a class="left" href="@{front.account.MyAccountCtrl.homePre()}" target="" title="">${currUser?.name}</a>
+							<i class="left split-line"></i>
+							<a class="left" href="@{front.LoginAndRegisteCtrl.loginOutPre()}" target="" title="">退出</a>
+						#{/else}
+						<i class="left split-line"></i>
+							<a class="left" href="@{front.FrontHomeCtrl.developPre(1)}" target="" title="">企业风貌</a>
+							<i class="left split-line"></i>
+							<a class="left" href="@{front.FrontHomeCtrl.developPre(2)}" target="" title="" >员工风采</a>
+							<i class="left split-line"></i>
+							<a onclick="ioio()" class="left" href="javascript:;" target="" title="">安全保障</a>
+							<i class="left split-line"></i>
+							<a id="ddad" style="border: 1px solid #F77B0F; position:relative; height: 20px; line-height: 20px; color:#F77B0F; padding: 0 5px; margin-top: 5px; border-radius:6px;" class="left" href="javascript:;" target="" title="">手机APP
+							  <div class="shoujiewm">
+							    <img src="/public/front/images/appewm1.png" />
+								<p class="ewm-text">扫描下载app</p>
+							  </div>
+							</a>
+					</div>
+				</div>
+			</div>
+			<div class="navbox">
+				<div class="navbox-innerbox" style="height: 60px;">
+					<div class="container clearfix">
+					<a href="/" title="讴业普惠">
+							#{img data_original:settings?.get(common.constants.SettingKey.PLATFORM_LOGO_FILENAME), title:"讴业普惠", alt:"讴业普惠", class:"lazy", height:"60", width:"360"/}
+						</a>
+						<ul class="nav right">
+							<li><a href="@{front.FrontHomeCtrl.frontHomePre()}" title="" target="" >${columns?.get(common.constants.ColumnKey.HOME)?:'首页'}</a></li>
+							<li><a href="@{front.invest.InvestCtrl.toInvestPre()}" title="" target="" >${columns?.get(common.constants.ColumnKey.INVEST)?:'项目'}</a></li>
+							<li><a href="@{front.LoanCtrl.toLoanPre()}" title="" target="" >${columns?.get(common.constants.ColumnKey.LOAN)?:'借款'}</a></li>
+						    
+						    <li class="pulls1">
+							<a href="@{front.FrontHomeCtrl.newhandPre()}" title="" target="" rel="nofollow" id="pulls-up" >新手<label><img src="/public/front/images/sanjiao.png"/></label></a>
+							<ul id="pulls1-down">
+							    
+								<li ><a style="border-bottom: 1px solid #ccc;" href="@{front.FrontHomeCtrl.newhandPre()}" rel="nofollow" title="">新手指引</a></li>
+								<li><a style="margin-left: 6px;" href="@{front.FrontHomeCtrl.lecturePre()}" rel="nofollow" title="" >大讲堂</a></li>
+								
+							</ul>
+							</li>
+						    
+						    <li class="pulls2">
+							<a href="@{front.PublishMessageCtrl.publishIndexPre()}"  title="" target="" rel="nofollow" id="pulls-up" >信息披露</a>
+								
+							</li>
+						    
+						    
+							<!-- liuyang begin 2017-1-5---------------------------- -->
+							<li class="pulls">
+							<a href="@{front.FrontHomeCtrl.developPre()}"  title="" target="" rel="nofollow" id="pulls-up" >${columns?.get(common.constants.ColumnKey.HOME_ABOUTUS)?:'公司介绍'}<label><img src="/public/front/images/sanjiao.png"/></label></a>
+							<ul id="pulls-down">
+							    
+								<li><a style="border-bottom: 1px solid #ccc;" href="@{front.FrontHomeCtrl.aboutUsPre()}" rel="nofollow" title="">公司介绍</a></li>
+								<li><a onclick="ioio()" href="javascript:;" rel="nofollow" title="" >安全保障</a></li>
+								
+								
+							</ul>
+							</li>
+							<!-- liuyang end 2017-1-5---------------------------- -->
+							<li  class="jiFen"><a href="@{front.MallCtrl.mallHomePre()}" title="" target="" rel="nofollow" >积分商城</a></li>
+							<li><a href="@{front.account.MyAccountCtrl.homePre()}" title="" target="" rel="nofollow" class="nav-account"><i class="icon"></i>${columns?.get(common.constants.ColumnKey.WEALTH)?:'个人中心'}</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	<!-- header end -->
+
+	<!-- main Content start -->
+		#{doLayout /}
+	<!-- main Content start -->
+
+	<!-- 左侧客服 开始 -->
+	<!-- <div class="scrollsidebar" id="hhService">
+		<div class="side_content">
+			<div class="side_list">
+				<div class="side_title">
+					<a title="隐藏" class="close_btn"><span>关闭</span></a></div>
+				<div class="side_center">
+					<div class="qqserver">
+						#{if settings?.get(common.constants.SettingKey.COMPANY_QQ1)}
+						<p>
+						<a title="点击这里给我发消息" href="https://wpa.qq.com/msgrd?v=3&uin=${settings?.get(common.constants.SettingKey.COMPANY_QQ1)}&site=qq&menu=yes" target="_blank">
+						<img src="/public/common/button_111.gif">前台客服</a></p>
+						#{/if}
+						#{if settings?.get(common.constants.SettingKey.COMPANY_QQ2)}
+						<p>
+						<a title="点击这里给我发消息" href="https://wpa.qq.com/msgrd?v=3&uin=${settings?.get(common.constants.SettingKey.COMPANY_QQ2)}&site=qq&menu=yes" target="_blank">
+						<img src="/public/common/button_111.gif">前台客服</a></p>
+						#{/if}
+						#{if settings?.get(common.constants.SettingKey.COMPANY_QQ3)}
+						<p>
+						<a title="点击这里给我发消息" href="https://wpa.qq.com/msgrd?v=3&uin=${settings?.get(common.constants.SettingKey.COMPANY_QQ3)}&site=qq&menu=yes" target="_blank">
+						<img src="/public/common/button_111.gif">前台客服</a></p>
+						#{/if}
+					</div>
+					<strong>咨询热线：<br><span style="font-size: 14px;">400-901-8889</span></strong><div class="msgserver">
+						<p><a href="@{front.ActivityCtrl.frontActivityPre()}">热门活动</a></p>
+					</div>
+				</div>
+				<div class="side_bottom">
+				</div>
+			</div>
+		</div>
+		<div class="show_btn"><span>热门活动</span></div>
+	</div> -->
+	<!-- 左侧客服结束 -->
+
+	<!-- right bar -->
+		<ul class="rightbar">
+			<li class="goto-top">
+				<div class="rightbar-box">
+					<i class="icon top-icon"></i>
+					<span class="rightbar-word">
+						返回顶部
+					</span>
+				</div>
+			</li>
+			<li>
+				<div class="rightbar-box">
+					<i class="icon weixin-icon"></i>
+					<span class="rightbar-word">
+						关注微信
+					</span>
+				</div>
+				<div class="rightbar-leftbox">
+					<i></i>
+					<i></i>
+					<img src="/public/common/weixin.png" width="100" height="100" />
+				</div>
+			</li>
+			
+			<li>
+				<div class="rightbar-box">
+					<i class="icon diaoyan-icon" style="background-image:url(/public/front/images/damakd.png); background-position: -287px -3px;"></i>
+					<a target="_blank" href="@{front.FrontHomeCtrl.risqueEvaluationPre()}" class="rightbar-word">
+						风险评估
+					</a>
+				</div>
+			</li>
+			<li>
+				<div class="rightbar-box">
+					<i class="icon diaoyan-icon" style="background-image:url(/public/front/images/damakd.png); background-position: -335px -3px;"></i>
+					<span class="rightbar-word" id="Questionnaire">
+						调查问卷
+					</span>
+					<!-- 调查问卷  -->
+					<div class="Mask">
+						<div class="problem">
+							<h1>欢迎你留下对我们平台的宝贵意见</h1><img src="/public/front/images/guanbi.png" class="guanbi">
+							<div class="problem-list">
+								<div class="problem-list-title">
+									<i></i><span>问题类型（必选）</span>
+					
+								</div>
+								<div class="problem-list-content">
+								<input type="radio" name="radio" value="1">功能异常：功能故障或不可用<br>
+								<input type="radio" name="radio" value="2">产品建议：用的不爽，我有建议<br>
+								<input type="radio" name="radio" value="3">其他问题
+								</div>
+							</div>
+							<div class="problem-list">
+								<div class="problem-list-title">
+									<i></i><span>补充意见</span>
+								</div>
+								<div class="problem-list-content">
+								<textarea placeholder="请输入不少于10个字的描述，您所遇到的问题"></textarea>
+								</div>
+							</div>
+							<div class="problem-list">
+								<div class="problem-list-title">
+									<i></i><span>问题截图</span>
+								</div>
+								<div class="problem-list-content">
+									<div id="img"></div>
+									<div class="filebut">
+										<input type="file" accept="image/gif,image/jpeg,image/jpg,image/png" id="imgFile" onchange="upload()" multiple="multiple">
+									</div>
+									
+								</div>
+							</div>
+							<input type="hidden" id="imageUrl" name="filename" value="" >
+							<input type="button" value="提交" id="sub-but">
+						</div>
+					</div>
+				</div>
+			</li>
+			<!-- <li class="goto-end">
+				<div class="rightbar-box">
+					<i class="icon end-icon"></i>
+					<span class="rightbar-word">
+						跳到底部
+					</span>
+				</div>
+			</li> -->
+		</ul>
+	<!-- right bar end -->
+
+
+<!--底部-->
+	<div class="foot">
+		<div class="foot-center">
+			<ul class="foot-center-lf">
+				<li class="size-big"><a href="@{front.FrontHomeCtrl.aboutUsPre()}">公司介绍</a></li>
+				<li class="size-big"><a href="@{front.FrontHomeCtrl.sainPre()}">安全保障</a></li>
+				<li class="size-big"><a href="@{front.FrontHomeCtrl.developPre(5)}">联系我们</a></li>
+				<li class="size-big"><a href="@{front.FrontHomeCtrl.developPre(6)}">帮助中心</a></li>
+				<li><a href="@{front.FrontHomeCtrl.developPre()}">发展历程</a></li>
+				<li><a href="@{front.FrontHomeCtrl.developPre(7)}">荣誉资质</a></li>
+				<li><a href="@{front.FrontHomeCtrl.developPre(8)}">金融故事</a></li>
+				<li><a href="@{front.FrontHomeCtrl.developPre(3)}">官方公告</a></li>
+				<li><a href="@{front.PublishMessageCtrl.recordsInformationPre()}">备案信息</a></li>
+				<li><a href="@{front.FrontHomeCtrl.newhandPre()}">新手指引</a></li>
+				<li><a href="@{front.FrontHomeCtrl.developPre(4)}">媒体公告</a></li>
+				<li><a href="@{front.PublishMessageCtrl.tissueInformationPre()}">组织信息</a></li>
+				 <li><a href="@{front.PublishMessageCtrl.publishIndexPre()}">信息披露</a></li>
+			    <li><a href="@{front.PublishMessageCtrl.riskEducationPre(4)}">风险教育</a></li>
+			    <li><a href="@{front.PublishMessageCtrl.auditInformationPre()}">审核信息</a></li>
+				<li><a href="@{front.FrontHomeCtrl.sitemapPre()}">网站地图</a></li>
+			</ul>
+			<!-- <div class="foot-center-line"></div> -->
+			<div class="foot-center-line-lf">
+				<div class="foot-center-line-lf-ewm">
+					<img src="/public/front/images/WeChat.png" />
+					<p>关注公众号 信息早知道</p>
+				</div>
+				<div class="foot-center-line-lf-ewm">
+					<img style=""
+						src="/public/front/images/kuhuduan.png" />
+					<p>下载APP 使用更敏捷</p>
+				</div>
+			</div>
+			<!-- <div class="foot-center-line"></div> -->
+			<div class="foot-rg">
+				<p class="rexian1">投诉电话：0311-85207010</p>
+				<p class="rexian2">邮箱：ouyepuhuivip@163.com</p>
+				<p class="rexian2">上班时间：（9：00--18:00）</p>
+				<p class="rexian2">把控风险，谨慎操作</p>
+				<div class="clientele" onclick="javascript:location.href='https://wpa.qq.com/msgrd?v=3&uin=3548473320&site=qq&menu=yes'">
+				   <p>
+				   <img src="/public/front/images/clientele.png"/>
+				  <span>在线客服</span>
+				   </p>
+				</div>
+			</div>
+
+		</div>
+		<div class="foot-msg">
+			
+			<div class="foot-msg1">
+				<a class="foot-a1" target="_blank" rel="nofollow"
+					href="http://si.trustutn.org/info?sn=455170111000562229393&certType=4"><img
+					style="width: 83px; height: 30px;"
+					src="/public/front/images/internet_qualification.png" /></a> <a
+					target="_blank"  rel="nofollow"
+					href="https://credit.szfw.org/CX20160829028768271567.html"><img
+					style="width: 83px; height: 30px;"
+					src="/public/front/images/download1.png" /></a> <a target="_blank"  rel="nofollow"
+					href="http://webscan.360.cn/index/checkwebsite/url/www.ouyepuhui.com"><img
+					style="width: 83px; height: 30px;"
+					src="/public/front/images/download.png" /></a>
+					 <a target="_blank"  rel="nofollow"
+					href="https://ss.knet.cn/verifyseal.dll?sn=e16090513010064629qrbi000000&comefrom=trust&trustKey=dn&trustValue=www.ouyepuhui.com"><img
+					style="width: 83px; height: 30px;"
+					src="/public/front/images/kxwz.png" /> </a>
+					<a target="_blank"  rel="nofollow" href="https://v.pinpaibao.com.cn/cert/site/?site=www.ouyepuhui.com&at=business">
+					<img style="width: 83px; height: 30px;" src="/public/front/images/lianmeng-pic.png" />
+				    </a>	
+				
+			</div>
+				<p>
+					©2016 讴业普惠 All rights resered &nbsp; &nbsp; 石家庄菲尔德投资咨询有限公司 &nbsp;
+					&nbsp; <span>冀ICP备17012676号 </span> &nbsp;<a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=13010502001600" ><img src="/public/common/beian.png" /> <span>冀公网安备 13010502001600号</span></a>
+				</p>
+		</div>
+	</div>
+	<!--底部-->
+	
+	<div style="display:none;" >
+		${settings?.get(common.constants.SettingKey.BAIDU_CODE)?.raw()}
+	</div>
+	</body>
+	
+	<script type="text/javascript">
+		$.fn.limit=function(){   
+			var self = $("[limit]");
+			  self.each(function(){
+			       var objString = $(this).text();
+			       var objLength = $(this).text().length;
+			       var num = $(this).attr("limit");
+			   if(objLength > num){           
+				   $(this).text(objString.substring(0,num) + "...");
+			       }else{
+			    	   $(this).text(objString);
+			       }
+			  })
+		}
+		$(this).limit();
+		require(['front'],function(front){
+			require(['domReady'],function(doc){
+				front.navSelected(#{get 'AItem' /});
+				front.secondNav(#{get 'smallclass' /});
+				
+				#{if flash?.success}
+					weakDialog('${flash?.success}');
+				#{/if}
+				
+				#{if flash?.error}
+					alert('${flash?.error}');
+				#{/if}
+				
+				//图片懒加载
+				$("img.lazy").lazyload();
+		
+				//字符串截取
+				$(this).limit();
+				
+				//文本域换行 
+				$(this).newline();
+			});
+			#{if settings?.get(common.constants.SettingKey.THEME_WIDGET)}
+				require(["../themes/${settings?.get(common.constants.SettingKey.THEME_NAME)}/${settings?.get(common.constants.SettingKey.THEME_WIDGET)}"]);
+			#{/if}
+			
+		});
+		function toHref(href,target){
+			if(target == '_blank'){
+				window.open(href);
+			}else {
+				window.location.href=href;
+			}
+		};
+		<!-- liuyang begin 2017-1-5---------------------------- -->
+		$(".pulls").mouseover(function(){
+			$("#pulls-down").show();
+			$(".pulls").addClass("pullss");
+		});
+		$(".pulls").mouseout(function(){
+			$("#pulls-down").hide(); 
+			$(".pulls").removeClass("pullss");
+		});
+		<!-- liuyang end 2017-1-5---------------------------- -->
+		/* zhixin */
+		
+		$(".pulls1").mouseover(function(){
+			$("#pulls1-down").show();
+			$(".pulls1").addClass("pullss");
+		});
+		$(".pulls1").mouseout(function(){
+		   $("#pulls1-down").hide();  
+			$(".pulls1").removeClass("pullss"); 
+		});
+		
+		
+		
+		
+		
+		/* zhixin */
+	</script>
+	<!-- <script>
+	
+		  $("#hhService").fix({float:'left',minStatue:false,skin:'green',durationTime:1000});
+		
+	</script> -->
+	
+	 <script>
+	
+		 $("#ddad").mouseover(function(){
+			 $(".shoujiewm").show();
+		 });
+		 $("#ddad").mouseout(function(){
+			 $(".shoujiewm").hide();
+		 });
+	</script> 
+<script type="text/javascript">
+		function ioio(){
+			window.location.href="@{front.FrontHomeCtrl.sainPre()}";
+		};
+		
+</script>
+<script type="text/javascript">
+	$('#Questionnaire').click(function(){
+		$('.Mask').show();
+	})
+	$('.problem img.guanbi').click(function(){
+		$('.Mask').hide();
+	})
+	/**上传图片**/
+	
+	var imgCount= 0;
+	var imgUrl= "";
+
+	function upload(){
+	
+	var obj = document.getElementById("imgFile");
+	var len=obj.files.length;
+	var paths = obj.files; 
+	if(paths.length==0)  
+	{  
+	    alert("请选择文件");  
+	    return;  
+	}  
+	          
+	var formData = new FormData();  
+	//alert(paths.length);  
+	    //我们遍历每一个文件对象  
+	for (var i = 0; i < paths.length; i++) {  
+	    var file = paths[i];  
+	    //alert(file.type);  
+	           //用正则表达式判断文件的类型是否是图片，这里大家可以自由发挥  
+	    if (!new RegExp("image/*").test(file.type)) {  
+	        alert("请注意，上传的文件一定要是图片文件");  
+	                return;  
+	    }   
+	}  
+	//alert("开始上传");  
+	   //我们可以预先定义一个FormData对象  
+	var formData=new FormData();  
+	          
+	for(var i=0;i<paths.length;i++)  
+	{  
+	            //将每个文件设置一个string类型的名字，放入到formData中，这里类似于setAttribute("",Object)  
+	    formData.append(paths[i].name,paths[i]);  
+	}  
+	          
+	          
+	$.ajax({  
+	              
+	     url: '@{back.webOperation.AdvertisementMngCtrl.uploadAdsImages()}',
+	     type: 'POST',  
+	     cache: false,  
+	     data:formData,  
+	             //这个参数是jquery特有的，不进行序列化，因为我们不是json格式的字符串，而是要传文件  
+	     processData: false,  
+	           //注意这里一定要设置contentType:false，不然会默认为传的是字符串，这样文件就传不过去了  
+	     contentType: false,  
+	     success:function(result)  
+	     {   
+	    	 if(result.code == 1){
+	    		 
+					var data = result.objs;
+					for(var j=0;j<data.length;j++){
+						if(imgCount>=3){
+							alert('最多只能上传3张图片')
+							return false;
+						}
+						if(imgCount == 0){
+							$("#img").html("") ;
+							imgUrl = data[j].staticFileName ;
+						}else{
+							imgUrl = imgUrl+"+"+ data[j].staticFileName ;
+						}
+						$("#img").append("<img src='"+data[j].staticFileName+"' class='backupimg' height='50' width='50' style='margin:10px;cursor:pointer' id='"+data[j].staticFileName+"'/>").append("<a href=\"javascript:deleteImg('"+data[j].staticFileName+"','"+data[j].staticFileName+"')\" id='"+data[j].staticFileName+"'>删除</a>").append("\t"); 
+						$("#url").html("<a href='javascript:pic();'><span>"+imgUrl+"</span></a><br><br>");
+						$("#imageUrl").val(imgUrl);
+						imgCount = imgCount+1 ;
+						//$("#imageUrl").val(imgUrl);
+						
+					}
+				} else {
+					alert(result.msg);
+				}   
+	    }  
+	});  
+}
+	
+	var ids=imgUrl;
+	function deleteImg(idd,id){
+		$("img[id='"+idd+"']").attr("checked", true).remove();
+		$("a[id='"+idd+"']").attr("checked", true).remove();
+		ids=imgUrl;
+		var strs=new Array();
+		strs=ids.split("+");
+		for(i=0;i<strs.length;i++){
+			if(strs.length==1){
+			 ids=ids.replace(id,"");
+			 imgUrl=imgUrl.replace(id,"");
+			}
+			if(strs.length>1){
+				if(strs[0]==id){
+					ids=ids.replace((id+"+"),"");
+					imgUrl=imgUrl.replace((id+"+"),"");
+				}else{
+					ids=ids.replace(("+"+id),"");
+					imgUrl=imgUrl.replace(("+"+id),"");
+				}
+			}
+		}
+		imgCount = imgCount-1;
+		$("#url").html(ids);
+		$("#imageUrl").val(imgUrl);
+	}	
+	/**提交**/
+	$('#sub-but').click(function(){
+		$.ajax({  
+		     url: '@{back.webOperation.AdvertisementMngCtrl.uploadAdsImages()}',
+		     type: 'POST',  
+		     cache: false,  
+		     data:"",       
+		     processData: false,  
+		           //注意这里一定要设置contentType:false，不然会默认为传的是字符串，这样文件就传不过去了  
+		     contentType: false,  
+		     success:function(result)  {   
+		    	 }  
+		}); 
+	})
+</script>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>修改密码失败${' | '+settings?.get(common.constants.SettingKey.SEO_TITLE)+' | '+settings?.get(common.constants.SettingKey.PLATFORM_NAME)}</title>
+		<meta name="keywords" content="${settings?.get(common.constants.SettingKey.PLATFORM_NAME)}" />
+		<meta name="description" content="${settings?.get(common.constants.SettingKey.PLATFORM_NAME)}" />
+		<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+		<link rel="shortcut icon" type="image/png" href="${settings?.get(common.constants.SettingKey.PLATFORM_ICON_FILENAME)}" />
+		<link rel="stylesheet" type="text/css" href="@{'/public/front/stylesheets/front.css'}" />
+		
+		<!-- 皮肤背景、颜色 -->
+		<link rel="stylesheet" type="text/css" href="@{'/public/front/themes/'+settings?.get(common.constants.SettingKey.THEME_NAME)+'/background.css'}" />
+		#{if settings?.get(common.constants.SettingKey.THEME_CUSTOMIZE).equals('0')}
+			<link rel="stylesheet" type="text/css" href="@{'/public/front/themes/'+settings?.get(common.constants.SettingKey.THEME_NAME)+'/color.css'}" />
+		#{/if}
+		#{else}
+			
+			#{set mainColor:'#'+settings?.get(common.constants.SettingKey.THEME_MAIN_COLOR) /}
+			#{set auxColor:'#'+settings?.get(common.constants.SettingKey.THEME_AUX_COLOR) /}
+			#{set thdColor:'#'+common.utils.StrUtil.colorByAlpha(settings?.get(common.constants.SettingKey.THEME_MAIN_COLOR)) /}
+			#{include 'common/front/colorCont.html' /}
+		#{/else}
+	</head>
+	<body>
+		<div class="login-body">
+			<!-- 登录注册head start -->
+			<div class="login-header">
+				<div class="container clearfix">
+					<a href="@{front.FrontHomeCtrl.frontHomePre()}" title="" class="left">
+						<img src="${settings?.get(common.constants.SettingKey.PLATFORM_LOGO_FILENAME)}" height="77" />
+					</a>
+				</div>
+			</div>
+			<!-- 登录注册head end -->
+			<div class="timeout-box">
+				<span class="timeout-note major">
+					<i class="icon timeout-icon"></i>#{if flash?.error != null}${flash.error}#{/if}#{else}修改密码失败#{/else}
+				</span>
+			</div>
+			<p class="timeout-return"><a href="@{front.LoginAndRegisteCtrl.forgetPwdFirstPre()}" class="backpage"><i class="icon return-icon"></i>返回</a></p>
+			<!-- 登录注册footer start -->
+			<div class="footer-msg">
+				©2016&nbsp;${settings?.get(common.constants.SettingKey.PLATFORM_NAME)}&nbsp;All&nbsp;rights&nbsp;resered<i class="footer-split">|</i>${settings?.get(common.constants.SettingKey.COMPANY_NAME)}<i class="footer-split">|</i>${settings?.get(common.constants.SettingKey.SITE_ICP_NUMBER)}
+			</div>
+			<!-- 登录注册footer end -->
+		</div>
+	</body>
+</html>

@@ -1,0 +1,81 @@
+#{extends 'common/back/financeMain.html' /}
+	#{set title:'财务 | 投资人限额管理' /}
+	#{set smallclass:12 /}
+	#{set crumbs:'财务>投资人限额管理'/}
+	
+<div class="back-main">
+	<!-- 头部筛选条件 -->
+	<div class="back-usertop">
+		<div class="left back-usermenu">
+			<a href="@{back.finance.QuotaCtrl.showQuotaPre(0)}" #{if showType == 0}class="selected"#{/if}>所有</a>
+			<a href="@{back.finance.QuotaCtrl.showQuotaPre(1)}" #{if showType == 1}class="selected"#{/if}>通过</a>
+			<a href="@{back.finance.QuotaCtrl.showQuotaPre(2)}" #{if showType == 2}class="selected"#{/if}>待审核</a>
+		</div>
+	</div>
+	<div class="back-cont">
+		<div class="back-box">
+			<table width="100%" class="back-table table-fixed">
+				<tr height="40">
+					<th>
+						<span class="back-order">
+							用户名
+						</span>
+					</th>
+					<th>
+						<span class="back-order">
+							电话
+						</span>
+					</th>
+					<th>
+						<span class="back-order">
+							累计投资
+						</span>
+					</th>
+					<th>
+						<span class="back-order">
+							投资限额
+						</span>
+					</th>
+					<th>
+						<span class="back-order">
+							时间
+						</span>
+					</th>
+					<th data-title="放款后的借款金额">
+						<span class="back-order">
+							状态
+						</span>
+					</th>
+					<th data-title="放款后的投资金额">
+						<span class="back-order">
+							操作
+						</span>
+					</th>
+				</tr>
+				#{if quotaes && quotaes.size()>0}
+					#{list quotaes,as:'quo'}
+					<tr height="40">
+						<td>${quo?.users?.reality_name}</td>
+						<td>${quo?.users?.mobile}</td>
+						<td>${quo?.sum_invest}</td>
+						<td>${quo?.amount.format(common.constants.Constants.FINANCE_FORMATE_NORMAL)}</td>
+						<td>${quo?.time?.format(common.constants.Constants.DATE_FORMATESS)}</td>
+						<td>#{if quo?.type == 0}待审核#{/if}  #{else} 通过 #{/else}</td>
+						<td class="back-handle">
+							#{if quo?.type == 0}
+							<a href="@{back.finance.QuotaCtrl.toEditQuotaPre(quo?.id)}" target="" data-title="编辑" class="iconfont">&#xe602;</a>
+							#{/if}
+						</td>
+					</tr>
+					#{/list}
+				#{/if}
+				#{else}
+					<tr height="58">
+						<td colspan="7" class="back-nodata"><i class="iconfont">&#xe613;</i>暂无记录</td>
+					</tr>
+				#{/else}
+			</table>
+		</div>
+	</div>
+</div>
+

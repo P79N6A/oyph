@@ -1,0 +1,13 @@
+@charset "utf-8";
+
+body {font-family: SimSun;}
+
+@page {       
+              size: 8.5in 11in;      
+              @bottom-left {     
+                    content: "Eims focus on cloud computing";     
+              };
+              @bottom-right {     
+                    content: "page " counter(page) " of  " counter(pages);     
+              };      
+     }

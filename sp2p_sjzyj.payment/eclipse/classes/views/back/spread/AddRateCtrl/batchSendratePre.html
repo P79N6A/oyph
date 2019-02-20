@@ -1,0 +1,221 @@
+#{extends 'back/spread/AddRateCtrl/addRateMain.html' /}
+	#{set title:'推广 | 加息券 | 批量发放' /}
+	#{set smallclass:3 /}
+	#{set crumbs:'推广>加息券>批量发放'/}
+<div class="back-main">
+	<div class="back-cont">
+		<div class="back-infor">
+			<h2 class="back-infor-head"><span class="left">批量发放</span>
+			
+			<a href="javascript:void(0);" class="right iconfont finance-edit" data-title="编辑" >&#xe602;</a>
+			
+
+			</h2>
+			<div class="back-infor-lcset back-infor-getset">
+				<p>当加息券金额设置为0时，该场景的加息券将被不会触发，前台加息券栏目也不会显示该加息券券类型。</p>
+				<form action="@{back.spread.AddRateCtrl.batchSendAddRate()}" method="POST" id="form_rate">
+					<input type="hidden" name="authenticityToken" value="24177fedaccc458bd13c49a5eac3a2c437e5fd8c">
+
+						<p class="back-experience-set">
+							<label>
+								<span class="lileft">发放对象</span>
+								<label  id="send_input">
+									<input type="radio" name="sendType" value="0" checked="checked">所有平台会员&nbsp;&nbsp;
+									<input type="radio" name="sendType" value="1">自选&nbsp;&nbsp;
+								</label>
+							</label>
+							<ul class="y-show-user-ul y-show-user-ul2" id="showUsers">
+								<li>
+									<textarea class="y-back-textarea" id="users" name="users" readonly="readonly"></textarea>
+								</li>
+								<li>
+									<a class="iconfont" onclick="showUsers(1,10);">选择用户</a><span>&nbsp;&nbsp;支持最多20个用户</span>
+								</li>
+							</ul>
+						</p>
+						<p class="back-experience-set">
+							<label>
+								<span class="lileft">加息利率</span>
+								<label class="back-unitinput">
+									<input type="text" name="rate" disabled="disabled" oninput="$(this).proportionRange()" onkeyup="$(this).proportionRange()" value="" class="width01 iffocus"><i class="unit">%</i>
+								</label>
+							</label>
+						</p>
+						<p class="back-experience-set">
+							<label>
+								<span class="lileft">最低投资</span>
+								<label class="back-unitinput">
+									<input type="text" name="useRule" disabled="disabled" oninput="$(this).ndigitInteger(6)" onpropertychange="$(this).ndigitInteger(6)" value="" class="width01 iffocus"><i class="unit">元</i>
+								</label>
+							</label>
+						</p>
+						<p class="back-experience-set">
+							<label>
+								<span class="lileft">标的期限</span>
+								<label class="back-unitinput">
+									<input type="text" name="bidPeriod" disabled="disabled" oninput="$(this).ndigitInteger(3)" onpropertychange="$(this).ndigitInteger(3)" value="" class="width01 iffocus"><i class="unit">月</i>
+								</label>
+							</label>
+						</p>
+						<p class="back-experience-set">
+							<label>
+								<span class="lileft">有效期限</span>
+								<label class="back-unitinput">
+									<input type="text" name="endTime" disabled="disabled" oninput="$(this).ndigitInteger(3)" onpropertychange="$(this).ndigitInteger(3)" value="" class="width01 iffocus"><i class="unit">天</i>
+								</label>
+							</label>
+						</p>
+						<p class="back-experience-set">
+							<label>
+								<span class="lileft">通知渠道</span>
+								<label  id="send_input">
+									<input type="checkbox" name="letter" id="letter" value="true">站内信&nbsp;&nbsp;
+									<input type="checkbox" name="sms" id="sms" value="true">手机短信
+								</label>
+							</label>
+						</p>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- 选择用户弹窗 -->
+<div class="chooseone-dialog dialog lib-dialog"></div>
+
+<!-- 页面js -->
+<script type="text/javascript">
+	require(["back"],function(back){
+		// 搜索 排序 选中
+		require(["search","order","linechecked"]);
+		require(["validation/validateExt"]);
+
+		$(".back-infor").each( function() {
+			var that = this, 
+			editBtn = $(this).find( ".finance-edit"),
+			editText = $(this).find("input:not(.easyui-datetimebox)");
+			editText.prop("disabled", true);
+			editBtn.click(function() {
+				disable = editText.prop("disabled");
+				if (disable) {
+					editBtn.html("&#xe630;").data("title","保存");
+					
+					$(".titlebox").text( editBtn.data('title'));
+					editText.prop("disabled", !disable);
+					editText.eq(0).focus();
+				} else {
+					$("#form_rate").submit();
+				}
+			});
+		});
+		
+		$("#form_rate").validate({
+			errorPlacement: function(error, element) {
+				error.addClass('back-notice').insertAfter(element.parent());
+			},
+			rules:{
+				"rate":{
+					required:true,
+					range: [0.1, 100]
+				},
+				"useRule":{
+					required:true,
+					digits:true,
+					range: [1, 999999]
+				},
+				"bidPeriod":{
+					required:true,
+					digits:true,
+					range: [0, 12]
+				},
+				"endTime":{
+					required:true,
+					digits:true,
+					range: [1, 365]
+				},	
+			},
+			messages:{
+				"rate":{
+					required:"请填写加息券年利率",
+					range: "范围是0.1~100"
+				},
+				"useRule":{
+					required:"请填写最低投资金额",
+					digits:"最低投资金额不正确",
+					range: "范围是1~999999"
+				},
+				"bidPeriod":{
+					required:"请填写标的期限",
+					digits:"使用期限不正确",
+					range: "范围是0~12"
+				},
+				"endTime":{
+					required:"请填写使用期限",
+					digits:"使用期限不正确",
+					range: "范围是1~365"
+				},	
+			}
+		});
+		
+		$("input[name='sendType']").change(function(){
+			var val = $(this).val();
+			if(val == "1"){
+				$("#showUsers").removeClass("y-show-user-ul");
+			}else if(val == "0"){
+				$("#showUsers").addClass("y-show-user-ul");
+			}
+		});
+	});
+	
+	//用户列表弹窗
+	function showUsers(currPage, pageSize, key) {
+		var users = $("#users").val().trim();
+		
+		if ("" == users) {
+			g_receiverNames = new Array();
+			g_selectedNames = new Array();
+		} else {
+	       	g_receiverNames = users.split(",");
+	       	g_selectedNames = users.split(",");
+	    }
+
+		$.ajax({
+			url : "@{back.spread.RedpacketCtrl.queryUser()}",
+			type : "POST",
+			data : {
+				"currPage" : currPage,
+				"pageSize" : pageSize,
+				"key" : key
+			},
+			success : function(data) {
+				if (data.code < 1) {
+					alert(data.msg);
+					
+					return;
+				}
+				
+				$(".chooseone-dialog").html(data);
+				$(".chooseone-dialog").dialog();
+			},
+			error : function() {
+				alert("对不起，出现错误");
+			}
+		});
+	}
+	
+	//选择用户弹窗已提交
+	function usersDidSelect(userNames) {
+	    g_receiverNames = clone(userNames);
+	    var names = g_receiverNames.join(",");
+	    $("#users").val(names);
+	}
+</script>	
+<!-- 页面js -->
+<script type="text/javascript">
+	require(["back"],function(back){
+		//二级菜单切换的
+		$("#spreadMenu").change(function(){
+			window.location.href=$(this).children('option:selected').val();
+		});
+	});
+</script>

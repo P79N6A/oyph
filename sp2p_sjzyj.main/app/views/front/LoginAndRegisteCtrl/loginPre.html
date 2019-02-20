@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>登录 | 讴业普惠 | 讴业普惠</title>
+		<link rel="stylesheet" type="text/css" href="/public/front/stylesheets/reset.css"/>
+		<link rel="stylesheet" type="text/css" href="/public/front/stylesheets/register.css"/>
+		<link rel="stylesheet" type="text/css" href="/public/front/stylesheets/yanzheng-css/style.css"/>
+	</head>
+	<body>
+	  
+	     <div class="login">
+	    	<div class="login1" style="background-image: url(https://image.ouyepuhui.com/images/denglu-bg.jpg);"></div>
+	    	<div class="login-logo">
+	    		<a href="@{front.FrontHomeCtrl.frontHomePre()}">
+	    			<img src="/public/front/images/logo.png"/>
+	    		</a>
+	    	</div>	
+	    	<div class="login-box">
+	    		<form class="registerform" action="@{front.LoginAndRegisteCtrl.logining()}" method="post">
+	    			<div class="login-box1">
+			    		<p class="login-box-pic">
+			    			<img  style="width: 75px;height: 75px;" src="/public/front/images/logo512.png" />
+			    		</p>
+	    			</div>
+	    			<div class="forget-password">
+		    				<span>忘记密码？</span><a href="@{front.LoginAndRegisteCtrl.forgetPwdFirstPre()}">点击这里找到</a>
+	    			</div>
+	    			#{if flash.error!=null}
+							<div class="login-error" style="display:inline;">
+								<i class="icon error-icon"></i>${flash.error}
+							</div>
+						#{/if}
+	    			<div class="forget1">
+	    			    <input class="username" type="text" name="mobile" id="User" value="" placeholder="用户名：" datatype="n" nullmsg="请输入手机号！" errormsg="请输入手机号" onkeyup="value=value.replace(/[^\d]/g,'')" maxlength="11" onfocus="this.placeholder=''" onblur="this.placeholder='用户名：'"/>
+	    			</div>
+                    <div class="yanzheng-box">
+                    </div>
+	    			<div class="forget1">
+	    			    <input class="username" type="password" name="password" id="pwd" maxlength="16" value="" placeholder="密 &nbsp;&nbsp; 码："  datatype="*6-16" nullmsg="请输入密码！" errormsg="密码范围在6~16位之间！" onfocus="this.placeholder=''" onblur="this.placeholder='密 &nbsp;&nbsp; 码：'" onpaste="return false" autocomplete="off"/>
+	    			</div>
+	    			 #{if flash?.loginCount > "1"}
+					<!-- 验证码输错几次后显示 -->
+					<div class="login-wrap clearfix">
+						<label class="login-input left">
+							<i class="icon code-icon"></i>
+							<input id="randomId" name="randomId" value="${randomId}" type="hidden"/>
+							<input type="text" class="codetext text" id="code" name="code" value="${flash?.code}" placeholder="计算结果" maxlength="2" />
+						</label>
+						<img src="@{common.CaptchaController.createCaptcha(randomId)}" id="captchaImage" onclick="refreshCaptcha();" class="codeimg right" height="46" alt="" title="换一张" />
+					</div>
+					#{/if}
+	    			<div class="forget-password immediately">
+	    				<span>没有账号？</span><a href="@{front.LoginAndRegisteCtrl.registerPre()}">马上注册</a>
+	    			</div>
+	    			
+	    			<div class="forget12 forget2">
+	    			    <input class="login-denglu"  id="login-denglu" type="submit" value="立即登录"/>
+	    			</div>
+	    			
+	    			<div class="forget12">
+	    				<p>数据传输经过128位SGC加密保护</p>
+	    			</div>
+	    		</form>
+	    		
+	    	</div>
+	    </div>
+	</body>
+	<script src="/public/front/javascripts/jquery-1.8.3.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="/public/front/javascripts/js/yanzheng-js/Validform_v5.3.1.js" type="text/javascript" charset="utf-8"></script>
+	<script src="/public/front/javascripts/js/yanzheng-js/Validform_v5.3.1_min.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		$(function(){
+			//$(".registerform").Validform();  //就这一行代码！;
+				
+			$(".registerform").Validform({
+				tiptype:3
+			});			
+		})
+		/* 验证码刷新 */
+			function refreshCaptcha(){
+				$.post("@{common.CaptchaController.flushCaptcha()}",function(data){
+						var arr=eval(data);
+						var randomid = arr.randomID;
+						$("#captchaImage").attr("src","@{common.CaptchaController.createCaptcha()}?uuid="+randomid);	
+						$("#randomId").val(randomid);
+					});
+				$("#code").val("");
+			}
+	</script>
+</html>

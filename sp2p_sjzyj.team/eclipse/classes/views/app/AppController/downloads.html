@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>代理商APP</title>
+        <meta content="telephone=no" name="format-detection">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+        <link rel="stylesheet" type="text/css" href="@{'/public/app/css/front.css'}" />
+        <script type="text/javascript" src="@{'public/app/script/flexible.js'}"></script>
+        <script type="text/javascript" src="@{'public/app/script/lib/jquery.js'}"></script>
+    </head>
+    <body>
+        <div class="app-bg">
+            <img src="/public/app/images/apptop.png" class="apptop" />
+            <div class="xflogo">
+                <img src="/public/app/images/dailishang.png" />
+               代理商后台
+            </div>
+        </div> 
+        <a href="javascript:download('${common.constants.ConfConst.ANDROID_DOWNLOAD_URL_DL}');" class="appbto andr-btn"><img src="/public/app/images/app-adr.png" />Android客户端下载</a>
+        <a href="javascript:download('${common.constants.ConfConst.IOS_DOWNLOAD_URL_DL}');" class="appbto"><img src="/public/app/images/app-iphone.png" />iPhone客户端下载</a>
+        <div class="appfot">
+            <img src="/public/app/images/appfot.png" />
+            <p>©2016 All rights resered</p>
+        </div>
+        <!-- 弹窗 -->
+        <div class="xf-mask"><img src="/public/app/images/android.png" class="androidimg" /></div>
+    </body>
+<!-- 页面js -->
+<script language="JavaScript">
+
+	$(".xf-mask").on("touchend",munu_close);
+	
+	function download(path){
+		var winHeight = typeof window.innerHeight != 'undefined' ? window.innerHeight : document.documentElement.clientHeight; //兼容IOS，不需要的可以去掉
+		var tip = document.getElementById('weixin-tip');
+		var ua = navigator.userAgent.toLowerCase();
+		//如果是微信扫描, 或qq扫描也不能下载并且不是qq浏览器。
+		if (ua.match(/MicroMessenger/i) == "micromessenger" || (!/qqbrowser/.test(ua) && /qq/.test(ua))) {
+			if (/mac|iphone|ipad|ipod/.test(ua)) {
+				window.location.href = "@{app.AppController.iosTip}"+"?path="+path;
+		    } else if (/android/.test(ua)) {
+		    	showDiv();
+		    }else if(/windows/.test(ua)){
+		    	showDiv();
+		    }else{
+		    	alert("请在浏览器中打开");
+		    }
+		} else { //非微信浏览器
+			window.location.href = path;
+		}
+	}
+	
+	function showDiv() {
+		if($(".xf-mask").is(":hidden")){
+            $(".xf-mask").show();
+        }
+        else{
+            $(".xf-mask").hide();
+        } 
+	}
+	
+	function munu_close(){
+        $(".xf-mask").hide();
+    }
+</script>
+
+</html>

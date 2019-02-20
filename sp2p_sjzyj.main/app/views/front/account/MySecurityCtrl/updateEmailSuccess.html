@@ -1,0 +1,19 @@
+#{extends 'common/front/accountMain.html' /}
+#{set title:'个人中心 | 安全中心 |修改邮箱' /}
+#{set smallclass:4 /}
+
+<!-- 账户主要表格 -->
+<div class="account-infor">
+	<!-- 修改邮箱step -->
+	<div class="account-setemail">
+		<p class="findepassword-success">
+			<span class="timeout-note major">
+				<i class="icon #{if flash?.msg != null} fail-icon #{/if}#{else} success-icon #{/else}"></i>
+				#{if flash?.msg != null}${flash.msg}#{/if}#{else}验证邮件已发送到你的邮箱，请登录邮箱验证。#{/else}
+			</span>
+		</p>
+		<p class="returnprev">
+			<a href="@{front.account.MySecurityCtrl.securityPre()}" class="backpage"><i class="icon return-icon"></i>返回</a>
+		</p>
+	</div>
+</div>

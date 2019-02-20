@@ -1,0 +1,495 @@
+#{extends 'common/back/settingMain.html' /}
+	#{set title:'设置 | 权限管理 | 权限分配' /}
+	#{set smallclass:3 /}
+	#{set crumbs:'设置>权限管理>权限分配'/}
+
+<div class="back-main">
+			<div class="back-usertop">
+				<b class="left font14">${supervisor?.reality_name}>分配权限</b>
+				<!-- 右侧功能按钮 -->
+				<div class="right back-rightbtns">
+					<a href="javascript:backAndRefresh('@{back.setting.RightMngCtrl.showAllSupervisorsPre}');"><i class="iconfont">&#xe60b;</i>返回</a>
+				</div>
+			</div>
+			<div class="back-cont">
+				<form action="@{back.setting.RightMngCtrl.rightAssignment()}" method="POST" id="">
+					<input type="hidden" name="supervisorSign" value="${supervisor?.sign}" />
+					
+					<div class="back-infor">
+						<h2 class="back-infor-head">
+							<span class="left">权限地图</span>
+							<p class="right authority-note">绿色为栏目查看权限，蓝色为功能操作权限</p>
+						</h2>
+						<table width="100%" class="authority-table">
+							<tr>
+								<td rowspan="2" align="center">
+									<label class="authority-name" >首页</label>
+								</td>
+								<td class="authority-look">
+									&nbsp;
+								</td>
+							</tr>
+							<tr>
+								<td class="authority-handle">
+									<label class="authority-name" ><input type="checkbox" #{if rights?.get(101001L)}checked="checked"#{/if}  name="rights" value="101001" />前台数据显示</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(101002L)}checked="checked"#{/if} name="rights" value="101002"/>编辑平台简讯</label>
+								</td>
+							</tr>
+							<tr>
+								<td rowspan="2" align="center">
+									<label class="authority-name">运维</label>
+								</td>
+								<td class="authority-look">
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(201001L)}checked="checked"#{/if} name="rights" value="201001" />栏目设置</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(202001L)}checked="checked"#{/if} name="rights" value="202001" />内容管理</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(203001L)}checked="checked"#{/if} name="rights" value="203001" />广告图片</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(204001L)}checked="checked"#{/if} name="rights" value="204001" />理财顾问</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(205001L)}checked="checked"#{/if} name="rights" value="205001" />合作伙伴</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(206001L)}checked="checked"#{/if} name="rights" value="206001" />帮助中心</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(207001L)}checked="checked"#{/if} name="rights" value="207001" />通知模板</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(208001L)}checked="checked"#{/if} name="rights" value="208001" />发展历程</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(209001L)}checked="checked"#{/if} name="rights" value="209001" />转让通知管理</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(210001L)}checked="checked"#{/if} name="rights" value="210001" />公司风采管理</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(211001L)}checked="checked"#{/if} name="rights" value="211001" />投票活动管理</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(2010001L)}checked="checked"#{/if} name="rights" value="2010001" />风控专员管理</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(2017001L)}checked="checked"#{/if} name="rights" value="2017001" />银行限额管理</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(2018001L)}checked="checked"#{/if} name="rights" value="2018001" />借款合同管理</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(214001L)}checked="checked"#{/if} name="rights" value="214001" />优选照片上传分享</label>
+								</td>
+							</tr>
+							<tr>
+								<td class="authority-handle">
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(201002L)}checked="checked"#{/if} name="rights" value="201002"/>编辑栏目</label>
+									
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(202002L)}checked="checked"#{/if} name="rights" value="202002"/>添加内容</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(202003L)}checked="checked"#{/if} name="rights" value="202003"/>编辑内容</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(202004L)}checked="checked"#{/if} name="rights" value="202004"/>上下架内容</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(202005L)}checked="checked"#{/if} name="rights" value="202005"/>删除内容</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(202006L)}checked="checked"#{/if} name="rights" value="202006"/>消息推送</label>
+
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(203002L)}checked="checked"#{/if} name="rights" value="203002" />添加广告图片</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(203003L)}checked="checked"#{/if} name="rights" value="203003" />编辑广告图片</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(203004L)}checked="checked"#{/if} name="rights" value="203004" />上下架广告图片</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(203005L)}checked="checked"#{/if} name="rights" value="203005" />删除广告图片</label>
+
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(204002L)}checked="checked"#{/if} name="rights" value="204002" />添加顾问</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(204003L)}checked="checked"#{/if} name="rights" value="204003" />编辑顾问</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(204004L)}checked="checked"#{/if} name="rights" value="204004" />删除顾问</label>
+									
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(205002L)}checked="checked"#{/if} name="rights" value="205002" />添加合作伙伴</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(205003L)}checked="checked"#{/if} name="rights" value="205003" />编辑合作伙伴</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(205004L)}checked="checked"#{/if} name="rights" value="205004" />删除合作伙伴</label>
+									
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(206002L)}checked="checked"#{/if} name="rights" value="206002" />添加帮助</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(206003L)}checked="checked"#{/if} name="rights" value="206003" />编辑帮助</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(206004L)}checked="checked"#{/if} name="rights" value="206004" />上下架帮助</label>
+									
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(207002L)}checked="checked"#{/if} name="rights" value="207002" />编辑通知模板</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(2017002L)}checked="checked"#{/if} name="rights" value="2017002" />编辑银行充值限额</label>
+									
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(2018002L)}checked="checked"#{/if} name="rights" value="2018002" />编辑借款合同</label>
+									
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(214001L)}checked="checked"#{/if} name="rights" value="214001" />进入优选照片</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(214002L)}checked="checked"#{/if} name="rights" value="214002" />添加优选照片</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(214003L)}checked="checked"#{/if} name="rights" value="214003" />删除优选照片</label>
+								</td>
+							</tr>
+							<tr>
+								<td rowspan="2" align="center">
+									<label class="authority-name">会员</label>
+								</td>
+								<td class="authority-look">
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(301001L)}checked="checked"#{/if} name="rights" value="301001" />平台会员</label>
+								</td>
+							</tr>
+							<tr>
+								<td class="authority-handle">
+									<label class="authority-name"><input type="checkbox"  #{if rights?.get(301002L)}checked="checked"#{/if} name="rights" value="301002" />查看会员详情</label>
+									<label class="authority-name"><input type="checkbox"  #{if rights?.get(301003L)}checked="checked"#{/if} name="rights" value="301003" />发送短信给会员</label>
+									<label class="authority-name"><input type="checkbox"  #{if rights?.get(301004L)}checked="checked"#{/if} name="rights" value="301004" />发送邮件给会员</label>
+									<label class="authority-name"><input type="checkbox"  #{if rights?.get(301005L)}checked="checked"#{/if} name="rights" value="301005" />发送消息给会员</label>
+									<label class="authority-name"><input type="checkbox"  #{if rights?.get(301006L)}checked="checked"#{/if} name="rights" value="301006" />解锁/锁定会员</label>
+									<label class="authority-name"><input type="checkbox"  #{if rights?.get(301007L)}checked="checked"#{/if} name="rights" value="301007" />编辑会员</label>
+									<label class="authority-name"><input type="checkbox"  #{if rights?.get(301008L)}checked="checked"#{/if} name="rights" value="301008" />更新会员签名</label>									
+									<label class="authority-name"><input type="checkbox"  #{if rights?.get(301009L)}checked="checked"#{/if} name="rights" value="301009" />群发短信</label>
+									<label class="authority-name"><input type="checkbox"  #{if rights?.get(301010L)}checked="checked"#{/if} name="rights" value="301010" />群发邮件</label>
+									<label class="authority-name"><input type="checkbox"  #{if rights?.get(301011L)}checked="checked"#{/if} name="rights" value="301011" />群发消息</label>
+									<label class="authority-name"><input type="checkbox"  #{if rights?.get(301012L)}checked="checked"#{/if} name="rights" value="301012" />批量发送</label>
+									<label class="authority-name"><input type="checkbox"  #{if rights?.get(301013L)}checked="checked"#{/if} name="rights" value="301013" />模拟登录</label>
+									<label class="authority-name"><input type="checkbox"  #{if rights?.get(301014L)}checked="checked"#{/if} name="rights" value="301014" />分配会员</label>
+								</td>
+							</tr>
+							<tr>
+								<td rowspan="2" align="center">
+									<label class="authority-name">风控</label>
+								</td>
+								<td class="authority-look">
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(401001L)}checked="checked"#{/if} name="rights" value="401001"  />理财项目</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(402001L)}checked="checked"#{/if} name="rights" value="402001"  />转让项目</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(403001L)}checked="checked"#{/if} name="rights" value="403001" />借款产品</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(404001L)}checked="checked"#{/if} name="rights" value="404001" />审核科目</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(405001L)}checked="checked"#{/if} name="rights" value="405001" />信用等级</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(406001L)}checked="checked"#{/if} name="rights" value="406001" />合同模板</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(407001L)}checked="checked"#{/if} name="rights" value="407001" />审核风控报告</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(408001L)}checked="checked"#{/if} name="rights" value="408001" />征信报文</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(409001L)}checked="checked"#{/if} name="rights" value="409001" />贷后跟踪</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(410001L)}checked="checked"#{/if} name="rights" value="410001" />借款申请信息</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(411001L)}checked="checked"#{/if} name="rights" value="411001" />分级管理</label>
+								</td>
+							</tr>
+							<tr>
+								<td class="authority-handle">
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(401002L)}checked="checked"#{/if} name="rights" value="401002" />发布理财项目</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(401003L)}checked="checked"#{/if} name="rights" value="401003" />理财项目初审</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(401004L)}checked="checked"#{/if} name="rights" value="401004" />理财项目复审</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(401005L)}checked="checked"#{/if} name="rights" value="401005" />查看项目详情</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(401006L)}checked="checked"#{/if} name="rights" value="401006" />查看项目台账</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(401007L)}checked="checked"#{/if} name="rights" value="401007" />推送项目消息</label>
+									
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(402002L)}checked="checked"#{/if} name="rights" value="402002" />转让项目审核</label>
+									
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(403002L)}checked="checked"#{/if} name="rights" value="403002" />添加借款产品</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(403003L)}checked="checked"#{/if} name="rights" value="403003" />编辑借款产品</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(403004L)}checked="checked"#{/if} name="rights" value="403004" />上下架借款产品</label>
+									
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(404002L)}checked="checked"#{/if} name="rights" value="404002" />添加审核科目</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(404003L)}checked="checked"#{/if} name="rights" value="404003" />编辑审核科目</label>
+									
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(405002L)}checked="checked"#{/if} name="rights" value="405002" />编辑信用等级</label>
+									
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(406002L)}checked="checked"#{/if} name="rights" value="406002" />编辑合同模板</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(408002L)}checked="checked"#{/if} name="rights" value="408002" />导出征信报文</label>
+									
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(409002L)}checked="checked"#{/if} name="rights" value="409002" />添加跟踪信息</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(409003L)}checked="checked"#{/if} name="rights" value="409003" />编辑跟踪信息</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(410002L)}checked="checked"#{/if} name="rights" value="410002" />编辑受理状态</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(411002L)}checked="checked"#{/if} name="rights" value="411002" />添加分级管理</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(411003L)}checked="checked"#{/if} name="rights" value="411003" />编辑分级管理</label>
+									
+								</td>
+							</tr>
+							<tr>
+								<td rowspan="2" align="center">
+									<label class="authority-name">财务</label>
+								</td>
+								<td class="authority-look">
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(501001L)}checked="checked"#{/if} name="rights" value="501001" />财务放款</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(502001L)}checked="checked"#{/if} name="rights" value="502001"  />借款账单</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(503001L)}checked="checked"#{/if} name="rights" value="503001" />理财账单</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(504001L)}checked="checked"#{/if} name="rights" value="504001" />会员提现</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(505001L)}checked="checked"#{/if} name="rights" value="505001" />会员充值</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(506001L)}checked="checked"#{/if} name="rights" value="506001" />奖励兑换</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(507001L)}checked="checked"#{/if} name="rights" value="507001" />平台收支</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(508001L)}checked="checked"#{/if} name="rights" value="508001" />理财设置</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(509001L)}checked="checked"#{/if} name="rights" value="509001" />商务号管理</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(510001L)}checked="checked"#{/if} name="rights" value="510001" />托管记录</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(511001L)}checked="checked"#{/if} name="rights" value="511001" />资金校对</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(512001L)}checked="checked"#{/if} name="rights" value="512001" />担保人管理</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(513001L)}checked="checked"#{/if} name="rights" value="513001" />投资人限额管理</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(514001L)}checked="checked"#{/if} name="rights" value="514001" />费用账户明细管理</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(515001L)}checked="checked"#{/if} name="rights" value="515001" />还款校验</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(516001L)}checked="checked"#{/if} name="rights" value="516001" />财务信息</label>
+								</td>
+							</tr>
+							<tr>
+								<td class="authority-handle">
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(501002L)}checked="checked"#{/if} name="rights" value="501002" />满标放款</label>
+									
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(502002L)}checked="checked"#{/if} name="rights" value="502002" />线下收款</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(502004L)}checked="checked"#{/if} name="rights" value="502004" />出款</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(502003L)}checked="checked"#{/if} name="rights" value="502003" />本息垫付</label>
+								
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(506002L)}checked="checked"#{/if} name="rights" value="506002" />奖励兑换</label>
+									
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(508002L)}checked="checked"#{/if} name="rights" value="508002" />编辑提现设置</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(508003L)}checked="checked"#{/if} name="rights" value="508003" />编辑转让设置</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(508004L)}checked="checked"#{/if} name="rights" value="508004" />编辑充值设置</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(508005L)}checked="checked"#{/if} name="rights" value="508005" />短信催收设置</label>
+									
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(509002L)}checked="checked"#{/if} name="rights" value="509002" />担保账户充值</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(509003L)}checked="checked"#{/if} name="rights" value="509003" />担保账户提现</label>
+									
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(510002L)}checked="checked"#{/if} name="rights" value="510002" />托管请求日志</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(510003L)}checked="checked"#{/if} name="rights" value="510003" />托管回调日志</label>
+									
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(512002L)}checked="checked"#{/if} name="rights" value="512002" />担保人充值</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(512003L)}checked="checked"#{/if} name="rights" value="512003" />添加担保人</label>
+									
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(513002L)}checked="checked"#{/if} name="rights" value="513002" />投资人限额编辑</label>
+									
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(514001L)}checked="checked"#{/if} name="rights" value="514001" />费用账户明细编辑</label>
+									
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(515001L)}checked="checked"#{/if} name="rights" value="515001" />还款校验</label>
+								</td>
+							</tr>
+							
+							<tr>
+								<td  rowspan="2" align="center">
+									<label class="authority-name">团队长</label>
+								</td>
+								<td class="authority-look">
+								&nbsp;
+								</td>
+							</tr>
+							
+							<tr>
+							  <td class="authority-handle">
+							  		<label class="authority-name"><input type="checkbox" #{if rights?.get(1101001L)}checked="checked"#{/if} name="rights" value="1101001" />客户经理</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(1101002L)}checked="checked"#{/if} name="rights" value="1101002"  />业务室主任</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(1101003L)}checked="checked"#{/if} name="rights" value="1101003" />业务部经理</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(1101004L)}checked="checked"#{/if} name="rights" value="1101004" />收益规则</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(1101005L)}checked="checked"#{/if} name="rights" value="1101005" />查看推广会员</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(1101006L)}checked="checked"#{/if} name="rights" value="1101006" />定义新的提成规则</label>  
+							  </td>
+							</tr>
+							
+							<tr>
+								<td  rowspan="2" align="center">
+									<label class="authority-name">积分商城</label>
+								</td>
+								<td class="authority-look">
+								&nbsp;
+								</td>
+							</tr>
+							<tr>
+							  <td class="authority-handle">
+							  		<label class="authority-name"><input type="checkbox" #{if rights?.get(1102001L)}checked="checked"#{/if} name="rights" value="1102001" />兑换商品</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(1102002L)}checked="checked"#{/if} name="rights" value="1102002"  />积分兑换记录</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(1102003L)}checked="checked"#{/if} name="rights" value="1102003" />商品发货</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(1102004L)}checked="checked"#{/if} name="rights" value="1102004" />积分规则设置</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(1102005L)}checked="checked"#{/if} name="rights" value="1102005" />话费充值管理</label>
+							  </td>
+							</tr>
+							
+							<tr>
+								<td rowspan="2" align="center">
+									<label class="authority-name">推广</label>
+								</td>
+								<td class="authority-look">
+									#{if common.constants.ModuleConst.EXT_REDPACKET}
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(701001L)}checked="checked"#{/if} name="rights" value="701001" />红包规则</label>
+									#{/if}
+									
+									#{if common.constants.ModuleConst.EXT_EXPERIENCEBID}
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(702001L)}checked="checked"#{/if} name="rights" value="702001" />体验规则</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(703001L)}checked="checked"#{/if} name="rights" value="703001" />体验项目</label>
+									#{/if}
+									
+									#{if common.constants.ModuleConst.EXT_CPS}
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(704001L)}checked="checked"#{/if} name="rights" value="704001" />CPS规则</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(705001L)}checked="checked"#{/if} name="rights" value="705001" />CPS记录</label>
+									#{/if}
+									
+									#{if common.constants.ModuleConst.EXT_WEALTHCIRCLE}
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(706001L)}checked="checked"#{/if} name="rights" value="706001"  />财富圈规则</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(707001L)}checked="checked"#{/if} name="rights" value="707001"  />财富圈邀请记录</label>
+									#{/if}
+									
+									#{if common.constants.ModuleConst.ADD_RATE}
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(708001L)}checked="checked"#{/if} name="rights" value="708001"  />加息券活动</label>
+									#{/if}
+									
+								</td>
+							</tr>
+							<tr>
+								<td class="authority-handle">
+									#{if common.constants.ModuleConst.EXT_REDPACKET}
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(701002L)}checked="checked"#{/if} name="rights" value="701002"  />设置红包规则</label>
+									#{/if}
+								
+									#{if common.constants.ModuleConst.EXT_EXPERIENCEBID}
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(702002L)}checked="checked"#{/if} name="rights" value="702002" />设置体验金规则</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(702003L)}checked="checked"#{/if} name="rights" value="702003" />设置体验项目规则</label>
+									
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(703002L)}checked="checked"#{/if} name="rights" value="703002" />发布体验项目</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(703003L)}checked="checked"#{/if} name="rights" value="703003" />体验项目放款</label>
+									#{/if}
+									
+									#{if common.constants.ModuleConst.EXT_CPS}
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(704002L)}checked="checked"#{/if} name="rights" value="704002"  />设置CPS规则</label>
+									#{/if}
+									
+									#{if common.constants.ModuleConst.EXT_WEALTHCIRCLE}
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(706002L)}checked="checked"#{/if} name="rights" value="706002"  />设置财富圈规则</label>
+									#{/if}
+								</td>
+							</tr>
+							<tr>
+								<td rowspan="2" align="center">
+									<label class="authority-name">设置</label>
+								</td>
+								<td class="authority-look">
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(801001L)}checked="checked"#{/if} name="rights" value="801001" />平台设置</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(802001L)}checked="checked"#{/if} name="rights" value="802001" />接口设置</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(803001L)}checked="checked"#{/if} name="rights" value="803001" />操作日志</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(804001L)}checked="checked"#{/if} name="rights" value="804001" />权限管理</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(805001L)}checked="checked"#{/if} name="rights" value="805001" />风格设置</label>
+								</td>
+							</tr>
+							<tr>
+								<td class="authority-handle">
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(801002L)}checked="checked"#{/if} name="rights" value="801002" />设置基本信息</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(801003L)}checked="checked"#{/if} name="rights" value="801003" />设置SEO设置</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(801004L)}checked="checked"#{/if} name="rights" value="801004" />设置安全设置</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(801005L)}checked="checked"#{/if} name="rights" value="801005"  />填写正版授权</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(801006L)}checked="checked"#{/if} name="rights" value="801006"  />设置自动投标</label>
+									
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(802002L)}checked="checked"#{/if} name="rights" value="802002" />设置短信通道</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(802003L)}checked="checked"#{/if} name="rights" value="802003" />设置邮件通道</label>
+									
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(804002L)}checked="checked"#{/if} name="rights" value="804002" />添加管理员</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(804003L)}checked="checked"#{/if} name="rights" value="804003" />编辑管理员</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(804004L)}checked="checked"#{/if} name="rights" value="804004" />解锁/锁定管理员</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(804005L)}checked="checked"#{/if} name="rights" value="804005" />分配权限</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(804006L)}checked="checked"#{/if} name="rights" value="804006" />制盾</label>
+
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(805002L)}checked="checked"#{/if} name="rights" value="805002" />自定义风格</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(805003L)}checked="checked"#{/if} name="rights" value="805003" />更换皮肤</label>
+								</td>
+							</tr>
+							<tr>
+								<td  rowspan="2"  align="center">
+									<label class="authority-name">APP</label>
+								</td>
+								<td class="authority-look">
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(901001L)}checked="checked"#{/if} name="rights" value="901001" />APP版本</label>
+								</td>
+							</tr>
+							<tr>	
+								<td class="authority-handle"  >
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(901002L)}checked="checked"#{/if} name="rights" value="901002" />设置IOS版本</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(901003L)}checked="checked"#{/if} name="rights" value="901003" />设置安卓版本</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(901004L)}checked="checked"#{/if} name="rights" value="901004" />设置安卓(代)版本</label>
+								</td>
+							</tr>
+						
+							<tr>
+								<td  rowspan="2" align="center">
+									<label class="authority-name">企业开户</label>
+								</td>
+								<td class="authority-look">
+								&nbsp;
+								</td>
+							</tr>
+							
+							<tr>
+							  <td class="authority-handle">
+							  		<label class="authority-name"><input type="checkbox" #{if rights?.get(800000L)}checked="checked"#{/if} name="rights" value="800000" />企业开户</label>
+									
+							  </td>
+							</tr>
+							<tr>
+								<td rowspan="2" align="center">
+									<label class="authority-name">查询</label>
+								</td>
+								<td class="authority-look">
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(1201001L)}checked="checked"#{/if} name="rights" value="1201001" />交易状态查询</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(1201002L)}checked="checked"#{/if} name="rights" value="1201002" />客户信息同步</label>	
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(1201003L)}checked="checked"#{/if} name="rights" value="1201003" />问题反馈列表</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(1201005L)}checked="checked"#{/if} name="rights" value="1201005" />标的信息同步</label>	
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(1202001L)}checked="checked"#{/if} name="rights" value="1202001" />理财客户管理</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(1203001L)}checked="checked"#{/if} name="rights" value="1203001" />理财客户追踪</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(1204001L)}checked="checked"#{/if} name="rights" value="1204001" />理财客户统计</label>							
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(1205001L)}checked="checked"#{/if} name="rights" value="1205001" />数据信息查询</label>	
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(1206001L)}checked="checked"#{/if} name="rights" value="1206001" />资金交易冲正</label>							
+								</td>
+							</tr>
+							<tr>
+								
+								<td class="authority-handle">
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(1202002L)}checked="checked"#{/if} name="rights" value="1202002" />管理会员列表</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(1202003L)}checked="checked"#{/if} name="rights" value="1202003" />会员编辑分配</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(1202004L)}checked="checked"#{/if} name="rights" value="1202004" />会员添加客服</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(1203002L)}checked="checked"#{/if} name="rights" value="1203002" />追踪会员列表</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(1203003L)}checked="checked"#{/if} name="rights" value="1203003" />添加追踪信息</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(1203004L)}checked="checked"#{/if} name="rights" value="1203004" />追踪信息列表</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(1204002L)}checked="checked"#{/if} name="rights" value="1204002" />客服月统计列表</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(1205002L)}checked="checked"#{/if} name="rights" value="1205002" />用户台账信息查询</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(1206002L)}checked="checked"#{/if} name="rights" value="1206002" />标的转让冲正</label>
+								</td>
+							</tr>
+							<tr>
+								<td  rowspan="2" align="center">
+									<label class="authority-name">活动</label>
+								</td>
+								<td class="authority-look">
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(1301001L)}checked="checked"#{/if} name="rights" value="1301001" />活动首页</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(1302001L)}checked="checked"#{/if} name="rights" value="1302001" />活动列表</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(1303001L)}checked="checked"#{/if} name="rights" value="1303001" />大转盘活动</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(1304001L)}checked="checked"#{/if} name="rights" value="1304001" />新手任务</label>
+								</td>
+							</tr>
+							<tr>	
+								<td class="authority-handle"  >
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(1302002L)}checked="checked"#{/if} name="rights" value="1302002" />活动设置</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(1302003L)}checked="checked"#{/if} name="rights" value="1302003" />中奖记录</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(1302004L)}checked="checked"#{/if} name="rights" value="1302004" />添加活动</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(1303002L)}checked="checked"#{/if} name="rights" value="1303002" />大转盘奖品管理</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(1303003L)}checked="checked"#{/if} name="rights" value="1303003" />大转盘中奖记录</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(1303004L)}checked="checked"#{/if} name="rights" value="1303004" />大转盘活动设置</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(1304002L)}checked="checked"#{/if} name="rights" value="1304002" />新手任务设置</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(1304003L)}checked="checked"#{/if} name="rights" value="1304003" />新手任务发送短信</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(1304004L)}checked="checked"#{/if} name="rights" value="1304004" />新手任务编辑</label>
+							</td>
+							</tr>
+							<!-- 代理商模块 -->
+							<tr>
+								<td  rowspan="2" align="center">
+									<label class="authority-name">代理商</label>
+								</td>
+								<td class="authority-look">
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(1401001L)}checked="checked"#{/if} name="rights" value="1401001" />代理商首页</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(1402001L)}checked="checked"#{/if} name="rights" value="1402001" />业务员收益规则</label>
+									
+								</td>
+							</tr>
+							<tr>
+							
+							<tr>
+								<td  rowspan="2"  align="center">
+									<label class="authority-name">微信</label>
+								</td>
+								<td class="authority-look">
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(1001001L)}checked="checked"#{/if} name="rights" value="1001001" />文本回复</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(1002001L)}checked="checked"#{/if} name="rights" value="1002001" />图片回复</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(1003001L)}checked="checked"#{/if} name="rights" value="1003001" />图文回复</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(1004001L)}checked="checked"#{/if} name="rights" value="1004001" />多图文回复</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(1005001L)}checked="checked"#{/if} name="rights" value="1005001" />群发消息</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(1006001L)}checked="checked"#{/if} name="rights" value="1006001" />自定义菜单</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(1007001L)}checked="checked"#{/if} name="rights" value="1007001" />客服管理</label>
+								</td>
+							</tr>
+							<tr>	
+								<td class="authority-handle"  >
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(1001002L)}checked="checked"#{/if} name="rights" value="1001002" />添加文本</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(1001003L)}checked="checked"#{/if} name="rights" value="1001003" />修改文本</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(1002002L)}checked="checked"#{/if} name="rights" value="1002002" />添加图片</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(1002003L)}checked="checked"#{/if} name="rights" value="1002003" />修改图片</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(1003002L)}checked="checked"#{/if} name="rights" value="1003002" />添加图文</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(1003003L)}checked="checked"#{/if} name="rights" value="1003003" />修改图文</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(1004002L)}checked="checked"#{/if} name="rights" value="1004002" />添加多图文</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(1004003L)}checked="checked"#{/if} name="rights" value="1004003" />修改多图文</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(1005002L)}checked="checked"#{/if} name="rights" value="1005002" />添加群发消息</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(1005003L)}checked="checked"#{/if} name="rights" value="1005003" />修改群发消息</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(1007002L)}checked="checked"#{/if} name="rights" value="1007002" />添加客服信息</label>
+									<label class="authority-name"><input type="checkbox" #{if rights?.get(1007003L)}checked="checked"#{/if} name="rights" value="1007003" />修改客服信息</label>
+								</td>
+							</tr>	
+								
+						</table>
+					</div>
+					<p class="back-audit-btns">
+						<input type="submit" value="保存" class="bgbtn">
+						<input type="button"  onclick="backAndRefresh('@{back.setting.RightMngCtrl.showAllSupervisorsPre}');" value="取消" class="bdbtn dialog-console">
+					</p>
+				</form>
+			</div>
+		</div>
+
+
+<!-- 页面js -->
+<script type="text/javascript">
+	require(["back"],function(back){
+
+	});
+</script>

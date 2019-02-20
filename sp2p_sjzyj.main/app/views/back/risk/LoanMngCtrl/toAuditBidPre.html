@@ -1,0 +1,204 @@
+#{extends 'common/back/riskMain.html' /}
+	#{set title:'风控 | 理财项目 | 复审' /}
+	#{set smallclass:0 /}
+	#{set crumbs:'风控>理财项目>复审'/}
+	
+%{service_fee_rule : tb?.service_fee_rule.replace('"', '')/}%
+<div class="back-main">
+	<div class="back-usertop">
+		<b class="left font14">${tb?.getBid_no()}  ${tb?.title}>复审</b>
+		<!-- 右侧功能按钮 -->
+		<div class="right back-rightbtns">
+			<a href="javascript:backAndRefresh('@{back.risk.LoanMngCtrl.showBidPre}');"><i class="iconfont">&#xe60b;</i>返回</a>
+		</div>
+	</div>
+	<div class="back-cont">
+		<div class="back-infor">
+			<h2 class="back-infor-head">${tb?.getBid_no()}&nbsp;<span class="edit-text back-title-width" maxlength="15">${tb?.title}</span></h2>
+			<!-- 理财详情项目信息 -->
+			#{include "back/risk/LoanMngCtrl/bidDetail.html" /}
+		</div>
+		<!-- 理财详情项目详情选项卡 -->
+		<div class="back-fiance-detail">
+			<ul class="back-finace-menu">
+				<li class="selected">项目详情</li>
+				<li >投标记录</li>
+				<li >回款计划</li>
+			</ul>
+		<!-- 项目详情 -->
+		<div class="back-finace-cont" id="bid_detail">
+				<dl class="back-finace-infor">
+					<dt>借款人信息</dt>
+					#{include "back/risk/LoanMngCtrl/bidUserDetail.html" /}
+					<dt><span class="left">借款说明</span></dt>
+					<dd>
+						<div id="descriptioncont" class="edittext newline">${tb?.description}</div>
+						<input type="hidden" value="" id="hidden_description"/>
+					</dd>
+				</dl>
+				</div>
+				
+				<!-- 投标记录 -->
+				<div class="back-finace-cont" id="invest_record">
+				</div>
+				<!-- 回款计划 -->
+				<div class="back-finace-cont" id="repayment_record">
+				</div>
+				#{include "back/risk/LoanMngCtrl/charges.html"/}
+				#{include "back/risk/LoanMngCtrl/itemUser.html"/}
+				#{include "back/risk/LoanMngCtrl/itemSupervisorPre.html"/}
+				<div class="back-infor">
+					<h2 class="back-infor-head">
+						<span class="left">风控建议</span>
+					</h2>
+					<div class="back-finace-suggest">
+						<div class="edit-text01 newline">${tb?.preaudit_suggest}</div>
+					</div>
+					<div class="back-checktime">
+						<label>发售时间&nbsp;&nbsp;&nbsp;&nbsp;${tb?.pre_release_time?.format(common.constants.Constants.DATE_TIME_FORMATE)}</label>
+					</div>
+				</div>
+				<form action="javascript:void(0)" method="POST" id="audit">
+				<input type="hidden" name="uuidRepeat" value="${flash?.submitUuid}">
+				<div class="back-infor">
+					<h2 class="back-infor-head">复审建议</h2>
+					<div class="back-finace-suggest">
+						<textarea class="required" maxlength="300" name="suggest" id="suggest"></textarea>
+						<span class="back-text-limit">20~300字的综合建议，例如: 筹款成功，满标复审通过，请执行财务放款。</span>
+					</div>
+				</div>
+				<p class="back-audit-btns">
+					<input type="hidden" name="bidSign" value='${tb?.sign}' id="bid_id"/>
+					#{if tb?.getStatus()==models.core.entity.t_bid.Status.AUDITING}
+					<input type="button" id="pageSave" value="通过" class="bgbtn" onclick="setPassAction()"/>
+					#{/if}
+					<input type="button" id="notPass" value="不通过" class="bdbtn" onclick="setNotPassAction()"/>
+					<input type="button" id="notPass" value="取消" class="bdbtn" onclick="backAndRefresh('@{back.risk.LoanMngCtrl.showBidPre}');"/>
+				</p>
+				</form>
+			</div>
+		</div>
+
+</div>
+
+
+<!-- 页面js -->
+<script type="text/javascript">
+	require(["back"],function(back){
+		require(["ajaxfileupload"]);
+		back.listeven($(".back-finace-record table tbody"));
+		require(["tab","slide"],function(tab){
+			tab($(".back-finace-menu>li"),$(".back-finace-cont"));
+		});
+		//效验组件
+		require(["validation/validateExt"]);
+		//文本域换行 
+		$(this).newline();
+		//投标记录
+		$(".back-finace-menu").children().eq(1).click(function(){
+			queryInvestRecord(function(data){
+				$("#invest_record").html(data);
+				trevenRows();
+				if($("#investTotalsize").val()<=$("#investPagesize").val()){
+					$(".loadmore").html("<span class='back-nodata'>没有更多了</span>");
+				}
+			});
+		});
+		//还款计划
+		$(".back-finace-menu").children().eq(2).click(function(){
+			queryRepaymentRecord(function(data){
+				$("#repayment_record").html(data);
+				trevenRows();
+				if($("#repaymentTotalsize").val()<=$("#repaymentPagesize").val()){
+					$(".loadmore").html("<span class='back-nodata'>没有更多了</span>");
+				}
+			});
+		});
+		
+		$("#audit").validate({
+			errorPlacement:function(error, element){
+				error.addClass('back-notice').insertAfter(element);
+			},
+			rules:{
+				"suggest": {
+					minlength:20,
+					maxlength:300
+				}
+			},
+			messages:{
+				"suggest": {
+					minlength:"最少输入20字",
+					maxlength:"最多输入300字"
+				}
+			},
+			submitHandler:function(form){
+				waitingDialog();
+				form.submit();
+			}
+		});
+	});
+	
+	function setPassAction(){
+		$("#audit").attr("action", "@{back.risk.LoanMngCtrl.auditBidThrough()}");
+		$("#audit").submit();
+	}
+	function setNotPassAction(){
+		$("#audit").attr("action", "@{back.risk.LoanMngCtrl.auditBidNotThrough()}");
+		$("#audit").submit();
+	}
+
+	function queryInvestRecord(callback){
+		var bidSign = $("#bid_id").val();
+		var currPage = $("#investCurrpage").val();
+		var pageSize = $("#investPagesize").val();
+		$.ajax({
+			url : "@{back.risk.LoanMngCtrl.investRecordPre()}",
+			type : "GET",
+			data : {
+				"bidSign" : bidSign,
+				"currPage" : currPage,
+				"pageSize" : pageSize
+			},
+			success : function(data){
+				var flag = interceptorCheck(data);
+				if(!flag){
+					return;
+				}
+				
+				if(callback){
+					callback(data);
+				}
+			}
+		});
+	}
+	function queryRepaymentRecord(callback){
+		var bidSign = $("#bid_id").val();
+		var currPage = $("#repaymentCurrpage").val();
+		var pageSize = $("#repaymentPagesize").val();
+		$.ajax({
+			url : "@{back.risk.LoanMngCtrl.repaymentRecordPre()}",
+			type : "GET",
+			data : {
+				"bidSign" : bidSign,
+				"currPage" : currPage,
+				"pageSize" : pageSize
+			},
+			success : function(data){
+				var flag = interceptorCheck(data);
+				if(!flag){
+					return;
+				}
+				
+				if(callback){
+					callback(data);
+				}
+			}
+		});
+	}
+	//表格隔行换色
+	function trevenRows(){
+		$('.detail-record').each(function(){
+			$(this).children('tbody').children('tr:not(.detail-record):even').addClass('even');
+		});
+	}
+</script>

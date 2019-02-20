@@ -1,0 +1,164 @@
+#{extends 'common/back/webOperationMain.html' /}
+    #{set title:'运维 | 投票活动管理' /}
+    #{set smallclass:10 /}
+    #{set crumbs:'运维>投票活动管理' /}
+    
+    
+<div class="back-main">
+    <!-- 头部筛选条件 -->
+    <div class="back-usertop">
+        <div class="left back-usermenu">
+            <a href="@{back.webOperation.VoteMngCtrl.showVotesPre()}" class="selected">所有</a>
+        </div>
+        
+        <!-- 搜索按钮，控制搜索条件的显示隐藏 -->
+        <div class="back-search left #{if voteTitle}selected#{/if}">
+            <i class="iconfont searchicon">&#xe60a;</i>搜索<i class="iconfont arrowicon">&#xe603;</i>
+        </div>
+        
+        <!-- 右侧功能按钮 -->
+        <div class="right back-rightbtns">
+        #{rightMng rightId:211001}
+            <a href="@{back.webOperation.VoteMngCtrl.toAddVotePre()}" class="back-addmsg"><i class="iconfont">&#xe60f;</i>添加</a>
+        #{/rightMng}
+        </div>
+    </div>
+    <!-- 搜索条件，默认隐藏 -->
+    <div class="back-search-option"  #{if voteTitle}style="display: block;"#{/if}>
+        <form action="@{back.webOperation.VoteMngCtrl.showVotesPre()}" method="GET" id="showVotesPre">
+            <input type="hidden" id="currPage" name="currPage"/>
+            <input type="hidden" id="pageSize" name="pageSize" value="${page?.pageSize}"/>
+            <input type="text" class="iffocus" name="voteTitle" placeholder="活动主题" value="${voteTitle}" maxlength="30" />
+            <input type="submit" class="bgbtn" value="搜索" />
+            
+        </form>
+    </div>
+    <!-- 左侧菜单 -->
+    <div class="back-cont">
+        
+        <div class="back-box">
+            <table width="100%" class="back-table table-fixed">
+                <tr height="39">
+                    <th class="align-left" width="70">编号</th>
+                    <th>活动主题</th>
+                    <th>开始时间</th>
+                    <th>结束时间</th>
+                    <th>添加人</th>
+                    <th width="60">状态</th>
+                    <th width="150">操作</th>
+                </tr>
+        #{if page && page.page}
+            #{list items:page.page,as:"help"}
+                <tr height="39">
+                    <td class="align-left">
+                        <label><input type="checkbox" class="back-tdcheck" />${help?.id}</label>
+                    </td>
+                    <td data-title="${help?.title}">${help?.title}</td>
+                    <td>${help?.begin_time?.format(common.constants.Constants.DATE_TIME_FORMATE)}</td>
+                    <td>${help?.end_time?.format(common.constants.Constants.DATE_TIME_FORMATE)}</td>
+                    <td>${help?.supervisor?.reality_name}</td>
+                    #{if help?.is_use.code==true}
+                        <td>上架</td>
+                    #{/if}
+                    #{else}
+                        <td>下架</td>
+                    #{/else}
+                    <td class="back-handle">
+                        #{rightMng rightId:211001}
+                            <a href="@{back.webOperation.VoteMngCtrl.toEditVotePre(help?.id)}" data-title="编辑" class="iconfont">&#xe602;</a>
+                        #{/rightMng}
+                        
+                        #{rightMng rightId:211001}
+                            #{if help?.is_use.code == true}
+                                <a id="${help?.id}" data-title="下架" class="iconfont">&#xe600;</a> 
+                            #{/if}
+                            #{else}
+                                <a id="${help?.id}" data-title="上架" class="iconfont">&#xe61b;</a> 
+                            #{/else}
+                        #{/rightMng}
+                        <a href="@{back.webOperation.VoteMngCtrl.toLookVotePre(help?.id)}" data-title="查看审核" class="iconfont">&#xe61c;</a>
+                    </td>
+                </tr>
+            #{/list}
+                <!-- 表格数据统计 -->
+                <tr height="39">
+                    <td colspan="7" class="back-lasttd">
+                        <span class="back-choose left">
+                            <input type="button" id="chooseAll" value="全选" />
+                            <input type="button" id="chooseReverse" value="反选" />
+                        </span>
+                        
+                        <!-- 分页组件--pageTag -->
+                        #{backPageTag page:page,showPage:"showVotes"/}
+                        
+                    </td>
+                </tr>
+        #{/if}
+        #{else}
+                <!-- 暂无记录 -->
+                <tr height="58">
+                    <td colspan="7" class="back-nodata"><i class="iconfont">&#xe613;</i>暂无记录</td>
+                </tr>
+        #{/else}
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- 页面js -->
+<script type="text/javascript">
+require(["back"],function(back){
+    // 搜索、左侧菜单展开收缩、表格排序
+    require(["search","side","linechecked"],function(){
+        $(".back-sidebtn").click();//左侧菜单搜索
+    });
+    
+    var $a = $(".back-handle").children("a");
+    $a.click(function(){
+        var sign = $(this).attr("id");
+        if(sign==null || sign=='' || sign==undefined){
+            return;
+        }
+        upDownHelp(sign, $(this));
+    });
+    
+    
+});
+
+function showVotes(currPage, pageSize) {
+    $("#currPage").val(currPage);
+    $("#pageSize").val(pageSize);
+        
+    $("#showVotesPre").submit();
+}
+
+//上下架 
+function upDownHelp(voteId,dom){
+    $.post('@{back.webOperation.VoteMngCtrl.voteIsUse()}',{voteId:voteId},function(data){
+        var flag = interceptorCheck(data);
+        if(!flag){
+            return;
+        }
+        if(data.code < 1){
+            alert(data.msg);
+            return;
+        }
+        if(!data.obj){
+            weakDialog("已经更新产品状态为[上架]");
+            dom.attr("data-title", "下架");
+            $('.titlebox').text('下架');
+            dom.html("&#xe600;");
+            dom.parent().prev().html('上架');
+        }else{
+            weakDialog("已经更新产品状态为[下架]");
+            dom.attr("data-title", "上架");
+            $('.titlebox').text('上架');
+            dom.html("&#xe61b;");
+            dom.parent().prev().html('下架');
+        }
+    });
+}
+</script>   
+    

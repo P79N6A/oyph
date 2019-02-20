@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		
+		<title></title>
+		<link rel="stylesheet" href="/public/front/stylesheets/Hmain.css" type="text/css"/>
+		<link rel="stylesheet" type="text/css" href="/public/front/stylesheets/Htotal.css"/>
+		<script type="text/javascript" src="/public/front/javascripts/jquery1.11.3-jquery.min.js" ></script>
+	</head>
+	<body>
+		<div class="login">
+	    	<div class="login1" style="background-image: url(/public/front/images/proxyBg.png);"></div>
+	    	<div class="centerBox">
+	    		<div class="bgBox1">
+	    			<div class="beginBox1">
+					<div style="height: 40px; line-height: 40px;">
+	    				<label style="color: red;" id="errorMsg">
+	    				#{if flash.error != null}
+							${flash.error}
+						#{/if}
+	    				</label>
+	    				<label style="color: green;" id="sucMsg">
+	    				#{if flash != null}
+							${flash.success}
+						#{/if}
+	    				</label>
+	    			</div>	    				
+	    				<form action="@{front.proxy.LoginCtrl.forgetPwd()}" method="post" id="sumBtn">
+	    					<div class="importBox">
+	    						<label class="imgVessel"><img src="/public/front/images/zhanghao.png"/></label>
+	    						<input class="importText" name="mobile" type="text" id="import" value="" placeholder="请输入账号" onkeyup="this.value=this.value.replace(/[^\d]/g,'');"  maxlength="11" autocomplete="off"/>
+	    						<p class="verify verify1"></p>
+	    					</div>
+	    					<div class="importBox">
+	    						<input class="importText importText1" name="veriCode" type="text" id="auth" value="" placeholder="请输入图文验证码" onkeyup="this.value=this.value.replace(/[^\d]/g,'');" maxlength="2" autocomplete="off"/>
+	    						<img class="ident" src="@{common.CaptchaController.createCaptcha(randomNum)}" id="captchaImage" onclick="refreshCaptcha(true);" alt="" title="换一张" />
+	    						<p class="verify verify4"></p>
+	    					</div>
+	    					<div class="importBox">
+	    						<input class="importText importText1" name="smsCode" type="text" id="code" value="" placeholder="请输入验证码" onkeyup="this.value=this.value.replace(/[^\d]/g,'');" maxlength="6" autocomplete="off"/>
+	    						<input type="button" id="vCode" value="获取验证码" >
+	    						<p class="verify verify3"></p>
+	    					</div>
+	    					<div class="importBox">
+	    						<label class="imgVessel vessel1"><img src="/public/front/images/mima.png"/></label>
+	    						<input class="importText" name="salesManPwd" type="password" id="importText" value="" placeholder="请输入密码" oncopy="return false" maxlength="16" autocomplete="off"/>
+	    						<p class="verify verify2"></p>
+	    					</div>
+	    					<div class="ker">
+	    						<a href="@{front.proxy.LoginCtrl.loginPre()}">返回登录</a>
+	    					</div>	
+	    					<input type="submit" id="present" class="submitBtn" value="立即修改"/>
+	    					<input type="hidden" name="randomNum" value="${randomNum}" id="randomNum" />
+	    				</form>
+	    			</div>
+	    		</div>
+	    	</div>
+	    </div>
+	</body>
+	
+	<!--  -->
+	<script type="text/javascript">
+		$("#present").click(function(){
+			var imp = $("#import").val();
+			var importText = $("#importText").val();
+			var auth = $("#auth").val();
+			var code=$('#code').val()
+			if (imp == "") {
+				$(".verify1").html("请输入账号")
+				return false;
+			} 
+			if (auth == "") {
+				$(".verify4").html("请输入图文验证码")
+				return false;
+			}
+			if (code == "") {
+				$(".verify3").html("请输入验证码")
+				return false;
+			}
+			if (importText == "") {
+				$(".verify2").html("请输入密码")
+				return false;
+			} 
+			 
+		});
+		$('#vCode').click(function(){
+			var mobile = $("#import").val();
+			var veriCode = $("#auth").val();
+			var randomNum=$('#randomNum').val();
+			
+			if (mobile == "") {
+				$(".verify1").html("请输入账号")
+				return false;
+			} else{
+				$(".verify1").html("")
+			}
+			if (veriCode == "") {
+				$(".verify4").html("请输入图文验证码")
+				return false;
+			}else{
+				$(".verify4").html("")
+			}
+			
+			$.ajax({
+				url : "@{front.proxy.LoginCtrl.sendCodeOfForgetPwd()}",
+				type : "POST",
+				data : {
+					"mobile" : mobile,
+					"veriCode" : veriCode,
+					"randomNum" : randomNum
+				},
+				dataType:"json",
+				success : function(data) {
+					if(data.code < 1){
+						$("#sucMsg").html('');
+						$("#errorMsg").html(data.msg);
+						return false;
+					} else {
+						$("#errorMsg").html('');
+						$("#sucMsg").html(data.msg);
+						
+						if($('#vCode').val()=='获取验证码'){
+							var i=60;
+							$('#vCode').val(i+'s').css('background','#ccc')
+							var time=setInterval(function(){
+								if(i==0){
+									$('#vCode').val('获取验证码').css('background','#56a8fe')
+									clearInterval(time)
+									return false;
+								}else{
+									i--;
+									$('#vCode').val(i+'s')
+								}
+							},1000)
+						}else{
+							return false;
+						}
+						
+					}
+				}
+			});
+			
+		})
+		/* 验证码刷新 */
+		function refreshCaptcha(isRefresh){
+			$.post("@{common.CaptchaController.flushCaptcha()}",function(data){
+				var arr=eval(data);
+				var randomid = arr.randomID;
+				$("#captchaImage").attr("src","@{common.CaptchaController.createCaptcha()}?uuid="+randomid);	
+				$("#randomId").val(randomid);
+			});
+			if(isRefresh){
+				$("#code").next("p").remove();
+				$("#code").removeClass("text-error focus");
+			}
+			$("#code").removeClass("focus");
+			$("#code").val("");
+		}
+	</script>
+	
+</html>

@@ -1,0 +1,48 @@
+<div class="back-finace-record">
+	#{if pageBean?.page == null}
+	<table width="100%">
+		<tr height="58">
+			<td colspan="5" class="back-nodata"><i class="iconfont">&#xe613;</i>暂无记录</td>
+		</tr>
+	</table>
+	#{/if}
+	#{else}
+	<table width="100%" class="detail-record">
+		<input type="hidden" id="repaymentCurrpage" value="${pageBean?.currPage}"/>
+		<input type="hidden" id="repaymentPagesize" value="${pageBean?.pageSize}"/>
+		<input type="hidden" id="repaymentTotalsize" value="${pageBean?.totalCount}"/>
+		<tr height="40" class="treven">
+			<th width="20%" align="left">期数</th>
+			<th width="30%" align="center">本息合计</th>
+			<th width="30%" align="center">到期时间</th>
+			<th width="20%" align="right">状态</th>
+		</tr>
+		#{list pageBean.page}
+		<tr height="40">
+			<td>${_?.period}/${_?.totalPeriod}</td>
+			<td align="center">${_?.principalInterest?.format(common.constants.Constants.FINANCE_FORMATE_TAD)}</td>
+			<td align="center">${_?.repayment_time?.format(common.constants.Constants.DATE_FORMATE)}</td>
+			<td align="right">${models.core.entity.t_bill.Status.getEnum(_?.status).value}</td>
+		</tr>
+		#{/list}
+	</table>
+	<p class="loadmore">
+		<a href="javascript:void(0)" class="back-loadmore" onclick="loadMoreRepayment()"><i class="iconfont">&#xe604;</i>加载更多</a>
+	</p>
+	#{/else}
+</div>
+<script type="text/javascript">
+function loadMoreRepayment(){
+	var nowSize = $("#repaymentPagesize").val();
+	var totalSize = ${pageBean?.totalCount};
+	$("#repaymentPagesize").val(parseInt(nowSize)+5);
+	queryRepaymentRecord(function(data){
+		$("#repayment_record").html(data);
+		trevenRows();
+		if(parseInt(nowSize)+5 >= parseInt(totalSize)){
+			$(".loadmore").html("<span class='back-nodata'>没有更多了</span>");
+			return;
+		}
+	});
+}
+</script>

@@ -1,0 +1,24 @@
+#{extends 'common/frontMain.html' /}
+
+*{
+	公司介绍、平台优势、加入我们、联系我们、帮助中心等几个栏目的二级导航栏
+}*
+
+<!-- main -->
+<!-- 二级导航 -->
+<div class="second-navbox">
+	<ul class="container clearfix second-nav">
+		<li><a href="@{front.FrontHomeCtrl.aboutUsPre()}" class="" title="" >${columns?.get(common.constants.ColumnKey.HOME_PROFILE)?:'公司介绍'}</a></li><!-- 公司介绍 -->
+		<li><a href="@{front.FrontHomeCtrl.safePre()}" title="" >${columns?.get(common.constants.ColumnKey.HOME_ADVANTAGE)?:'安全保障'}</a></li><!-- 平台优势 -->
+		<!-- <li><a href="@{front.FrontHomeCtrl.joinusPre()}" title="" >${columns?.get(common.constants.ColumnKey.HOME_JOINUS)?:'加入我们'}</a></li>加入我们 -->
+		<li><a href="@{front.FrontHomeCtrl.developPre()}" title=""  >${columns?.get(common.constants.ColumnKey.HOME_EVENTS)?:'发展历程'}</a></li>
+		<li><a href="@{front.FrontHomeCtrl.enterStylePre()}" title=""  >企业风貌</a></li>
+		<li><a href="@{front.FrontHomeCtrl.employeePre()}" title=""  >员工风采</a></li>
+		<li><a href="@{front.FrontHomeCtrl.honorPre()}" title=""  >荣誉资质</a></li>
+		<li><a href="@{front.FrontHomeCtrl.newhandPre()}" title=""  >新手指引</a></li>
+		<li><a href="@{front.FrontHomeCtrl.contactusPre()}" title="" >${columns?.get(common.constants.ColumnKey.HOME_CONTACTUS)?:'联系我们'}</a></li><!-- 联系我们 -->
+		<li><a href="@{front.FrontHomeCtrl.helpPre(models.common.entity.t_help_center.Column.FINANCIAL_KNOWLEDGE.code,1)}" title="" >${columns?.get(common.constants.ColumnKey.HOME_HELPCENTER)?:'帮助中心'}</a></li><!-- 帮助中心 -->
+	</ul>
+</div>
+<!-- 二级导航end -->
+#{doLayout /}

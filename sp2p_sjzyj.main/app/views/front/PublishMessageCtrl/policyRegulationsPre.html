@@ -1,0 +1,158 @@
+#{extends 'common/frontMain.html' /}
+#{set title: '首页|备案信息'/}
+<link rel="stylesheet" type="text/css" href="/public/front/stylesheets/publishIndex.css"/>
+<div class="ims">
+	<div class="ims-h1">
+		<span>法律法规</span>
+		<a href="@{front.PublishMessageCtrl.publishIndexPre()}"><img src="/public/front/images/return-img.png"></a>
+	</div>
+	<div class="ims-main">
+		<div class="publishSynopsis">
+			<h4>中华人民共和国反洗钱法</h4>
+			<span class="paragraph" id="text1">
+				
+			</span>
+		    <h4>金融机构反洗钱规定</h4>
+		    <span class="paragraph" id="text2">
+		    	
+			</span>
+			<h4>网络借贷资金存管业务指引</h4>
+			<span class="paragraph" id="text3">
+				
+			</span>
+			<h4>网络借贷信息中介机构业务活动信息披露指引</h4>
+			<span class="paragraph" id="text4">
+				
+			</span>
+			<h4>网络借贷信息中介机构业务活动管理暂行办法</h4>
+			<span class="paragraph" id="text5">
+				
+			</span>
+			<h4>网络借贷信息中介机构备案管理登记指引</h4>
+			<span class="paragraph" id="text6">
+				
+			</span>
+			<h4>中华人民共和国中国人民银行法</h4>
+			<span class="paragraph" id="text7">
+				
+			</span>
+			<h4>中华人民共和国商业银行法</h4>
+			<span class="paragraph" id="text8">
+				
+			</span>
+			<h4>储蓄管理条例</h4>
+			<span class="paragraph" id="text9">
+				
+			</span>
+			<h4>中华人民共和国人民币管理条例</h4>
+			<span class="paragraph" id="text10">
+				
+			</span>
+			<h4>中华人民共和国银行业监督管理法</h4>
+			<span class="paragraph" id="text11">
+				
+			</span>
+	    </div>
+		<div style="float: left;width: 100%;height: 100px;">
+        	<p style="text-align: right;line-height: 100px;">法人签字：<img style="width: 160px;height: 100px;" src="/public/front/images/name1.png"/></p>
+        </div>
+	</div>
+</div>
+<script>
+	/*中华人民共和国反洗钱法*/
+	$.ajax({
+		url : "@{front.FrontHomeCtrl.constitutionPre()}",
+		type : "GET",
+		success : function(data) {
+			$("#text1").html(data);
+		}
+	});
+	/*金融机构反洗钱规定*/
+	$.ajax({
+		url : "@{front.FrontHomeCtrl.financePre()}",
+		type : "GET",
+		success : function(data) {
+			$("#text2").html(data);
+		}
+	});
+	/*网络借贷资金存管业务指引*/
+	$.ajax({
+		url : "@{front.FrontHomeCtrl.debitPre()}",
+		type : "GET",
+		success : function(data) {
+			$("#text3").html(data);
+		}
+	});
+	/*网络借贷信息中介机构业务活动信息披露指引*/
+	$.ajax({
+		url : "@{front.FrontHomeCtrl.lendingGuidelinesPre()}",
+		type : "GET",
+		success : function(data) {
+			$("#text4").html(data);
+		}
+	});
+	/*网络借贷信息中介机构业务活动管理暂行办法*/
+	$.ajax({
+		url : "@{front.FrontHomeCtrl.interimProceduresPre()}",
+		type : "GET",
+		success : function(data) {
+			$("#text5").html(data);
+		}
+	});
+	/*网络借贷信息中介机构备案管理登记指引*/
+	$.ajax({
+		url : "@{front.FrontHomeCtrl.recordsPre()}",
+		type : "GET",
+		success : function(data) {
+			$("#text6").html(data);
+		}
+	});
+	/*中华人民共和国中国人民银行法(2003修正)*/
+	$.ajax({
+		url : "@{front.PublishMessageCtrl.peoplesBankLawPre()}",
+		type : "GET",
+		success : function(data) {
+			$("#text7").html(data);
+		}
+	});
+	/*中华人民共和国商业银行法(2015修正)*/
+	$.ajax({
+		url : "@{front.PublishMessageCtrl.commercialBankLawPre()}",
+		type : "GET",
+		success : function(data) {
+			$("#text8").html(data);
+		}
+	});
+	/*储蓄管理条例*/
+	$.ajax({
+		url : "@{front.PublishMessageCtrl.savingsManagementPre()}",
+		type : "GET",
+		success : function(data) {
+			$("#text9").html(data);
+		}
+	});
+	/*中华人民共和国人民币管理条例*/
+	$.ajax({
+		url : "@{front.PublishMessageCtrl.rmbManagementPre()}",
+		type : "GET",
+		success : function(data) {
+			$("#text10").html(data);
+		}
+	});
+	/*中华人民共和国银行业监督管理法(2006修正)*/
+	$.ajax({
+		url : "@{front.PublishMessageCtrl.supervisionManagementPre()}",
+		type : "GET",
+		success : function(data) {
+			$("#text11").html(data);
+		}
+	});
+	$('.publishSynopsis h4').click(function(){
+		var paragraph = $(this).next();
+		if(paragraph.is(':hidden')){
+			paragraph.stop(true,true).slideDown(800);
+		}else{
+			paragraph.stop(true,true).slideUp(800);
+		}
+	});
+</script> 

@@ -1,0 +1,40 @@
+# This file defines all module routes (Higher priority routes first)
+#
+# import these routes in the main app as :
+# *     /                       module:sp2p_sjzyj.weChat
+#
+# ~~~~
+GET /qthh/gateway   										front.weChat.WechatManageCtrl.checkFromWechat
+POST /qthh/gateway               							front.weChat.WechatManageCtrl.disposeWechat
+# 后台-微信-本文回复-控制器(controllers.back.weChat.TextMessageCtrl)
+GET  /supervisor/weChat/textMessage/{action}.html           back.weChat.TextMessageCtrl.{action}Pre
+POST /supervisor/weChat/textMessage/{action}                back.weChat.TextMessageCtrl.{action}
+#
+# 后台-微信-图片回复-控制器(controllers.back.weChat.ImageMessageCtrl)
+GET  /supervisor/weChat/imageMessage/{action}.html           back.weChat.ImageMessageCtrl.{action}Pre
+POST /supervisor/weChat/imageMessage/{action}                back.weChat.ImageMessageCtrl.{action}
+#
+# 后台-微信-图文回复-控制器(controllers.back.weChat.ImageTextMessageCtrl)
+GET  /supervisor/weChat/imageTextMessage/{action}.html           back.weChat.ImageTextMessageCtrl.{action}Pre
+POST /supervisor/weChat/imageTextMessage/{action}                back.weChat.ImageTextMessageCtrl.{action}
+#
+# 后台-微信-多图文回复-控制器(controllers.back.weChat.MoreGraphicMessageCtrl)
+GET  /supervisor/weChat/moreGraphicMessage/{action}.html           back.weChat.MoreGraphicMessageCtrl.{action}Pre
+POST /supervisor/weChat/moreGraphicMessage/{action}                back.weChat.MoreGraphicMessageCtrl.{action}
+#
+# 后台-微信-群发消息-控制器(controllers.back.weChat.GroupSentMessageCtrl)
+GET  /supervisor/weChat/groupSentMessage/{action}.html           back.weChat.GroupSentMessageCtrl.{action}Pre
+POST /supervisor/weChat/groupSentMessage/{action}                back.weChat.GroupSentMessageCtrl.{action}
+#
+# 后台-微信-自定义菜单-控制器(controllers.back.weChat.MenusMessageCtrl)
+GET  /supervisor/weChat/menusMessage/{action}.html           back.weChat.MenusMessageCtrl.{action}Pre
+POST /supervisor/weChat/menusMessage/{action}                back.weChat.MenusMessageCtrl.{action}
+#
+# 后台-微信-客服管理-控制器(controllers.back.weChat.CustomerMessageCtrl)
+GET  /supervisor/weChat/customerMessage/{action}.html           back.weChat.CustomerMessageCtrl.{action}Pre
+POST /supervisor/weChat/customerMessage/{action}                back.weChat.CustomerMessageCtrl.{action}
+#	模板发送单人
+* /supervisor/weChat/TestSendOne/test 		                 back.weChat.TestSendOne.test	
+* /supervisor/weChat/TestSendOne/testmore 		                 back.weChat.TestSendOne.testmore
+
+ * /supervisor/weChat/TestSendOne/sendTemplate 		                 back.weChat.TestSendOne.sendTemplate					

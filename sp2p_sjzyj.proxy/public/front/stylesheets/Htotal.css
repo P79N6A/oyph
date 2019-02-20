@@ -1,0 +1,724 @@
+body, h1, h2, h3, h4, h5, h6, hr, p, blockquote, dl, dt, dd, ul, ol, li, pre, form, fieldset, legend, button, input, textarea, th, td { margin:0; padding:0; }
+body, button, input, select, textarea { font:12px/1.5tahoma, arial, \5b8b\4f53; }
+h1, h2, h3, h4, h5, h6{ font-size:100%; }
+address, cite, dfn, em, var { font-style:normal; }
+code, kbd, pre, samp { font-family:couriernew, courier, monospace; }
+small{ font-size:12px; }
+ul, ol { list-style:none; }
+a { text-decoration:none; }
+a:hover { text-decoration:underline; }
+sup { vertical-align:text-top; }
+sub{ vertical-align:text-bottom; }
+legend { color:#000; }
+fieldset, img { border:0; }
+button, input, select, textarea { font-size:100%; }
+table { border-collapse:collapse; border-spacing:0; }
+.login {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    overflow: hidden;
+}
+.login1 {
+    position: absolute;
+    bottom: 0px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+    z-index: -10;
+}
+.centerBox{
+	width: 100%;
+	height: 586px;
+	position: relative;
+	top: 22%;	
+}
+.bgBox{
+	min-width: 581px;
+	width: 581px;
+	height: 586px;
+	background: url(/public/front/images/bg2.png);
+	margin: auto;
+}
+.bgBox1{
+	min-width: 581px;
+	width: 581px;
+	height: 616px;
+	background: url(/public/front/images/bg3.png);
+	margin: auto;
+}
+.beginBox{
+	width: 340px;
+    height: 347px;
+    margin: auto;
+    padding-top: 240px;
+}
+.beginBox1{
+	width: 340px;
+    height: 377px;
+    margin: auto;
+    padding-top: 225px;
+}
+.importBox{
+	width: 100%;
+	height: 40px;
+	border-bottom: 1px solid #ccc;
+	margin-bottom: 20px;
+	position: relative;
+}
+.imgVessel{
+	display: block;
+	width: 27px;
+	height: 27px;
+	float: left;
+	margin-top: 5px;
+	padding-left: 15px;
+}
+.importText{
+	float: left;
+	padding: 0 28px;
+	width: 240px;
+	border: none;
+	height: 38px;
+	font-size: 14px;
+	outline-style: none;
+	background-color: transparent; 
+}
+input.importText:-webkit-autofill{  
+    -webkit-box-shadow: 0 0 0px 1000px transparent  inset !important;  
+    background-color:transparent;  
+    background-image: none;  
+     transition: background-color 50000s ease-in-out 0s;
+}
+.importText1{
+	width: 150px;
+}
+.vessel1{
+	margin-top:2px;
+}
+.ident{
+	position: relative;
+	display: block;
+	width: 113px;
+	
+	height: 35px;
+	top:0;
+	right: -20px;
+	z-index: 1;
+	border-radius: 8px;
+	cursor: pointer;
+}
+.ker{
+	height: 25px;
+    margin-bottom: 13px;
+    margin-top: 10px;
+    font-size: 14px;
+}
+.ker a{
+	color: #55a8fd;
+}
+.submitBtn{
+	width: 236px;
+	height: 45px;
+	background: #55a8fd;
+	border: none;
+	cursor: pointer;
+	color: #fff;
+	outline-style: none;
+	margin-left: 55px;
+	border-radius: 22px;
+}
+.verify{
+	position: absolute;
+	color: red;
+	font-size: 14px;
+	top:44px;
+	left: 10px;
+}
+/*代理商首页css*/
+.agentBox{
+	width: 1600px;
+	height: 1080px;
+	margin: auto;
+}
+.personageBox{
+	height: 80px;
+	border-bottom: 1px solid #f0f0f0;
+}
+.message_container{
+	width: 1500px;
+    margin: 30px;
+}
+.message_Box{
+	width: 1500px;
+	margin-bottom: 30px;
+	height: 220px;
+	border: 3px solid #f0f0f0;
+	border-radius: 15px;
+}
+.message_title{
+	padding:20px;
+	color: #c0c0c0;
+	font-size: 20px;
+	font-weight: 400;
+}
+.message_list，.message_list1{
+	width: 100%;
+	height: 115px;
+	overflow: hidden;
+}
+.message_list li{
+	height: 115px;
+	float: left;
+	margin:0 50px;
+}
+.message_list1 li{
+	height: 115px;
+	float: left;
+	margin:0 85px;
+}
+.statisticsBox{
+	height: 115px;
+	width: 200px;
+	position: relative;
+}
+.statisticsBox p{
+    text-align: center;
+	z-index: 2;
+	font-size: 20px;
+    color: #fff;
+	line-height: 70px;
+}
+.statisticsBox span{
+	display: block;
+	text-align: center;
+	font-size: 30px;
+	color: #fff;
+	margin-top: -5px;
+}
+.datum{
+	width: 1500px;
+	height: 400px;
+	border: 3px solid #f0f0f0;
+	border-radius: 15px;
+}
+.Commission{
+	width: 1500px;
+	height: 250px;
+	border: 3px solid #f0f0f0;
+	border-radius: 15px;
+	margin-top: 30px;
+}
+.Commission-list{
+/* 	width: 320px; */
+	text-align: center;
+	color: #C0C0C0;
+	line-height: 42px;
+	float: left;
+}
+.Commission-list span{
+	display: block;
+}
+.Commission-list b{
+	display: block;
+	color: #5e7088;
+	font-size: 16px;	
+}
+.means{
+	width:500px;
+	height: 400px;
+	float: left;
+}
+.means h3,.Commission h3{
+	padding: 20px;
+	color: #c0c0c0;
+	font-size: 20px;
+	font-weight: 400;
+}
+.materialBox{
+	overflow: hidden;
+	width: 450px;
+    margin-left: 20px;
+}
+.materialBox>p{
+	height: 40px;
+	margin: 20px;
+	font-size: 16px;
+}
+.materialBox span{
+	display: block;
+	float: left;
+	width: 80px;
+	color: #c0c0c0;
+	padding-right: 20px;
+	text-align: right;
+	line-height: 40px;
+}
+.materialBox em{
+	display: block;
+	float: left;
+	height: 38px;
+	width: 200px;
+	line-height: 40px;
+	border: 1px solid #c0c0c0;
+	border-radius: 8px;
+	outline-style: none;
+	padding-left: 20px;
+	
+}
+
+.popularize{
+	float: left;
+	height: 38px;
+	width: 200px;
+	line-height: 40px;
+	border: 1px solid #c0c0c0;
+	border-radius: 8px;
+	outline-style: none;
+	padding-left: 20px;
+}
+.copyBtn{
+	display: block;
+	float: left;
+	height: 38px;
+	width: 80px;
+	background: #70a7ff;
+	text-align: center;
+	font-style: normal;
+	line-height: 40px;
+	color: #fff;
+	margin-left: 6px;
+	border: 1px solid #c0c0c0;
+	border-radius: 8px;
+	outline-style: none;
+	cursor: pointer;
+}
+#qrcode{
+	width: 200px;
+	height: 200px;
+	float: left;
+	margin: 82px 100px;
+}
+p.qrcode{
+	padding: 15px 0;
+	text-align: center;
+	font-size: 25px;
+	color: #c0c0c0;
+}
+.generalize_people{
+	width: 550px;
+	height: 250px;
+	float: left;
+	margin-top: 75px;
+	font-size: 16px;
+}
+.generalize_people h3{
+	margin-bottom: 10px;
+}
+.generalize_people p{
+	margin-bottom: 30px;
+	color: #C0C0C0;
+}
+.generalize_people-left{
+	width: 250px;
+	display: inline-block;
+}
+.generalize_people-right{
+	width: 300px;
+	display: inline-block;
+}
+/*业务员管理*/
+.search-bar{
+	width: 550px;
+	height: 32px;
+	margin-top: 25px;
+	margin-left: 44px;
+	line-height: 27px;
+}
+.search-bar span{
+	margin-right: 18px;
+	font-size: 16px;
+	color: #666;
+	float: left;
+}
+.search-query input{
+	width: 120px;
+	height: 30px;
+	outline: none;
+	border: 1px solid #e5e5e4;
+	border-radius:5px ;
+	padding-left: 5px;
+	font-size:14px;
+	background:url(/public/front/images/icon-search.png) no-repeat center right 5px;
+}
+.search-query input::-webkit-input-placeholder {
+        color: #999;
+    }
+.search-query button{
+	width: 60px;
+	height: 25px;
+	background: #70a7ff;
+	color: #fff;
+	border: none;
+	border-radius:5px ;
+	cursor: pointer;
+	margin-left: 10px;
+	outline: none;
+} 
+.icon-search{
+	width: 30px;
+	height: 30px;
+	cursor: pointer;
+	background: url(/public/front/images/icon-search.png) no-repeat center center;
+}
+.search-main{
+	width: 1535px;
+	height: 602px;
+	margin: 35px;
+	border: 3px solid #f0f0f0;
+	border-radius:15px ;
+}
+.search-main-title{
+	width: 100%;
+	height: 40px;
+	background: #eee;
+	margin-bottom: 10px;
+}
+.search-main-title span{
+	font-size: 20px;
+	color: #666;
+	line-height: 40px;
+	display: inline-block;
+	width: 200px;
+	margin-left: 20px;
+}
+.search-main-title .ioc-query{
+	width: 29px;
+	height: 28px;
+	float: right;
+	background: url(/public/front/images/export.png) no-repeat center center;
+	margin: 6px 20px 6px 0;
+	cursor: pointer;
+}
+.search-main-title .ioc-add{
+	width: 55px;
+	height: 28px;
+	text-align: center;
+	line-height: 28px;
+	display: inline-block;
+	background: #70a7ff;
+	color: #FFFFFF;
+	float: right;
+	border-radius:5px ;
+	margin: 6px 20px 6px 0;
+	cursor: pointer;
+}
+.search-main-table{
+	height: 500px;	
+}
+.search-main-table th,.Commission th{
+	font-size: 16px;
+	color: #5e7088;
+	font-weight: normal;
+}
+.table-main th{
+	color: #999;
+}
+.table-bottom{
+	width: 100%;
+    height: 50px;
+    color: #5e7088;
+    line-height: 50px;
+    position: relative;
+    left: 0;
+    bottom: 5px;
+}
+.table-bottom span{
+	margin-left: 30px;
+}
+/*更改密码*/
+.center-main{
+	width: 1535px;
+	height:677px;
+	margin: 44px;
+	box-sizing: border-box;
+	border: 3px solid #f0f0f0;
+	border-radius:5px ;
+}
+.center-main .center-main-title{
+	font-size: 20px;
+	text-align: left;
+	width: 100%;
+	height: 40px;
+	line-height: 40px;
+	background: #eee;
+	text-indent: 20px;
+	color: #666;
+}
+.modify-password{
+	width: 370px;
+	height: 345px;
+	text-align: center;
+	margin: 100px auto;
+	color: #999;
+}
+.modify-password span{
+	width: 79px;
+	height: 43px;
+	display: inline-block;
+	margin-right: 35px;
+	font-size: 24px;
+	text-align: center;
+	line-height: 43px;
+	margin-bottom: 35px;
+}
+.modify-password .text-input,.modify-password1 .text-input{
+	width: 242px;
+	height: 35px;
+	border: 1px solid #e5e5e4;
+	outline: none;
+	border-radius:3px ;
+	color: #666;
+	margin-bottom: 35px;
+	padding-left: 8px;
+}
+.modify-password .modify-button,.modify-password1 .modify-button{
+	width: 200px;
+	height: 45px;
+	outline: none;
+	background: #70a7ff;
+	color: #fff;
+	
+	border: none;
+	border-radius:5px ;
+	cursor: pointer;
+}
+.modify-password .modify-button{
+	margin: 18px auto;
+}
+.modify-password1{
+	width: 450px;
+	height: 500px;
+	text-align: center;
+	margin: 100px auto;
+	color: #999;
+}
+.modify-password1 span{
+	width: 120px;
+	height: 43px;
+	display: inline-block;
+	margin-right: 35px;
+	font-size: 24px;
+	text-align: right;
+	line-height: 43px;
+	margin-bottom: 35px;
+}
+/*名下会员查看*/
+
+/*收益*/
+.income_vessel{
+	border: 3px solid #f0f0f0;
+    border-radius: 15px;
+    margin: 20px auto;
+    overflow: hidden;
+}
+.income_vessel h3{
+    display: inline-block;
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    padding-left:20px ;
+    color: #666;
+    font-size: 20px;
+    font-weight: 400;
+    background: #eee;
+    margin-bottom: 20px;
+}
+.table_title{
+	width: 620px;
+	min-height: 400px;
+	overflow: hidden;
+	margin: auto;
+	float: left;
+    margin-left: 10px;
+}
+.additionStyle{
+	/* width: 150px; */
+	margin:0 20px;
+}
+.wide1{
+	display: block;
+	width: 70px;
+	height: 35px;
+	float: left;
+	line-height: 35px;
+	border: 1px solid #eee;
+	border-radius: 4px;
+	font-style: normal;
+	margin-left: 15px;
+}
+.declare{
+	display: block;
+	width: 218px;
+	height: 34px;
+	margin-bottom:6px;
+	line-height: 35px;
+	border: 1px solid #eee;
+	border-radius: 4px;
+	font-style: normal;
+}
+.titText{
+	color: #5e7088;
+	padding-left: 20px;
+	font-weight: 600;
+	padding-top: 30px;
+	padding-bottom: 15px;
+}
+.annual b{
+	color: #a59d9d;
+}
+.desertification{
+	width: 650px;
+}
+.Annualized{
+	width: 330px;
+	font-size: 16px;
+	margin-left: -40px;
+}
+.declare1{
+	display: block;
+	width: 70px;
+	height: 38px;
+	float: left;
+	line-height: 35px;
+	border: 1px solid #eee;
+	border-radius: 4px;
+	font-style: normal;
+}
+.distance{
+	margin-left: -20px;
+}
+.bgimg1{
+	background: url(/public/front/images/Member1.png) no-repeat;
+}
+.bgimg2{
+	background: url(/public/front/images/Member.png) no-repeat;
+}
+.bgimg3{
+	background: url(/public/front/images/total-investment.png) no-repeat;
+}
+.bgimg4{
+	background: url(/public/front/images/annual-conversion.png) no-repeat;
+}
+.bgimg5{
+	background: url(/public/front/images/commission.png) no-repeat;
+}
+
+/* 分页插件样式 */
+.back-page {
+    font-size: 14px;
+    color: #999;
+    float: right;
+    margin-right: 50px;
+}
+.back-page-num {
+    color: #333;
+    margin: 0 10px;
+}
+.back-page .iconfont {
+    font-size: 14px;
+    width: 26px;
+    text-align: center;
+}
+
+back.css:699
+.unable {
+    color: #999 !important;
+    cursor: not-allowed;
+}
+back.css:90
+.left {
+    float: left;
+}
+iconfont.css:10
+.iconfont {
+    font-family: "iconfont" !important;
+    font-size: 16px;
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-stroke-width: 0.2px;
+    -moz-osx-font-smoothing: grayscale;
+}
+back.css:62
+a {
+    text-decoration: none;
+    color: #333;
+    cursor: pointer;
+    outline: none;
+}
+user agent stylesheet
+a:-webkit-any-link {
+    color: -webkit-link;
+    cursor: pointer;
+    text-decoration: underline;
+}
+.back-page select {
+    border: 1px solid #ccc;
+    font-size: 14px;
+    width: 85px;
+    padding: 0;
+    margin-top: 4px;
+    outline: none;
+}
+.iconfont{
+	margin: 0 2px;
+	font-size: 14px;
+	font-weight: normal;
+}
+.unable{
+	color: #999 !important;
+	cursor: not-allowed;
+}
+.back-lasttd{
+	text-align: right;
+	padding: 5px 10px;
+	line-height: 16px;
+	background: #fff!important;
+	overflow: visible;
+}
+/* 分页插件样式 */
+
+
+/* 忘记密码页面 */
+#vCode{
+	width: 115px;
+	height: 35px;
+	background: #56a8fe;
+	color: #fff;
+	border-radius: 5px;
+	border: none;
+	outline: none;
+	margin-bottom: 4px;
+	cursor: pointer;
+}
+
+/*业务员提成查看*/
+.profitTime{
+	outline: none;
+	border: 1px solid #e5e5e4;
+	height: 25px;
+	line-height: 25px;
+	margin-left: 5px;
+	color: #999;
+	border-radius: 5px;
+}
+
+
+
+
+

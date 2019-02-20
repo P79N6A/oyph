@@ -1,0 +1,51 @@
+<table width="100%" class="account-table">
+	<tr height="46">
+		<th width="10%">状态</th>
+		<th width="30%">开户行</th>
+		<th width="50%">银行卡号</th>
+		<th width="10%"></th>
+	</tr>
+	#{if cardPageBean.page != null}
+		#{list cardPageBean.page,as:'cardList'}
+			<tr height="46">
+				<td>正常</td>
+				<td>${cardList?.bank_name}</td>
+				<td>${cardList?.account}</td>
+				<td>
+				<a href="javascript:void(0)" class="unbundle">解绑</a>
+				<form action="@{front.account.MySecurityCtrl.unbundleBankCardPre()}" method="get" >
+						<input type="hidden" name="bankAccountNo" value="${cardList?.account}"/>
+				</form>
+				</td>
+			</tr>
+		#{/list}
+	#{/if}
+</table>
+#{if cardPageBean?.page}
+	#{frontPageTag page:cardPageBean,showPage:'listOfUserBankCardPre' /}
+#{/if}
+#{if cardPageBean?.page == null}
+	<div class="norecord-box c9">
+		暂无记录
+	</div>
+#{/if}
+
+
+<script type="text/javascript">
+//用户注销 
+$(".unbundle").click(function(){
+	 #{if isSimulated}
+		alert("模拟登录不能执行该操作");
+		return false;
+	#{/if}
+	#{else}
+		var bankAount=$(this).next();
+		confirm("您是否确认解绑该银行卡？",function(){
+			waitingDialog();
+			bankAount.submit();
+		});	
+		
+	#{/else}
+			 
+});
+</script>

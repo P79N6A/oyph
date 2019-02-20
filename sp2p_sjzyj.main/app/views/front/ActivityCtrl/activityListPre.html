@@ -1,0 +1,35 @@
+#{if pageBean && pageBean.page}
+#{set count=1 /}
+#{list items:pageBean.page, as:'goods'}
+<div class="tabcon-wrap">
+	<img src="${goods?.img_url}" />
+	<div class="tabcon-wrap1">
+		<div class="participant">
+			<p title="${goods?.slogan}">${goods?.slogan}</p>
+			<p title="${goods?.name}">${goods?.name}</p>
+		</div>
+		<div class="vote-wrap">
+			<div class="vote-ranking">
+				<p><span><em id="zhiChi${goods?.id}">${goods?.poll_num}</em></span>&nbsp;票</p>
+                   <p>排名 :<span>${goods?.orderNum}</span></p>
+			</div>
+			<div class="vote-wish">
+				<input type="button" id="" value="" onclick="javascript:touPiao(${goods?.id})" />
+			</div>
+		</div>
+	</div>
+	<div class="share" onclick="fenXiang(${goods?.id})" id="fenxiang${goods?.id}"></div>
+	<div class="guanbi" id="erweima${goods?.id}">
+		<input type="button" onclick="guanBi(${goods?.id})" id="guanbi${goods?.id}" value="关闭" />
+	</div>
+</div>
+	#{set count=count+1 /}
+#{/list}
+#{/if}
+#{else}
+    <div style="border: 2px solid #FBA053; width: 275px;font-size: 30px; color: #fba053; width: 1059px; height: 300px; text-align: center; line-height: 300px;">很抱歉，查询无结果</div>
+#{/else}
+<div class="clear"></div>
+#{if pageBean?.page}
+	#{frontPageTag page:pageBean,showPage:"showPage"/}
+#{/if}

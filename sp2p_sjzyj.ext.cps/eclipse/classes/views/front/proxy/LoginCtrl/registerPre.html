@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="/public/front/stylesheets/logoncss.css"/>
+	</head>
+	<body>
+		<div class="login">
+	    	<div class="login1" ></div>
+	    	<div class="logincontent">
+	    		<h1 class="logintit">用户注册</h1>
+	    		<form  action="@{front.proxy.LoginCtrl.proxyUserRegistering()}" method="post">
+	    			<div class="telbox">
+	    				<div class="teltext size_place">手机号：</div>
+	    				<div class="teltext line1"><input name="mobile" class="borSty" type="text" id="import" value="${mobile}" maxlength="11" onkeyup="this.value=this.value.replace(/[^\d]/g,'');" autocomplete="off" /></div>	
+	    				<div class="teltext"></div>
+	    			</div>
+	    			<div class="telbox">
+	    				<div class="teltext size_place">验证码：</div>
+	    				<div class="teltext line1 line2"><input name="code" id="auth" class="borSty borSty1" type="text" value="" maxlength="2" onkeyup="this.value=this.value.replace(/[^\d]/g,'');" autocomplete="off"/></div>	
+	    				<div class="teltext"><img class="image-text_verify" src="@{common.CaptchaController.createCaptcha(randomNum)}" id="captchaImage" onclick="refreshCaptcha(true);" alt="" title="换一张" /><!-- <img class="image-text_verify" src="" /> --></div>
+	    			</div>
+	    			<div class="telbox">
+	    				<div class="teltext size_place">短信验证码：</div>
+	    				<div class="teltext line1 line2"><input name="smsCode" class="borSty importText borSty1" type="text" value="" autocomplete="off"/></div>	
+	    				<div class="teltext"><input id="vCode" type="button" value="获取验证码" class="verify_num" onclick="sendCode();" /></div>
+	    				
+	    				<input type="hidden" id="flag" value="1">
+						<input type="hidden" id="scene" name="scene" value="${common.enums.JYSMSModel.MODEL_SEND_CODE.tplId}">
+	    			</div>
+	    			<div class="telbox">
+	    				<div class="teltext size_place">密码：</div>
+	    				<div class="teltext line1"><input name="password" id="importText" placeholder="8~16位字母或数字组合区分大小写" class="borSty importText" type="password" oncopy="return false" maxlength="15" value="" autocomplete="off"/></div>	
+	    				<div class="teltext"></div>
+	    			</div>
+	    			<div class="telbox">
+	    				<div class="teltext size_place">&nbsp;</div>
+	    				<!-- <div id="component" class="check_box">
+	    					<img id="correct" class="induce" src="/public/front/images/induce.jpg" />
+	    				</div> -->
+	    				<input id="check_box" style="float: left;margin-top: 10px;" type="checkbox" name="readandagree" value="1" checked="checked" id="readandagree"/>
+	    				<div class="check_deal">我已阅读<a href="@{front.LoginAndRegisteCtrl.registerDealPre()}" target="_blank" class="deal_col">《 ${platformRegister.title} 》</a>
+	    					<p class="verify1">${flash.error}</p>
+	    				</div>
+	    				
+	    			</div>
+	    			
+	    			<input type="hidden" name="extCode" value="${extCode}" />
+	    			<input type="hidden" name="randomNum" value="${randomNum}" id="randomNum" />
+	    			<input class="atonce" id="register" type="submit" value="立即注册"/>
+	    		</form>
+	    	</div>
+	    </div>	
+	    <script type="text/javascript" src="/public/front/javascripts/jquery1.11.3-jquery.min.js" ></script>
+		<script type="text/javascript">
+			$("#register").click(function(){
+			var imp = $("#import").val();
+			var importText = $("#importText").val();
+			var reg=/^1[3|4|5|6|7|8|9][0-9]{9}$/;//手机号验证规则
+			var auth = $("#auth").val();
+			
+			if (imp == "") {
+				$(".verify1").html("请输入手机号码")
+				return false;
+			}else if(!reg.test(imp)){
+		            $('.verify1').text('手机号格式不正确')
+		            return false
+		    }      
+			if (auth == "") {
+				$(".verify1").html("请输入图文验证码")
+				return false;
+			} 
+			if (importText == "") {
+				$(".verify1").html("请输入8--16以内的密码")
+				return false;
+			} 
+			if(importText.length<8 ||importText.length>16){
+				$(".verify1").html("请输入8--16以内的密码")
+				return false;
+			}
+			
+		});
+			var check = $(this).is(":checked");
+			$("#check_box").change(function(){
+				/* if($("#correct").is(":hidden")){
+		           $("#correct").show();    //如果元素为隐藏,则将它显现
+				}else{
+				   $("#correct").hide();     //如果元素为显现,则将其隐藏
+				} */
+				 var check = $(this).is(":checked");
+				
+				 if(check == false){
+					    $('.verify1').html('请勾选讴业普惠《注册协议》')
+					    return false
+					 }else{
+			        	$('.verify1').text('')
+			        } 
+			});
+		/* 验证码刷新 */
+		function refreshCaptcha(isRefresh){
+			$.post("@{common.CaptchaController.flushCaptcha()}",function(data){
+				var arr=eval(data);
+				var randomid = arr.randomID;
+				$("#captchaImage").attr("src","@{common.CaptchaController.createCaptcha()}?uuid="+randomid);	
+				$("#randomNum").val(randomid);
+			});
+			
+			if(isRefresh) {
+				$('.verify1').text('');
+			}
+		}
+		
+		var flag = true;
+		/* 发送手机验证码  */
+		function sendCode(){
+			
+			if($("#flag").val() == 2){
+				$("#auth").val('');
+				$("#vCode").val("获取验证码");
+				$("#flag").val("1");
+	
+				refreshCaptcha(false);
+				$(".verify1").html("请重新输入图文验证码");
+			}
+			
+			var mobile = $("#import").val().trim();
+			var randomId = $("#randomNum").val().trim();
+			var code = 	$("#auth").val().trim();
+			
+		    if(mobile == ''){
+		    	$(".verify1").html("手机号不能为空");
+				return;
+		    }
+		     
+			if(code == ''){
+				$(".verify1").html("验证码不能为空");
+				return;
+			}
+		     
+			 $.ajax({
+					 url:"@{front.FrontAjaxValideCtrl.checkUserMobile()}",
+					 type: "POST",
+					 async:false,
+					 data:{
+						 'mobile':mobile
+					 },
+					 success:function(data){
+				 		if(!data){
+							flag = true;
+						}else{
+							flag = false;
+						}
+					}
+			 });
+			 //根据手机号码和验证码判断是否应该发送短信验证码
+		    if(flag){
+		    	$(".verify1").html("手机号错误或已存在");
+		    	return;
+		    }
+
+			 $.ajax({
+				url : "@{front.LoginAndRegisteCtrl.sendCodeOfRegister()}",
+				type : "POST",
+				data : {
+					"mobile" : mobile,
+					"randomId" : randomId,
+					"code" : code,
+					"scene" : "${common.enums.JYSMSModel.MODEL_SEND_CODE.tplId}"
+				},
+				dataType:"json",
+				success : function(data) {
+					
+					/* 判断短信验证码发送是否成功 */
+					if(data.code < 1){
+						
+						$(".verify1").html(data.msg);
+						refreshCaptcha(false); //刷新验证码
+						$("#flag").val("1");
+					} else {
+						/* 短信发送成功，清除页面错误提示 */
+						$('.verify1').text('');
+						
+						if(!$(".verify_num").prop("disabled")){
+							$(".verify1").html("验证码已发送至你手机");
+							
+							var getCode = $(".verify_num"),
+								timeid,
+								i = 60;//再次获取验证码等待时间
+							getCode.val(i+'s');
+							timeid = setInterval(function(){
+								if(i > 1){
+									i--;
+									getCode.val(i+'s');
+								}else{
+									getCode.removeAttr("disabled");
+									getCode.val('再次获取');
+									clearInterval(timeid);
+									$("#flag").val("2");
+								}
+							},1000);
+						}
+					}
+				}
+			});
+		}
+		
+		</script>
+	</body>
+</html>

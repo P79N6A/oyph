@@ -1,0 +1,22 @@
+*{
+查询的Main页面
+}*
+
+#{extends 'common/supervisorMain.html' /}
+#{set AItem:11 /}
+
+<!-- 二级导航 -->
+<ul class="back-secnav">
+	<li><a href="@{back.query.TradeStatusCtrl.tradeStatusPre()}">交易状态查询</a></li>
+	<li><a href="@{back.query.CustomerInfoAysnCtrl.custInfoSyncPre()}">客户信息同步</a></li>
+	<li><a href="@{back.query.QuestionFeedbackCtrl.questionListPre()}">问题反馈列表</a></li>
+	<li><a href="@{back.query.QuestionFeedbackCtrl.questionDetailsPre()}">问题详情</a></li>
+	<li><a href="@{back.query.CustomerInfoAysnCtrl.bidInfoSyncPre()}">标的信息同步</a></li>
+	<li><a href="@{back.query.UserTraceCtrl.showUserlistPre(0,1,10)}">理财会员管理</a></li>
+	<li><a href="@{back.query.UserTraceCtrl.showServiceUserlistPre(0,0,1,10)}">理财会员追踪</a></li>
+	<li><a href="@{back.query.UserTraceCtrl.showServiceMonthListPre(1,10,1,2018)}">理财会员统计</a></li>
+	<li><a href="@{back.query.DataInfoCtrl.accountInfoPre()}">数据信息查询</a></li>
+	<li><a href="@{back.query.DealReversalCtrl.dealReversalPre()}">资金交易冲正</a></li>
+</ul>
+
+#{doLayout /}

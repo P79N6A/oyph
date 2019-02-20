@@ -1,0 +1,218 @@
+#{extends 'common/back/webOperationMain.html' /}
+	#{set title:'运维 | 内容管理' /}
+	#{set smallclass:1 /}
+	#{set crumbs:'运维>内容管理' /}
+
+
+<div class="back-main">
+	<!-- 头部筛选条件 -->
+	<div class="back-usertop">
+		<div class="left back-usermenu">
+			<a href="@{back.webOperation.InformationMngCtrl.showInformationsPre()}" class="selected">所有</a>
+		</div>
+		
+		<!-- 搜索按钮，控制搜索条件的显示隐藏 -->
+		<div class="back-search left #{if inforTitle}selected#{/if}">
+			<i class="iconfont searchicon">&#xe60a;</i>搜索<i class="iconfont arrowicon">&#xe603;</i>
+		</div>
+		
+		<!-- 右侧功能按钮 -->
+		<div class="right back-rightbtns">
+		#{rightMng rightId:202002}
+			<a href="@{back.webOperation.InformationMngCtrl.toAddInformationPre()}" class="back-addmsg"><i class="iconfont">&#xe60f;</i>添加</a>
+		#{/rightMng}
+		</div>
+	</div>
+		<!-- 搜索条件，默认隐藏 -->
+	<div class="back-search-option"  #{if inforTitle}style="display: block;"#{/if}>
+		<form action="@{back.webOperation.InformationMngCtrl.showInformationsPre()}" method="GET" id="showInformationsPre">
+			<input type="hidden" id="showType" name="showType" value="${showType}" />
+			<input type="hidden" id="currPage" name="currPage"/>
+	  		<input type="hidden" id="pageSize" name="pageSize" value="${page?.pageSize}"/>
+	  		
+	  		<input type="text" class="iffocus" name="inforTitle" placeholder="标题" value="${inforTitle}" maxlength="20" />
+			<input type="submit" class="bgbtn" value="搜索" />
+		</form>
+	</div>
+	<!-- 左侧菜单 -->
+	<div class="back-cont back-container">
+		<div class="back-side">
+			<i class="back-sidebtn iconfont">&#xe607;</i>
+			<div class="back-sidecont">
+				<h2>内容管理</h2>
+				<ul class="back-sidenav">
+					#{list items:leftBar,as:"bar"}
+						<li><a href="@{back.webOperation.InformationMngCtrl.showInformationsPre(bar?.code)}" #{if showType == bar?.code} class="selected"#{/if}><i></i>${bar?.value}</a></li>
+					#{/list}
+				</ul>
+			</div>
+		</div>
+		<div class="back-box">
+			<table width="100%" class="back-table table-fixed">
+				<tr height="39">
+					<th class="align-left" width="70">编号</th>
+					<th>标题</th>
+					<th>栏目</th>
+					<th>来源</th>
+					<th width="75">阅读</th>
+					<th width="75">点赞</th>
+					<th>发布时间</th>
+					<th>排序时间</th>
+					<th width="60">状态</th>
+					<th width="150">操作</th>
+				</tr>
+		#{if page.page}
+			#{list items:page.page,as:"information"}
+				<tr height="39">
+					<td class="align-left">
+						<label><input type="checkbox" class="back-tdcheck" />${information?.id}</label>
+					</td>
+					<td data-title="${information?.title}">${information?.title}</td>
+					<td>${information?.column_name}</td>
+					<td>${information?.source_from}</td>
+					<td>${information?.read_count}</td>
+					<td>${information?.support_count}</td>
+					<td>${information?.show_time?.format(common.constants.Constants.DATE_TIME_FORMATE)}</td>
+					<td>${information?.order_time?.format(common.constants.Constants.DATE_TIME_FORMATE)}</td>
+					#{if information?.is_use.code==true}
+						<td>上架</td>
+					#{/if}
+					#{else}
+						<td>下架</td>
+					#{/else}
+					<td class="back-handle">
+						#{rightMng rightId:202003}
+							<a href="@{back.webOperation.InformationMngCtrl.toEditInformationPre(information.id)}" data-title="编辑" class="iconfont">&#xe602;</a>
+						#{/rightMng}
+						
+						#{rightMng rightId:202004}
+							#{if information?.is_use.code == true}
+								<a id="${information?.sign}" data-title="下架" class="iconfont">&#xe600;</a>							
+							#{/if}
+							#{else}
+								<a id="${information?.sign}" data-title="上架" class="iconfont">&#xe61b;</a>							
+							#{/else}
+						#{/rightMng}
+						
+						#{rightMng rightId:202005}
+							<a href="javascript:delInformation('${information?.id}','${information?.sign}');" data-title="删除" class="iconfont">&#xe601;</a>						
+						#{/rightMng}
+						
+						#{rightMng rightId:202006}
+							#{if showType == 'info_bulletin' || showType == 'info_report' || showType == 'info_story'}
+								#{if information?.is_use.code == true}
+									<a data-title="发送移动端通知" class="iconfont" href="javascript:informationPush('${information?.sign}');"><img width="15" height="15" src="/public/images/img/push(checked).png"></a>
+								#{/if}
+								#{else}
+									<img width="15" height="15" class="iconfont unable" src="/public/images/img/push(unchecked).png">
+								#{/else}
+							#{/if}
+						#{/rightMng}
+					</td>
+				</tr>
+			 #{/list}
+				<!-- 表格数据统计 -->
+				<tr height="39">
+					<td colspan="10" class="back-lasttd">
+						<span class="back-choose left">
+							<input type="button" id="chooseAll" value="全选" />
+							<input type="button" id="chooseReverse" value="反选" />
+						</span>
+						
+						<!-- 分页组件--pageTag -->
+						#{backPageTag page:page,showPage:"showInformations"/}
+					</td>
+				</tr>
+		#{/if}
+		#{else}
+				<!-- 暂无记录 -->
+				<tr height="58">
+					<td colspan="10" class="back-nodata"><i class="iconfont">&#xe613;</i>暂无记录</td>
+				</tr>
+		#{/else}
+			</table>
+		</div>
+	</div>
+</div>
+
+<!-- 页面js -->
+<script type="text/javascript">
+	require(["back"],function(back){
+		// 搜索、左侧菜单展开收缩、表格排序
+		require(["search","side","linechecked"],function(){
+			$(".back-sidebtn").click();//左侧菜单搜索
+		});
+		
+		var $a = $(".back-handle").children("a");
+		$a.click(function(){
+			var sign = $(this).attr("id");
+			if(sign==null || sign=='' || sign==undefined){
+				return;
+			}
+			upDownInformation(sign, $(this));
+		});
+		
+	});
+	
+	//删除资讯 
+	function delInformation(id, sign){
+		confirm("编号"+id+"，执行删除",function(){
+			$.post('@{back.webOperation.InformationMngCtrl.delInformation()}',{sign:sign},function(data){
+				var flag = interceptorCheck(data);
+				if(!flag){
+					return;
+				}
+				if(data.code<1){
+					alert(data.msg);
+					return;
+				}
+				location.reload();
+			});
+		})
+	}
+	
+	function showInformations(currPage, pageSize) {
+		$("#currPage").val(currPage);
+		$("#pageSize").val(pageSize);
+		
+		$("#showInformationsPre").submit();
+	}
+	
+	//上下架 
+	function upDownInformation(sign,dom){
+		$.post('@{back.webOperation.InformationMngCtrl.isUseInformation()}',{sign:sign},function(data){
+			var flag = interceptorCheck(data);
+			if(!flag){
+				return;
+			}
+			if(data.code < 1){
+				alert(data.msg);
+				return;
+			}
+			if(!data.obj){
+				weakDialog("已经更新产品状态为[上架]");
+				dom.attr("data-title", "下架");
+				$('.titlebox').text('下架');
+				dom.html("&#xe600;");
+				dom.parent().prev().html('上架');
+			}else{
+				weakDialog("已经更新产品状态为[下架]");
+				dom.attr("data-title", "上架");
+				$('.titlebox').text('上架');
+				dom.html("&#xe61b;");
+				dom.parent().prev().html('下架');
+			}
+		});
+	}
+	//消息推送
+	function informationPush(sign) {
+		$.post('@{back.webOperation.InformationMngCtrl.InformationPush()}',{sign:sign},function(data) {
+			var flag = interceptorCheck(data);
+			if(!flag){
+				return;
+			}
+			
+			weakDialog(data.msg);
+		})
+	}
+</script>

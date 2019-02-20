@@ -1,0 +1,52 @@
+#{extends 'common/front/accountMain.html' /}
+#{set title:'个人中心 | 我的奖励' /}
+#{set smallclass:5 /}
+
+<!-- 账户主要表格 -->
+<div class="account-box">
+	<h2 class="account-title">
+		<div class="right tab-menu account-menu">
+		#{if common.constants.ModuleConst.EXT_COUPON}<a href="javascript:void(0);" id="extCoupon">${columns?.get(common.constants.ColumnKey.WEALTH_REWARD_COUPON)?:'加息券'}</a>#{/if}
+		#{if common.constants.ModuleConst.EXT_REDPACKET}<a href="javascript:void(0);" id="extRedpacket">${columns?.get(common.constants.ColumnKey.WEALTH_REWARD_REDPACKET)?:'红包'}</a>#{/if}
+		#{if common.constants.ModuleConst.EXT_EXPERIENCEBID}<a href="javascript:void(0);" id="extExperienceGold">${columns?.get(common.constants.ColumnKey.WEALTH_REWARD_EXPERIENCE)?:'体验金'}</a>#{/if}
+		#{if common.constants.ModuleConst.EXT_CPS}<a href="javascript:void(0);" id="extCps">${columns?.get(common.constants.ColumnKey.WEALTH_REWARD_CPS)?:'CPS推广'}</a>#{/if}
+		#{if common.constants.ModuleConst.EXT_WEALTHCIRCLE}<a href="javascript:void(0);" id="extWealthCircle">${columns?.get(common.constants.ColumnKey.WEALTH_REWARD_CIRCLE)?:'财富圈'}</a>#{/if}	
+		</div>
+	</h2>
+	
+	<!-- 加息券 -->
+	#{if common.constants.ModuleConst.EXT_COUPON}
+		#{include 'front/account/MyCouponCtrl/couponCont.html' /}
+	#{/if}
+	
+	<!-- 红包 -->
+	#{if common.constants.ModuleConst.EXT_REDPACKET}
+		#{include 'front/account/MyRedpacketCtrl/redpacketCont.html' /}
+	#{/if}
+	<!-- 红包 end -->
+	
+	<!-- 体验金 -->
+	#{if common.constants.ModuleConst.EXT_EXPERIENCEBID}
+		#{include 'front/spread/ExperienceBidFrontCtrl/experienceCont.html' /}
+	#{/if}	
+	<!-- 体验金 end -->
+
+	<!-- CPS -->
+	#{if common.constants.ModuleConst.EXT_CPS}
+		#{include 'front/account/MyCpsCtrl/cpsCont.html' /}
+	#{/if}	
+	<!-- CPS end -->
+	
+	<!-- 财富圈 -->
+	#{if common.constants.ModuleConst.EXT_WEALTHCIRCLE}
+		#{include 'front/account/MyWealthCircleCtrl/wealthCircleCont.html' /}
+	#{/if}	
+	<!-- 财富圈 end -->
+</div>
+
+<script type="text/javascript">
+	require(['front'],function(front){
+		<!-- 默认显示红包模块(如果红包模块不存在，此地方需要改成其他模块的加载方式) -->
+		$(".tab-menu").children("a").eq(0).click();
+	});
+</script>

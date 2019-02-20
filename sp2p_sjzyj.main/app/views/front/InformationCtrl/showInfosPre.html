@@ -1,0 +1,145 @@
+#{extends 'common/frontMain.html' /}
+#{set title:'资讯' /}
+#{set AItem:3 /}
+
+<!-- main -->
+<div class="container mt30">
+	<div class="news-container">
+		<div class="news-top">
+			<ul class="left news-nav">
+				<li><a href="@{front.InformationCtrl.showInfosPre()}" #{if columnkey==null} class="selected"#{/if}>全部</a></li>
+				<li><a href="@{front.InformationCtrl.showInfosPre('info_bulletin')}" #{if columnkey=='info_bulletin'} class="selected"#{/if}>${columns?.get(common.constants.ColumnKey.INFO_BULLETIN)?:'官方公告'}</a></li><!-- 官方公告 -->
+				<li><a href="@{front.InformationCtrl.showInfosPre('info_report')}" #{if columnkey=='info_report'} class="selected"#{/if}>${columns?.get(common.constants.ColumnKey.INFO_REPORT)?:'媒体报道'}</a></li><!-- 媒体报道 -->
+				<li><a href="@{front.InformationCtrl.showInfosPre('info_story')}" #{if columnkey=='info_story'} class="selected"#{/if}>${columns?.get(common.constants.ColumnKey.INFO_STORY)?:'安全故事'}</a></li><!-- 理财故事 -->
+			</ul>
+			
+			<!-- 搜索 begin -->
+			<form action="@{front.InformationCtrl.showInfosPre()}" method="GET" id="showInfosPre">
+				<div class="news-search right">
+					<input type="hidden" id="currPage" name="currPage" value="${page?.currPage}"/>
+					<input type="hidden" id="pageSize" name="pageSize" value="${page?.pageSize}"/>
+					<input type="hidden" id="columnkey" name="columnkey" value="${columnkey}" />
+					<input type="text" class="news-searchtext text" id="keywords" name="keywords" value="${keywords}"/>
+					<button class="news-searchbtn major" ><i class="icon search-icon"></i>搜索</button>
+				</div> 
+			</form>
+			<!-- 搜索 end -->
+		</div>
+		#{if page.page}
+		<div class="news-list" id="news_list">
+			<input type="hidden" id="infosCurrpage" value="${page?.currPage}"/>
+			<input type="hidden" id="infosPagesize" value="${page?.pageSize}"/>
+		   #{list items:page.page,as:"information"}
+			<div class="news-box">
+				<h2 class="news-title"><a href="@{front.InformationCtrl.informationDetailPre(information?.id)}" title="" target="_blank">${information?.title}</a></h2>
+				<div class="news-cont">
+					<a href="@{front.InformationCtrl.informationDetailPre(information?.id)}" class="news-img left"  target="_blank">
+						<img src="${information?.image_url}" onerror="this.src='/public/common/default.jpg'" width="398" height="196" alt="" />
+					</a>
+					<div class="news-intro">
+						<p class="c9 news-infor"><span>${information?.source_from}</span><span>${common.utils.DateUtil.getTimeLine(information?.show_time)}</span></p>
+						<a href="@{front.InformationCtrl.informationDetailPre(information?.id)}"  target="_blank">
+							<div class="news-introword" id="content" limit="120">
+								${information?.content.raw()}
+							</div>
+						</a>
+						<div class="index-newhandle clearfix">
+							<span class="handle-btn left" title="浏览次数">
+								<i class="icon haveseen-icon"></i>
+								${information?.read_count}
+							</span>
+							<!-- 点赞前 -->
+							<a href="javascript:void(0);" class="handle-btn praise-btn left" title="赞一个" >
+								<input type="hidden" value="${information?.id}" />
+								<i class="praise-icon icon"></i>
+								<i class="praise-count">${information?.support_count}</i>
+							</a>
+							<i class="handleplit left"></i>
+							<a href="javascript:sinaShare('@@{front.InformationCtrl.informationDetailPre}?id=${information?.id}','${information?.title}','${information?.image_url}');" title="分享到新浪微博" class="shareto-sina handle-share left">
+								<i class="icon sina-icon"></i>
+							</a>
+							<div class="shareto-wechat handle-share left" title="分享到朋友圈">
+								<i class="icon wechat-icon"></i>
+								<div class="shareto-wechat-upbox">
+									<i></i>
+									<i></i>
+									<div class="code-area"></div>
+									<input type="hidden" class="code-url" value="@@{front.InformationCtrl.informationDetailPre}?id=${information?.id}">
+								</div>
+							</div>
+							<a href="javascript:qqZoneShare('@@{front.InformationCtrl.informationDetailPre}?id=${information?.id}','${information?.title}','${information?.image_url}');" class="handle-share shareto-qqspace left" title="分享到QQ空间">
+								<i class="icon qqspace-icon"></i>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			#{/list}
+		
+		</div>
+		<p class="loadmore">
+			#{if page?.totalCount > page?.pageSize}
+				<a href="javascript:void(0);" onclick="loadMoreInfos();">点击加载更多</a>
+			#{/if}
+			#{else}
+				<span>没有更多了</span>
+			#{/else}
+		</p>
+		#{/if}
+		#{else}
+		<div class="norecord-box c9">
+			暂无记录
+		</div>
+		#{/else}
+		
+		
+		
+	
+	</div>
+</div>
+<!-- main end-->
+
+<script type="text/javascript">
+	require(['front'],function(front){
+		// 导航选中效果
+		require(['newsearch','share']);
+		
+		$(function(){
+			var keywords = "${keywords}";
+			if(keywords != "") {
+				$("#keywords").show();
+			} else {
+				$("#keywords").hide();
+			}
+		});
+	});
+
+	function loadMoreInfos(){
+		var nowSize = $("#infosPagesize").val();
+		var nowPage = $("#infosCurrpage").val();
+		var totalSize = ${page?.totalCount};
+		var keywords = $("#keywords").val();
+		
+		$("#infosPagesize").val(parseInt(nowSize)+3);
+		$("#infosCurrpage").val(parseInt(nowPage)+1);
+		var pageSize = $("#infosPagesize").val();
+		var currPage = $("#infosCurrpage").val();	
+		$.ajax({
+			url : "@{front.InformationCtrl.loadMoreInfosPre()}",
+			type : "GET",
+			data : {
+				"columnkey" : $("#columnkey").val(),
+				"currPage" : currPage,
+				"pageSize" : 3,
+				"keywords" : keywords
+			},
+			success : function(data) {
+				$(data).appendTo($("#news_list"));
+				if(parseInt(nowSize)+3 >= parseInt(totalSize)){
+					$(".loadmore").html("<span>没有更多了</span>");
+					return;
+				} 
+			}
+		});
+	}
+</script>

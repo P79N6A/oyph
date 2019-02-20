@@ -1,0 +1,191 @@
+#{extends 'common/back/enterpriseAccountPre.html' /}
+	#{set title:'企业开户 | 企业开户' /}
+	#{set smallclass:0 /}
+	#{set crumbs:'企业开户>企业开户'/}
+		
+		<!--导航-->
+		<div class="bank-name-box">
+			<div class="center-message-box1">
+				<h2 class="center-title">
+					<span class="center-title-lf">填写基本资料</span><span class="center-title-rg">请您仔细仔细核对下列资料是否正确</span>
+				</h2>
+				<form action="@{back.BackHomeCtrl.ybFirmRegist()}" method="post">
+				
+				<h3 class="personage-message">
+					<p class="garden">1</p><span class="garden-message">个人信息</span>
+				</h3>
+				<p class="firm-message">
+					<i class="asterisk bvvf6">*</i>
+					<span>用户手机号：</span>
+					<input class="register-message" type="text" name="phone" id="phone"  placeholder="请填写用户已注册的手机号"/>
+				</p>
+				<p class="firm-message">
+					<i class="asterisk bvvf4">*</i>
+					<span>企业法人姓名：</span>
+					<input class="register-message" type="text" name="userName" id="userName"  placeholder="请填写真实姓名"/>
+				</p>
+				<p class="firm-message">
+					<i class="asterisk bvvf4">*</i>
+					<span>身份证号：</span>
+					<input class="register-message" type="text" name="idCard" id="idCard"  placeholder="请填写18位的身份证号"/>
+				</p>
+				<h3 class="personage-message">
+					<p class="garden">2</p><span class="garden-message">企业信息</span>
+				</h3>
+				
+				<p class="firm-message">
+					<i class="asterisk bvvf">*</i>
+					<span>企业名称：</span>
+					<input class="register-message" type="text" name="companyName" id="companyName"  placeholder="请填写企业名称"/>
+				</p>
+				<p class="firm-message">
+					<i class="asterisk bvvf3">*</i>
+					<span>统一社会信用代码：</span>
+					<input class="register-message" type="text" name="uniSocCreCode" id="uniSocCreCode"  placeholder="请填写统一社会信用代码"/>
+				</p>
+				
+				<p class="firm-message">
+					<i class="asterisk bvvf">*</i>
+					<span>主体类型：</span>
+					<input class="register-message" type="text" name="entType" id="entType" placeholder="请填写主体类型"/>
+				</p>
+				
+				<div class="tim-box tim-box1">
+					<i class="asterisk">*</i>
+					<span>请填写成立日期：</span>
+				    <div class="case db1">
+						<div class="calendarWarp" style="">
+							<div style="width:200px;">
+                               <input class="laydate-icon" id="demo" name = "establishDate" class ="establishDate">
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<p class="firm-message">
+					<i class="asterisk bvvf1">*</i>
+					<span>对公账户账号：</span>
+					<input class="register-message" type="text" name="companyId" id="companyId"  placeholder="请填写对公户账号"/>
+				</p>
+				
+				<p class="firm-message">
+					<i class="asterisk bvvf1">*</i>
+					<span>营业执照住所：</span>
+					<input class="register-message" type="text" name="licenseAddress" id="licenseAddress" placeholder="请填营业执照住所"/>
+				</p>
+				
+				<p class="firm-message">
+					<i class="asterisk bvvf2">*</i>
+					<span>对公开启行行号：</span>
+					<input class="register-message" type="text" name="bankNo" id="bankNo" placeholder="请填写对公户开启行行号"/>
+				</p>
+				
+				<p class="firm-message">
+					<i class="asterisk">*</i>
+					<span>对公户开户行名称：</span>
+					<input class="register-message" type="text" name="bankName" id="bankName"  placeholder="请填对公户开户行名称"/>
+				</p>
+				<!-- 新添加 -->
+				<p class="firm-message">
+					<i class="asterisk">*</i>
+					<span>所属行业：</span>
+					<select name="industry_involved" class="register-message" style="border-radius:6px;">
+						<option value="-1">--请选择--</option>
+						<option value="A0000">农、林、牧、渔业</option>
+						<option value="B0000">采矿业</option>
+						<option value="C0000">制造业</option>
+						<option value="D0000">电力、热力、燃气及水生产和供应业</option>
+						<option value="E0000">建筑业</option>
+						<option value="F0000">批发和零售业</option>
+						<option value="G0000">交通运输、仓储和邮政业</option>
+						<option value="H0000">住宿和餐饮业</option>
+						<option value="I0000">信息传输、软件和信息技术服务业</option>
+						<option value="J0000">金融业</option>
+						<option value="K0000">房地产业</option>
+						<option value="L0000">租赁和商务服务业</option>
+						<option value="M0000">科学研究和技术服务业</option>
+						<option value="N0000">水利、环境和公共设施管理业</option>
+						<option value="O0000">居民服务、修理和其他服务业</option>
+						<option value="P0000">教育</option>
+						<option value="Q0000">卫生和社会工作</option>
+						<option value="R0000">文化、体育和娱乐业</option>
+						<option value="S0000">公共管理、社会保障和社会组织</option>
+						<option value="T0000">国际组织</option>
+						<option value="U0000">其他</option>
+					</select>
+				</p>
+				
+				
+				
+				<div class="tim-box tim-box1">
+					<i class="asterisk">*</i>
+					<span>公司规模：</span>
+					<select name="enterprise_scale" class="register-message" style="border-radius:6px;">
+						<option value="-1">--请选择--</option>
+						<option value="ES01">大型企业</option>
+						<option value="ES02">中型企业</option>
+						<option value="ES03">小型企业</option>
+						<option value="ES04">微型企业</option>
+					</select>
+				</div>
+				
+				<div class="tim-box tim-box1">
+					<i class="asterisk">*</i>
+					<span>营业执照到期日期：</span>
+				    <div class="case db1">
+						<div class="calendarWarp" style="">
+							<div style="width:200px;">
+                               <input class="laydate-icon" id="demo1" name = "exp_date" class ="establishDate">
+							</div>
+						</div>
+					</div>
+				</div>
+				<p class="firm-message">
+					<i class="asterisk">*</i>
+					<span>营业执照是否有效：</span>
+					<input type="radio" name="sts_flg" value="Y"/>是&nbsp;&nbsp;
+					<input type="radio" name="sts_flg" value="N"/>否
+				</p>		
+					<input class="enroll" type="submit" value="注册" id = "qenroll"/>
+				</form>
+			</div>
+		</div>
+		<!--底部-->
+		<div class="foot-location">
+			<p class="foot-location1">2014-2017 &nbsp; 版权所有 &nbsp; ©2016 讴业普惠 All rights resered &nbsp; <span>冀ICP备17012676号</span> &nbsp; 地址：石家庄市新华区名族路华强中心A座1605室</p>
+			<p class="foot-location2">石家庄菲尔德投资咨询有限公司</p>
+		</div>
+		<!--底部-->
+	<script src="/public/javascripts/jquery-1.6.4.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="/public/javascripts/laydate/laydate.js"></script>
+	<script  src="/public/javascripts/cang.js"></script>	
+	<script>
+	;!function(){
+	laydate({
+	   elem: '#demo'
+	})
+	laydate({
+	   elem: '#demo1'
+	})
+	}();
+	</script>
+	<script type="text/javascript">
+	      $(function(){
+	       	
+	       
+	              $(".selProvince").focus(function(){
+	                     $(this).addClass("focus");
+	              }).blur(function(){
+	                     $(this).removeClass("focus");
+	                     $(".pass").removeAttr("disabled"); 
+//	                     $(".profession").CSS("color":"red")
+	                     $(".profession").css({color:"black"})
+	              });
+	       });
+	</script>
+	</body>
+		
+		<link rel="stylesheet" type="text/css" href="/public/stylesheets/yibin/commonality.css"/>
+		<link rel="stylesheet" type="text/css" href="/public/stylesheets/yibin/BankName.css"/>
+		<link rel="stylesheet" type="text/css" href="/public/javascripts/laydate/skins/default/laydate.css"/>
+</html>

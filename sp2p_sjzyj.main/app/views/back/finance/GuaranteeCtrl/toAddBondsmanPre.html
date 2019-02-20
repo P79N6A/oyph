@@ -1,0 +1,35 @@
+#{extends 'common/back/financeMain.html' /}
+	#{set title:'财务 | 担保人管理' /}
+	#{set smallclass:11 /}
+	#{set crumbs:'财务>担保人管理>添加担保人'/}
+
+<div class="back-main">
+	<div class="back-usertop">
+		<b class="left font14">添加担保人</b>
+		<!-- 右侧功能按钮 -->
+		<div class="right back-rightbtns">
+			<a href="javascript:backAndRefresh('@{back.finance.GuaranteeCtrl.showGuaranteePre}');"><i class="iconfont">&#xe60b;</i>返回</a>
+		</div>
+	</div>
+	<!-- 左侧菜单 -->
+	<form action="@{back.finance.GuaranteeCtrl.addGuarantee()}" method="POST" id="addAds">
+		#{authenticityToken /}
+		<input type="hidden" name="uuidRepeat" value="${flash?.submitUuid}">
+		<div class="back-cont">
+			<div class="back-infor">
+				<ul class="back-infor-set">
+					<li>
+						<span class="lileft">担保人电话</span>
+						<div class="liright">
+							<input type="text" maxlength="11" id="mobile" name="mobile" onkeyup="value=value.replace(/[^\d]/g,'')" class="required iffocus" value="${flash?.mobile}" />
+						</div>
+					</li>
+				</ul>
+			</div>
+			<p class="back-audit-btns">
+				<input type="submit" id="pageSave" value="保存" class="bgbtn">
+				<input type="reset" value="取消" class="bdbtn">
+			</p>
+		</div>
+	</form>
+</div>
